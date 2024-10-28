@@ -2,11 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report_pay" language="groovy" pageWidth="320" pageHeight="600" columnWidth="204" leftMargin="11" rightMargin="11" topMargin="0" bottomMargin="0" uuid="e85f8a0c-148f-465d-a4e7-5b7837dc9f27">
 	<property name="ireport.zoom" value="1.6500000000000028"/>
 	<property name="ireport.x" value="0"/>
-<<<<<<< Updated upstream
 	<property name="ireport.y" value="0"/>
-=======
-	<property name="ireport.y" value="62"/>
->>>>>>> Stashed changes
 	<parameter name="staff" class="java.lang.String"/>
 	<parameter name="customer" class="java.lang.String"/>
 	<parameter name="total" class="java.lang.String"/>
@@ -16,11 +12,8 @@
 	<parameter name="ngayTao" class="java.lang.String"/>
 	<parameter name="tongTien" class="java.lang.String"/>
 	<parameter name="tongSL" class="java.lang.String"/>
-<<<<<<< Updated upstream
 	<parameter name="tienKhachTra" class="java.lang.String"/>
 	<parameter name="tienThua" class="java.lang.String"/>
-=======
->>>>>>> Stashed changes
 	<field name="tenSach" class="java.lang.String"/>
 	<field name="SL" class="java.lang.String"/>
 	<field name="formattedDonGia" class="java.lang.String"/>
@@ -139,20 +132,12 @@
 				<textFieldExpression><![CDATA[$F{tenSach}]]></textFieldExpression>
 			</textField>
 			<textField>
-<<<<<<< Updated upstream
 				<reportElement x="130" y="5" width="18" height="15" uuid="e2b5bd66-fb11-4f8b-bf93-c1222ffda40f"/>
-=======
-				<reportElement x="139" y="5" width="18" height="15" uuid="e2b5bd66-fb11-4f8b-bf93-c1222ffda40f"/>
->>>>>>> Stashed changes
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{SL}]]></textFieldExpression>
 			</textField>
 			<textField>
-<<<<<<< Updated upstream
 				<reportElement x="174" y="5" width="41" height="15" uuid="0a2f1c89-8ce3-4986-b9c7-fb234f03e454"/>
-=======
-				<reportElement x="174" y="5" width="50" height="15" uuid="0a2f1c89-8ce3-4986-b9c7-fb234f03e454"/>
->>>>>>> Stashed changes
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{formattedDonGia}]]></textFieldExpression>
 			</textField>
@@ -165,27 +150,13 @@
 	</detail>
 	<summary>
 		<band height="75">
-<<<<<<< Updated upstream
 			<textField>
 				<reportElement x="233" y="8" width="54" height="20" uuid="c974808f-9179-4d4f-bb8f-5f86f16fe64b"/>
-=======
-			<staticText>
-				<reportElement x="241" y="28" width="55" height="20" uuid="4921f704-f775-49b8-8598-beec2a722198"/>
-				<textElement textAlignment="Right"/>
-				<text><![CDATA[500,000]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="241" y="8" width="55" height="20" uuid="c974808f-9179-4d4f-bb8f-5f86f16fe64b"/>
->>>>>>> Stashed changes
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$P{tongTien}]]></textFieldExpression>
 			</textField>
 			<textField>
-<<<<<<< Updated upstream
 				<reportElement x="130" y="8" width="18" height="20" uuid="4ddfe7db-0e1d-4eb0-8560-f15625e77da9"/>
-=======
-				<reportElement x="139" y="8" width="21" height="20" uuid="4ddfe7db-0e1d-4eb0-8560-f15625e77da9"/>
->>>>>>> Stashed changes
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$P{tongSL}]]></textFieldExpression>
 			</textField>
@@ -210,7 +181,6 @@
 				</textElement>
 				<text><![CDATA[Tiền thừa:]]></text>
 			</staticText>
-<<<<<<< Updated upstream
 			<line>
 				<reportElement x="8" y="4" width="288" height="1" uuid="4a192ac8-9679-4eaa-ba53-1679b4eb5a74"/>
 			</line>
@@ -224,16 +194,6 @@
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$P{tienThua}]]></textFieldExpression>
 			</textField>
-=======
-			<staticText>
-				<reportElement x="241" y="45" width="55" height="20" uuid="fb39fc72-a886-47f5-bb66-01e5e6fd2489"/>
-				<textElement textAlignment="Right"/>
-				<text><![CDATA[100,000]]></text>
-			</staticText>
-			<line>
-				<reportElement x="8" y="4" width="288" height="1" uuid="4a192ac8-9679-4eaa-ba53-1679b4eb5a74"/>
-			</line>
->>>>>>> Stashed changes
 		</band>
 	</summary>
 </jasperReport>

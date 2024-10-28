@@ -179,7 +179,6 @@ public class QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
         jComboBox_TieuChi.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tiêu chí", "Mã hóa đơn", "Mã nhân viên", "Ngày tạo đơn" }));
         jPanel1.add(jComboBox_TieuChi);
         jComboBox_TieuChi.setBounds(920, 120, 170, 46);
-        jComboBox_TieuChi.getAccessibleContext().setAccessibleName("");
 
         jTextField_TimKiem.setFont(new java.awt.Font("Arial", 0, 15)); // NOI18N
         jPanel1.add(jTextField_TimKiem);
@@ -200,7 +199,7 @@ public class QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
 
         jTable_HoaDon.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jTable_HoaDon.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+                new Object [][] {
 
                 },
                 new String [] {
@@ -213,17 +212,13 @@ public class QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
-            },
-            new String [] {
-                "STT", "Mã hóa đơn", "Ngày tạo đơn", "Mã nhân viên", "Tổng số lượng sách", "Tổng tiền(VNĐ)", ""
             }
-        ));
+        });
         jTable_HoaDon.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_NEXT_COLUMN);
         jTable_HoaDon.setPreferredSize(new java.awt.Dimension(525, 520));
         jTable_HoaDon.setRowHeight(40);
-        jTable_HoaDon.setSelectionBackground(new java.awt.Color(255, 255, 255));
-        jTable_HoaDon.setSelectionForeground(new java.awt.Color(255, 255, 255));
-        jTable_HoaDon.setShowGrid(true);
+        jTable_HoaDon.setSelectionBackground(new java.awt.Color(153, 204, 0));
+        jTable_HoaDon.setSelectionForeground(new java.awt.Color(51, 51, 51)); jTable_HoaDon.setShowGrid(true);
         jScrollPane1.setViewportView(jTable_HoaDon);
         int stt = 0;
         for (HoaDon x : dsHD.getAllHoaDon()) {
@@ -249,8 +244,6 @@ public class QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
             jTable_HoaDon.getColumnModel().getColumn(2).setPreferredWidth(150);
             jTable_HoaDon.getColumnModel().getColumn(3).setPreferredWidth(150);
             jTable_HoaDon.getColumnModel().getColumn(7).setPreferredWidth(150);
-        if (jTable_HoaDon.getColumnModel().getColumnCount() > 0) {
-            jTable_HoaDon.getColumnModel().getColumn(6).setPreferredWidth(150);
         }
 
         jPanel1.add(jScrollPane1);
@@ -294,7 +287,6 @@ public class QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 874, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -537,6 +529,13 @@ public class QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
 //    private List<ChiTietHoaDon> listCTHD = dsCTHD.getAllChiTietHoaDon();
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private HoaDon_DAO dsHD = new HoaDon_DAO();
+    private List<HoaDon> listhD = dsHD.getAllHoaDon();
+    private Sach_DAO dss = new Sach_DAO();
+    private List<Sach> sachList = dss.getAllSP();
+
+    private ChiTietHoaDon_DAO dsCTHD = new ChiTietHoaDon_DAO();
+    private List<ChiTietHoaDon> listCTHD = dsCTHD.getAllChiTietHoaDon();
     private javax.swing.JButton jButton_LamMoi;
     private javax.swing.JButton jButton_TaoHoaDon;
     private javax.swing.JButton jButton_TimKiem;
