@@ -55,18 +55,65 @@ public class NguoiQuanLy_QuanLyNhanVien extends javax.swing.JInternalFrame {
         ui.setNorthPane(null);
         model = (DefaultTableModel) jTable_QuanLyNhanVien.getModel();
         addButtonToTable(model);
+        jComboBox_TimKiem.removeAllItems();
         for (NhanVien x : nhanVien_dao.getDSNhanVien()){
             if(!x.getChucVu().getChucVu().equalsIgnoreCase("Quản lý") && x.getTrangThai().equalsIgnoreCase("Đang làm")){
                 jComboBox_TimKiem.addItem(x.getMaNV());
-                model.addRow(new Object[]{null,
+                model.addRow(new Object[]{
                     x.getMaNV(), x.getHoTen(), x.getSoDienThoai(),
                     x.isGioiTinh() ? "Nữ" : "Nam", x.getChucVu().getChucVu()
                 });
             }
         }
-        TableColumn selectColumn = jTable_QuanLyNhanVien.getColumnModel().getColumn(0);
-        selectColumn.setCellEditor(new DefaultCellEditor(new JCheckBox()));
-        selectColumn.setCellRenderer(jTable_QuanLyNhanVien.getDefaultRenderer(Boolean.class));
+       
+//        if(jTable_QuanLyNhanVien.isEditing()){
+//            jTable_QuanLyNhanVien.getCellEditor().stopCellEditing();
+//        }
+//        int i = -1;
+//        String timKiem = jComboBox_TimKiem.getSelectedItem().toString();
+//        String tieuChi = jComboBox_TieuChi.getSelectedItem().toString();
+//        if(tieuChi.equalsIgnoreCase("Mã nhân viên")){
+//            try {
+//                NhanVien nv = nhanVien_dao.getNhanVienTheoMaNV(timKiem);
+//                i = nhanVien_dao.getDSNhanVien().indexOf(nv);
+//                if(i >= 0){
+//                    NguoiQuanLy_ThongTinChiTietNhanVien nguoiQuanLy_ThongTinChiTietNhanVien= null;
+//                    try {
+//                        nguoiQuanLy_ThongTinChiTietNhanVien = new NguoiQuanLy_ThongTinChiTietNhanVien(new javax.swing.JFrame(), true, nv);
+//                    } catch (SQLException e) {
+//                        throw new RuntimeException(e);
+//                    }
+//                    nguoiQuanLy_ThongTinChiTietNhanVien.setVisible(true);
+//                }
+//            } catch (SQLException ex) {
+//                Logger.getLogger(Sach_QuanLySach.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
+//        else if(tieuChi.equalsIgnoreCase("Tên nhân viên")){
+//            try {
+//                model.setRowCount(0);
+//                for (NhanVien x : nhanVien_dao.getDSNhanVienTheoTenNhanVien(timKiem)){
+//                    model.addRow(new Object[]{
+//                            x.getMaNV(), x.getHoTen(), x.getSoDienThoai(),
+//                            x.isGioiTinh() ? "Nữ" : "Nam", x.getChucVu().getChucVu()
+//                    });
+//                }
+//            } catch (SQLException ex) {
+//                Logger.getLogger(Sach_QuanLySach.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        } else {
+//            try {
+//                model.setRowCount(0);
+//                for (NhanVien x : nhanVien_dao.getDSNhanVienTheoChucVu(timKiem)){
+//                    model.addRow(new Object[]{
+//                            x.getMaNV(), x.getHoTen(), x.getSoDienThoai(),
+//                            x.isGioiTinh() ? "Nữ" : "Nam", x.getChucVu().getChucVu()
+//                    });
+//                }
+//            } catch (SQLException ex) {
+//                Logger.getLogger(Sach_QuanLySach.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
     }
 
     @SuppressWarnings("unchecked")
@@ -82,7 +129,6 @@ public class NguoiQuanLy_QuanLyNhanVien extends javax.swing.JInternalFrame {
         jButton_XuatExcel = new javax.swing.JButton();
         jButton_LamMoi = new javax.swing.JButton();
         jButton_ThemNhanVien = new javax.swing.JButton();
-        jButton_TimKiem = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jComboBox_TimKiem = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
@@ -155,15 +201,15 @@ public class NguoiQuanLy_QuanLyNhanVien extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "", "Mã NV", "Họ và tên nhân viên", "SDT", "Giới tính", "Chức vụ", ""
+                "Mã NV", "Họ và tên nhân viên", "SDT", "Giới tính", "Chức vụ", ""
             }
         ) {
-            boolean[] canEdit = new boolean [] {
-                    true,false, false, false, false, false, true
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
             };
 
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
             }
         });
         jTable_QuanLyNhanVien.setToolTipText("");
@@ -176,13 +222,12 @@ public class NguoiQuanLy_QuanLyNhanVien extends javax.swing.JInternalFrame {
         jTable_QuanLyNhanVien.getTableHeader().setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 15));
         jScrollPane1.setViewportView(jTable_QuanLyNhanVien);
         if (jTable_QuanLyNhanVien.getColumnModel().getColumnCount() > 0) {
-            jTable_QuanLyNhanVien.getColumnModel().getColumn(0).setPreferredWidth(5);
-            jTable_QuanLyNhanVien.getColumnModel().getColumn(1).setPreferredWidth(10);
-            jTable_QuanLyNhanVien.getColumnModel().getColumn(2).setPreferredWidth(100);
-            jTable_QuanLyNhanVien.getColumnModel().getColumn(3).setPreferredWidth(65);
-            jTable_QuanLyNhanVien.getColumnModel().getColumn(4).setPreferredWidth(35);
-            jTable_QuanLyNhanVien.getColumnModel().getColumn(5).setPreferredWidth(45);
-            jTable_QuanLyNhanVien.getColumnModel().getColumn(6).setPreferredWidth(70);
+            jTable_QuanLyNhanVien.getColumnModel().getColumn(0).setPreferredWidth(10);
+            jTable_QuanLyNhanVien.getColumnModel().getColumn(1).setPreferredWidth(100);
+            jTable_QuanLyNhanVien.getColumnModel().getColumn(2).setPreferredWidth(65);
+            jTable_QuanLyNhanVien.getColumnModel().getColumn(3).setPreferredWidth(35);
+            jTable_QuanLyNhanVien.getColumnModel().getColumn(4).setPreferredWidth(45);
+            jTable_QuanLyNhanVien.getColumnModel().getColumn(5).setPreferredWidth(70);
         }
 
         jPanel1.add(jScrollPane1);
@@ -229,18 +274,6 @@ public class NguoiQuanLy_QuanLyNhanVien extends javax.swing.JInternalFrame {
         });
         jPanel1.add(jButton_ThemNhanVien);
         jButton_ThemNhanVien.setBounds(30, 160, 175, 52);
-
-        jButton_TimKiem.setBackground(new java.awt.Color(102, 102, 0));
-        jButton_TimKiem.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
-        jButton_TimKiem.setForeground(new java.awt.Color(255, 255, 255));
-        jButton_TimKiem.setText("Tìm kiếm");
-        jButton_TimKiem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_TimKiemActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jButton_TimKiem);
-        jButton_TimKiem.setBounds(1370, 160, 140, 52);
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/label_QuanLyNhanVien.png"))); // NOI18N
@@ -384,10 +417,11 @@ public class NguoiQuanLy_QuanLyNhanVien extends javax.swing.JInternalFrame {
             jTable_QuanLyNhanVien.getCellEditor().stopCellEditing();
         }
         model.setRowCount(0);
+
         for (NhanVien x : nhanVien_dao.getDSNhanVien()){
             if(!x.getChucVu().getChucVu().equalsIgnoreCase("Quản lý") && x.getTrangThai().equalsIgnoreCase("Đang làm")){
-                jComboBox_TimKiem.addItem(x.getMaNV());
-                model.addRow(new Object[]{null,
+
+                model.addRow(new Object[]{
                         x.getMaNV(), x.getHoTen(), x.getSoDienThoai(),
                         x.isGioiTinh() ? "Nữ" : "Nam", x.getChucVu().getChucVu()
                 });
@@ -395,58 +429,6 @@ public class NguoiQuanLy_QuanLyNhanVien extends javax.swing.JInternalFrame {
         }
 
     }//GEN-LAST:event_jButton_LamMoiActionPerformed
-
-    private void jButton_TimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_TimKiemActionPerformed
-        // TODO add your handling code here:
-        if(jTable_QuanLyNhanVien.isEditing()){
-            jTable_QuanLyNhanVien.getCellEditor().stopCellEditing();
-        }
-        int i = -1;
-        String timKiem = jComboBox_TimKiem.getSelectedItem().toString();
-        String tieuChi = jComboBox_TieuChi.getSelectedItem().toString();
-        if(tieuChi.equalsIgnoreCase("Mã nhân viên")){
-            try {
-                NhanVien nv = nhanVien_dao.getNhanVienTheoMaNV(timKiem);
-                i = nhanVien_dao.getDSNhanVien().indexOf(nv);
-                if(i >= 0){
-                    NguoiQuanLy_ThongTinChiTietNhanVien nguoiQuanLy_ThongTinChiTietNhanVien= null;
-                    try {
-                        nguoiQuanLy_ThongTinChiTietNhanVien = new NguoiQuanLy_ThongTinChiTietNhanVien(new javax.swing.JFrame(), true, nv);
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    }
-                    nguoiQuanLy_ThongTinChiTietNhanVien.setVisible(true);
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(Sach_QuanLySach.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        else if(tieuChi.equalsIgnoreCase("Tên nhân viên")){
-            try {
-                model.setRowCount(0);
-                for (NhanVien x : nhanVien_dao.getDSNhanVienTheoTenNhanVien(timKiem)){
-                    model.addRow(new Object[]{null,
-                            x.getMaNV(), x.getHoTen(), x.getSoDienThoai(),
-                            x.isGioiTinh() ? "Nữ" : "Nam", x.getChucVu().getChucVu()
-                    });
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(Sach_QuanLySach.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else {
-            try {
-                model.setRowCount(0);
-                for (NhanVien x : nhanVien_dao.getDSNhanVienTheoChucVu(timKiem)){
-                    model.addRow(new Object[]{null,
-                            x.getMaNV(), x.getHoTen(), x.getSoDienThoai(),
-                            x.isGioiTinh() ? "Nữ" : "Nam", x.getChucVu().getChucVu()
-                    });
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(Sach_QuanLySach.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }//GEN-LAST:event_jButton_TimKiemActionPerformed
 
     private void jComboBox_TieuChiActionPerformed(java.awt.event.ActionEvent evt) throws SQLException {//GEN-FIRST:event_jComboBox_TieuChiActionPerformed
         // TODO add your handling code here:
@@ -517,16 +499,16 @@ public class NguoiQuanLy_QuanLyNhanVien extends javax.swing.JInternalFrame {
                 nguoiQuanLy_ThongTinChiTietNhanVien.setVisible(true);
             }
         };
-        jTable_QuanLyNhanVien.getColumnModel().getColumn(6).setCellRenderer(new TableActionRender(2));
-        jTable_QuanLyNhanVien.getColumnModel().getColumn(6).setCellEditor(new TableActionCellEditor(event, 2));
+        jTable_QuanLyNhanVien.getColumnModel().getColumn(5).setCellRenderer(new TableActionRender(2));
+        jTable_QuanLyNhanVien.getColumnModel().getColumn(5).setCellEditor(new TableActionCellEditor(event, 2));
     }
     public NhanVien getDataToNhanVien() throws SQLException {
         int n = jTable_QuanLyNhanVien.getSelectedRow();
-        String maNhanVien = model.getValueAt(n, 1).toString();
+        String maNhanVien = model.getValueAt(n, 0).toString();
         return nhanVien_dao.getNhanVienTheoMaNV(maNhanVien);
     }
     public void addDataToTable(NhanVien x){
-        model.addRow(new Object[]{null,
+        model.addRow(new Object[]{
                 x.getMaNV(), x.getHoTen(), x.getSoDienThoai(),
                 x.isGioiTinh() ? "Nữ" : "Nam", x.getChucVu().getChucVu()
         });
@@ -535,18 +517,17 @@ public class NguoiQuanLy_QuanLyNhanVien extends javax.swing.JInternalFrame {
     public void editDataToTable(NhanVien x) throws SQLException {
         if(nhanVien_dao.capNhatNhanVien(x)){
             int n = jTable_QuanLyNhanVien.getSelectedRow();
-            model.setValueAt(x.getMaNV(), n, 1);
-            model.setValueAt(x.getHoTen(), n, 2);
-            model.setValueAt(x.getSoDienThoai(), n, 3);
-            model.setValueAt(x.isGioiTinh() ? "Nữ" : "Nam", n, 4);
-            model.setValueAt(x.getChucVu().getChucVu(), n, 5);
+            model.setValueAt(x.getMaNV(), n, 0);
+            model.setValueAt(x.getHoTen(), n, 1);
+            model.setValueAt(x.getSoDienThoai(), n, 2);
+            model.setValueAt(x.isGioiTinh() ? "Nữ" : "Nam", n, 3);
+            model.setValueAt(x.getChucVu().getChucVu(), n, 4);
         }
 
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton_LamMoi;
     private javax.swing.JButton jButton_ThemNhanVien;
-    private javax.swing.JButton jButton_TimKiem;
     private javax.swing.JButton jButton_XoaNhieu;
     private javax.swing.JButton jButton_XuatExcel;
     private javax.swing.JComboBox<String> jComboBox_TieuChi;
