@@ -23,31 +23,31 @@ import java.util.List;
 public class Sach_DAO {
     private final List<Sach> dsSach;
 
-      public Sach_DAO() {
+    public Sach_DAO() {
         dsSach = new ArrayList<>();
     }
-    
+
     public List<Sach> getDSSach() throws SQLException {
         ConnectDB.getInstance();
         Connection con = ConnectDB.getConnection();
         dsSach.clear();
         String sql = "select ISBN, tenSach, tacGia, namXB, nhaXB, soLuongTrongKho, giaGoc, tenLoai, hinhAnh, trangThai\n" +
-                     "from Sach join LoaiSach on Sach.maLoaiSach = LoaiSach.maLoai\n";
+                "from Sach join LoaiSach on Sach.maLoaiSach = LoaiSach.maLoai\n";
         Statement statement = con.createStatement();
         ResultSet rs = statement.executeQuery(sql);
         while(rs.next()){
-           String ISBN = rs.getString(1);
-           String tenSach = rs.getString(2);
-           String tacGia = rs.getString(3);
-           Integer namXB = rs.getInt(4);
-           String nhaXB = rs.getString(5);
-           Integer soLuong = rs.getInt(6);
-           double giaGoc = rs.getDouble(7);
-           LoaiSach loaiSach = new LoaiSach("", rs.getString(8));
-           HinhAnh anh = new HinhAnh(rs.getString(9));
-           String trangThai = rs.getString(10);
-           dsSach.add(new Sach(ISBN, tenSach, tacGia, namXB, nhaXB, soLuong, giaGoc, loaiSach, anh, trangThai));
-       }
+            String ISBN = rs.getString(1);
+            String tenSach = rs.getString(2);
+            String tacGia = rs.getString(3);
+            Integer namXB = rs.getInt(4);
+            String nhaXB = rs.getString(5);
+            Integer soLuong = rs.getInt(6);
+            double giaGoc = rs.getDouble(7);
+            LoaiSach loaiSach = new LoaiSach("", rs.getString(8));
+            HinhAnh anh = new HinhAnh(rs.getString(9));
+            String trangThai = rs.getString(10);
+            dsSach.add(new Sach(ISBN, tenSach, tacGia, namXB, nhaXB, soLuong, giaGoc, loaiSach, anh, trangThai));
+        }
         return dsSach;
     }
     public ArrayList<Sach> getAllSP() {
@@ -69,7 +69,7 @@ public class Sach_DAO {
                 String nhaXB = rs.getString(5);
                 int soLuong = rs.getInt(6);
                 double giaGoc = rs.getDouble(7);
-                LoaiSach loaiSach=new LoaiSach(rs.getString(8), rs.getString(10));
+                LoaiSach loaiSach=new LoaiSach(rs.getString(8), rs.getString(12));
                 Sach s= new Sach(ISBN,tenSach,tacGia,namXB,nhaXB,soLuong,giaGoc,loaiSach);
                 dsSP.add(s);
             }
@@ -102,41 +102,41 @@ public class Sach_DAO {
         return ISBNs;
     }
     public Sach getSachTheoMaSach(String ma) throws SQLException{
-                Sach sach = null;
-		Connection con = ConnectDB.getConnection();
-		String sql = "select ISBN, tenSach, tacGia, namXB, nhaXB, soLuongTrongKho, giaGoc, tenLoai, hinhAnh, trangThai\n"
-                             + "from Sach join LoaiSach on Sach.maLoaiSach = LoaiSach.maLoai\n" 
-                             + "where ISBN = ?";
-		PreparedStatement statement = null;
-		try {
-			statement = con.prepareStatement(sql);
-		} catch (SQLException e) {
-                    // TODO Auto-generated catch block
-		}
-		statement.setString(1, ma);
-		ResultSet rs = statement.executeQuery();
-		while(rs.next()) {
-                    String ISBN = rs.getString(1);
-                    String tenSach = rs.getString(2);
-                    String tacGia = rs.getString(3);
-                    Integer namXB = rs.getInt(4);
-                    String nhaXB = rs.getString(5);
-                    Integer soLuong = rs.getInt(6);
-                    Double giaGoc = rs.getDouble(7);
-                    LoaiSach loaiSach = new LoaiSach("",rs.getString(8));
-                    HinhAnh anh = new HinhAnh(rs.getString(9));
-                    String trangThai = rs.getString(10);
-		    sach = new Sach(ISBN, tenSach, tacGia, namXB, nhaXB, soLuong, giaGoc, loaiSach, anh, trangThai);
-		}
-		statement.close();
-		return sach;
+        Sach sach = null;
+        Connection con = ConnectDB.getConnection();
+        String sql = "select ISBN, tenSach, tacGia, namXB, nhaXB, soLuongTrongKho, giaGoc, tenLoai, hinhAnh, trangThai\n"
+                + "from Sach join LoaiSach on Sach.maLoaiSach = LoaiSach.maLoai\n"
+                + "where ISBN = ?";
+        PreparedStatement statement = null;
+        try {
+            statement = con.prepareStatement(sql);
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+        }
+        statement.setString(1, ma);
+        ResultSet rs = statement.executeQuery();
+        while(rs.next()) {
+            String ISBN = rs.getString(1);
+            String tenSach = rs.getString(2);
+            String tacGia = rs.getString(3);
+            Integer namXB = rs.getInt(4);
+            String nhaXB = rs.getString(5);
+            Integer soLuong = rs.getInt(6);
+            Double giaGoc = rs.getDouble(7);
+            LoaiSach loaiSach = new LoaiSach("",rs.getString(8));
+            HinhAnh anh = new HinhAnh(rs.getString(9));
+            String trangThai = rs.getString(10);
+            sach = new Sach(ISBN, tenSach, tacGia, namXB, nhaXB, soLuong, giaGoc, loaiSach, anh, trangThai);
+        }
+        statement.close();
+        return sach;
     }
     public ArrayList<Sach> getDSSachTheoTenLoai(String tenLoai) throws SQLException{
         ArrayList<Sach> dsSach = new ArrayList<>();
         Connection con = ConnectDB.getConnection();
         String sql = "select ISBN, tenSach, tacGia, namXB, nhaXB, soLuongTrongKho, giaGoc, tenLoai, hinhAnh, trangThai\n"
-                             + "from Sach join LoaiSach on Sach.maLoaiSach = LoaiSach.maLoai " 
-                             + "where tenLoai = ?";
+                + "from Sach join LoaiSach on Sach.maLoaiSach = LoaiSach.maLoai "
+                + "where tenLoai = ?";
 
         PreparedStatement statement = null;
         try {
@@ -166,8 +166,8 @@ public class Sach_DAO {
         ArrayList<Sach> dsSach = new ArrayList<>();
         Connection con = ConnectDB.getConnection();
         String sql = "select ISBN, tenSach, tacGia, namXB, nhaXB, soLuongTrongKho, giaGoc, tenLoai, hinhAnh, trangThai\n"
-                             + "from Sach join LoaiSach on Sach.maLoaiSach = LoaiSach.maLoai " 
-                             + "where tacGia = ?";
+                + "from Sach join LoaiSach on Sach.maLoaiSach = LoaiSach.maLoai "
+                + "where tacGia = ?";
 
         PreparedStatement statement = null;
         try {
@@ -225,7 +225,7 @@ public class Sach_DAO {
         stmt.executeUpdate();
         return dsSach.removeIf(x -> x.getISBN().equalsIgnoreCase(maSach));
     }
-//    public boolean capNhatSach(Sach sach) throws SQLException {
+    //    public boolean capNhatSach(Sach sach) throws SQLException {
 //        Connection con = ConnectDB.getConnection();
 //        int n = 0;
 //        String sql = "update Sach " +
@@ -261,12 +261,45 @@ public class Sach_DAO {
         stmt.close();
         return n > 0;
     }
-    
+
     public boolean capNhatSoLuongSach(String ISBN, int soLuongTrongKho) {
         Connection con = ConnectDB.getInstance().getConnection();
         PreparedStatement stmt = null;
 
         String sql = "UPDATE Sach SET soLuongTrongKho = soLuongTrongKho + ? WHERE ISBN = ?";
+
+        try {
+            stmt = con.prepareStatement(sql);
+
+            // Thiết lập giá trị cho các tham số trong câu lệnh SQL
+            stmt.setInt(1, soLuongTrongKho);
+            stmt.setString(2, ISBN);
+
+            // Thực thi câu truy vấn
+            int rowsAffected = stmt.executeUpdate();
+
+            // Trả về true nếu update thành công, false nếu không thành công
+            return rowsAffected > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            // Đảm bảo đóng PreparedStatement sau khi sử dụng
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    public boolean capNhatSoLuongSachTon(String ISBN, int soLuongTrongKho) {
+        Connection con = ConnectDB.getInstance().getConnection();
+        PreparedStatement stmt = null;
+
+        String sql = "UPDATE Sach SET soLuongTrongKho = ? WHERE ISBN = ?";
 
         try {
             stmt = con.prepareStatement(sql);
