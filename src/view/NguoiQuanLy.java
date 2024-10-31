@@ -165,6 +165,11 @@ public class NguoiQuanLy extends javax.swing.JFrame {
 
         jPanel_ThongKe.setBackground(new java.awt.Color(139, 125, 107));
         jPanel_ThongKe.setPreferredSize(new java.awt.Dimension(202, 67));
+        jPanel_ThongKe.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel_ThongKeMouseClicked(evt);
+            }
+        });
 
         jLabel_ThongKe.setFont(new java.awt.Font("Arial", 1, 30)); // NOI18N
         jLabel_ThongKe.setForeground(new java.awt.Color(255, 255, 255));
@@ -177,7 +182,7 @@ public class NguoiQuanLy extends javax.swing.JFrame {
         jPanel_ThongKeLayout.setHorizontalGroup(
             jPanel_ThongKeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_ThongKeLayout.createSequentialGroup()
-                .addContainerGap(27, Short.MAX_VALUE)
+                .addContainerGap(26, Short.MAX_VALUE)
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel_ThongKe, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -238,7 +243,7 @@ public class NguoiQuanLy extends javax.swing.JFrame {
                 .addGroup(jMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel_HoaDon, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
-                    .addComponent(jPanel_QLSach, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
+                    .addComponent(jPanel_QLSach, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 73, Short.MAX_VALUE)
                     .addComponent(jPanel_QLNhanVien, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
                     .addComponent(jPanel_ThongKe, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE))
                 .addGap(0, 0, 0))
@@ -393,6 +398,25 @@ public class NguoiQuanLy extends javax.swing.JFrame {
             dangNhap.setVisible(true);
         }
     }//GEN-LAST:event_jPanel1MouseClicked
+
+    private void jPanel_ThongKeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel_ThongKeMouseClicked
+        jPanel_HoaDon.setBackground(defaultColor);
+        jLabel_HoaDon.setForeground(Color.WHITE);
+        jPanel_QLSach.setBackground(defaultColor);
+        jLabel_QLSach.setForeground(Color.WHITE);
+        jPanel_QLNhanVien.setBackground(defaultColor);
+        jLabel_QLNhanVien.setForeground(Color.WHITE);
+        jPanel_ThongKe.setBackground(clickColor);
+        jLabel_ThongKe.setForeground(Color.BLACK);
+        jPanel1.setBackground(defaultColor);
+        jLabel2.setForeground(Color.WHITE);
+        
+        jDesktopPane1.removeAll();
+        NguoiQuanLy_ThongKeTongQuan tk_TongQuan = new NguoiQuanLy_ThongKeTongQuan();
+        tk_TongQuan.setSize(jDesktopPane1.getSize());
+        tk_TongQuan.setVisible(true);
+        jDesktopPane1.add(tk_TongQuan);
+    }//GEN-LAST:event_jPanel_ThongKeMouseClicked
 
     public static void main(String args[]) {
 
