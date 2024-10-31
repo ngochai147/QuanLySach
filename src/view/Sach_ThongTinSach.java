@@ -10,6 +10,7 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.io.File;
 import java.sql.SQLException;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -37,10 +38,14 @@ public class Sach_ThongTinSach extends javax.swing.JDialog {
         jTextField_NhaXB.setText(sach.getNhaXB());
         jTextField_DonGia.setText(String.valueOf(sach.getGiaGoc()));
         jTextField_SoLuong.setText(String.valueOf(sach.getSoLuong()));
-        System.out.println(sach.getLoaiSach().getTenLoai());
-        ImageIcon image = new javax.swing.ImageIcon(getClass().getResource(sach.getAnh().getUrl()));
+
+        String duongDanChinh = sach.getAnh().getUrl().replace("..", "src");
+        File fileAnh = new File(duongDanChinh);
+        String duongDanTuyetDoi = fileAnh.getAbsolutePath();
+        ImageIcon image = new ImageIcon(duongDanTuyetDoi);
         Image imageFit = image.getImage().getScaledInstance(jLabel_Anh.getWidth(), jLabel_Anh.getHeight(), Image.SCALE_SMOOTH);
         jLabel_Anh.setIcon(new ImageIcon(imageFit));
+
        
     }
 

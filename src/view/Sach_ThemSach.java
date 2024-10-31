@@ -426,7 +426,7 @@ public class Sach_ThemSach extends javax.swing.JDialog {
             jLabel_AnhDaiDien.setIcon(icon);
             
             image_url = new AddImageToData();
-            String fileName =image_url.duaFileVaoThuMuc(new File(filePath), "src\\ServiceImage\\Sach_IMG", "/ServiceImage/Sach_IMG/");
+            String fileName =image_url.duaFileVaoThuMuc(new File(filePath), "src\\ServiceImage\\Sach_IMG", "../ServiceImage/Sach_IMG/");
             System.out.println(fileName);
             anh = fileName;
             

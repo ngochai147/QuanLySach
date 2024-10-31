@@ -43,7 +43,8 @@ public class NhanVien_DAO {
             ChucVu chucVu = new ChucVu(rs.getString(7));
             LocalDate ngaySinh = rs.getDate(8).toLocalDate();
             HinhAnh anh = new HinhAnh(rs.getString(9));
-            dsNhanVien.add(new NhanVien(hoTen, soDienThoai, diaChi, email, gioiTinh, ngaySinh, maNV, chucVu, anh));
+            String trangThai = rs.getString(10);
+            dsNhanVien.add(new NhanVien(hoTen, soDienThoai, diaChi, email, gioiTinh, ngaySinh, maNV, chucVu, anh, trangThai));
         }
         return dsNhanVien;
     }
@@ -71,13 +72,17 @@ public class NhanVien_DAO {
             ChucVu chucVu = new ChucVu(rs.getString(10));
             LocalDate ngaySinh = rs.getDate(11).toLocalDate();
             HinhAnh anh = new HinhAnh(rs.getString(12));
-            nhanVien = new NhanVien(hoTen, soDienThoai, diaChi, email, gioiTinh, ngaySinh, maNhanVien, chucVu, anh);
+            String trangThai = rs.getString(13);
+            nhanVien = new NhanVien(hoTen, soDienThoai, diaChi, email, gioiTinh, ngaySinh, maNhanVien, chucVu, anh, trangThai);
         }
         statement.close();
         return nhanVien;
     }
+//    public ArrayList<String> getDSMa(){
+//
+//    }
     public boolean themNhanVien(NhanVien nhanVien) throws SQLException {
-        String sql = "insert into NhanVien values (?,?,?,?,?,?,?,?,?)";
+        String sql = "insert into NhanVien values (?,?,?,?,?,?,?,?,?,?)";
         if (dsNhanVien.contains(nhanVien)) {
             return false;
         } else {
@@ -93,6 +98,7 @@ public class NhanVien_DAO {
             stmt.setString(7, nhanVien.getChucVu().getChucVu());
             stmt.setDate(8, Date.valueOf(nhanVien.getNgaySinh()));
             stmt.setString(9, nhanVien.getAnh().getUrl());
+            stmt.setString(10, nhanVien.getTrangThai());
             stmt.executeUpdate();
             stmt.close();
             return dsNhanVien.add(nhanVien);
@@ -101,9 +107,10 @@ public class NhanVien_DAO {
     public boolean xoaNhanVien(String maNhanVien) throws SQLException {
         Connection con = ConnectDB.getInstance().getConnection();
         PreparedStatement stmt = null;
-        stmt = con.prepareStatement("delete from NhanVien where maNV = ?");
-        stmt.setString(1, maNhanVien);
-        int n = stmt.executeUpdate();
+        stmt = con.prepareStatement("update NhanVien set trangThai = ? where maNV = ?");
+        stmt.setString(1, "Nghỉ làm");
+        stmt.setString(2, maNhanVien);
+        int n= stmt.executeUpdate();
         return n > 0;
     }
     public boolean capNhatNhanVien(NhanVien nhanVien) throws SQLException {
@@ -142,7 +149,8 @@ public class NhanVien_DAO {
             ChucVu cv = new ChucVu(rs.getString(7));
             LocalDate ngaySinh = rs.getDate(8).toLocalDate();
             HinhAnh anh = new HinhAnh(rs.getString(9));
-            dsNhanVienTheoChucVu.add(new NhanVien(hoTen, soDienThoai, diaChi, email, gioiTinh, ngaySinh, maNV, cv, anh));
+            String trangThai = rs.getString(10);
+            dsNhanVienTheoChucVu.add(new NhanVien(hoTen, soDienThoai, diaChi, email, gioiTinh, ngaySinh, maNV, cv, anh, trangThai));
         }
         statement.close();
         return dsNhanVienTheoChucVu;
@@ -165,7 +173,8 @@ public class NhanVien_DAO {
             ChucVu cv = new ChucVu(rs.getString(7));
             LocalDate ngaySinh = rs.getDate(8).toLocalDate();
             HinhAnh anh = new HinhAnh(rs.getString(9));
-            dsNhanVienTheoTen.add(new NhanVien(hoTen, soDienThoai, diaChi, email, gioiTinh, ngaySinh, maNV, cv, anh));
+            String trangThai = rs.getString(10);
+            dsNhanVienTheoTen.add(new NhanVien(hoTen, soDienThoai, diaChi, email, gioiTinh, ngaySinh, maNV, cv, anh, trangThai));
         }
         statement.close();
         return dsNhanVienTheoTen;

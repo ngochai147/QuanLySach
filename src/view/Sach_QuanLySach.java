@@ -11,21 +11,32 @@ import dao.ChiTietKhoHang_DAO;
 import dao.Sach_DAO;
 import entity.ChiTietKhoHang;
 import entity.Sach;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.BorderFactory;
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
 
 /**
  *
@@ -37,7 +48,7 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
     private DefaultTableModel model = null;
     private final DecimalFormat df;
     private ChiTietKhoHang_DAO chiTietKhoHangDao;
-
+    private String tieuChi;
     /**
      * Creates new form TrangQLSach_GUI
      */
@@ -48,12 +59,13 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
         this.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         BasicInternalFrameUI ui = (BasicInternalFrameUI)this.getUI();
         ui.setNorthPane(null);
+        model = (DefaultTableModel) jTable_Sach.getModel();
         addButtonToTable(model);
         df = new DecimalFormat("#");
         for (Sach x : sach_dao.getDSSach()){
             if(x.getTrangThai().equalsIgnoreCase("Đang bán")){
-
-                model.addRow(new Object[]{x.getISBN(),
+                jComboBox_TimKiem.addItem(x.getISBN());
+                model.addRow(new Object[]{null, x.getISBN(),
                         x.getTenSach(),
                         x.getLoaiSach().getTenLoai(),
                         x.getSoLuong(),
@@ -63,6 +75,9 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
         chiTietKhoHangDao = new ChiTietKhoHang_DAO();
         JTableHeader header =  jTable_Sach.getTableHeader();
         header.setFont(new Font("Arial", Font.BOLD, 18));
+        TableColumn selectColumn = jTable_Sach.getColumnModel().getColumn(0);
+        selectColumn.setCellEditor(new DefaultCellEditor(new JCheckBox()));
+        selectColumn.setCellRenderer(jTable_Sach.getDefaultRenderer(Boolean.class));
     }
 
 
@@ -159,6 +174,15 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
                 return c;
             }
         });
+        jComboBox_TieuChi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                try {
+                    jComboBox_TieuChiActionPerformed(evt);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
         jPanel1.add(jComboBox_TieuChi);
         jComboBox_TieuChi.setBounds(920, 140, 173, 46);
 
@@ -188,7 +212,14 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
             }
         };
         model.setRowCount(0);
-        jTable_Sach.setModel(model);
+        jTable_Sach.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "", "ISBN", "Tên sách", "Loại sách", "Số lượng (quyển)", "Đơn giá", ""
+            }
+        ));
         jTable_Sach.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_NEXT_COLUMN);
         jTable_Sach.setPreferredSize(new java.awt.Dimension(1500, 1000));
         jTable_Sach.setRowHeight(40);
@@ -197,12 +228,9 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
         jTable_Sach.setShowGrid(true);
         jScrollPane1.setViewportView(jTable_Sach);
         if (jTable_Sach.getColumnModel().getColumnCount() > 0) {
-            jTable_Sach.getColumnModel().getColumn(0).setPreferredWidth(100);
-            jTable_Sach.getColumnModel().getColumn(1).setPreferredWidth(250);
-            jTable_Sach.getColumnModel().getColumn(2).setPreferredWidth(10);
-            jTable_Sach.getColumnModel().getColumn(3).setPreferredWidth(5);
-            jTable_Sach.getColumnModel().getColumn(4).setPreferredWidth(5);
-            jTable_Sach.getColumnModel().getColumn(5).setPreferredWidth(70);
+            jTable_Sach.getColumnModel().getColumn(0).setPreferredWidth(5);
+            jTable_Sach.getColumnModel().getColumn(4).setPreferredWidth(10);
+            jTable_Sach.getColumnModel().getColumn(5).setPreferredWidth(10);
         }
 
         jPanel1.add(jScrollPane1);
@@ -257,7 +285,7 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         Sach_ThemSach themSach;
         themSach = new Sach_ThemSach(new javax.swing.JFrame(), true, this);
-        themSach.setVisible(true);     
+        themSach.setVisible(true);
     }//GEN-LAST:event_jButton_ThemSachActionPerformed
 
     private void jButton_LamMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_LamMoiActionPerformed
@@ -268,8 +296,9 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
         model.setRowCount(0);
         try {
             for (Sach x : sach_dao.getDSSach()){
+                System.out.println(x.getAnh().getUrl());
                 if(x.getTrangThai().equalsIgnoreCase("Đang bán")){
-                    model.addRow(new Object[]{x.getISBN(),
+                    model.addRow(new Object[]{null,x.getISBN(),
                             x.getTenSach(),
                             x.getLoaiSach().getTenLoai(),
                             x.getSoLuong(),
@@ -288,7 +317,7 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
         }
         int[] n = jTable_Sach.getSelectedRows();
         for (int i = n.length - 1; i >= 0; i--) {
-            String ma = model.getValueAt(n[i], 0).toString();
+            String ma = model.getValueAt(n[i], 1).toString();
             Sach s = sach_dao.getSachTheoMaSach(ma);
             if(s.getSoLuong() <= 0){
                 if(sach_dao.xoaSach(ma)){
@@ -306,7 +335,7 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
             jTable_Sach.getCellEditor().stopCellEditing();
         }
         int i = -1;
-        String timKiem = jTextField_TimKiem.getText();
+        String timKiem = jComboBox_TimKiem.getSelectedItem().toString();
         String tieuChi = jComboBox_TieuChi.getSelectedItem().toString();
         if(tieuChi.equalsIgnoreCase("Mã sách")){
             try {
@@ -332,7 +361,7 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
 
                 for (Sach x : dsLoaiSach){
                     if(x.getTrangThai().equalsIgnoreCase("Đang bán")){
-                        model.addRow(new Object[]{x.getISBN(),
+                        model.addRow(new Object[]{null, x.getISBN(),
                                 x.getTenSach(),
                                 x.getLoaiSach().getTenLoai(),
                                 x.getSoLuong(),
@@ -348,7 +377,7 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
                 ArrayList<Sach> dsLoaiSach = sach_dao.getDSSachTheoTacGia(timKiem);
                 for (Sach x : dsLoaiSach){
                     if(x.getTrangThai().equalsIgnoreCase("Đang bán")){
-                        model.addRow(new Object[]{x.getISBN(),
+                        model.addRow(new Object[]{null, x.getISBN(),
                                 x.getTenSach(),
                                 x.getLoaiSach().getTenLoai(),
                                 x.getSoLuong(),
@@ -363,7 +392,125 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
 
     private void jButton_XuatExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_XuatExcelActionPerformed
         // TODO add your handling code here:
+        try {
+            JFileChooser jFileChooser = new JFileChooser();
+            jFileChooser.showSaveDialog(this);
+            File saveFile = jFileChooser.getSelectedFile();
+
+            if (saveFile != null) {
+                // Check if the file name ends with ".xlsx", otherwise add it
+                if (!saveFile.getName().toLowerCase().endsWith(".xlsx")) {
+                    saveFile = new File(saveFile + ".xlsx");
+                }
+
+                Workbook wb = new XSSFWorkbook();  // Create a new Excel workbook
+                Sheet sheet = wb.createSheet("HoaDon");  // Create a new sheet named "HoaDon"
+
+                // Create the header row, excluding the first (checkbox) and last columns
+                Row headerRow = sheet.createRow(0);
+                for (int i = 2; i < jTable_Sach.getColumnCount(); i++) {  // Exclude first and last columns
+                    Cell cell = headerRow.createCell(i - 2);  // Shift by -2 to start at cell 0
+                    cell.setCellValue(jTable_Sach.getColumnName(i));  // Set column names in the first row
+                }
+
+                DefaultTableModel model = (DefaultTableModel) jTable_Sach.getModel();
+                List<Integer> rowsToExport = new ArrayList<>();
+
+                // Collect selected rows where the checkbox is checked
+                for (int i = 0; i < model.getRowCount(); i++) {
+                    Boolean isSelected = (Boolean) model.getValueAt(i, 0); // Assuming the checkbox column is the first one
+                    if (isSelected != null && isSelected) {
+                        rowsToExport.add(i);
+                    }
+                }
+
+                // If any rows are selected, export only those
+                if (rowsToExport.size() > 0) {
+                    for (int rowIndex = 0; rowIndex < rowsToExport.size(); rowIndex++) {
+                        int selectedRow = rowsToExport.get(rowIndex);
+                        Row row = sheet.createRow(rowIndex + 1);  // Create a new row for each selected JTable row
+
+                        // Exclude first and last columns when exporting
+                        for (int colIndex = 2; colIndex < jTable_Sach.getColumnCount(); colIndex++) {
+                            Cell cell = row.createCell(colIndex - 2);
+                            Object value = jTable_Sach.getValueAt(selectedRow, colIndex);  // Get value from JTable cell
+                            if (value != null) {
+                                cell.setCellValue(value.toString());  // Set the cell value in Excel
+                            }
+                        }
+                    }
+                } else {  // If no rows are selected, export all rows
+                    for (int i = 0; i < jTable_Sach.getRowCount(); i++) {
+                        Row row = sheet.createRow(i + 1);  // Create a new row for each JTable row
+
+                        // Exclude first and last columns
+                        for (int j = 2; j < jTable_Sach.getColumnCount(); j++) {
+                            Cell cell = row.createCell(j - 2);
+                            Object value = jTable_Sach.getValueAt(i, j);  // Get value from JTable cell
+                            if (value != null) {
+                                cell.setCellValue(value.toString());  // Set the cell value in Excel
+                            }
+                        }
+                    }
+                }
+
+                // Write the data to the file
+                try (FileOutputStream out = new FileOutputStream(saveFile)) {
+                    wb.write(out);  // Write the workbook content to the file
+                }
+                wb.close();  // Close the workbook
+
+                JOptionPane.showMessageDialog(this, "Xuất file Excel thành công!");
+            } else {
+                System.out.println("Save file selection was canceled.");
+            }
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(this, "File không tìm thấy: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+        } catch (IOException ioe) {
+            JOptionPane.showMessageDialog(this, "Lỗi IO: " + ioe.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
     }//GEN-LAST:event_jButton_XuatExcelActionPerformed
+
+    private void jComboBox_TieuChiActionPerformed(java.awt.event.ActionEvent evt) throws SQLException {//GEN-FIRST:event_jComboBox_TieuChiActionPerformed
+        // TODO add your handling code here:
+        tieuChi = jComboBox_TieuChi.getSelectedItem().toString();
+        if (tieuChi.equalsIgnoreCase("Mã sách")) {
+            jComboBox_TimKiem.removeAllItems();
+            for (Sach x : sach_dao.getDSSach()) {
+                if(x.getTrangThai().equalsIgnoreCase("Đang bán")){
+                    jComboBox_TimKiem.addItem(x.getISBN());
+                }
+            }
+        } else if (tieuChi.equalsIgnoreCase("Loại sách")) {
+            jComboBox_TimKiem.removeAllItems();
+            Set<String> dsLoaiSach = new HashSet<>();
+            for (Sach x : sach_dao.getDSSach()) {
+                if(x.getTrangThai().equalsIgnoreCase("Đang bán")){
+                    String loaiSach = x.getLoaiSach().getTenLoai();
+                    if(!dsLoaiSach.contains(loaiSach)) {
+                        dsLoaiSach.add(loaiSach);
+                        jComboBox_TimKiem.addItem(loaiSach);
+                    }
+                }
+            }
+        } else {
+            jComboBox_TimKiem.removeAllItems();
+            Set<String> dsTacGia = new HashSet<>();
+            for (Sach x : sach_dao.getDSSach()) {
+
+                if(x.getTrangThai().equalsIgnoreCase("Đang bán")){
+                    String tacGia = x.getTacGia();
+                    if(!dsTacGia.contains(tacGia)) {
+                        dsTacGia.add(tacGia);
+                        jComboBox_TimKiem.addItem(tacGia);
+                    }
+                }
+            }
+        }
+    }//GEN-LAST:event_jComboBox_TieuChiActionPerformed
 
 
     private void addButtonToTable(DefaultTableModel model){
@@ -380,7 +527,6 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
                 } catch (SQLException ex) {
                     Logger.getLogger(Sach_QuanLySach.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
             }
 
             @Override
@@ -391,6 +537,7 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
             public void onView(int row) {
                 try {
                     sach = getDataToBook();
+                    System.out.println(sach);
                     Sach_ThongTinSach thongTinSach = null;
                     thongTinSach = new Sach_ThongTinSach(new javax.swing.JFrame(), true, sach);
                     thongTinSach.setVisible(true);
@@ -402,13 +549,14 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
 
             }
         };
-        jTable_Sach.getColumnModel().getColumn(5).setCellRenderer(new TableActionRender(2));
-        jTable_Sach.getColumnModel().getColumn(5).setCellEditor(new TableActionCellEditor(event, 2));
+        jTable_Sach.getColumnModel().getColumn(6).setCellRenderer(new TableActionRender(2));
+        jTable_Sach.getColumnModel().getColumn(6).setCellEditor(new TableActionCellEditor(event, 2));
     }
 
     public boolean addDataToTable(Sach x) throws SQLException{
         if(sach_dao.themSach(x)){
-            model.addRow(new Object[]{x.getISBN(), x.getTenSach(), x.getLoaiSach().getTenLoai(), x.getSoLuong(), df.format(x.getGiaGoc()) + " VND"});
+            model.addRow(new Object[]{null,x.getISBN(), x.getTenSach(), x.getLoaiSach().getTenLoai(), x.getSoLuong(), df.format(x.getGiaGoc()) + " VND"});
+            jComboBox_TimKiem.addItem(x.getISBN());
             JOptionPane.showMessageDialog(this, "Them thanh cong");
             return true;
         }else {
@@ -420,17 +568,17 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
     public void editDataToTable(Sach x) throws SQLException {
         if(sach_dao.capNhatSach(x)){
             int n = jTable_Sach.getSelectedRow();
-            model.setValueAt(x.getISBN(), n, 0);
-            model.setValueAt(x.getTenSach(), n, 1);
-            model.setValueAt(x.getLoaiSach().getTenLoai(), n, 2);
-            model.setValueAt(x.getSoLuong(), n, 3);
-            model.setValueAt(x.getGiaGoc(), n, 4);
+            model.setValueAt(x.getISBN(), n, 1);
+            model.setValueAt(x.getTenSach(), n, 2);
+            model.setValueAt(x.getLoaiSach().getTenLoai(), n, 3);
+            model.setValueAt(x.getSoLuong(), n, 4);
+            model.setValueAt(x.getGiaGoc(), n, 5);
 
         }
     }
     public Sach getDataToBook() throws SQLException{
         int n = jTable_Sach.getSelectedRow();
-        String maSach = model.getValueAt(n, 0).toString();
+        String maSach = model.getValueAt(n, 1).toString();
         return sach_dao.getSachTheoMaSach(maSach);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables

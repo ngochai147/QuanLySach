@@ -5,6 +5,7 @@
 package view;
 
 import java.awt.*;
+import java.io.File;
 import java.sql.SQLException;
 
 import dao.TaiKhoan_DAO;
@@ -30,6 +31,7 @@ public class NguoiQuanLy_ThongTinChiTietNhanVien extends javax.swing.JDialog {
         setLocationRelativeTo(null);
         tkDAO = new TaiKhoan_DAO();
         taiKhoan = tkDAO.getTaiKhoanTheoTenDN(nhanVien.getMaNV());
+        System.out.println(nhanVien.getAnh().getUrl());
         jTextField_MaNhanVien.setText(nhanVien.getMaNV());
         jTextField_TenNhanVien.setText(nhanVien.getHoTen());
         jTextField_GioiTinh.setText(nhanVien.isGioiTinh() ? "Nữ" : "Nam");
@@ -42,7 +44,10 @@ public class NguoiQuanLy_ThongTinChiTietNhanVien extends javax.swing.JDialog {
         jTextField_MatKhau.setText(taiKhoan.getMatKhau());
         jTextField_DiaChi.setText(nhanVien.getDiaChi());
         jTextField_ChucVu.setText(nhanVien.getChucVu().getChucVu());
-        ImageIcon image = new javax.swing.ImageIcon(getClass().getResource(nhanVien.getAnh().getUrl()));
+        String duongDanChinh = nhanVien.getAnh().getUrl().replace("..", "src");
+        File fileAnh = new File(duongDanChinh);
+        String duongDanTuyetDoi = fileAnh.getAbsolutePath();
+        ImageIcon image = new ImageIcon(duongDanTuyetDoi);
         Image imageFit = image.getImage().getScaledInstance(jLabel_Anh.getWidth(), jLabel_Anh.getHeight(), Image.SCALE_SMOOTH);
         jLabel_Anh.setIcon(new ImageIcon(imageFit));
     }

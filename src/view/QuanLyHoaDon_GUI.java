@@ -93,12 +93,12 @@ public class QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
                 phieuHoaDon.viewHoaDon(dsCTHDtemp,maHoaDon);
             }
         };
-        jTable_HoaDon.getColumnModel().getColumn(7).setCellRenderer(new TableActionRender(1));
-        jTable_HoaDon.getColumnModel().getColumn(7).setCellEditor(new TableActionCellEditor(event, 1));
-        DefaultTableModel model = (DefaultTableModel)jTable_HoaDon.getModel();
-        TableColumn selectColumn = jTable_HoaDon.getColumnModel().getColumn(0);
-        selectColumn.setCellEditor(new DefaultCellEditor(new JCheckBox()));
-        selectColumn.setCellRenderer(jTable_HoaDon.getDefaultRenderer(Boolean.class));
+//        jTable_HoaDon.getColumnModel().getColumn(7).setCellRenderer(new TableActionRender(1));
+//        jTable_HoaDon.getColumnModel().getColumn(7).setCellEditor(new TableActionCellEditor(event, 1));
+//        DefaultTableModel model = (DefaultTableModel)jTable_HoaDon.getModel();
+//        TableColumn selectColumn = jTable_HoaDon.getColumnModel().getColumn(0);
+//        selectColumn.setCellEditor(new DefaultCellEditor(new JCheckBox()));
+//        selectColumn.setCellRenderer(jTable_HoaDon.getDefaultRenderer(Boolean.class));
 
 
 
@@ -170,7 +170,7 @@ public class QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
                 jButton_XoaNhieuActionPerformed(evt);
             }
         });
-//        jPanel1.add(jButton_XoaNhieu);
+        jPanel1.add(jButton_XoaNhieu);
         jButton_XoaNhieu.setBounds(380, 130, 148, 46);
 
         jComboBox_TieuChi.setBackground(new java.awt.Color(102, 102, 0));
@@ -199,51 +199,22 @@ public class QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
 
         jTable_HoaDon.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jTable_HoaDon.setModel(new javax.swing.table.DefaultTableModel(
-                new Object [][] {
+            new Object [][] {
 
-                },
-                new String [] {
-                       "", "STT", "Mã hóa đơn", "Ngày tạo đơn", "Mã nhân viên", "Tổng số lượng", "Tổng tiền", ""
-                }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                    true,false, false, false, false, false, false, true
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+            },
+            new String [] {
+                "STT", "Mã hóa đơn", "Ngày tạo đơn", "Mã nhân viên", "Tổng số lượng sách", "Tổng tiền(VNĐ)", ""
             }
-        });
+        ));
         jTable_HoaDon.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_NEXT_COLUMN);
         jTable_HoaDon.setPreferredSize(new java.awt.Dimension(525, 520));
         jTable_HoaDon.setRowHeight(40);
-        jTable_HoaDon.setSelectionBackground(new java.awt.Color(153, 204, 0));
-        jTable_HoaDon.setSelectionForeground(new java.awt.Color(51, 51, 51)); jTable_HoaDon.setShowGrid(true);
+        jTable_HoaDon.setSelectionBackground(new java.awt.Color(255, 255, 255));
+        jTable_HoaDon.setSelectionForeground(new java.awt.Color(255, 255, 255));
+        jTable_HoaDon.setShowGrid(true);
         jScrollPane1.setViewportView(jTable_HoaDon);
-        int stt = 0;
-        for (HoaDon x : dsHD.getAllHoaDon()) {
-            stt++;
-            double tongTien = 0;
-            int tongSL = 0;
-            for (ChiTietHoaDon cthd : listCTHD) {
-                if (x.getMaHoaDon().equalsIgnoreCase(cthd.getHoaDon().getMaHoaDon())) {
-
-                    tongSL += cthd.getSoLuong();
-                    tongTien += cthd.getSoLuong() * cthd.getDonGia();
-                }
-            }
-            DecimalFormat df = new DecimalFormat("#,###");
-
-            // Giả sử đây là số bạn muốn định dạng
-            String formattedTongTien = df.format(tongTien);
-            ((DefaultTableModel) jTable_HoaDon.getModel()).addRow(new Object[]{null,stt, x.getMaHoaDon(), x.getNgayTaoDon(), x.getNhanVien().getMaNV(), tongSL, formattedTongTien});
-        }
-        if (jTable_HoaDon.getColumnModel().getColumnCount() >= 0) {
-
-            jTable_HoaDon.getColumnModel().getColumn(0).setPreferredWidth(20);
-            jTable_HoaDon.getColumnModel().getColumn(2).setPreferredWidth(150);
-            jTable_HoaDon.getColumnModel().getColumn(3).setPreferredWidth(150);
-            jTable_HoaDon.getColumnModel().getColumn(7).setPreferredWidth(150);
+        if (jTable_HoaDon.getColumnModel().getColumnCount() > 0) {
+            jTable_HoaDon.getColumnModel().getColumn(6).setPreferredWidth(150);
         }
 
         jPanel1.add(jScrollPane1);
@@ -265,7 +236,7 @@ public class QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
         jLabel_QuanLyHoaDon.setFont(new java.awt.Font("Arial", 1, 30)); // NOI18N
         jLabel_QuanLyHoaDon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/jLabel_QuanLyHoaDon.png"))); // NOI18N
         jPanel1.add(jLabel_QuanLyHoaDon);
-        jLabel_QuanLyHoaDon.setBounds(420, 10, 1660, 110);
+        jLabel_QuanLyHoaDon.setBounds(270, 10, 1660, 110);
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/anhnen.jpg"))); // NOI18N
         jLabel2.setPreferredSize(new java.awt.Dimension(1520, 716));
@@ -287,31 +258,32 @@ public class QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 874, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton_LamMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_LamMoiActionPerformed
-        // TODO add your handling code here:
-        DefaultTableModel model = (DefaultTableModel) jTable_HoaDon.getModel();
-        model.setRowCount(0);
-        int stt = 0;
-        for (HoaDon x : dsHD.getAllHoaDon()) {
-            stt++;
-            double tongTien = 0;
-            int tongSL = 0;
-            for (ChiTietHoaDon cthd : listCTHD) {
-                if (x.getMaHoaDon().equalsIgnoreCase(cthd.getHoaDon().getMaHoaDon())) {
-
-                    tongSL += cthd.getSoLuong();
-                    tongTien += cthd.getSoLuong() * cthd.getDonGia();
-                }
-            }
-            DecimalFormat df = new DecimalFormat("#,###");
-
-            // Giả sử đây là số bạn muốn định dạng
-            String formattedTongTien = df.format(tongTien);
-            ((DefaultTableModel) jTable_HoaDon.getModel()).addRow(new Object[]{null,stt, x.getMaHoaDon(), x.getNgayTaoDon(), x.getNhanVien().getMaNV(), tongSL, formattedTongTien});
-        }
+//        // TODO add your handling code here:
+//        DefaultTableModel model = (DefaultTableModel) jTable_HoaDon.getModel();
+//        model.setRowCount(0);
+//        int stt = 0;
+//        for (HoaDon x : dsHD.getAllHoaDon()) {
+//            stt++;
+//            double tongTien = 0;
+//            int tongSL = 0;
+//            for (ChiTietHoaDon cthd : listCTHD) {
+//                if (x.getMaHoaDon().equalsIgnoreCase(cthd.getHoaDon().getMaHoaDon())) {
+//
+//                    tongSL += cthd.getSoLuong();
+//                    tongTien += cthd.getSoLuong() * cthd.getDonGia();
+//                }
+//            }
+//            DecimalFormat df = new DecimalFormat("#,###");
+//
+//            // Giả sử đây là số bạn muốn định dạng
+//            String formattedTongTien = df.format(tongTien);
+//            ((DefaultTableModel) jTable_HoaDon.getModel()).addRow(new Object[]{null,stt, x.getMaHoaDon(), x.getNgayTaoDon(), x.getNhanVien().getMaNV(), tongSL, formattedTongTien});
+//        }
 
     }//GEN-LAST:event_jButton_LamMoiActionPerformed
 
@@ -322,183 +294,183 @@ public class QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
 
     private void jButton_TimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_TimKiemActionPerformed
         // TODO add your handling code here:
-        int n=jComboBox_TieuChi.getSelectedIndex();
-        String textTim=jTextField_TimKiem.getText();
-        int stt = 0;
-        if(textTim.trim().isEmpty()){
-            JOptionPane.showMessageDialog(this, "Tìm kiếm không được rỗng", "Lỗi", JOptionPane.WARNING_MESSAGE);
-            jTextField_TimKiem.requestFocus();
-        }else{
-            if(n==1){
-                danhSachTimKiem(stt, textTim,n);
-            }else if(n==2){
-                danhSachTimKiem(stt, textTim,n);
-            }else if(n==3){
-                danhSachTimKiem(stt, textTim,n);
-            }else{
-                JOptionPane.showMessageDialog(this, "Vui lòng chọn tiêu chí tìm kiếm", "Lỗi", JOptionPane.WARNING_MESSAGE);
-            }
-        }
+//        int n=jComboBox_TieuChi.getSelectedIndex();
+//        String textTim=jTextField_TimKiem.getText();
+//        int stt = 0;
+//        if(textTim.trim().isEmpty()){
+//            JOptionPane.showMessageDialog(this, "Tìm kiếm không được rỗng", "Lỗi", JOptionPane.WARNING_MESSAGE);
+//            jTextField_TimKiem.requestFocus();
+//        }else{
+//            if(n==1){
+//                danhSachTimKiem(stt, textTim,n);
+//            }else if(n==2){
+//                danhSachTimKiem(stt, textTim,n);
+//            }else if(n==3){
+//                danhSachTimKiem(stt, textTim,n);
+//            }else{
+//                JOptionPane.showMessageDialog(this, "Vui lòng chọn tiêu chí tìm kiếm", "Lỗi", JOptionPane.WARNING_MESSAGE);
+//            }
+//        }
     }//GEN-LAST:event_jButton_TimKiemActionPerformed
     public void danhSachTimKiem(int stt, String textTim,int n){
-        DefaultTableModel model = (DefaultTableModel) jTable_HoaDon.getModel();
-        model.setRowCount(0);
-
-        // Ép chuỗi thành LocalDate
-
-                for(HoaDon hd: dsHD.getAllHoaDon()){
-                    if(textTim.equalsIgnoreCase(hd.getMaHoaDon()) && n==1){
-                        stt++;
-                        double tongTien = 0;
-                        int tongSL = 0;
-                        for (ChiTietHoaDon cthd : listCTHD) {
-                            if (hd.getMaHoaDon().equalsIgnoreCase(cthd.getHoaDon().getMaHoaDon())) {
-
-                                tongSL += cthd.getSoLuong();
-                                tongTien += cthd.getSoLuong() * cthd.getDonGia();
-                            }
-                        }
-                        DecimalFormat df = new DecimalFormat("#,###");
-                        // Giả sử đây là số bạn muốn định dạng
-                        String formattedTongTien = df.format(tongTien);
-                        ((DefaultTableModel) jTable_HoaDon.getModel()).addRow(new Object[]{null,stt, hd.getMaHoaDon(), hd.getNgayTaoDon(), hd.getNhanVien().getMaNV(), tongSL, formattedTongTien});
-                    }else if(textTim.equalsIgnoreCase(hd.getNhanVien().getMaNV()) && n==2){
-                         stt++;
-                        double tongTien = 0;
-                        int tongSL = 0;
-                        for (ChiTietHoaDon cthd : listCTHD) {
-                            if (hd.getMaHoaDon().equalsIgnoreCase(cthd.getHoaDon().getMaHoaDon())) {
-
-                                tongSL += cthd.getSoLuong();
-                                tongTien += cthd.getSoLuong() * cthd.getDonGia();
-                            }
-                        }
-                        DecimalFormat df = new DecimalFormat("#,###");
-                        // Giả sử đây là số bạn muốn định dạng
-                        String formattedTongTien = df.format(tongTien);
-                        ((DefaultTableModel) jTable_HoaDon.getModel()).addRow(new Object[]{null,stt, hd.getMaHoaDon(), hd.getNgayTaoDon(), hd.getNhanVien().getMaNV(), tongSL, formattedTongTien});
-                    }else if(n==3){
-                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                        LocalDate date = LocalDate.parse(textTim, formatter);
-                        if( date.isEqual(hd.getNgayTaoDon())){
-                         stt++;
-
-                        double tongTien = 0;
-                        int tongSL = 0;
-                        for (ChiTietHoaDon cthd : listCTHD) {
-                            if (hd.getMaHoaDon().equalsIgnoreCase(cthd.getHoaDon().getMaHoaDon())) {
-
-                                tongSL += cthd.getSoLuong();
-                                tongTien += cthd.getSoLuong() * cthd.getDonGia();
-                            }
-                        }
-                        DecimalFormat df = new DecimalFormat("#,### VND");
-                        // Giả sử đây là số bạn muốn định dạng
-                        String formattedTongTien = df.format(tongTien);
-                        ((DefaultTableModel) jTable_HoaDon.getModel()).addRow(new Object[]{null,stt, hd.getMaHoaDon(), hd.getNgayTaoDon(), hd.getNhanVien().getMaNV(), tongSL, formattedTongTien});
-                    }
-                    }
-                }
+//        DefaultTableModel model = (DefaultTableModel) jTable_HoaDon.getModel();
+//        model.setRowCount(0);
+//
+//        // Ép chuỗi thành LocalDate
+//
+//                for(HoaDon hd: dsHD.getAllHoaDon()){
+//                    if(textTim.equalsIgnoreCase(hd.getMaHoaDon()) && n==1){
+//                        stt++;
+//                        double tongTien = 0;
+//                        int tongSL = 0;
+//                        for (ChiTietHoaDon cthd : listCTHD) {
+//                            if (hd.getMaHoaDon().equalsIgnoreCase(cthd.getHoaDon().getMaHoaDon())) {
+//
+//                                tongSL += cthd.getSoLuong();
+//                                tongTien += cthd.getSoLuong() * cthd.getDonGia();
+//                            }
+//                        }
+//                        DecimalFormat df = new DecimalFormat("#,###");
+//                        // Giả sử đây là số bạn muốn định dạng
+//                        String formattedTongTien = df.format(tongTien);
+//                        ((DefaultTableModel) jTable_HoaDon.getModel()).addRow(new Object[]{null,stt, hd.getMaHoaDon(), hd.getNgayTaoDon(), hd.getNhanVien().getMaNV(), tongSL, formattedTongTien});
+//                    }else if(textTim.equalsIgnoreCase(hd.getNhanVien().getMaNV()) && n==2){
+//                         stt++;
+//                        double tongTien = 0;
+//                        int tongSL = 0;
+//                        for (ChiTietHoaDon cthd : listCTHD) {
+//                            if (hd.getMaHoaDon().equalsIgnoreCase(cthd.getHoaDon().getMaHoaDon())) {
+//
+//                                tongSL += cthd.getSoLuong();
+//                                tongTien += cthd.getSoLuong() * cthd.getDonGia();
+//                            }
+//                        }
+//                        DecimalFormat df = new DecimalFormat("#,###");
+//                        // Giả sử đây là số bạn muốn định dạng
+//                        String formattedTongTien = df.format(tongTien);
+//                        ((DefaultTableModel) jTable_HoaDon.getModel()).addRow(new Object[]{null,stt, hd.getMaHoaDon(), hd.getNgayTaoDon(), hd.getNhanVien().getMaNV(), tongSL, formattedTongTien});
+//                    }else if(n==3){
+//                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//                        LocalDate date = LocalDate.parse(textTim, formatter);
+//                        if( date.isEqual(hd.getNgayTaoDon())){
+//                         stt++;
+//
+//                        double tongTien = 0;
+//                        int tongSL = 0;
+//                        for (ChiTietHoaDon cthd : listCTHD) {
+//                            if (hd.getMaHoaDon().equalsIgnoreCase(cthd.getHoaDon().getMaHoaDon())) {
+//
+//                                tongSL += cthd.getSoLuong();
+//                                tongTien += cthd.getSoLuong() * cthd.getDonGia();
+//                            }
+//                        }
+//                        DecimalFormat df = new DecimalFormat("#,### VND");
+//                        // Giả sử đây là số bạn muốn định dạng
+//                        String formattedTongTien = df.format(tongTien);
+//                        ((DefaultTableModel) jTable_HoaDon.getModel()).addRow(new Object[]{null,stt, hd.getMaHoaDon(), hd.getNgayTaoDon(), hd.getNhanVien().getMaNV(), tongSL, formattedTongTien});
+//                    }
+//                    }
+//                }
     }
     private void deleteSelectedRows() {
-        DefaultTableModel model = (DefaultTableModel) jTable_HoaDon.getModel();
-        // Tạo danh sách các hàng được chọn
-        List<Integer> rowsToDelete = new ArrayList<>();
-
-        // Duyệt qua tất cả các hàng và kiểm tra checkbox
-        for (int i = 0; i < model.getRowCount(); i++) {
-            Boolean isSelected = (Boolean) model.getValueAt(i, 7); // Giả sử cột checkbox là cột thứ 7 (index 6)
-            if (isSelected != null && isSelected) {
-                rowsToDelete.add(i);
-            }
-        }
-
-        // Xóa từ hàng cuối cùng đến hàng đầu tiên để tránh lỗi chỉ số
-        for (int i = rowsToDelete.size() - 1; i >= 0; i--) {
-            model.removeRow(rowsToDelete.get(i));
-        }
+//        DefaultTableModel model = (DefaultTableModel) jTable_HoaDon.getModel();
+//        // Tạo danh sách các hàng được chọn
+//        List<Integer> rowsToDelete = new ArrayList<>();
+//
+//        // Duyệt qua tất cả các hàng và kiểm tra checkbox
+//        for (int i = 0; i < model.getRowCount(); i++) {
+//            Boolean isSelected = (Boolean) model.getValueAt(i, 7); // Giả sử cột checkbox là cột thứ 7 (index 6)
+//            if (isSelected != null && isSelected) {
+//                rowsToDelete.add(i);
+//            }
+//        }
+//
+//        // Xóa từ hàng cuối cùng đến hàng đầu tiên để tránh lỗi chỉ số
+//        for (int i = rowsToDelete.size() - 1; i >= 0; i--) {
+//            model.removeRow(rowsToDelete.get(i));
+//        }
     }
     private void jButton_XuatExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_XuatExcelActionPerformed
-        try {
-            JFileChooser jFileChooser = new JFileChooser();
-            jFileChooser.showSaveDialog(this);
-            File saveFile = jFileChooser.getSelectedFile();
-
-            if (saveFile != null) {
-                // Check if the file name ends with ".xlsx", otherwise add it
-                if (!saveFile.getName().toLowerCase().endsWith(".xlsx")) {
-                    saveFile = new File(saveFile + ".xlsx");
-                }
-
-                Workbook wb = new XSSFWorkbook();  // Create a new Excel workbook
-                Sheet sheet = wb.createSheet("HoaDon");  // Create a new sheet named "HoaDon"
-
-                // Create the header row, excluding the first (checkbox) and last columns
-                Row headerRow = sheet.createRow(0);
-                for (int i = 2; i < jTable_HoaDon.getColumnCount(); i++) {  // Exclude first and last columns
-                    Cell cell = headerRow.createCell(i - 2);  // Shift by -2 to start at cell 0
-                    cell.setCellValue(jTable_HoaDon.getColumnName(i));  // Set column names in the first row
-                }
-
-                DefaultTableModel model = (DefaultTableModel) jTable_HoaDon.getModel();
-                List<Integer> rowsToExport = new ArrayList<>();
-
-                // Collect selected rows where the checkbox is checked
-                for (int i = 0; i < model.getRowCount(); i++) {
-                    Boolean isSelected = (Boolean) model.getValueAt(i, 0); // Assuming the checkbox column is the first one
-                    if (isSelected != null && isSelected) {
-                        rowsToExport.add(i);
-                    }
-                }
-
-                // If any rows are selected, export only those
-                if (rowsToExport.size() > 0) {
-                    for (int rowIndex = 0; rowIndex < rowsToExport.size(); rowIndex++) {
-                        int selectedRow = rowsToExport.get(rowIndex);
-                        Row row = sheet.createRow(rowIndex + 1);  // Create a new row for each selected JTable row
-
-                        // Exclude first and last columns when exporting
-                        for (int colIndex = 2; colIndex < jTable_HoaDon.getColumnCount(); colIndex++) {
-                            Cell cell = row.createCell(colIndex - 2);
-                            Object value = jTable_HoaDon.getValueAt(selectedRow, colIndex);  // Get value from JTable cell
-                            if (value != null) {
-                                cell.setCellValue(value.toString());  // Set the cell value in Excel
-                            }
-                        }
-                    }
-                } else {  // If no rows are selected, export all rows
-                    for (int i = 0; i < jTable_HoaDon.getRowCount(); i++) {
-                        Row row = sheet.createRow(i + 1);  // Create a new row for each JTable row
-
-                        // Exclude first and last columns
-                        for (int j = 2; j < jTable_HoaDon.getColumnCount(); j++) {
-                            Cell cell = row.createCell(j - 2);
-                            Object value = jTable_HoaDon.getValueAt(i, j);  // Get value from JTable cell
-                            if (value != null) {
-                                cell.setCellValue(value.toString());  // Set the cell value in Excel
-                            }
-                        }
-                    }
-                }
-
-                // Write the data to the file
-                try (FileOutputStream out = new FileOutputStream(saveFile)) {
-                    wb.write(out);  // Write the workbook content to the file
-                }
-                wb.close();  // Close the workbook
-
-                JOptionPane.showMessageDialog(this, "Xuất file Excel thành công!");
-            } else {
-                System.out.println("Save file selection was canceled.");
-            }
-        } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(this, "File không tìm thấy: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
-        } catch (IOException ioe) {
-            JOptionPane.showMessageDialog(this, "Lỗi IO: " + ioe.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }//GEN-LAST:event_jButton_XuatExcelActionPerformed
+//        try {
+//            JFileChooser jFileChooser = new JFileChooser();
+//            jFileChooser.showSaveDialog(this);
+//            File saveFile = jFileChooser.getSelectedFile();
+//
+//            if (saveFile != null) {
+//                // Check if the file name ends with ".xlsx", otherwise add it
+//                if (!saveFile.getName().toLowerCase().endsWith(".xlsx")) {
+//                    saveFile = new File(saveFile + ".xlsx");
+//                }
+//
+//                Workbook wb = new XSSFWorkbook();  // Create a new Excel workbook
+//                Sheet sheet = wb.createSheet("HoaDon");  // Create a new sheet named "HoaDon"
+//
+//                // Create the header row, excluding the first (checkbox) and last columns
+//                Row headerRow = sheet.createRow(0);
+//                for (int i = 2; i < jTable_HoaDon.getColumnCount(); i++) {  // Exclude first and last columns
+//                    Cell cell = headerRow.createCell(i - 2);  // Shift by -2 to start at cell 0
+//                    cell.setCellValue(jTable_HoaDon.getColumnName(i));  // Set column names in the first row
+//                }
+//
+//                DefaultTableModel model = (DefaultTableModel) jTable_HoaDon.getModel();
+//                List<Integer> rowsToExport = new ArrayList<>();
+//
+//                // Collect selected rows where the checkbox is checked
+//                for (int i = 0; i < model.getRowCount(); i++) {
+//                    Boolean isSelected = (Boolean) model.getValueAt(i, 0); // Assuming the checkbox column is the first one
+//                    if (isSelected != null && isSelected) {
+//                        rowsToExport.add(i);
+//                    }
+//                }
+//
+//                // If any rows are selected, export only those
+//                if (rowsToExport.size() > 0) {
+//                    for (int rowIndex = 0; rowIndex < rowsToExport.size(); rowIndex++) {
+//                        int selectedRow = rowsToExport.get(rowIndex);
+//                        Row row = sheet.createRow(rowIndex + 1);  // Create a new row for each selected JTable row
+//
+//                        // Exclude first and last columns when exporting
+//                        for (int colIndex = 2; colIndex < jTable_HoaDon.getColumnCount(); colIndex++) {
+//                            Cell cell = row.createCell(colIndex - 2);
+//                            Object value = jTable_HoaDon.getValueAt(selectedRow, colIndex);  // Get value from JTable cell
+//                            if (value != null) {
+//                                cell.setCellValue(value.toString());  // Set the cell value in Excel
+//                            }
+//                        }
+//                    }
+//                } else {  // If no rows are selected, export all rows
+//                    for (int i = 0; i < jTable_HoaDon.getRowCount(); i++) {
+//                        Row row = sheet.createRow(i + 1);  // Create a new row for each JTable row
+//
+//                        // Exclude first and last columns
+//                        for (int j = 2; j < jTable_HoaDon.getColumnCount(); j++) {
+//                            Cell cell = row.createCell(j - 2);
+//                            Object value = jTable_HoaDon.getValueAt(i, j);  // Get value from JTable cell
+//                            if (value != null) {
+//                                cell.setCellValue(value.toString());  // Set the cell value in Excel
+//                            }
+//                        }
+//                    }
+//                }
+//
+//                // Write the data to the file
+//                try (FileOutputStream out = new FileOutputStream(saveFile)) {
+//                    wb.write(out);  // Write the workbook content to the file
+//                }
+//                wb.close();  // Close the workbook
+//
+//                JOptionPane.showMessageDialog(this, "Xuất file Excel thành công!");
+//            } else {
+//                System.out.println("Save file selection was canceled.");
+//            }
+//        } catch (FileNotFoundException e) {
+//            JOptionPane.showMessageDialog(this, "File không tìm thấy: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+//        } catch (IOException ioe) {
+//            JOptionPane.showMessageDialog(this, "Lỗi IO: " + ioe.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
+    }                                                 
 //GEN-LAST:event_jButton_XuatExcelActionPerformed
 
     private void jButton_TaoHoaDonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_TaoHoaDonActionPerformed
@@ -520,15 +492,6 @@ public class QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
         jPanel1.add(trangNhapKho);
 
     }//GEN-LAST:event_jButton_TaoHoaDonMouseClicked
-//    private HoaDon_DAO dsHD = new HoaDon_DAO();
-//    private List<HoaDon> listhD = dsHD.getAllHoaDon();
-//    private Sach_DAO dss = new Sach_DAO();
-//    private List<Sach> sachList = dss.getAllSP();
-//
-//    private ChiTietHoaDon_DAO dsCTHD = new ChiTietHoaDon_DAO();
-//    private List<ChiTietHoaDon> listCTHD = dsCTHD.getAllChiTietHoaDon();
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
     private HoaDon_DAO dsHD = new HoaDon_DAO();
     private List<HoaDon> listhD = dsHD.getAllHoaDon();
     private Sach_DAO dss = new Sach_DAO();
@@ -536,6 +499,8 @@ public class QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
 
     private ChiTietHoaDon_DAO dsCTHD = new ChiTietHoaDon_DAO();
     private List<ChiTietHoaDon> listCTHD = dsCTHD.getAllChiTietHoaDon();
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton_LamMoi;
     private javax.swing.JButton jButton_TaoHoaDon;
     private javax.swing.JButton jButton_TimKiem;

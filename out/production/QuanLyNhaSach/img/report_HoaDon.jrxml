@@ -42,10 +42,6 @@
 				</textElement>
 				<text><![CDATA[NHÀ SÁCH FAHASA]]></text>
 			</staticText>
-			<image>
-				<reportElement x="0" y="-20" width="109" height="85" uuid="aefda524-0fee-4411-83ae-338019fd03a9"/>
-				<imageExpression><![CDATA["C:\\Users\\PC\\Desktop\\ServiceImage\\java-ireport-tutorial\\src\\print\\Fahasa bookstore 3.png"]]></imageExpression>
-			</image>
 			<line>
 				<reportElement x="8" y="62" width="288" height="1" uuid="73144897-6a35-49f4-9e7b-f9fa2bc1173b"/>
 			</line>
@@ -86,6 +82,10 @@
 				<reportElement x="80" y="122" width="100" height="20" uuid="a0221f28-48e6-4a4f-b762-dabfdb1dcbcc"/>
 				<textFieldExpression><![CDATA[$P{ngayTao}]]></textFieldExpression>
 			</textField>
+			<image>
+				<reportElement x="8" y="-18" width="109" height="101" uuid="5d7b4852-ec5c-4364-a580-53c50e0e610c"/>
+				<imageExpression><![CDATA["C:\\Users\\PC\\Desktop\\New folder\\QuanLySach\\QuanLySach\\src\\img\\Fahasa bookstore 3.png"]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<columnHeader>

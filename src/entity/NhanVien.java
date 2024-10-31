@@ -6,18 +6,29 @@ public class NhanVien extends Nguoi{
     private  String maNV;
     private ChucVu chucVu;
     private HinhAnh anh;
+    private String trangThai;
 
     
     public NhanVien(String maNV){
         super();
         this.maNV=maNV;
     }
-    public NhanVien(String hoTen, String soDienThoai, String diaChi, String email, boolean gioiTinh, LocalDate ngaySinh, String maNV, ChucVu chucVu, HinhAnh anh) {
+    public NhanVien(String hoTen, String soDienThoai, String diaChi, String email, boolean gioiTinh, LocalDate ngaySinh, String maNV, ChucVu chucVu, HinhAnh anh, String trangThai) {
         super(hoTen, soDienThoai, diaChi, email, gioiTinh, ngaySinh);
         this.maNV = maNV;
         this.chucVu = chucVu;
         this.anh = anh;
+        this.trangThai = trangThai;
     }
+
+    public String getTrangThai() {
+        return trangThai;
+    }
+
+    public void setTrangThai(String trangThai) {
+        this.trangThai = trangThai;
+    }
+
     public NhanVien(String maNV, ChucVu chucVu) {
         super();
         this.maNV = maNV;
