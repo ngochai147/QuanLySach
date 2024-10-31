@@ -130,4 +130,23 @@ public class ChiTietKhoHang_DAO {
         stmt.executeUpdate();
         return true;
     }
+
+    public String getLastMaChiTietKhoHang() {
+        String query = "SELECT TOP 1 maChiTietKhoHang FROM ChiTietKhoHang ORDER BY maChiTietKhoHang DESC";
+        String lastMaChiTietKhoHang = null;
+
+        try (Connection con = ConnectDB.getInstance().getConnection();
+             PreparedStatement stmt = con.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            if (rs.next()) {
+                lastMaChiTietKhoHang = rs.getString("maChiTietKhoHang");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return lastMaChiTietKhoHang; // Trả về mã cuối cùng hoặc null nếu không có mã nào
+    }
 }

@@ -86,7 +86,7 @@
 			</textField>
 			<image>
 				<reportElement x="8" y="-18" width="96" height="101" uuid="ef94f765-098d-40fe-b67c-0d697e916e10"/>
-				<imageExpression><![CDATA["C:\\Users\\PC\\Desktop\\New folder\\QuanLySach\\QuanLySach\\src\\img\\Fahasa bookstore 3.png"]]></imageExpression>
+				<imageExpression><![CDATA["src/img/FahasaBookstore.png"]]></imageExpression>
 			</image>
 		</band>
 	</title>
@@ -100,7 +100,7 @@
 				<text><![CDATA[Tên sách]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="130" y="0" width="18" height="18" uuid="d686af4b-fb0a-47f3-8c82-795e0fea5e35"/>
+				<reportElement x="148" y="0" width="18" height="18" uuid="d686af4b-fb0a-47f3-8c82-795e0fea5e35"/>
 				<textElement textAlignment="Center">
 					<font isBold="true"/>
 				</textElement>
@@ -127,12 +127,12 @@
 	</columnHeader>
 	<detail>
 		<band height="31">
-			<textField>
-				<reportElement x="11" y="5" width="120" height="15" uuid="f2a8d7c9-8941-4366-af60-a093db4f5f64"/>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="11" y="5" width="137" height="15" uuid="f2a8d7c9-8941-4366-af60-a093db4f5f64"/>
 				<textFieldExpression><![CDATA[$F{tenSach}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="130" y="5" width="18" height="15" uuid="e2b5bd66-fb11-4f8b-bf93-c1222ffda40f"/>
+				<reportElement x="148" y="5" width="18" height="15" uuid="e2b5bd66-fb11-4f8b-bf93-c1222ffda40f"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{SL}]]></textFieldExpression>
 			</textField>
@@ -156,7 +156,7 @@
 				<textFieldExpression><![CDATA[$P{tongTien}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="130" y="8" width="18" height="20" uuid="4ddfe7db-0e1d-4eb0-8560-f15625e77da9"/>
+				<reportElement x="148" y="8" width="18" height="20" uuid="4ddfe7db-0e1d-4eb0-8560-f15625e77da9"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$P{tongSL}]]></textFieldExpression>
 			</textField>

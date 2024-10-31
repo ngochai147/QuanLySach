@@ -86,7 +86,7 @@
 			</textField>
 			<image>
 				<reportElement x="8" y="-18" width="96" height="101" uuid="ef94f765-098d-40fe-b67c-0d697e916e10"/>
-				<imageExpression><![CDATA["C:\\Users\\PC\\Desktop\\New folder\\QuanLySach\\QuanLySach\\src\\img\\FahasaBookstore.png"]]></imageExpression>
+				<imageExpression><![CDATA["src/img/FahasaBookstore.png"]]></imageExpression>
 			</image>
 		</band>
 	</title>
