@@ -4,8 +4,13 @@
  */
 package view;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
 import dao.ChiTietKhoHang_DAO;
 import dao.KhoHang_DAO;
+import dao.Sach_DAO;
 import entity.*;
 import function.AddImageToData;
 import function.ImageScale;
@@ -16,6 +21,8 @@ import java.awt.Graphics2D;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystemException;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +41,7 @@ public class Sach_ThemSach extends javax.swing.JDialog {
      * Creates new form NewJDialog
      */
     private Sach_QuanLySach dsSach;
+    private Sach_DAO sach_dao;
     private String anh;
     private AddImageToData image_url;
     private KhoHang_DAO khoHang_dao;
@@ -42,6 +50,7 @@ public class Sach_ThemSach extends javax.swing.JDialog {
         super(parent, modal);
         this.setUndecorated(true);
         this.dsSach = dsSach;
+        sach_dao = new Sach_DAO();
         chiTietKhoHang_dao = new ChiTietKhoHang_DAO();
         initComponents();
         setLocationRelativeTo(null);
@@ -404,6 +413,34 @@ public class Sach_ThemSach extends javax.swing.JDialog {
             };
         } catch (SQLException ex) {
             Logger.getLogger(Sach_ThemSach.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            int width = 300; // Chiều rộng của mã vạch
+            int height = 100; // Chiều cao của mã vạch
+            String userHome = System.getProperty("user.home");
+            String  myData= "";
+            for(Sach s: sach_dao.getDSSach()){
+                // Dữ liệu mã vạch
+                myData = s.getISBN();
+
+                MultiFormatWriter barcodeWriter = new MultiFormatWriter();
+                // Encode dữ liệu thành BitMatrix cho mã vạch CODE_128
+                BitMatrix bitMatrix = barcodeWriter.encode(myData, BarcodeFormat.CODE_128, width, height);
+
+                // Tạo đường dẫn tới Desktop với tên file là mã sách (ISBN)
+                Path desktopPath = FileSystems.getDefault().getPath(userHome, "Desktop/test", myData + ".png");
+
+                // Lưu ảnh mã vạch ra Desktop với tên file là ISBN
+                MatrixToImageWriter.writeToPath(bitMatrix, "PNG", desktopPath);
+
+                System.out.println("Barcode created successfully for ISBN: " + myData);
+            }
+
+
+            System.out.println("Barcode created successfully!");
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         
        this.dispose();

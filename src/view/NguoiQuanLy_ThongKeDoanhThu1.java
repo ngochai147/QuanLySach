@@ -327,9 +327,9 @@ public class NguoiQuanLy_ThongKeDoanhThu1 extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton_XuatExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_XuatExcelActionPerformed
-        String filePath = "D:\\ThongKeDoanhThu.xlsx";
-        exportExcel_DAO.exportExcel(filePath);
-        JOptionPane.showMessageDialog(null, "Xuất file Excel thành công!");
+//        String filePath = "D:\\ThongKeDoanhThu.xlsx";
+//        exportExcel_DAO.exportExcel(filePath);
+//        JOptionPane.showMessageDialog(null, "Xuất file Excel thành công!");
     }//GEN-LAST:event_jButton_XuatExcelActionPerformed
 
     private void jPanel_YearMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel_YearMousePressed

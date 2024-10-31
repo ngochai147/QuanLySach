@@ -392,85 +392,164 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
 
     private void jButton_XuatExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_XuatExcelActionPerformed
         // TODO add your handling code here:
+
+//            try {
+//                JFileChooser jFileChooser = new JFileChooser();
+//                int returnValue = jFileChooser.showSaveDialog(this);
+//                File saveFile = jFileChooser.getSelectedFile();
+//
+//                // Kiểm tra xem người dùng có chọn tệp không
+//                if (returnValue == JFileChooser.APPROVE_OPTION && saveFile != null) {
+//                    // Kiểm tra nếu tên tệp không kết thúc bằng ".xlsx", thêm vào
+//                    if (!saveFile.getName().toLowerCase().endsWith(".xlsx")) {
+//                        saveFile = new File(saveFile.getAbsolutePath() + ".xlsx");
+//                    }
+//
+//                    Workbook wb = new XSSFWorkbook();  // Tạo một workbook Excel mới
+//                    Sheet sheet = wb.createSheet("HoaDon");  // Tạo một sheet có tên "HoaDon"
+//
+//                    // Tạo hàng tiêu đề, không bao gồm cột đầu tiên và cuối cùng
+//                    Row headerRow = sheet.createRow(0);
+//                    for (int colIndex = 1; colIndex < jTable_Sach.getColumnCount(); colIndex++) {
+//                        Cell cell = headerRow.createCell(colIndex - 1);  // Bắt đầu từ cột 0
+//                        cell.setCellValue(jTable_Sach.getColumnName(colIndex));  // Gán tên cột
+//                    }
+//
+//                    DefaultTableModel model = (DefaultTableModel) jTable_Sach.getModel();
+//                    List<Integer> rowsToExport = new ArrayList<>();
+//
+//                    // Thu thập các hàng được chọn
+//                    for (int rowIndex = 0; rowIndex < model.getRowCount(); rowIndex++) {
+//                        Boolean isSelected = (Boolean) model.getValueAt(rowIndex, 0); // Cột checkbox ở đầu
+//                        if (isSelected != null && isSelected) {
+//                            rowsToExport.add(rowIndex);
+//                        }
+//                    }
+//
+//                    // Nếu có hàng được chọn, xuất những hàng đó
+//                    if (!rowsToExport.isEmpty()) {
+//                        for (int selectedRowIndex : rowsToExport) {
+//                            Row row = sheet.createRow(rowsToExport.indexOf(selectedRowIndex) + 1); // Duy trì vị trí
+//                            for (int colIndex = 1; colIndex < jTable_Sach.getColumnCount(); colIndex++) {
+//                                Cell cell = row.createCell(colIndex - 1);
+//                                Object value = jTable_Sach.getValueAt(selectedRowIndex, colIndex);
+//                                if (value != null) {
+//                                    cell.setCellValue(value.toString());
+//                                }
+//                            }
+//                        }
+//                    } else {  // Xuất tất cả các hàng nếu không có hàng nào được chọn
+//                        for (int i = 0; i < jTable_Sach.getRowCount(); i++) {
+//                            Row row = sheet.createRow(i + 1);  // Duy trì vị trí
+//                            for (int j = 1; j < jTable_Sach.getColumnCount() - 1; j++) { // Loại bỏ cột cuối cùng
+//                                Cell cell = row.createCell(j - 1);
+//                                Object value = jTable_Sach.getValueAt(i, j);
+//                                if (value != null) {
+//                                    cell.setCellValue(value.toString());
+//                                }
+//                            }
+//                        }
+//                    }
+//
+//                    // Ghi dữ liệu vào tệp
+//                    try (FileOutputStream out = new FileOutputStream(saveFile)) {
+//                        wb.write(out);  // Ghi nội dung workbook vào tệp
+//                    } catch (IOException e) {
+//                        JOptionPane.showMessageDialog(this, "Lỗi khi ghi file: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+//                    } finally {
+//                        wb.close();  // Đóng workbook
+//                    }
+//
+//                    JOptionPane.showMessageDialog(this, "Xuất file Excel thành công!");
+//                } else {
+//                    System.out.println("Người dùng đã hủy chọn tệp lưu.");
+//                }
+//            } catch (IOException e) {
+//                JOptionPane.showMessageDialog(this, "Lỗi IO: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+//            } catch (Exception ex) {
+//                ex.printStackTrace();
+//                JOptionPane.showMessageDialog(this, "Có lỗi xảy ra: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+//            }
+        //GEN-FIRST:event_jButton_XuatExcelActionPerformed
         try {
             JFileChooser jFileChooser = new JFileChooser();
-            jFileChooser.showSaveDialog(this);
+            int returnValue = jFileChooser.showSaveDialog(this);
             File saveFile = jFileChooser.getSelectedFile();
 
-            if (saveFile != null) {
-                // Check if the file name ends with ".xlsx", otherwise add it
+            // Kiểm tra xem người dùng có chọn tệp không
+            if (returnValue == JFileChooser.APPROVE_OPTION && saveFile != null) {
+                // Kiểm tra nếu tên tệp không kết thúc bằng ".xlsx", thêm vào
                 if (!saveFile.getName().toLowerCase().endsWith(".xlsx")) {
-                    saveFile = new File(saveFile + ".xlsx");
+                    saveFile = new File(saveFile.getAbsolutePath() + ".xlsx");
                 }
 
-                Workbook wb = new XSSFWorkbook();  // Create a new Excel workbook
-                Sheet sheet = wb.createSheet("HoaDon");  // Create a new sheet named "HoaDon"
+                Workbook wb = new XSSFWorkbook();  // Tạo một workbook Excel mới
+                Sheet sheet = wb.createSheet("DanhSachSach");  // Tạo một sheet có tên "DanhSachSach"
 
-                // Create the header row, excluding the first (checkbox) and last columns
+                // Tạo hàng tiêu đề
                 Row headerRow = sheet.createRow(0);
-                for (int i = 2; i < jTable_Sach.getColumnCount(); i++) {  // Exclude first and last columns
-                    Cell cell = headerRow.createCell(i - 2);  // Shift by -2 to start at cell 0
-                    cell.setCellValue(jTable_Sach.getColumnName(i));  // Set column names in the first row
-                }
+                headerRow.createCell(0).setCellValue("ISBN");
+                headerRow.createCell(1).setCellValue("Tên sách");
+                headerRow.createCell(2).setCellValue("Loại sách");
+                headerRow.createCell(3).setCellValue("Tác giả");
+                headerRow.createCell(4).setCellValue("Năm xuất bản");
+                headerRow.createCell(5).setCellValue("Nhà xuất bản");
+                headerRow.createCell(6).setCellValue("Số lượng");
+                headerRow.createCell(7).setCellValue("Giá gốc");
 
-                DefaultTableModel model = (DefaultTableModel) jTable_Sach.getModel();
-                List<Integer> rowsToExport = new ArrayList<>();
+                // Thiết lập độ rộng cho các cột
+                sheet.setColumnWidth(0, 20 * 256); // Độ rộng cho cột ISBN
+                sheet.setColumnWidth(1, 40 * 256); // Độ rộng cho cột Tên sách
+                sheet.setColumnWidth(2, 20 * 256); // Độ rộng cho cột Loại sách
+                sheet.setColumnWidth(3, 20 * 256); // Độ rộng cho cột Tác giả
+                sheet.setColumnWidth(4, 15 * 256); // Độ rộng cho cột Năm xuất bản
+                sheet.setColumnWidth(5, 25 * 256); // Độ rộng cho cột Nhà xuất bản
+                sheet.setColumnWidth(6, 15 * 256); // Độ rộng cho cột Số lượng
+                sheet.setColumnWidth(7, 15 * 256); // Độ rộng cho cột Giá gốc
 
-                // Collect selected rows where the checkbox is checked
-                for (int i = 0; i < model.getRowCount(); i++) {
-                    Boolean isSelected = (Boolean) model.getValueAt(i, 0); // Assuming the checkbox column is the first one
-                    if (isSelected != null && isSelected) {
-                        rowsToExport.add(i);
+                // Lấy danh sách sách
+                List<Sach> dsSach = sach_dao.getDSSach();  // Lấy toàn bộ danh sách sách
+
+                // Xuất tất cả thông tin chi tiết của sách
+                int rowIndex = 1;  // Bắt đầu từ hàng thứ 2 (hàng 1 là tiêu đề)
+                for (Sach sach : dsSach) {
+                    // Chỉ xuất sách đang bán
+                    if (sach.getTrangThai().equalsIgnoreCase("Đang bán")) {
+                        Row row = sheet.createRow(rowIndex++);
+                        row.createCell(0).setCellValue(sach.getISBN());
+                        row.createCell(1).setCellValue(sach.getTenSach());
+                        row.createCell(2).setCellValue(sach.getLoaiSach().getTenLoai());
+                        row.createCell(3).setCellValue(sach.getTacGia());
+                        row.createCell(4).setCellValue(sach.getNamXB());
+                        row.createCell(5).setCellValue(sach.getNhaXB());
+                        row.createCell(6).setCellValue(sach.getSoLuong());
+                        row.createCell(7).setCellValue(sach.getGiaGoc());
                     }
                 }
 
-                // If any rows are selected, export only those
-                if (rowsToExport.size() > 0) {
-                    for (int rowIndex = 0; rowIndex < rowsToExport.size(); rowIndex++) {
-                        int selectedRow = rowsToExport.get(rowIndex);
-                        Row row = sheet.createRow(rowIndex + 1);  // Create a new row for each selected JTable row
-
-                        // Exclude first and last columns when exporting
-                        for (int colIndex = 2; colIndex < jTable_Sach.getColumnCount(); colIndex++) {
-                            Cell cell = row.createCell(colIndex - 2);
-                            Object value = jTable_Sach.getValueAt(selectedRow, colIndex);  // Get value from JTable cell
-                            if (value != null) {
-                                cell.setCellValue(value.toString());  // Set the cell value in Excel
-                            }
-                        }
-                    }
-                } else {  // If no rows are selected, export all rows
-                    for (int i = 0; i < jTable_Sach.getRowCount(); i++) {
-                        Row row = sheet.createRow(i + 1);  // Create a new row for each JTable row
-
-                        // Exclude first and last columns
-                        for (int j = 2; j < jTable_Sach.getColumnCount(); j++) {
-                            Cell cell = row.createCell(j - 2);
-                            Object value = jTable_Sach.getValueAt(i, j);  // Get value from JTable cell
-                            if (value != null) {
-                                cell.setCellValue(value.toString());  // Set the cell value in Excel
-                            }
-                        }
-                    }
-                }
-
-                // Write the data to the file
+                // Ghi dữ liệu vào tệp
                 try (FileOutputStream out = new FileOutputStream(saveFile)) {
-                    wb.write(out);  // Write the workbook content to the file
+                    wb.write(out);  // Ghi nội dung workbook vào tệp
+                } catch (IOException e) {
+                    JOptionPane.showMessageDialog(this, "Lỗi khi ghi file: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+                } finally {
+                    wb.close();  // Đóng workbook
                 }
-                wb.close();  // Close the workbook
 
                 JOptionPane.showMessageDialog(this, "Xuất file Excel thành công!");
             } else {
-                System.out.println("Save file selection was canceled.");
+                System.out.println("Người dùng đã hủy chọn tệp lưu.");
             }
-        } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(this, "File không tìm thấy: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
-        } catch (IOException ioe) {
-            JOptionPane.showMessageDialog(this, "Lỗi IO: " + ioe.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Lỗi IO: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
         } catch (Exception ex) {
             ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Có lỗi xảy ra: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
+
+
+
+
 
     }//GEN-LAST:event_jButton_XuatExcelActionPerformed
 

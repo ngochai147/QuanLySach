@@ -11,11 +11,19 @@ import dao.NhanVien_DAO;
 import dao.TaiKhoan_DAO;
 import entity.NhanVien;
 import entity.Sach;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -278,6 +286,80 @@ public class NguoiQuanLy_QuanLyNhanVien extends javax.swing.JInternalFrame {
 
     private void jButton_XuatExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_XuatExcelActionPerformed
         // TODO add your handling code here:
+        try {
+            JFileChooser jFileChooser = new JFileChooser();
+            int returnValue = jFileChooser.showSaveDialog(this);
+            File saveFile = jFileChooser.getSelectedFile();
+
+            // Kiểm tra xem người dùng có chọn tệp không
+            if (returnValue == JFileChooser.APPROVE_OPTION && saveFile != null) {
+                // Kiểm tra nếu tên tệp không kết thúc bằng ".xlsx", thêm vào
+                if (!saveFile.getName().toLowerCase().endsWith(".xlsx")) {
+                    saveFile = new File(saveFile.getAbsolutePath() + ".xlsx");
+                }
+
+                Workbook wb = new XSSFWorkbook();  // Tạo một workbook Excel mới
+                Sheet sheet = wb.createSheet("DanhSachNhanVien");  // Tạo một sheet có tên "DanhSachSach"
+
+                // Tạo hàng tiêu đề
+                Row headerRow = sheet.createRow(0);
+                headerRow.createCell(0).setCellValue("Mã nhân viên");
+                headerRow.createCell(1).setCellValue("Họ tên");
+                headerRow.createCell(2).setCellValue("Số điện thoại");
+                headerRow.createCell(3).setCellValue("Địa chỉ");
+                headerRow.createCell(4).setCellValue("Email");
+                headerRow.createCell(5).setCellValue("Giới tính");
+                headerRow.createCell(6).setCellValue("Chức vụ");
+                headerRow.createCell(7).setCellValue("Ngày sinh");
+
+                // Thiết lập độ rộng cho các cột
+                sheet.setColumnWidth(0, 20 * 256);
+                sheet.setColumnWidth(1, 30 * 256);
+                sheet.setColumnWidth(2, 20 * 256);
+                sheet.setColumnWidth(3, 50 * 256);
+                sheet.setColumnWidth(4, 35 * 256);
+                sheet.setColumnWidth(5, 25 * 256);
+                sheet.setColumnWidth(6, 15 * 256);
+                sheet.setColumnWidth(7, 15 * 256);
+
+                // Lấy danh sách sách
+                List<NhanVien> dsNhanVien = nhanVien_dao.getDSNhanVien();  // Lấy toàn bộ danh sách sách
+
+                // Xuất tất cả thông tin chi tiết của sách
+                int rowIndex = 1;  // Bắt đầu từ hàng thứ 2 (hàng 1 là tiêu đề)
+                for (NhanVien nhanVien : dsNhanVien) {
+                    if (nhanVien.getTrangThai().equalsIgnoreCase("Đang làm")) {
+                        Row row = sheet.createRow(rowIndex++);
+                        row.createCell(0).setCellValue(nhanVien.getMaNV());
+                        row.createCell(1).setCellValue(nhanVien.getHoTen());
+                        row.createCell(2).setCellValue(nhanVien.getSoDienThoai());
+                        row.createCell(3).setCellValue(nhanVien.getDiaChi());
+                        row.createCell(4).setCellValue(nhanVien.getEmail());
+                        row.createCell(5).setCellValue(nhanVien.isGioiTinh() ? "Nữ" : "Nam");
+                        row.createCell(6).setCellValue(nhanVien.getChucVu().getChucVu());
+                        row.createCell(7).setCellValue(nhanVien.getNgaySinh().toString());
+                    }
+                }
+
+                // Ghi dữ liệu vào tệp
+                try (FileOutputStream out = new FileOutputStream(saveFile)) {
+                    wb.write(out);  // Ghi nội dung workbook vào tệp
+                } catch (IOException e) {
+                    JOptionPane.showMessageDialog(this, "Lỗi khi ghi file: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+                } finally {
+                    wb.close();  // Đóng workbook
+                }
+
+                JOptionPane.showMessageDialog(this, "Xuất file Excel thành công!");
+            } else {
+                System.out.println("Người dùng đã hủy chọn tệp lưu.");
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Lỗi IO: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Có lỗi xảy ra: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButton_XuatExcelActionPerformed
 
     private void jButton_XoaNhieuActionPerformed(java.awt.event.ActionEvent evt) throws SQLException {//GEN-FIRST:event_jButton_XoaNhieuActionPerformed
