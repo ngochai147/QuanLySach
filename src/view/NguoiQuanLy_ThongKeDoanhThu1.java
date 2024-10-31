@@ -5,6 +5,7 @@
 package view;
 
 import chart.ModelChart;
+import dao.ExportExcel_DAO;
 import dao.ThongKe_Dao;
 import entity.ThongKe_model;
 
@@ -32,7 +33,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  * @author phamd
  */
 public class NguoiQuanLy_ThongKeDoanhThu1 extends javax.swing.JInternalFrame {
-
+    ExportExcel_DAO exportExcel_DAO = new ExportExcel_DAO();
     private final Color clickColor;
     private final Color defaultColor;
     private boolean legendsAdded = false;
@@ -326,11 +327,13 @@ public class NguoiQuanLy_ThongKeDoanhThu1 extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton_XuatExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_XuatExcelActionPerformed
-
+        String filePath = "D:\\ThongKeDoanhThu.xlsx";
+        exportExcel_DAO.exportExcel(filePath);
+        JOptionPane.showMessageDialog(null, "Xuất file Excel thành công!");
     }//GEN-LAST:event_jButton_XuatExcelActionPerformed
 
     private void jPanel_YearMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel_YearMousePressed
-        jPanel_Year.setBackground(clickColor);
+        jPanel_Year.setBackground(clickColor); 
         jPanel_Month.setBackground(defaultColor);
         jPanel_Day.setBackground(defaultColor);
     }//GEN-LAST:event_jPanel_YearMousePressed
