@@ -58,6 +58,7 @@ public class NguoiQuanLy_QuanLyNhanVien extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jTextField_TimKiem = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         jButton_XoaNhieu = new javax.swing.JButton();
         jComboBox_TieuChi = new javax.swing.JComboBox<>();
@@ -67,9 +68,12 @@ public class NguoiQuanLy_QuanLyNhanVien extends javax.swing.JInternalFrame {
         jButton_LamMoi = new javax.swing.JButton();
         jButton_ThemNhanVien = new javax.swing.JButton();
         jButton_TimKiem = new javax.swing.JButton();
-        jTextField_TimKiem = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
+
+        jTextField_TimKiem.setFont(new java.awt.Font("Arial", 0, 20)); // NOI18N
+        jTextField_TimKiem.setMaximumSize(new java.awt.Dimension(21474836, 2147483647));
 
         setBackground(new java.awt.Color(153, 255, 153));
         setBorder(null);
@@ -213,14 +217,14 @@ public class NguoiQuanLy_QuanLyNhanVien extends javax.swing.JInternalFrame {
         jPanel1.add(jButton_TimKiem);
         jButton_TimKiem.setBounds(1370, 160, 140, 52);
 
-        jTextField_TimKiem.setFont(new java.awt.Font("Arial", 0, 20)); // NOI18N
-        jTextField_TimKiem.setMaximumSize(new java.awt.Dimension(21474836, 2147483647));
-        jPanel1.add(jTextField_TimKiem);
-        jTextField_TimKiem.setBounds(1060, 160, 300, 53);
-
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/label_QuanLyNhanVien.png"))); // NOI18N
         jPanel1.add(jLabel1);
-        jLabel1.setBounds(386, 18, 687, 118);
+        jLabel1.setBounds(3, 18, 1580, 118);
+
+        jComboBox1.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
+        jPanel1.add(jComboBox1);
+        jComboBox1.setBounds(1070, 162, 280, 50);
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/anhnen.jpg"))); // NOI18N
         jLabel2.setPreferredSize(new java.awt.Dimension(1585, 700));
@@ -406,6 +410,7 @@ public class NguoiQuanLy_QuanLyNhanVien extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton_TimKiem;
     private javax.swing.JButton jButton_XoaNhieu;
     private javax.swing.JButton jButton_XuatExcel;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox_TieuChi;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

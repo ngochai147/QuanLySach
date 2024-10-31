@@ -75,18 +75,21 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jTextField_TimKiem = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         jButton_ThemSach = new javax.swing.JButton();
         jButton_LamMoi = new javax.swing.JButton();
         jButton_XoaNhieu = new javax.swing.JButton();
         jComboBox_TieuChi = new javax.swing.JComboBox<>();
-        jTextField_TimKiem = new javax.swing.JTextField();
         jButton_TimKiem = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable_Sach = new javax.swing.JTable();
         jButton_XuatExcel = new javax.swing.JButton();
+        jComboBox_TimKiem = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+
+        jTextField_TimKiem.setFont(new java.awt.Font("Arial", 0, 20)); // NOI18N
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setPreferredSize(new java.awt.Dimension(1600, 716));
@@ -159,10 +162,6 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
         jPanel1.add(jComboBox_TieuChi);
         jComboBox_TieuChi.setBounds(920, 140, 173, 46);
 
-        jTextField_TimKiem.setFont(new java.awt.Font("Arial", 0, 20)); // NOI18N
-        jPanel1.add(jTextField_TimKiem);
-        jTextField_TimKiem.setBounds(1100, 140, 247, 46);
-
         jButton_TimKiem.setBackground(new java.awt.Color(102, 102, 0));
         jButton_TimKiem.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jButton_TimKiem.setForeground(new java.awt.Color(255, 255, 255));
@@ -221,6 +220,10 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
         });
         jPanel1.add(jButton_XuatExcel);
         jButton_XuatExcel.setBounds(18, 612, 140, 46);
+
+        jComboBox_TimKiem.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
+        jPanel1.add(jComboBox_TimKiem);
+        jComboBox_TimKiem.setBounds(1110, 140, 240, 50);
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/jLabel_QuanLySach.png"))); // NOI18N
         jPanel1.add(jLabel2);
@@ -437,6 +440,7 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton_XoaNhieu;
     private javax.swing.JButton jButton_XuatExcel;
     private javax.swing.JComboBox<String> jComboBox_TieuChi;
+    private javax.swing.JComboBox<String> jComboBox_TimKiem;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;

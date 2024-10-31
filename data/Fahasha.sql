@@ -101,18 +101,18 @@ CREATE TABLE ChiTietHoaDon(
 )
 go
 INSERT NhanVien (maNV, hoTen, soDienThoai, diaChi,email,gioiTinh,ngaySinh,chucVu,hinhAnh, trangThai)
-VALUES 
+VALUES
 	('22687251', N'Nguyễn Huỳnh Ngọc Hải', '0982301311', N'Ung Văn Khiêm, quận Bình Thạnh, Thành phố Hồ Chí Minh', 'nguyenhuynhngochai@gmail.com',0, convert(datetime,'24-08-2004',105),N'Quản lý','../ServiceImage/NhanVien_IMG', N'Đang làm'),
 	('22690761', N'Nguyễn Huỳnh Thế Bảo', '1234567891', N'Quận 10, Thành phố Hồ Chí Minh', 'tudien1@gmail.com',0, GETDATE(),N'Nhân Viên','../ServiceImage/NhanVien_IMG/Anh_TheBao.png', N'Đang làm'),
 	('22685411', N'Lê Văn Hửu Thái', '1234567891', N'Quận Gò Vấp, Thành phố Hồ Chí Minh', 'tudien2@gmail.com',0, GETDATE(),N'Quản lý','../ServiceImage/NhanVien_IMG/Anh_HuuThai.png', N'Đang làm'),
 	('22685461', N'Nguyễn Tấn Nghị', '1234567891', N'Quận 12, Thành phố Hồ Chí Minh', 'tudien3@gmail.com',0, GETDATE(),N'Nhân viên','../ServiceImage/NhanVien_IMG/Anh_TanNghi.png', N'Đang làm'),
 	('22691361', N'Phạm Đắc Thịnh', '1234567891', N'Quận 12, Thành phố Hồ Chí Minh', 'tudien4@gmail.com',0, GETDATE(),N'Thủ kho','../ServiceImage/NhanVien_IMG/Anh_DacThinh.png', N'Đang làm')
 go
-INSERT TaiKhoan(maTK,tenDangNhap,matKhau) 
+INSERT TaiKhoan(maTK,tenDangNhap,matKhau)
 VALUES
 			('TK001','22687251','123456'),
 			('TK002','22685461','123456'),
-			('TK003','22691361','123456'),		
+			('TK003','22691361','123456'),
 			('TK004','22685411','123456'),
 			('TK005','22690761','123456')
 go
