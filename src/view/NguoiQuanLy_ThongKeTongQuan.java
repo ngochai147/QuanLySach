@@ -357,7 +357,7 @@ public final class NguoiQuanLy_ThongKeTongQuan extends javax.swing.JInternalFram
             thongKeDoanhThu.setSize(jDesktopPane_ThongKe.getSize());
             thongKeDoanhThu.setVisible(true);
             jDesktopPane_ThongKe.add(thongKeDoanhThu);
-            try {
+            try { 
                 thongKeDoanhThu.setSelected(true);
             } catch (PropertyVetoException e) {
                 e.printStackTrace();
