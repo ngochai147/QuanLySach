@@ -103,7 +103,11 @@ public class NguoiQuanLy extends javax.swing.JFrame {
                 jPanel_HoaDonMouseClicked(evt);
             }
         });
-
+        jPanel_ThongKe.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel_ThongKeMouseClicked(evt);
+            }
+        });
         jLabel_HoaDon.setFont(new java.awt.Font("Arial", 1, 25)); // NOI18N
         jLabel_HoaDon.setForeground(new java.awt.Color(255, 255, 255));
         jLabel_HoaDon.setText("Quản lý hóa đơn");
@@ -397,6 +401,24 @@ public class NguoiQuanLy extends javax.swing.JFrame {
             }
             dangNhap.setVisible(true);
         }
+    }
+    private void jPanel_ThongKeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel_ThongKeMouseClicked
+        jPanel_HoaDon.setBackground(defaultColor);
+        jLabel_HoaDon.setForeground(Color.WHITE);
+        jPanel_QLSach.setBackground(defaultColor);
+        jLabel_QLSach.setForeground(Color.WHITE);
+        jPanel_QLNhanVien.setBackground(defaultColor);
+        jLabel_QLNhanVien.setForeground(Color.WHITE);
+        jPanel_ThongKe.setBackground(clickColor);
+        jLabel_ThongKe.setForeground(Color.BLACK);
+        jPanel1.setBackground(defaultColor);
+        jLabel2.setForeground(Color.WHITE);
+
+        jDesktopPane1.removeAll();
+        NguoiQuanLy_ThongKeTongQuan tk_TongQuan = new NguoiQuanLy_ThongKeTongQuan();
+        tk_TongQuan.setSize(jDesktopPane1.getSize());
+        tk_TongQuan.setVisible(true);
+        jDesktopPane1.add(tk_TongQuan);
     }//GEN-LAST:event_jPanel1MouseClicked
 
     public static void main(String args[]) {
