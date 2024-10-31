@@ -71,20 +71,20 @@ public class ThuKho extends javax.swing.JFrame {
             }
         });
 
-        jLabel_XuatKho.setFont(new java.awt.Font("Arial", 1, 30)); // NOI18N
+        jLabel_XuatKho.setFont(new java.awt.Font("Arial", 1, 25)); // NOI18N
         jLabel_XuatKho.setForeground(new java.awt.Color(255, 255, 255));
         jLabel_XuatKho.setText("Xuất kho");
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Kho.png"))); // NOI18N
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icon_XuatKho.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel_XuatKhoLayout = new javax.swing.GroupLayout(jPanel_XuatKho);
         jPanel_XuatKho.setLayout(jPanel_XuatKhoLayout);
         jPanel_XuatKhoLayout.setHorizontalGroup(
             jPanel_XuatKhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_XuatKhoLayout.createSequentialGroup()
-                .addContainerGap(37, Short.MAX_VALUE)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addContainerGap(48, Short.MAX_VALUE)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel_XuatKho, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12))
         );
@@ -92,9 +92,9 @@ public class ThuKho extends javax.swing.JFrame {
             jPanel_XuatKhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel_XuatKhoLayout.createSequentialGroup()
                 .addGap(14, 14, 14)
-                .addGroup(jPanel_XuatKhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel_XuatKho, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
+                .addGroup(jPanel_XuatKhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel_XuatKho, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(9, Short.MAX_VALUE))
         );
 
@@ -138,11 +138,11 @@ public class ThuKho extends javax.swing.JFrame {
             }
         });
 
-        jLabel_ThongKe.setFont(new java.awt.Font("Arial", 1, 30)); // NOI18N
+        jLabel_ThongKe.setFont(new java.awt.Font("Arial", 1, 25)); // NOI18N
         jLabel_ThongKe.setForeground(new java.awt.Color(255, 255, 255));
         jLabel_ThongKe.setText("Thống kê");
 
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Kho.png"))); // NOI18N
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icon_ThongKe.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel_ThongKeLayout = new javax.swing.GroupLayout(jPanel_ThongKe);
         jPanel_ThongKe.setLayout(jPanel_ThongKeLayout);
