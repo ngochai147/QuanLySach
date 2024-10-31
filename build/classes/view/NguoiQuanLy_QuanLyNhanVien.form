@@ -115,12 +115,15 @@
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor" postCode="Color customGreen = new Color(102,102,0);&#xa;        jComboBox_TieuChi.setRenderer(new DefaultListCellRenderer() {&#xa;        @Override&#xa;        public Component getListCellRendererComponent(JList&lt;?&gt; list, Object value, int index, boolean isSelected, boolean cellHasFocus) {&#xa;            Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);&#xa;&#xa;            if (isSelected) {&#xa;                c.setBackground(customGreen);   // M&#xe0;u n&#x1ec1;n khi m&#x1ee5;c &#x111;&#x1b0;&#x1ee3;c ch&#x1ecd;n&#xa;                c.setForeground(Color.WHITE);   // M&#xe0;u ch&#x1eef; khi m&#x1ee5;c &#x111;&#x1b0;&#x1ee3;c ch&#x1ecd;n&#xa;            } else {&#xa;                c.setBackground(Color.white); // M&#xe0;u n&#x1ec1;n cho c&#xe1;c m&#x1ee5;c kh&#xf4;ng &#x111;&#x1b0;&#x1ee3;c ch&#x1ecd;n&#xa;                c.setForeground(customGreen);      // M&#xe0;u ch&#x1eef; cho c&#xe1;c m&#x1ee5;c kh&#xf4;ng &#x111;&#x1b0;&#x1ee3;c ch&#x1ecd;n&#xa;            }&#xa;&#xa;            return c;&#xa;            }&#xa;        });">
-              <Connection code="new javax.swing.DefaultComboBoxModel&lt;&gt;(new String[] { &quot;Ti&#xea;u ch&#xed;&quot;, &quot;M&#xe3; nh&#xe2;n vi&#xea;n&quot;, &quot;T&#xea;n nh&#xe2;n vi&#xea;n&quot;, &quot;Ch&#x1ee9;c v&#x1ee5;&quot; })" type="code"/>
+              <Connection code="new javax.swing.DefaultComboBoxModel&lt;&gt;(new String[] { &quot;M&#xe3; nh&#xe2;n vi&#xea;n&quot;, &quot;T&#xea;n nh&#xe2;n vi&#xea;n&quot;, &quot;Ch&#x1ee9;c v&#x1ee5;&quot; })" type="code"/>
             </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="null"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jComboBox_TieuChiActionPerformed"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
@@ -148,7 +151,8 @@
                   <Font name="Arial" size="18" style="0"/>
                 </Property>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="6" rowCount="0">
+                  <Table columnCount="7" rowCount="0">
+                    <Column editable="true" title="" type="java.lang.Object"/>
                     <Column editable="true" title="M&#xe3; NV" type="java.lang.String"/>
                     <Column editable="true" title="H&#x1ecd; v&#xe0; t&#xea;n nh&#xe2;n vi&#xea;n" type="java.lang.String"/>
                     <Column editable="true" title="SDT" type="java.lang.String"/>
@@ -160,6 +164,11 @@
                 <Property name="toolTipText" type="java.lang.String" value=""/>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                   <TableColumnModel selectionModel="0">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="5" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
                     <Column maxWidth="-1" minWidth="-1" prefWidth="10" resizable="true">
                       <Title/>
                       <Editor/>
@@ -316,7 +325,7 @@
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="javax.swing.JComboBox" name="jComboBox1">
+        <Component class="javax.swing.JComboBox" name="jComboBox_TimKiem">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Arial" size="20" style="1"/>

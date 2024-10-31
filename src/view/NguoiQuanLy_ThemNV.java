@@ -20,6 +20,7 @@ import java.awt.Graphics2D;
 import java.io.File;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -215,6 +216,7 @@ public class NguoiQuanLy_ThemNV extends javax.swing.JDialog {
         jTextField_MaNhanVien.setBackground(new java.awt.Color(240, 240, 240));
         jTextField_MaNhanVien.setFont(new java.awt.Font("Arial", 0, 20)); // NOI18N
         jTextField_MaNhanVien.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jTextField_MaNhanVien.setFocusable(false);
 
         jComboBox_GioiTinh.setBackground(new java.awt.Color(240, 240, 240));
         jComboBox_GioiTinh.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
@@ -244,6 +246,7 @@ public class NguoiQuanLy_ThemNV extends javax.swing.JDialog {
         jTextField_TenDangNhap.setBackground(new java.awt.Color(240, 240, 240));
         jTextField_TenDangNhap.setFont(new java.awt.Font("Arial", 0, 20)); // NOI18N
         jTextField_TenDangNhap.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jTextField_TenDangNhap.setFocusable(false);
 
         jDateChooser_NgaySinh.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
 
@@ -488,7 +491,7 @@ public class NguoiQuanLy_ThemNV extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn ảnh đại diện");
             return;
         }
-        nhanVien = new NhanVien(tenNhanVien, soDienThoai, diaChi, email, gt, ngaySinh, maNhanVien, new ChucVu(chucVu), new HinhAnh(anh));
+        nhanVien = new NhanVien(tenNhanVien, soDienThoai, diaChi, email, gt, ngaySinh, createMaNhanVien(), new ChucVu(chucVu), new HinhAnh(anh), "Đang làm");
         if (nhanVien_dao.themNhanVien(nhanVien)) {
             taiKhoan = new TaiKhoan(createMaTaiKhoan(), nhanVien, matKhau);
             if (taiKhoan_dao.themTaiKhoan(taiKhoan)) {
@@ -513,13 +516,23 @@ public class NguoiQuanLy_ThemNV extends javax.swing.JDialog {
             String filePath = frame_chonAnh.getSelectedFile().getPath();
             Icon icon = new ImageScale().load(filePath, jLabel_AnhDaiDien.getWidth(), jLabel_AnhDaiDien.getHeight());
             jLabel_AnhDaiDien.setIcon(icon);
-
             image_url = new AddImageToData();
-            String fileName = image_url.duaFileVaoThuMuc(new File(filePath), "src\\ServiceImage\\NhanVien_IMG", "/ServiceImage/NhanVien_IMG/");
+            String fileName = image_url.duaFileVaoThuMuc(new File(filePath), "src\\ServiceImage\\NhanVien_IMG", "../ServiceImage/NhanVien_IMG/");
             System.out.println(fileName);
             anh = fileName;
         }
     }//GEN-LAST:event_jButton_ThemAnhActionPerformed
+    public String createMaNhanVien() throws SQLException {
+        List<String> dsMa = new ArrayList<>();
+        for (NhanVien x : nhanVien_dao.getDSNhanVien()){
+            dsMa.add(x.getMaNV());
+        }
+        String lastMaNhanVien = dsMa.get(dsMa.size() - 1);
+        int number = Integer.parseInt(lastMaNhanVien) + 1;
+        return String.valueOf(number);
+
+
+    }
     public String createMaTaiKhoan() throws SQLException {
         List<String> dsMaTK = taiKhoan_dao.getMaTK();
         String lastMaTaiKhoan = dsMaTK.get(dsMaTK.size() - 1);

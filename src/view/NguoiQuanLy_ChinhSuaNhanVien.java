@@ -443,8 +443,7 @@ public class NguoiQuanLy_ChinhSuaNhanVien extends javax.swing.JDialog {
             Icon icon = new ImageScale().load(filePath, jLabel_Anh.getWidth(), jLabel_Anh.getHeight());
             jLabel_Anh.setIcon(icon);
             image_url = new AddImageToData();
-            String fileName = image_url.duaFileVaoThuMuc(new File(filePath), "src\\ServiceImage\\NhanVien_IMG", "/ServiceImage/NhanVien_IMG/");
-            System.out.println(fileName);
+            String fileName = image_url.duaFileVaoThuMuc(new File(filePath), "src\\ServiceImage\\NhanVien_IMG", "../ServiceImage/NhanVien_IMG/");
             anh = fileName;
         }
     }//GEN-LAST:event_jButton_ThemAnhActionPerformed
@@ -472,10 +471,12 @@ public class NguoiQuanLy_ChinhSuaNhanVien extends javax.swing.JDialog {
         jTextField_MatKhau.setText(taiKhoan.getMatKhau());
         jTextField_DiaChi.setText(nhanVien.getDiaChi());
         jTextField_ChucVu.setText(nhanVien.getChucVu().getChucVu());
-        ImageIcon image = new javax.swing.ImageIcon(getClass().getResource(nhanVien.getAnh().getUrl()));
+        String duongDanChinh = nhanVien.getAnh().getUrl().replace("..", "src");
+        File fileAnh = new File(duongDanChinh);
+        String duongDanTuyetDoi = fileAnh.getAbsolutePath();
+        ImageIcon image = new ImageIcon(duongDanTuyetDoi);
         Image imageFit = image.getImage().getScaledInstance(jLabel_Anh.getWidth(), jLabel_Anh.getHeight(), Image.SCALE_SMOOTH);
         jLabel_Anh.setIcon(new ImageIcon(imageFit));
-
         anh = nhanVien.getAnh().getUrl();
         System.out.println(anh);
     }
