@@ -64,6 +64,10 @@ public final class NguoiQuanLy_ThongKeTongQuan extends javax.swing.JInternalFram
     
     private void setDataToChart(){
         List<ThongKe_model> dsTK = thongKe_Dao.getChartThongKeLast7Days();
+        if (dsTK.size() < 3) { // Kiểm tra nếu dsTK có ít nhất 3 phần tử
+            System.err.println("Không đủ dữ liệu để vẽ biểu đồ");
+            return;
+        }
         for (int i = dsTK.size()-1; i>=0; i--){
             ThongKe_model tk = dsTK.get(i);
             chart.addData(new ModelChart(tk.getDate(), new double[]{tk.getDoanhThu(), tk.getLoiNhuan()}));
@@ -337,29 +341,41 @@ public final class NguoiQuanLy_ThongKeTongQuan extends javax.swing.JInternalFram
 
     private void jComboBox_ThongKeActionPerformed(java.awt.event.ActionEvent evt) throws PropertyVetoException {//GEN-FIRST:event_jComboBox_ThongKeActionPerformed
         String selectedItem = jComboBox_ThongKe.getSelectedItem().toString();
-        
-        if(selectedItem.equals("Tổng quan")){
+
+        if (selectedItem.equals("Tổng quan")) {
             jDesktopPane_ThongKe.removeAll();
             thongKeTongQuan.setSize(jDesktopPane_ThongKe.getSize());
             thongKeTongQuan.setVisible(true);
             jDesktopPane_ThongKe.add(thongKeTongQuan);
-            thongKeTongQuan.setSelected(true);
-        } else if(selectedItem.equals("Doanh thu")){
+            try {
+                thongKeTongQuan.setSelected(true);
+            } catch (PropertyVetoException e) {
+                e.printStackTrace();
+            }
+        } else if (selectedItem.equals("Doanh thu")) {
             jDesktopPane_ThongKe.removeAll();
             thongKeDoanhThu.setSize(jDesktopPane_ThongKe.getSize());
             thongKeDoanhThu.setVisible(true);
             jDesktopPane_ThongKe.add(thongKeDoanhThu);
-            thongKeDoanhThu.setSelected(true);
-        } else if (selectedItem.equals("Tồn kho")){
+            try {
+                thongKeDoanhThu.setSelected(true);
+            } catch (PropertyVetoException e) {
+                e.printStackTrace();
+            }
+        } else if (selectedItem.equals("Tồn kho")) {
             jDesktopPane_ThongKe.removeAll();
             thongKeTonKho.setSize(jDesktopPane_ThongKe.getSize());
             thongKeTonKho.setVisible(true);
             jDesktopPane_ThongKe.add(thongKeTonKho);
-            thongKeTonKho.setSelected(true);
+            try {
+                thongKeTonKho.setSelected(true);
+            } catch (PropertyVetoException e) {
+                e.printStackTrace();
+            }
         }
-
-        jDesktopPane_ThongKe.repaint();
         jDesktopPane_ThongKe.revalidate();
+        jDesktopPane_ThongKe.repaint();
+
     }//GEN-LAST:event_jComboBox_ThongKeActionPerformed
 
 
