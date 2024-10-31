@@ -2,6 +2,8 @@
   <library name="Dependency (3)">
     <CLASSES>
       <root url="file://$PROJECT_DIR$/src/Dependency" />
+      <root url="jar://$USER_HOME$/Downloads/miglayout-4.0.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/TimingFramework-0.55.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

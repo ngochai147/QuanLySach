@@ -15,6 +15,8 @@ public class DangNhap extends javax.swing.JFrame {
     private boolean ktNQL = false;
     private boolean ktTK = false;
     
+    
+    
     private TaiKhoan_DAO taiKhoan_DAO;
 
     public DangNhap() throws SQLException {

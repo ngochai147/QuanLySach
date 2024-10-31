@@ -6,6 +6,9 @@ import entity.NhanVien;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class HoaDon_DAO {
     public ArrayList<HoaDon> getAllHoaDon(){
@@ -72,4 +75,5 @@ public class HoaDon_DAO {
 
         return result > 0;
     }
+
 }

@@ -6,6 +6,8 @@ package dao;
 
 import connectDB.ConnectDB;
 import entity.ChiTietKhoHang;
+import entity.KhoHang;
+import entity.Sach;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -62,7 +64,26 @@ public class ChiTietKhoHang_DAO {
             return ct_khoHang.add(chiTietKhoHang);
         }
     }
-
+    public List<ChiTietKhoHang> getAllChiTietKhoHang(){
+        List<ChiTietKhoHang> dsChiTietKhoHang = new ArrayList<>();
+        String sql = "select * from ChiTietKhoHang";
+        Connection con = ConnectDB.getInstance().getConnection();
+        PreparedStatement stmt = null;
+        try {
+            stmt = con.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()){
+                String maCTKhoHang = rs.getString(1);
+                String ISBN = rs.getString(2);
+                String maKhoHang = rs.getString(3);
+                int soLuong = rs.getInt(4);
+                dsChiTietKhoHang.add(new ChiTietKhoHang(maCTKhoHang,soLuong,new Sach(ISBN),new KhoHang(maKhoHang)));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return dsChiTietKhoHang;
+    }
     public String timTenKhoTheoMaSach(String maSach) throws SQLException {
         Connection con = ConnectDB.getInstance().getConnection();
         PreparedStatement stmt = null;
@@ -98,5 +119,15 @@ public class ChiTietKhoHang_DAO {
         stmt.executeUpdate();
         return true;
     }
-
+    public boolean capNhatChiTietKhoHang(String ISBN,String maKho,int soLuong) throws SQLException {
+        Connection con = ConnectDB.getConnection();
+        PreparedStatement stmt = null;
+        stmt = con.prepareStatement("update ChiTietKhoHang " +
+                "set soLuong=? where ISBN = ? and maKhoHang=?");
+        stmt.setInt(1, soLuong);
+        stmt.setString(2, ISBN);
+        stmt.setString(3, maKho);
+        stmt.executeUpdate();
+        return true;
+    }
 }

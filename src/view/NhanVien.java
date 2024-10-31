@@ -32,8 +32,6 @@ public class NhanVien extends javax.swing.JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         clickColor = new Color(205,175,149);
         defaultColor = new Color(139, 125, 107);
-        jPanel_QLSach.setBackground(clickColor);
-        jLabel_QLSach.setForeground(Color.BLACK);
     }
 
     /**
@@ -46,9 +44,6 @@ public class NhanVien extends javax.swing.JFrame {
     private void initComponents() {
 
         jMenu = new javax.swing.JPanel();
-        jPanel_QLSach = new javax.swing.JPanel();
-        jLabel_QLSach = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         jPanel_HoaDon = new javax.swing.JPanel();
         jLabel_HoaDon = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -61,44 +56,6 @@ public class NhanVien extends javax.swing.JFrame {
 
         jMenu.setBackground(new java.awt.Color(139, 125, 107));
 
-        jPanel_QLSach.setBackground(new java.awt.Color(139, 125, 107));
-        jPanel_QLSach.setPreferredSize(new java.awt.Dimension(202, 54));
-        jPanel_QLSach.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jPanel_QLSachMouseClicked(evt);
-            }
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                jPanel_QLSachMousePressed(evt);
-            }
-        });
-
-        jLabel_QLSach.setFont(new java.awt.Font("Arial", 1, 30)); // NOI18N
-        jLabel_QLSach.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel_QLSach.setText("Quản lý sách");
-
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Sach.png"))); // NOI18N
-
-        javax.swing.GroupLayout jPanel_QLSachLayout = new javax.swing.GroupLayout(jPanel_QLSach);
-        jPanel_QLSach.setLayout(jPanel_QLSachLayout);
-        jPanel_QLSachLayout.setHorizontalGroup(
-            jPanel_QLSachLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_QLSachLayout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel_QLSach)
-                .addContainerGap(30, Short.MAX_VALUE))
-        );
-        jPanel_QLSachLayout.setVerticalGroup(
-            jPanel_QLSachLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel_QLSachLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel_QLSachLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel_QLSach, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
         jPanel_HoaDon.setBackground(new java.awt.Color(139, 125, 107));
         jPanel_HoaDon.setPreferredSize(new java.awt.Dimension(202, 67));
         jPanel_HoaDon.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -110,11 +67,11 @@ public class NhanVien extends javax.swing.JFrame {
             }
         });
 
-        jLabel_HoaDon.setFont(new java.awt.Font("Arial", 1, 30)); // NOI18N
+        jLabel_HoaDon.setFont(new java.awt.Font("Arial", 1, 25)); // NOI18N
         jLabel_HoaDon.setForeground(new java.awt.Color(255, 255, 255));
         jLabel_HoaDon.setText("Quản lý hóa đơn");
 
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/hoa_don.png"))); // NOI18N
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icon_QuanLyHoaDon.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel_HoaDonLayout = new javax.swing.GroupLayout(jPanel_HoaDon);
         jPanel_HoaDon.setLayout(jPanel_HoaDonLayout);
@@ -125,7 +82,7 @@ public class NhanVien extends javax.swing.JFrame {
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel_HoaDon, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 18, Short.MAX_VALUE))
+                .addGap(0, 22, Short.MAX_VALUE))
         );
         jPanel_HoaDonLayout.setVerticalGroup(
             jPanel_HoaDonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -169,8 +126,6 @@ public class NhanVien extends javax.swing.JFrame {
         jMenuLayout.setHorizontalGroup(
             jMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jMenuLayout.createSequentialGroup()
-                .addComponent(jPanel_QLSach, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
                 .addComponent(jPanel_HoaDon, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -181,8 +136,7 @@ public class NhanVien extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(jMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel_HoaDon, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
-                    .addComponent(jPanel_QLSach, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE))
+                    .addComponent(jPanel_HoaDon, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE))
                 .addGap(0, 0, 0))
         );
 
@@ -224,37 +178,26 @@ public class NhanVien extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jPanel_QLSachMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel_QLSachMousePressed
-       
-        jPanel_HoaDon.setBackground(defaultColor);
-        jLabel_HoaDon.setForeground(Color.WHITE);
-        jPanel_QLSach.setBackground(clickColor);
-        jLabel_QLSach.setForeground(Color.BLACK);
-        jPanel1.setBackground(defaultColor);
-        jLabel2.setForeground(Color.BLACK);
-    }//GEN-LAST:event_jPanel_QLSachMousePressed
-
     private void jPanel_HoaDonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel_HoaDonMousePressed
         // TODO add your handling code here:
        
         jPanel_HoaDon.setBackground(clickColor);
         jLabel_HoaDon.setForeground(Color.BLACK);
-        jPanel_QLSach.setBackground(defaultColor);
-        jLabel_QLSach.setForeground(Color.WHITE);
         jPanel1.setBackground(defaultColor);
         jLabel2.setForeground(Color.BLACK);
     }//GEN-LAST:event_jPanel_HoaDonMousePressed
 
     private void jDesktopPane1ComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jDesktopPane1ComponentResized
-        Sach_QuanLySach sach_QuanLySach = null;
-        try {
-            sach_QuanLySach = new Sach_QuanLySach();
-        } catch (SQLException ex) {
-            Logger.getLogger(NhanVien.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        sach_QuanLySach.setSize(jDesktopPane1.getSize());
-        sach_QuanLySach.setVisible(true);
-        jDesktopPane1.add(sach_QuanLySach);        // TODO add your handling code here:
+      
+        QuanLyHoaDon_GUI qlhdgui=null;
+        qlhdgui = new QuanLyHoaDon_GUI();
+        qlhdgui.setSize(jDesktopPane1.getSize());
+        qlhdgui.setVisible(true);
+        jDesktopPane1.add(qlhdgui);  
+        // TODO add your handling code here:
+        jPanel_HoaDon.setBackground(clickColor);
+        jLabel_HoaDon.setForeground(Color.BLACK);
+        
     }//GEN-LAST:event_jDesktopPane1ComponentResized
 
     private void jPanel_HoaDonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel_HoaDonMouseClicked
@@ -265,19 +208,6 @@ public class NhanVien extends javax.swing.JFrame {
         quanLyHoaDon_GUI.setVisible(true);
         jDesktopPane1.add(quanLyHoaDon_GUI);
     }//GEN-LAST:event_jPanel_HoaDonMouseClicked
-
-    private void jPanel_QLSachMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel_QLSachMouseClicked
-        try {
-            // TODO add your handling code here:
-            jDesktopPane1.removeAll();
-            Sach_QuanLySach sach_QuanLySach = new Sach_QuanLySach();
-            sach_QuanLySach.setSize(jDesktopPane1.getSize());
-            sach_QuanLySach.setVisible(true);
-            jDesktopPane1.add(sach_QuanLySach);
-        } catch (SQLException ex) {
-            Logger.getLogger(NhanVien.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_jPanel_QLSachMouseClicked
 
     private void jPanel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseClicked
         // TODO add your handling code here:
@@ -299,8 +229,6 @@ public class NhanVien extends javax.swing.JFrame {
         // TODO add your handling code here:
         jPanel_HoaDon.setBackground(defaultColor);
         jLabel_HoaDon.setForeground(Color.WHITE);
-        jPanel_QLSach.setBackground(defaultColor);
-        jLabel_QLSach.setForeground(Color.WHITE);
         jPanel1.setBackground(clickColor);
         jLabel2.setForeground(Color.BLACK);
     }//GEN-LAST:event_jPanel1MousePressed
@@ -337,13 +265,10 @@ public class NhanVien extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel_HoaDon;
-    private javax.swing.JLabel jLabel_QLSach;
     private javax.swing.JPanel jMenu;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel_HoaDon;
-    private javax.swing.JPanel jPanel_QLSach;
     // End of variables declaration//GEN-END:variables
 }

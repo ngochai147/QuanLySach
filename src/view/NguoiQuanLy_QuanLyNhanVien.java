@@ -234,9 +234,10 @@ public class NguoiQuanLy_QuanLyNhanVien extends javax.swing.JInternalFrame {
         jPanel1.add(jButton_TimKiem);
         jButton_TimKiem.setBounds(1370, 160, 140, 52);
 
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/label_QuanLyNhanVien.png"))); // NOI18N
         jPanel1.add(jLabel1);
-        jLabel1.setBounds(386, 18, 687, 118);
+        jLabel1.setBounds(3, 18, 1580, 118);
 
         jComboBox_TimKiem.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jPanel1.add(jComboBox_TimKiem);

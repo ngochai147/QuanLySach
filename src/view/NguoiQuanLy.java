@@ -43,14 +43,14 @@ public class NguoiQuanLy extends javax.swing.JFrame {
         jPanel_HoaDon = new javax.swing.JPanel();
         jLabel_HoaDon = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jPanel_QLNhanVien = new javax.swing.JPanel();
-        jLabel_QLNhanVien = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
         jPanel_ThongKe = new javax.swing.JPanel();
         jLabel_ThongKe = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
+        jPanel_QLNhanVien = new javax.swing.JPanel();
+        jLabel_QLNhanVien = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
         jDesktopPane1 = new javax.swing.JDesktopPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -66,30 +66,33 @@ public class NguoiQuanLy extends javax.swing.JFrame {
             }
         });
 
-        jLabel_QLSach.setFont(new java.awt.Font("Arial", 1, 30)); // NOI18N
+        jLabel_QLSach.setFont(new java.awt.Font("Arial", 1, 25)); // NOI18N
         jLabel_QLSach.setForeground(new java.awt.Color(255, 255, 255));
         jLabel_QLSach.setText("Quản lý sách");
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Sach.png"))); // NOI18N
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icon_QuanLySach.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel_QLSachLayout = new javax.swing.GroupLayout(jPanel_QLSach);
         jPanel_QLSach.setLayout(jPanel_QLSachLayout);
         jPanel_QLSachLayout.setHorizontalGroup(
             jPanel_QLSachLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_QLSachLayout.createSequentialGroup()
-                .addGap(30, 30, 30)
+                .addGap(52, 52, 52)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel_QLSach)
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
         jPanel_QLSachLayout.setVerticalGroup(
             jPanel_QLSachLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel_QLSachLayout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanel_QLSachLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel_QLSach, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
+                    .addGroup(jPanel_QLSachLayout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addComponent(jLabel3))
+                    .addGroup(jPanel_QLSachLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel_QLSach, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -100,84 +103,54 @@ public class NguoiQuanLy extends javax.swing.JFrame {
                 jPanel_HoaDonMouseClicked(evt);
             }
         });
-
-        jLabel_HoaDon.setFont(new java.awt.Font("Arial", 1, 30)); // NOI18N
+        jPanel_ThongKe.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel_ThongKeMouseClicked(evt);
+            }
+        });
+        jLabel_HoaDon.setFont(new java.awt.Font("Arial", 1, 25)); // NOI18N
         jLabel_HoaDon.setForeground(new java.awt.Color(255, 255, 255));
         jLabel_HoaDon.setText("Quản lý hóa đơn");
 
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/hoa_don.png"))); // NOI18N
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icon_QuanLyHoaDon.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel_HoaDonLayout = new javax.swing.GroupLayout(jPanel_HoaDon);
         jPanel_HoaDon.setLayout(jPanel_HoaDonLayout);
         jPanel_HoaDonLayout.setHorizontalGroup(
             jPanel_HoaDonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_HoaDonLayout.createSequentialGroup()
-                .addGap(30, 30, 30)
+                .addContainerGap(53, Short.MAX_VALUE)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel_HoaDon, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 18, Short.MAX_VALUE))
+                .addComponent(jLabel_HoaDon, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel_HoaDonLayout.setVerticalGroup(
             jPanel_HoaDonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel_HoaDonLayout.createSequentialGroup()
                 .addComponent(jLabel_HoaDon, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 3, Short.MAX_VALUE))
+                .addGap(0, 6, Short.MAX_VALUE))
             .addGroup(jPanel_HoaDonLayout.createSequentialGroup()
-                .addGap(15, 15, 15)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel5)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        jPanel_QLNhanVien.setBackground(new java.awt.Color(139, 125, 107));
-        jPanel_QLNhanVien.setPreferredSize(new java.awt.Dimension(202, 54));
-        jPanel_QLNhanVien.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jPanel_QLNhanVienMouseClicked(evt);
-            }
-        });
-
-        jLabel_QLNhanVien.setFont(new java.awt.Font("Arial", 1, 30)); // NOI18N
-        jLabel_QLNhanVien.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel_QLNhanVien.setText("Nhân viên");
-
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/NhanVien.png"))); // NOI18N
-
-        javax.swing.GroupLayout jPanel_QLNhanVienLayout = new javax.swing.GroupLayout(jPanel_QLNhanVien);
-        jPanel_QLNhanVien.setLayout(jPanel_QLNhanVienLayout);
-        jPanel_QLNhanVienLayout.setHorizontalGroup(
-            jPanel_QLNhanVienLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_QLNhanVienLayout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel_QLNhanVien, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel_QLNhanVienLayout.setVerticalGroup(
-            jPanel_QLNhanVienLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel_QLNhanVienLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel6)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addComponent(jLabel_QLNhanVien, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         jPanel_ThongKe.setBackground(new java.awt.Color(139, 125, 107));
         jPanel_ThongKe.setPreferredSize(new java.awt.Dimension(202, 67));
 
-        jLabel_ThongKe.setFont(new java.awt.Font("Arial", 1, 30)); // NOI18N
+        jLabel_ThongKe.setFont(new java.awt.Font("Arial", 1, 25)); // NOI18N
         jLabel_ThongKe.setForeground(new java.awt.Color(255, 255, 255));
         jLabel_ThongKe.setText("Thống kê");
 
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/thong_ke.png"))); // NOI18N
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icon_ThongKe.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel_ThongKeLayout = new javax.swing.GroupLayout(jPanel_ThongKe);
         jPanel_ThongKe.setLayout(jPanel_ThongKeLayout);
         jPanel_ThongKeLayout.setHorizontalGroup(
             jPanel_ThongKeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_ThongKeLayout.createSequentialGroup()
-                .addContainerGap(27, Short.MAX_VALUE)
+                .addContainerGap(35, Short.MAX_VALUE)
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel_ThongKe, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -216,16 +189,50 @@ public class NguoiQuanLy extends javax.swing.JFrame {
             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
+        jPanel_QLNhanVien.setBackground(new java.awt.Color(139, 125, 107));
+        jPanel_QLNhanVien.setPreferredSize(new java.awt.Dimension(202, 54));
+        jPanel_QLNhanVien.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel_QLNhanVienMouseClicked(evt);
+            }
+        });
+
+        jLabel_QLNhanVien.setFont(new java.awt.Font("Arial", 1, 25)); // NOI18N
+        jLabel_QLNhanVien.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel_QLNhanVien.setText("Quản lý nhân viên");
+
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icon_QuanLyNhanVien.png"))); // NOI18N
+
+        javax.swing.GroupLayout jPanel_QLNhanVienLayout = new javax.swing.GroupLayout(jPanel_QLNhanVien);
+        jPanel_QLNhanVien.setLayout(jPanel_QLNhanVienLayout);
+        jPanel_QLNhanVienLayout.setHorizontalGroup(
+            jPanel_QLNhanVienLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_QLNhanVienLayout.createSequentialGroup()
+                .addGap(45, 45, 45)
+                .addComponent(jLabel6)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel_QLNhanVien)
+                .addContainerGap(20, Short.MAX_VALUE))
+        );
+        jPanel_QLNhanVienLayout.setVerticalGroup(
+            jPanel_QLNhanVienLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel_QLNhanVien, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel_QLNhanVienLayout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addComponent(jLabel6)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout jMenuLayout = new javax.swing.GroupLayout(jMenu);
         jMenu.setLayout(jMenuLayout);
         jMenuLayout.setHorizontalGroup(
             jMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jMenuLayout.createSequentialGroup()
-                .addComponent(jPanel_QLNhanVien, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel_QLSach, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(jPanel_QLSach, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel_QLNhanVien, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(jPanel_HoaDon, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel_HoaDon, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(jPanel_ThongKe, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
@@ -235,13 +242,12 @@ public class NguoiQuanLy extends javax.swing.JFrame {
             jMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jMenuLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(jMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel_HoaDon, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
-                    .addComponent(jPanel_QLSach, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
-                    .addComponent(jPanel_QLNhanVien, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
-                    .addComponent(jPanel_ThongKe, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE))
-                .addGap(0, 0, 0))
+                .addGroup(jMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel_HoaDon, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE)
+                    .addComponent(jPanel_QLSach, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE)
+                    .addComponent(jPanel_ThongKe, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE)
+                    .addComponent(jPanel_QLNhanVien, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE)))
         );
 
         jDesktopPane1.setBackground(new java.awt.Color(139, 125, 107));
@@ -268,15 +274,18 @@ public class NguoiQuanLy extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jMenu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jDesktopPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jDesktopPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addGap(0, 0, 0)
                 .addComponent(jDesktopPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 724, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -392,6 +401,24 @@ public class NguoiQuanLy extends javax.swing.JFrame {
             }
             dangNhap.setVisible(true);
         }
+    }
+    private void jPanel_ThongKeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel_ThongKeMouseClicked
+        jPanel_HoaDon.setBackground(defaultColor);
+        jLabel_HoaDon.setForeground(Color.WHITE);
+        jPanel_QLSach.setBackground(defaultColor);
+        jLabel_QLSach.setForeground(Color.WHITE);
+        jPanel_QLNhanVien.setBackground(defaultColor);
+        jLabel_QLNhanVien.setForeground(Color.WHITE);
+        jPanel_ThongKe.setBackground(clickColor);
+        jLabel_ThongKe.setForeground(Color.BLACK);
+        jPanel1.setBackground(defaultColor);
+        jLabel2.setForeground(Color.WHITE);
+
+        jDesktopPane1.removeAll();
+        NguoiQuanLy_ThongKeTongQuan tk_TongQuan = new NguoiQuanLy_ThongKeTongQuan();
+        tk_TongQuan.setSize(jDesktopPane1.getSize());
+        tk_TongQuan.setVisible(true);
+        jDesktopPane1.add(tk_TongQuan);
     }//GEN-LAST:event_jPanel1MouseClicked
 
     public static void main(String args[]) {
