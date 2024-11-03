@@ -26,6 +26,24 @@ public class KhoHang_DAO {
     public KhoHang_DAO() {
         dsKhoHang = new ArrayList<>();
     }
+
+    public List<KhoHang> getDSKhoHang() throws SQLException {
+        Connection con = ConnectDB.getConnection();
+        String sql = "select * from KhoHang";
+        PreparedStatement statement = con.prepareStatement(sql);
+        ResultSet rs = statement.executeQuery();
+        while(rs.next()) {
+            String maKho = rs.getString(1);
+            String tenKho = rs.getString(2);
+            int sucChua = rs.getInt(3);
+            String diaChi = rs.getString(4);
+            KhoHang khoHang = new KhoHang(maKho, tenKho, sucChua, diaChi);
+            dsKhoHang.add(khoHang);
+        }
+        statement.close();
+        return dsKhoHang;
+    }
+
     public KhoHang getKhoTheoTenKho(String tk) throws SQLException {
         Connection con = ConnectDB.getConnection();
         KhoHang khoHang = null;
