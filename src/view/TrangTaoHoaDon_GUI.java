@@ -446,6 +446,7 @@ public class TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this,
                     "ISBN không được rỗng", "Lỗi", JOptionPane.WARNING_MESSAGE);
             jTextField_ISBN.requestFocus();
+            return;
         }else {
             for(Sach s: sachDao.getAllSP()){
                 if(s.getISBN().equalsIgnoreCase(ISBN)){
@@ -458,6 +459,7 @@ public class TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(this,
                         "Số lượng không được rỗng", "Lỗi", JOptionPane.WARNING_MESSAGE);
                 jTextField_SoLuong.requestFocus();
+                return;
             }else{
                 try {
                     Sach sach=new Sach();
@@ -472,10 +474,12 @@ public class TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
                         JOptionPane.showMessageDialog(this,
                                 "Số lượng phải > 0", "Lỗi", JOptionPane.WARNING_MESSAGE);
                         jTextField_SoLuong.requestFocus();
+                        return;
                     } else if (soLuongTon < soLuongMua) {
                         JOptionPane.showMessageDialog(this,
                                 "Không đủ số lượng!", "Lỗi", JOptionPane.WARNING_MESSAGE);
                         jTextField_SoLuong.requestFocus();
+                        return;
                     }else {
                         model= (DefaultTableModel) jTable_DonHang.getModel();
                         boolean timKiem=timSachTrongDonHang(ISBN);
@@ -501,7 +505,7 @@ public class TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
                                     model.setValueAt(df.format(thanhTien), i, 5);
 
                                     jLabel_TongTienHoaDon.setText(df.format(tongTienHoaDon));
-                                    break;
+                                    return;
                                 }
                             }
                         }else {
@@ -523,6 +527,7 @@ public class TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
                     JOptionPane.showMessageDialog(this,
                             "Số lượng phải là số!", "Lỗi", JOptionPane.WARNING_MESSAGE);
                     jTextField_SoLuong.requestFocus();
+                    return;
                 }
 
             }
@@ -530,6 +535,8 @@ public class TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this,
                     "ISBN không đúng", "Lỗi", JOptionPane.WARNING_MESSAGE);
             jTextField_ISBN.requestFocus();
+            jTextField_ISBN.selectAll();
+            return;
         }
         int n=jTable_DonHang.getSelectedRow();
         if(n>6){
