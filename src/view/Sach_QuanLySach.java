@@ -17,9 +17,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -421,6 +419,7 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
                 }
 
                 JOptionPane.showMessageDialog(this, "Xuất file Excel thành công!");
+                Desktop.getDesktop().open(saveFile);
             } else {
                 System.out.println("Người dùng đã hủy chọn tệp lưu.");
             }

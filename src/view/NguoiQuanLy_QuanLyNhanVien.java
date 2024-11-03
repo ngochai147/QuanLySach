@@ -16,8 +16,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.awt.Color;
-import java.awt.Component;
+import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -372,6 +371,7 @@ public class NguoiQuanLy_QuanLyNhanVien extends javax.swing.JInternalFrame {
                 }
 
                 JOptionPane.showMessageDialog(this, "Xuất file Excel thành công!");
+                Desktop.getDesktop().open(saveFile);
             } else {
                 System.out.println("Người dùng đã hủy chọn tệp lưu.");
             }
@@ -381,6 +381,7 @@ public class NguoiQuanLy_QuanLyNhanVien extends javax.swing.JInternalFrame {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(this, "Có lỗi xảy ra: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
+
     }//GEN-LAST:event_jButton_XuatExcelActionPerformed
 
     private void jButton_XoaNhieuActionPerformed(java.awt.event.ActionEvent evt){//GEN-FIRST:event_jButton_XoaNhieuActionPerformed
