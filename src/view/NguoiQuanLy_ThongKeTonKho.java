@@ -4,14 +4,24 @@
  */
 package view;
 
-import java.awt.Color;
+import dao.ExportExcel_DAO;
+import dao.ThongKeTonKho_DAO;
+import entity.ThongKeTonKho_model;
 import java.awt.Font;
+import java.util.List;
 import javax.swing.BorderFactory;
+import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
+import javax.swing.JTable;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
+import panel.BarChart_ThongKeTonKho;
 
 /**
  *
@@ -22,11 +32,49 @@ public class NguoiQuanLy_ThongKeTonKho extends javax.swing.JInternalFrame {
     /**
      * Creates new form NguoiQuanLy_ThongKeTonKho
      */
+    final ThongKeTonKho_DAO thongKeTonKho_Dao = new ThongKeTonKho_DAO();
+    final ExportExcel_DAO excel_DAO = new ExportExcel_DAO();
+    
+
     public NguoiQuanLy_ThongKeTonKho() {
         initComponents();
         this.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         BasicInternalFrameUI ui = (BasicInternalFrameUI) this.getUI();
         ui.setNorthPane(null);
+
+        loadDataTable();
+        loadComboboxTenKho(jComboBox_TenKho);
+
+    }
+
+    private void loadDataIntoTable(JTable table, String tenKho) {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+        List<ThongKeTonKho_model> listSachTonKho = thongKeTonKho_Dao.getThongKeTonKho(tenKho);
+        for (ThongKeTonKho_model thongKe : listSachTonKho) {
+            model.addRow(new Object[]{
+                thongKe.getISBN(),
+                thongKe.getTenSach(),
+                thongKe.getTacGia(),
+                thongKe.getSoLuongTonKho(),
+                thongKe.getTrangThai()
+            });
+
+        }
+
+    }
+
+    private void loadDataTable() {
+        String selected_TenKho = jComboBox_TenKho.getSelectedItem() != null ? jComboBox_TenKho.getSelectedItem().toString() : "Tất cả";
+        loadDataIntoTable(table_ThongKeTonKho, selected_TenKho);
+    }
+
+    private void loadComboboxTenKho(JComboBox<String> combobox) {
+        List<String> tenKhoList = thongKeTonKho_Dao.getListTenKho();
+        for (String tenKho : tenKhoList) {
+            combobox.addItem(tenKho);
+        }
+
     }
 
     /**
@@ -38,207 +86,148 @@ public class NguoiQuanLy_ThongKeTonKho extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jTextField_NameOfBook = new javax.swing.JTextField();
-        jComboBox_ISBN = new javax.swing.JComboBox<>();
-        jComboBox_TênKho = new javax.swing.JComboBox<>();
-        jButton_ThongKeTonKho = new javax.swing.JButton();
-        jButton_LamMoi = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jScrollPane_TonKho = new javax.swing.JScrollPane();
-        jTable_ThongKeTonKho = new javax.swing.JTable();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        table_ThongKeTonKho = new JTable();
+        jComboBox_TenKho = new JComboBox<>();
+        jButton_XuatExcelTonKho = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
-        setBackground(new java.awt.Color(255, 255, 255));
+        setBackground(new java.awt.Color(167, 129, 17));
         setPreferredSize(new java.awt.Dimension(1479, 677));
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.setPreferredSize(new java.awt.Dimension(1503, 500));
-
-        jTextField_NameOfBook.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jTextField_NameOfBook.setForeground(new java.awt.Color(204, 204, 204));
-        jTextField_NameOfBook.setText("Nhập tên sách");
-        jTextField_NameOfBook.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                jTextField_NameOfBookFocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                jTextField_NameOfBookFocusLost(evt);
-            }
-        });
-
-        jComboBox_ISBN.setBackground(new java.awt.Color(102, 102, 0));
-        jComboBox_ISBN.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jComboBox_ISBN.setForeground(new java.awt.Color(255, 255, 255));
-        jComboBox_ISBN.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {"ISBN"}));
-        jComboBox_ISBN.setBorder(null);
-        jComboBox_ISBN.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox_ISBNActionPerformed(evt);
-            }
-        });
-
-        jComboBox_TênKho.setBackground(new java.awt.Color(102, 102, 0));
-        jComboBox_TênKho.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jComboBox_TênKho.setForeground(new java.awt.Color(255, 255, 255));
-        jComboBox_TênKho.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tên kho", " " }));
-        jComboBox_TênKho.setBorder(null);
-        jComboBox_TênKho.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox_TênKhoActionPerformed(evt);
-            }
-        });
-
-        jButton_ThongKeTonKho.setBackground(new java.awt.Color(102, 102, 0));
-        jButton_ThongKeTonKho.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
-        jButton_ThongKeTonKho.setForeground(new java.awt.Color(255, 255, 255));
-        jButton_ThongKeTonKho.setText("Thống kê");
-
-        jButton_LamMoi.setBackground(new java.awt.Color(255, 0, 0));
-        jButton_LamMoi.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
-        jButton_LamMoi.setForeground(new java.awt.Color(255, 255, 255));
-        jButton_LamMoi.setText("Làm mới");
-
-        jButton2.setBackground(new java.awt.Color(102, 102, 0));
-        jButton2.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("Xuất Excel");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
-        jScrollPane_TonKho.setBackground(new java.awt.Color(255, 255, 255));
-        jScrollPane_TonKho.setDoubleBuffered(true);
-        jScrollPane_TonKho.setEnabled(false);
-
-        jTable_ThongKeTonKho.setModel(new javax.swing.table.DefaultTableModel(
+        table_ThongKeTonKho.setFont(new Font("Arial", 0, 18)); // NOI18N
+        table_ThongKeTonKho.setModel(new DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+
             },
             new String [] {
-                "STT", "ISBN", "Tên sách", "Tên kho", "Tồn kho", "Trạng thái"
+                "ISBN", "Tên sách", "Tác giả", "Số lượng tồn kho", "Trạng thái"
             }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
-        jTable_ThongKeTonKho.setShowGrid(true);
-        JTableHeader tableHeader = jTable_ThongKeTonKho.getTableHeader();
+        ));
+        table_ThongKeTonKho.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        table_ThongKeTonKho.setMinimumSize(new java.awt.Dimension(20, 0));
+        table_ThongKeTonKho.setRowHeight(40);
+        table_ThongKeTonKho.setSelectionBackground(new java.awt.Color(153, 204, 0));
+        table_ThongKeTonKho.setSelectionForeground(new java.awt.Color(51, 51, 51));
+        table_ThongKeTonKho.setShowGrid(true);
+        jScrollPane1.setViewportView(table_ThongKeTonKho);
+        JTableHeader tableHeader = table_ThongKeTonKho.getTableHeader();
         DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer) tableHeader.getDefaultRenderer();
         headerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        headerRenderer.setFont(new Font("Arial", Font.BOLD, 20));
 
-        TableColumnModel columnModel = jTable_ThongKeTonKho.getColumnModel();
-        columnModel.getColumn(0).setPreferredWidth(25); // Đặt độ rộng cho cột 0
-        columnModel.getColumn(1).setPreferredWidth(50); // Đặt độ rộng cho cột 1
-        columnModel.getColumn(2).setPreferredWidth(175);
-        columnModel.getColumn(3).setPreferredWidth(175);
-        columnModel.getColumn(4).setPreferredWidth(100);
-        columnModel.getColumn(5).setPreferredWidth(150);
-        // Tương tự cho các cột khác nếu cần
-        jTable_ThongKeTonKho.getTableHeader().setFont(new Font("Arial", Font.BOLD, 20));
-        jTable_ThongKeTonKho.setFont(new Font("Arial", Font.PLAIN, 18));
-        jScrollPane_TonKho.setViewportView(jTable_ThongKeTonKho);
+        TableColumnModel columnModel = table_ThongKeTonKho.getColumnModel();
+        columnModel.getColumn(0).setPreferredWidth(25);
+        columnModel.getColumn(1).setPreferredWidth(100);
+        columnModel.getColumn(2).setPreferredWidth(75);
+        columnModel.getColumn(3).setPreferredWidth(75);
+        columnModel.getColumn(4).setPreferredWidth(150);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jButton2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton_LamMoi)
-                .addGap(57, 57, 57))
-            .addComponent(jScrollPane_TonKho, javax.swing.GroupLayout.Alignment.TRAILING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jComboBox_ISBN, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField_NameOfBook, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox_TênKho, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton_ThongKeTonKho)
-                .addContainerGap(747, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox_ISBN, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField_NameOfBook, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox_TênKho, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton_ThongKeTonKho))
-                .addGap(37, 37, 37)
-                .addComponent(jScrollPane_TonKho, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton_LamMoi)))
-        );
+        jComboBox_TenKho.setBackground(new java.awt.Color(102, 102, 0));
+        jComboBox_TenKho.setFont(new Font("Arial", 1, 20)); // NOI18N
+        jComboBox_TenKho.setForeground(new java.awt.Color(255, 255, 255));
+        jComboBox_TenKho.setMaximumRowCount(10);
+        jComboBox_TenKho.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tất cả" }));
+        jComboBox_TenKho.setBorder(null);
+        jComboBox_TenKho.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox_TenKhoActionPerformed(evt);
+            }
+        });
+
+        jButton_XuatExcelTonKho.setBackground(new java.awt.Color(102, 102, 0));
+        jButton_XuatExcelTonKho.setFont(new Font("Arial", 1, 20)); // NOI18N
+        jButton_XuatExcelTonKho.setForeground(new java.awt.Color(255, 255, 255));
+        jButton_XuatExcelTonKho.setText("Xuất Excel");
+        jButton_XuatExcelTonKho.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_XuatExcelTonKhoActionPerformed(evt);
+            }
+        });
+
+        jButton1.setBackground(new java.awt.Color(102, 102, 0));
+        jButton1.setFont(new Font("Arial", 1, 20)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jButton1.setText("Xem biểu đồ");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jButton1MousePressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(1080, 1080, 1080)
+                .addComponent(jComboBox_TenKho, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
+                .addComponent(jButton_XuatExcelTonKho, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(60, 60, 60))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 503, Short.MAX_VALUE)
-                .addGap(0, 0, 0))
+                .addGap(20, 20, 20)
+                .addComponent(jComboBox_TenKho, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton_XuatExcelTonKho)
+                    .addComponent(jButton1))
+                .addGap(75, 75, 75))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jComboBox_ISBNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_ISBNActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox_ISBNActionPerformed
+    private void jComboBox_TenKhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_TenKhoActionPerformed
+        loadDataTable();
+    }//GEN-LAST:event_jComboBox_TenKhoActionPerformed
 
-    private void jComboBox_TênKhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_TênKhoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox_TênKhoActionPerformed
+    private void jButton_XuatExcelTonKhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_XuatExcelTonKhoActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Chọn nơi lưu file Excel");
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+        // Hiển thị hộp thoại để người dùng chọn vị trí lưu file
+        int userSelection = fileChooser.showSaveDialog(this);
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            // Lấy đường dẫn file
+            String filePath = fileChooser.getSelectedFile().getAbsolutePath();
+            // Đảm bảo đuôi file là .xlsx
+            if (!filePath.endsWith(".xlsx")) {
+                filePath += ".xlsx";
+            }
 
-    private void jTextField_NameOfBookFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField_NameOfBookFocusGained
-        if(jTextField_NameOfBook.getText().equals("Nhập tên sách")){
-            jTextField_NameOfBook.setText("");
-            jTextField_NameOfBook.setForeground(Color.BLACK);
+            // Gọi phương thức DAO để xuất dữ liệu tồn kho ra Excel
+            try {
+                excel_DAO.exportThongKeTonKhoToExcel(filePath);
+                JOptionPane.showMessageDialog(this, "Xuất file Excel thành công!");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Xuất file Excel thất bại: " + e.getMessage());
+            }
         }
-    }//GEN-LAST:event_jTextField_NameOfBookFocusGained
+    }//GEN-LAST:event_jButton_XuatExcelTonKhoActionPerformed
 
-    private void jTextField_NameOfBookFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField_NameOfBookFocusLost
-        if(jTextField_NameOfBook.getText().equals("")){
-            jTextField_NameOfBook.setText("Nhập tên sách");
-            jTextField_NameOfBook.setForeground(Color.GRAY);
-        }
-    }//GEN-LAST:event_jTextField_NameOfBookFocusLost
+    private void jButton1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MousePressed
+        BarChart_ThongKeTonKho barChart_ThongKeTonKho = new BarChart_ThongKeTonKho();
+        barChart_ThongKeTonKho.setVisible(true);
+    }//GEN-LAST:event_jButton1MousePressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton_LamMoi;
-    private javax.swing.JButton jButton_ThongKeTonKho;
-    private javax.swing.JComboBox<String> jComboBox_ISBN;
-    private javax.swing.JComboBox<String> jComboBox_TênKho;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane_TonKho;
-    private javax.swing.JTable jTable_ThongKeTonKho;
-    private javax.swing.JTextField jTextField_NameOfBook;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton_XuatExcelTonKho;
+    private JComboBox<String> jComboBox_TenKho;
+    private javax.swing.JScrollPane jScrollPane1;
+    private JTable table_ThongKeTonKho;
     // End of variables declaration//GEN-END:variables
 }

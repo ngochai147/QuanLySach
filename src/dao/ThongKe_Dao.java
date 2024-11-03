@@ -53,7 +53,7 @@ public class ThongKe_Dao {
                     SELECT 
                         FORMAT(DateRange.ngayTaoDon, 'dd/MM') AS ngayTaoDon,
                         COALESCE(SUM(ChiTietHoaDon.soLuong * ChiTietHoaDon.donGia), 0) AS TongDoanhThu,
-                        COALESCE(SUM(ChiTietHoaDon.soLuong * ChiTietHoaDon.donGia * 0.2), 0) AS LoiNhuan
+                        COALESCE(SUM(ChiTietHoaDon.soLuong * ChiTietHoaDon.donGia * 0.4), 0) AS LoiNhuan
                     FROM DateRange
                     LEFT JOIN HoaDon ON CAST(HoaDon.ngayTaoDon AS DATE) = DateRange.ngayTaoDon
                     LEFT JOIN ChiTietHoaDon ON HoaDon.maHoaDon = ChiTietHoaDon.maHoaDon
@@ -81,14 +81,23 @@ public class ThongKe_Dao {
     public List<ThongKe_model> getChartThongKeTheoThang(Date fromDate, Date toDate) {
         List<ThongKe_model> month_statistic = new ArrayList<>();
         String sql = """
-            SELECT MONTH(ngayTaoDon) AS thang, YEAR(ngayTaoDon) AS nam, 
-               SUM(cthd.donGia * cthd.soLuong) AS doanhThu, 
-               SUM(cthd.donGia * cthd.soLuong * 0.5) AS loiNhuan
-            FROM HoaDon AS hd
-            JOIN ChiTietHoaDon AS cthd ON hd.maHoaDon = cthd.maHoaDon
-            WHERE ngayTaoDon BETWEEN ? AND ?
-            GROUP BY YEAR(ngayTaoDon), MONTH(ngayTaoDon)
-            ORDER BY nam DESC""";
+        WITH DateRange AS (
+            SELECT DATEADD(MONTH, number, CAST(? AS DATE)) AS ngayTaoDon
+            FROM master.dbo.spt_values
+            WHERE type = 'P' AND number BETWEEN 0 AND DATEDIFF(MONTH, CAST(? AS DATE), CAST(? AS DATE))
+        )
+        SELECT 
+            MONTH(DateRange.ngayTaoDon) AS thang, 
+            YEAR(DateRange.ngayTaoDon) AS nam, 
+            COALESCE(SUM(cthd.donGia * cthd.soLuong), 0) AS doanhThu, 
+            COALESCE(SUM(cthd.donGia * cthd.soLuong * 0.4), 0) AS loiNhuan
+        FROM DateRange
+        LEFT JOIN HoaDon AS hd ON CAST(hd.ngayTaoDon AS DATE) >= CAST(DateRange.ngayTaoDon AS DATE)
+        LEFT JOIN ChiTietHoaDon AS cthd ON hd.maHoaDon = cthd.maHoaDon AND MONTH(hd.ngayTaoDon) = MONTH(DateRange.ngayTaoDon) AND YEAR(hd.ngayTaoDon) = YEAR(DateRange.ngayTaoDon)
+        GROUP BY YEAR(DateRange.ngayTaoDon), MONTH(DateRange.ngayTaoDon)
+        ORDER BY nam DESC, thang DESC
+    """;
+
         try (Connection con = ConnectDB.getInstance().getConnection(); PreparedStatement p = con.prepareStatement(sql)) {
 
             // Kiểm tra null cho ngày
@@ -110,7 +119,8 @@ public class ThongKe_Dao {
 
             // Set các tham số ngày vào câu truy vấn
             p.setString(1, fromDateString);
-            p.setString(2, toDateString);
+            p.setString(2, fromDateString);
+            p.setString(3, toDateString);
 
             ResultSet rs = p.executeQuery();
 
@@ -119,6 +129,7 @@ public class ThongKe_Dao {
                 int nam = rs.getInt("nam");
                 double doanhThu = rs.getDouble("doanhThu");
                 double loiNhuan = rs.getDouble("loiNhuan");
+
                 // Định dạng tháng và năm theo MM/yyyy
                 String thangNam = String.format("%02d/%d", thang, nam);
 
@@ -136,14 +147,25 @@ public class ThongKe_Dao {
     public List<ThongKe_model> getChartThongKeTheoNgay(Date fromDate, Date toDate) {
         List<ThongKe_model> day_statistic = new ArrayList<>();
         String sql = """
-            SELECT DAY(ngayTaoDon) AS ngay, MONTH(ngayTaoDon) AS thang, YEAR(ngayTaoDon) AS nam, 
-                   SUM(cthd.donGia * cthd.soLuong) AS doanhThu, 
-                   SUM(cthd.donGia * cthd.soLuong * 0.5) AS loiNhuan
-            FROM HoaDon AS hd
-            JOIN ChiTietHoaDon AS cthd ON hd.maHoaDon = cthd.maHoaDon
-            WHERE NgayTaoDon BETWEEN ? AND ?
-            GROUP BY YEAR(ngayTaoDon), MONTH(ngayTaoDon), DAY(ngayTaoDon)
-            ORDER BY nam DESC, thang DESC, ngay DESC""";
+            WITH DateRange AS (
+                SELECT CAST(? AS DATE) AS ngayTaoDon
+                UNION ALL
+                SELECT DATEADD(DAY, 1, ngayTaoDon)
+                FROM DateRange
+                WHERE DATEADD(DAY, 1, ngayTaoDon) <= CAST(? AS DATE)
+            )
+            SELECT 
+                DAY(DateRange.ngayTaoDon) AS ngay, 
+                MONTH(DateRange.ngayTaoDon) AS thang, 
+                YEAR(DateRange.ngayTaoDon) AS nam, 
+                COALESCE(SUM(cthd.donGia * cthd.soLuong), 0) AS doanhThu, 
+                COALESCE(SUM(cthd.donGia * cthd.soLuong * 0.4), 0) AS loiNhuan
+            FROM DateRange
+            LEFT JOIN HoaDon AS hd ON CAST(hd.ngayTaoDon AS DATE) = DateRange.ngayTaoDon
+            LEFT JOIN ChiTietHoaDon AS cthd ON hd.maHoaDon = cthd.maHoaDon
+            GROUP BY YEAR(DateRange.ngayTaoDon), MONTH(DateRange.ngayTaoDon), DAY(DateRange.ngayTaoDon)
+            ORDER BY nam DESC, thang DESC, ngay DESC
+            """;
 
         try {
             Connection con = ConnectDB.getInstance().getConnection();
@@ -188,31 +210,37 @@ public class ThongKe_Dao {
     public List<ThongKe_model> getChartThongKeTheoNam(Date fromDate, Date toDate) {
         List<ThongKe_model> nam_statistic = new ArrayList<>();
         String sql = """
-            SELECT  YEAR(ngayTaoDon) AS nam, 
-                   SUM(cthd.donGia * cthd.soLuong) AS doanhThu, 
-                   SUM(cthd.donGia * cthd.soLuong * 0.5) AS loiNhuan
-            FROM HoaDon AS hd
-            JOIN ChiTietHoaDon AS cthd ON hd.maHoaDon = cthd.maHoaDon
-            WHERE NgayTaoDon BETWEEN ? AND ?
-            GROUP BY YEAR(ngayTaoDon)
-            ORDER BY nam DESC""";
+        WITH DateRange AS (
+            SELECT YEAR(DATEADD(YEAR, number, CAST(? AS DATE))) AS nam
+            FROM master.dbo.spt_values
+            WHERE type = 'P' AND number BETWEEN 0 AND DATEDIFF(YEAR, CAST(? AS DATE), CAST(? AS DATE))
+        )
+        SELECT 
+            dr.nam, 
+            COALESCE(SUM(cthd.donGia * cthd.soLuong), 0) AS doanhThu, 
+            COALESCE(SUM(cthd.donGia * cthd.soLuong * 0.4), 0) AS loiNhuan
+        FROM DateRange dr
+        LEFT JOIN HoaDon AS hd ON YEAR(hd.ngayTaoDon) = dr.nam
+        LEFT JOIN ChiTietHoaDon AS cthd ON hd.maHoaDon = cthd.maHoaDon
+        GROUP BY dr.nam
+        ORDER BY dr.nam DESC
+    """;
 
-        try {
-            Connection con = ConnectDB.getInstance().getConnection();
-            PreparedStatement p = con.prepareStatement(sql);
+        try (Connection con = ConnectDB.getInstance().getConnection(); PreparedStatement p = con.prepareStatement(sql)) {
 
             // Kiểm tra null cho ngày
             if (fromDate == null || toDate == null) {
                 throw new IllegalArgumentException("Vui lòng chọn năm bắt đầu và năm kết thúc.");
             }
 
-            // Chuyển fromDate và toDate thành định dạng chỉ ngày
+            // Chuyển fromDate và toDate thành định dạng chỉ năm
             String fromDateString = new SimpleDateFormat("yyyy").format(fromDate);
             String toDateString = new SimpleDateFormat("yyyy").format(toDate);
 
             // Set các tham số ngày vào câu truy vấn
             p.setString(1, fromDateString);
-            p.setString(2, toDateString);
+            p.setString(2, fromDateString);
+            p.setString(3, toDateString);
 
             ResultSet rs = p.executeQuery();
 
@@ -221,7 +249,7 @@ public class ThongKe_Dao {
                 double doanhThu = rs.getDouble("doanhThu");
                 double loiNhuan = rs.getDouble("loiNhuan");
 
-                // Định dạng ngày tháng năm theo dd/MM/yyyy
+                // Định dạng năm theo yyyy
                 String ngayThangNam = String.format("%d", nam);
 
                 ThongKe_model tk = new ThongKe_model(ngayThangNam, String.valueOf(nam), doanhThu, loiNhuan);
@@ -234,4 +262,5 @@ public class ThongKe_Dao {
         }
         return nam_statistic;
     }
+
 }
