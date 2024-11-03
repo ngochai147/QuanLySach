@@ -44,7 +44,7 @@ private List<ChiTietHoaDon> listCTHD = dsCTHD.getAllChiTietHoaDon();
         JasperReport reportPay = JasperCompileManager.compileReport(getClass().getResourceAsStream("/img/report_pay.jrxml"));
         HashMap<String, Object> parameters = new HashMap<>();
         parameters.put("maHD",maHoaDon);
-        parameters.put("maNV", "22687251");
+        parameters.put("maNV", DangNhap.ma);
         parameters.put("ngayTao", LocalDate.now());
 
 
@@ -88,7 +88,7 @@ private List<ChiTietHoaDon> listCTHD = dsCTHD.getAllChiTietHoaDon();
             JasperReport reportPay = JasperCompileManager.compileReport(getClass().getResourceAsStream("/img/report_HoaDon.jrxml"));
             HashMap<String, Object> parameters = new HashMap<>();
             parameters.put("maHD",maHoaDon);
-            parameters.put("maNV", "22687251");
+            parameters.put("maNV", DangNhap.ma);
             parameters.put("ngayTao", LocalDate.now());
 
 

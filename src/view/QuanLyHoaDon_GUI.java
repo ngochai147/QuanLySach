@@ -11,12 +11,9 @@ import button.TableActionRender;
 //import dao.ChiTietHoaDon_DAO;
 //import dao.HoaDon_DAO;
 //import dao.Sach_DAO;
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.client.j2se.MatrixToImageWriter;
-import com.google.zxing.common.BitMatrix;
 import dao.ChiTietHoaDon_DAO;
 import dao.HoaDon_DAO;
+import dao.NhanVien_DAO;
 import dao.Sach_DAO;
 import entity.ChiTietHoaDon;
 import entity.HoaDon;
@@ -30,17 +27,18 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 //import entity.Sach;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.image.BufferedImage;
+import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
 //import java.beans.PropertyChangeEvent;
 //import java.beans.PropertyChangeListener;
@@ -54,14 +52,14 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
 
 /**
  *
  * @author Ngọc Hải
  */
 public class QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
+
+    private Color customGreen;
 
     /**
      * Creates new form QuanLyHoaDon_GUI
@@ -104,7 +102,11 @@ public class QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
         };
         jTable_HoaDon.getColumnModel().getColumn(6).setCellRenderer(new TableActionRender(1));
         jTable_HoaDon.getColumnModel().getColumn(6).setCellEditor(new TableActionCellEditor(event, 1));
-
+        jComboBox_DanhSach.addItem("");
+        for(HoaDon hd:listhD){
+            jComboBox_DanhSach.addItem(hd.getMaHoaDon());
+        }
+        addDataToTable();
 
     }
 
@@ -129,6 +131,7 @@ public class QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
         jButton_XuatExcel = new javax.swing.JButton();
         jLabel_QuanLyHoaDon = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jComboBox_DanhSach= new javax.swing.JComboBox<>();
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(null);
@@ -176,18 +179,74 @@ public class QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
         jComboBox_TieuChi.setBackground(new java.awt.Color(102, 102, 0));
         jComboBox_TieuChi.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jComboBox_TieuChi.setForeground(new java.awt.Color(255, 255, 255));
-        jComboBox_TieuChi.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "Mã hóa đơn", "Mã nhân viên", "Ngày tạo đơn" }));
+        customGreen = new Color(102,102,0);
+        jComboBox_TieuChi.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+
+                if (isSelected) {
+                    c.setBackground(customGreen);   // Màu nền khi mục được chọn
+                    c.setForeground(Color.WHITE);   // Màu chữ khi mục được chọn
+                } else {
+                    c.setBackground(Color.white); // Màu nền cho các mục không được chọn
+                    c.setForeground(customGreen);      // Màu chữ cho các mục không được chọn
+                }
+
+                return c;
+            }
+        });
+        jComboBox_TieuChi.setBorder(null);
+        jComboBox_TieuChi.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {"Mã hóa đơn", "Mã nhân viên", "Ngày tạo đơn" }));
         jPanel1.add(jComboBox_TieuChi);
-        jComboBox_TieuChi.setBounds(920, 120, 170, 46);
+        jComboBox_TieuChi.setBounds(1085, 120, 170, 46);
         jComboBox_TieuChi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox_TieuChiActionPerformed(evt);
             }
         });
-        jTextField_TimKiem.setFont(new java.awt.Font("Arial", 0, 15)); // NOI18N
-        jPanel1.add(jTextField_TimKiem);
-        jTextField_TimKiem.setBounds(1100, 120, 260, 46);
-        jTextField_TimKiem.setEnabled(false);
+
+        jDateChooser_NgayTaoDon = new com.toedter.calendar.JDateChooser();
+        jDateChooser_NgayTaoDon.setFont(new java.awt.Font("Arial", 1, 20));
+        jPanel1.add(jDateChooser_NgayTaoDon);
+        jDateChooser_NgayTaoDon.setBounds(1260, 120, 250, 46);
+        jDateChooser_NgayTaoDon.setVisible(false);
+        jDateChooser_NgayTaoDon.getDateEditor().addPropertyChangeListener("date", evt -> {
+            if (jDateChooser_NgayTaoDon.getDate() != null) {
+                jDateChooser_NgayTaoDonMouseListener(evt);
+            }
+        });
+
+        jComboBox_DanhSach.setBackground(new java.awt.Color(102, 102, 0));
+        jComboBox_DanhSach.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
+        jComboBox_DanhSach.setForeground(new java.awt.Color(255, 255, 255));
+        jComboBox_DanhSach.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {}));
+        customGreen = new Color(102,102,0);
+        jComboBox_DanhSach.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+
+                if (isSelected) {
+                    c.setBackground(customGreen);   // Màu nền khi mục được chọn
+                    c.setForeground(Color.WHITE);   // Màu chữ khi mục được chọn
+                } else {
+                    c.setBackground(Color.white); // Màu nền cho các mục không được chọn
+                    c.setForeground(customGreen);      // Màu chữ cho các mục không được chọn
+                }
+
+                return c;
+            }
+        });
+        jComboBox_DanhSach.setBorder(null);
+        jComboBox_DanhSach.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox_DanhSachActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jComboBox_DanhSach);
+        jComboBox_DanhSach.setBounds(1260, 120, 250, 46);
+
         jButton_TimKiem.setBackground(new java.awt.Color(102, 102, 0));
         jButton_TimKiem.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jButton_TimKiem.setForeground(new java.awt.Color(255, 255, 255));
@@ -198,7 +257,7 @@ public class QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
                 jButton_TimKiemActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton_TimKiem);
+       // jPanel1.add(jButton_TimKiem);
         jButton_TimKiem.setBounds(1370, 120, 136, 46);
 
         jTable_HoaDon.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
@@ -280,13 +339,96 @@ public class QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
 
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jComboBox_TieuChiActionPerformed(ActionEvent evt) {
-        int n=jComboBox_TieuChi.getSelectedIndex();
-        if(n==0){
-            jTextField_TimKiem.setEnabled(false);
-        }else{
-            jTextField_TimKiem.setEnabled(true);
+    private void jDateChooser_NgayTaoDonMouseListener(PropertyChangeEvent evt) {
+        int n = jComboBox_TieuChi.getSelectedIndex();
+        int stt = 0;
+        DateTimeFormatter dfDay = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+        // Lấy ngày từ jDateChooser và chuyển đổi sang LocalDate
+        Date selectedDate = jDateChooser_NgayTaoDon.getDate();
+        if (selectedDate != null) {
+            LocalDate date = selectedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+            // Xóa các hàng cũ trong bảng trước khi thêm dữ liệu mới
+            DefaultTableModel model = (DefaultTableModel) jTable_HoaDon.getModel();
+            model.setRowCount(0);
+
+            // Duyệt qua danh sách hóa đơn và kiểm tra ngày
+            for (HoaDon hd : dsHD.getAllHoaDon()) {
+                if (date.isEqual(hd.getNgayTaoDon())) {
+                    stt++;
+                    double tongTien = 0;
+                    int tongSL = 0;
+
+                    // Tính tổng số lượng và tổng tiền của các chi tiết hóa đơn
+                    for (ChiTietHoaDon cthd : listCTHD) {
+                        if (hd.getMaHoaDon().equalsIgnoreCase(cthd.getHoaDon().getMaHoaDon())) {
+                            tongSL += cthd.getSoLuong();
+                            tongTien += cthd.getSoLuong() * cthd.getDonGia();
+                        }
+                    }
+
+                    // Định dạng tổng tiền
+                    DecimalFormat df = new DecimalFormat("#,### VND");
+                    String formattedTongTien = df.format(tongTien);
+
+                    // Thêm dòng mới vào bảng
+                    model.addRow(new Object[]{
+                            stt,
+                            hd.getMaHoaDon(),
+                            dfDay.format(hd.getNgayTaoDon()), // Định dạng ngày theo kiểu dd-MM-yyyy
+                            hd.getNhanVien().getMaNV(),
+                            tongSL,
+                            formattedTongTien
+                    });
+                }
+            }
+        } else {
+            System.out.println("Ngày không hợp lệ hoặc không được chọn.");
         }
+    }
+
+
+    private void jButton_TimKiemActionPerformed(ActionEvent evt) {
+    }
+
+
+    private void jComboBox_TieuChiActionPerformed(ActionEvent evt) {
+       try {
+           String tieuChi = jComboBox_TieuChi.getSelectedItem().toString();
+           String danhSach=(String)jComboBox_DanhSach.getSelectedItem();
+           NhanVien_DAO nhanVien_dao=new NhanVien_DAO();
+           if (tieuChi.equalsIgnoreCase("Mã nhân viên")) {
+               jDateChooser_NgayTaoDon.setVisible(false);
+               jComboBox_DanhSach.setVisible(true);
+               jComboBox_DanhSach.removeAllItems();
+               jComboBox_DanhSach.addItem("");
+               addDataToTable();
+               try {
+                   for (entity.NhanVien x : nhanVien_dao.getDSNhanVien()) {
+                       jComboBox_DanhSach.addItem(x.getMaNV());
+                   }
+               } catch (SQLException e) {
+                   throw new RuntimeException(e);
+               }
+           } else if (tieuChi.equalsIgnoreCase("Mã hóa đơn")) {
+               jDateChooser_NgayTaoDon.setVisible(false);
+               jComboBox_DanhSach.setVisible(true);
+               jComboBox_DanhSach.removeAllItems();
+               jComboBox_DanhSach.addItem("");
+               addDataToTable();
+               for(HoaDon hd:listhD){
+                   jComboBox_DanhSach.addItem(hd.getMaHoaDon());
+               }
+           }
+           else if(tieuChi.equalsIgnoreCase("Ngày tạo đơn")){
+               jComboBox_DanhSach.setVisible(false);// NOI18N
+               jDateChooser_NgayTaoDon.setVisible(true);
+               addDataToTable();
+           }
+       }catch (Exception e){
+           e.printStackTrace();
+       }
     }
 
     private void jButton_LamMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_LamMoiActionPerformed
@@ -303,72 +445,41 @@ public class QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
 //        deleteSelectedRows();
     }//GEN-LAST:event_jButton_XoaNhieuActionPerformed
 
-    private void jButton_TimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_TimKiemActionPerformed
+    private void jComboBox_DanhSachActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_TimKiemActionPerformed
         // TODO add your handling code here:
         int n=jComboBox_TieuChi.getSelectedIndex();
-        String textTim=jTextField_TimKiem.getText();
-        int stt = 0;
-        if(textTim.trim().isEmpty()){
-            JOptionPane.showMessageDialog(this, "Tìm kiếm không được rỗng", "Lỗi", JOptionPane.WARNING_MESSAGE);
-            jTextField_TimKiem.requestFocus();
-        }else{
-            if(n==1){
-                danhSachTimKiem(stt, textTim,n);
-            }else if(n==2){
-                danhSachTimKiem(stt, textTim,n);
-            }else if(n==3){
-                danhSachTimKiem(stt, textTim,n);
-            }else{
-                JOptionPane.showMessageDialog(this, "Vui lòng chọn tiêu chí tìm kiếm", "Lỗi", JOptionPane.WARNING_MESSAGE);
+
+        try {
+            String day=jDateChooser_NgayTaoDon.getDateFormatString();
+            int stt = 0;
+            String textTim=(String)jComboBox_DanhSach.getSelectedItem();
+            try {
+                if(n==0){
+                    danhSachTimKiem(stt, textTim,n);
+                }else if(n==1){
+                    danhSachTimKiem(stt, textTim,n);
+                }
+            }catch (Exception ex){
+                ex.printStackTrace();
             }
+
+        }catch (Exception e){
+            e.printStackTrace();
         }
-    }//GEN-LAST:event_jButton_TimKiemActionPerformed
+
+    }
+
+    //GEN-LAST:event_jButton_TimKiemActionPerformed
     public void danhSachTimKiem(int stt, String textTim,int n){
         DefaultTableModel model = (DefaultTableModel) jTable_HoaDon.getModel();
         model.setRowCount(0);
         DateTimeFormatter dfDay=DateTimeFormatter.ofPattern("dd-MM-YYYY");
-        // Ép chuỗi thành LocalDate
-
-        for(HoaDon hd: dsHD.getAllHoaDon()){
-            if(textTim.equalsIgnoreCase(hd.getMaHoaDon()) && n==1){
-                stt++;
-                double tongTien = 0;
-                int tongSL = 0;
-                for (ChiTietHoaDon cthd : listCTHD) {
-                    if (hd.getMaHoaDon().equalsIgnoreCase(cthd.getHoaDon().getMaHoaDon())) {
-
-                        tongSL += cthd.getSoLuong();
-                        tongTien += cthd.getSoLuong() * cthd.getDonGia();
-                    }
-                }
-                DecimalFormat df = new DecimalFormat("#,###");
-                // Giả sử đây là số bạn muốn định dạng
-                String formattedTongTien = df.format(tongTien);
-                ((DefaultTableModel) jTable_HoaDon.getModel()).addRow(new Object[]{stt, hd.getMaHoaDon(),
-                       dfDay.format(hd.getNgayTaoDon()) , hd.getNhanVien().getMaNV(), tongSL, formattedTongTien});
-            }else if(textTim.equalsIgnoreCase(hd.getNhanVien().getMaNV()) && n==2){
-                stt++;
-                double tongTien = 0;
-                int tongSL = 0;
-                for (ChiTietHoaDon cthd : listCTHD) {
-                    if (hd.getMaHoaDon().equalsIgnoreCase(cthd.getHoaDon().getMaHoaDon())) {
-
-                        tongSL += cthd.getSoLuong();
-                        tongTien += cthd.getSoLuong() * cthd.getDonGia();
-                    }
-                }
-                DecimalFormat df = new DecimalFormat("#,###");
-                // Giả sử đây là số bạn muốn định dạng
-                String formattedTongTien = df.format(tongTien);
-                ((DefaultTableModel) jTable_HoaDon.getModel()).addRow(new Object[]{stt, hd.getMaHoaDon(),
-                        dfDay.format(hd.getNgayTaoDon()), hd.getNhanVien().getMaNV(), tongSL, formattedTongTien});
-            }else if(n==3){
-                DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-                LocalDate date = LocalDate.parse(textTim,inputFormatter);
-
-                DateTimeFormatter formatterText = DateTimeFormatter.ofPattern("YYYY-MM-dd");
-                LocalDate dateFormat=LocalDate.parse(formatterText.format(date));
-                if( dateFormat.isEqual(hd.getNgayTaoDon())){
+        if(textTim==null){
+            return;
+        }
+        try {
+            for(HoaDon hd: dsHD.getAllHoaDon()){
+                if(textTim.equalsIgnoreCase(hd.getMaHoaDon()) && n==0){
                     stt++;
                     double tongTien = 0;
                     int tongSL = 0;
@@ -379,14 +490,34 @@ public class QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
                             tongTien += cthd.getSoLuong() * cthd.getDonGia();
                         }
                     }
-                    DecimalFormat df = new DecimalFormat("#,### VND");
+                    DecimalFormat df = new DecimalFormat("#,###");
+                    // Giả sử đây là số bạn muốn định dạng
+                    String formattedTongTien = df.format(tongTien);
+                    ((DefaultTableModel) jTable_HoaDon.getModel()).addRow(new Object[]{stt, hd.getMaHoaDon(),
+                            dfDay.format(hd.getNgayTaoDon()) , hd.getNhanVien().getMaNV(), tongSL, formattedTongTien});
+                }else if(textTim.equalsIgnoreCase(hd.getNhanVien().getMaNV()) && n==1){
+                    stt++;
+                    double tongTien = 0;
+                    int tongSL = 0;
+                    for (ChiTietHoaDon cthd : listCTHD) {
+                        if (hd.getMaHoaDon().equalsIgnoreCase(cthd.getHoaDon().getMaHoaDon())) {
+
+                            tongSL += cthd.getSoLuong();
+                            tongTien += cthd.getSoLuong() * cthd.getDonGia();
+                        }
+                    }
+                    DecimalFormat df = new DecimalFormat("#,###");
                     // Giả sử đây là số bạn muốn định dạng
                     String formattedTongTien = df.format(tongTien);
                     ((DefaultTableModel) jTable_HoaDon.getModel()).addRow(new Object[]{stt, hd.getMaHoaDon(),
                             dfDay.format(hd.getNgayTaoDon()), hd.getNhanVien().getMaNV(), tongSL, formattedTongTien});
                 }
             }
+        }catch (Exception ex){
+            ex.printStackTrace();
         }
+        // Ép chuỗi thành LocalDate
+
     }
 
     private void jButton_XuatExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_XuatExcelActionPerformed
@@ -488,12 +619,14 @@ public class QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
 
     private ChiTietHoaDon_DAO dsCTHD = new ChiTietHoaDon_DAO();
     private List<ChiTietHoaDon> listCTHD = dsCTHD.getAllChiTietHoaDon();
+    private com.toedter.calendar.JDateChooser jDateChooser_NgayTaoDon;
     private javax.swing.JButton jButton_LamMoi;
     private javax.swing.JButton jButton_TaoHoaDon;
     private javax.swing.JButton jButton_TimKiem;
     private javax.swing.JButton jButton_XoaNhieu;
     private javax.swing.JButton jButton_XuatExcel;
     private javax.swing.JComboBox<String> jComboBox_TieuChi;
+    private javax.swing.JComboBox<String> jComboBox_DanhSach;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel_QuanLyHoaDon;
     private javax.swing.JPanel jPanel1;
