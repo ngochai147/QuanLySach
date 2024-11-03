@@ -6,10 +6,10 @@ package dao;
 
 import connectDB.ConnectDB;
 import entity.ChiTietPhieuNhapKho;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import entity.PhieuNhapKho;
+import entity.Sach;
+
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +23,33 @@ public class ChiTietPhieuNhap_DAO {
       public ChiTietPhieuNhap_DAO() {
         ds_ctpnk = new ArrayList<>();
     }
-      
+
+    public List<ChiTietPhieuNhapKho> getAllChiTietPhieuNhap() {
+        ArrayList<ChiTietPhieuNhapKho> listCTPN = new ArrayList<>();
+        Connection con = null;
+        Statement statement = null;
+        ResultSet rs = null;
+        try {
+            con = ConnectDB.getInstance().getConnection();
+            String sql = "SELECT * FROM ChiTietPhieuNhapKho";
+            statement = con.createStatement();
+            rs = statement.executeQuery(sql);
+
+            while (rs.next()) {
+                String maCTPN = rs.getString(1);
+                String maPN = rs.getString(2);
+                String maSach = rs.getString(4);
+                int soLuong = rs.getInt(3);
+                ChiTietPhieuNhapKho ctpn =new ChiTietPhieuNhapKho(maCTPN, new PhieuNhapKho(maPN), soLuong, new Sach(maSach));
+                listCTPN.add(ctpn);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return listCTPN;
+    }
+
     public boolean insertChiTietPhieuNhapKho(String maChiTietPhieuNhapKho, String maPhieuNhapKho, int soLuong, String isbn) {
         Connection con = ConnectDB.getInstance().getConnection();
         PreparedStatement stmt = null;

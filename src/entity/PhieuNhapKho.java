@@ -1,5 +1,6 @@
 package entity;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -8,10 +9,9 @@ public class PhieuNhapKho {
     private LocalDate ngayLap;
     private NhanVien nhanVien;
     private KhoHang khoHangNhap;
-    private KhoHang khoHangXuat;
     private  int soLuong;
 
-    public PhieuNhapKho(){
+    public PhieuNhapKho(String maPNK, Date ngayLap, NhanVien nhanVien, KhoHang khoHang, int soLuong){
 
     }
     public PhieuNhapKho(String maPhieuNhapKho){
@@ -19,12 +19,11 @@ public class PhieuNhapKho {
 
     }
 
-    public PhieuNhapKho(String maPhieuNhapKho, LocalDate ngayLap, NhanVien nhanVien, KhoHang khoHangNhap, KhoHang khoHangXuat, int soLuong) {
+    public PhieuNhapKho(String maPhieuNhapKho, LocalDate ngayLap, NhanVien nhanVien, KhoHang khoHangNhap, int soLuong) {
         this.maPhieuNhapKho = maPhieuNhapKho;
         this.ngayLap = ngayLap;
         this.nhanVien = nhanVien;
         this.khoHangNhap = khoHangNhap;
-        this.khoHangXuat = khoHangXuat;
         this.soLuong = soLuong;
     }
 
@@ -60,14 +59,6 @@ public class PhieuNhapKho {
         this.khoHangNhap = khoHangNhap;
     }
 
-    public KhoHang getKhoHangXuat() {
-        return khoHangXuat;
-    }
-
-    public void setKhoHangXuat(KhoHang khoHangXuat) {
-        this.khoHangXuat = khoHangXuat;
-    }
-
     public int getSoLuong() {
         return soLuong;
     }
@@ -96,7 +87,6 @@ public class PhieuNhapKho {
                 ", ngayLap=" + ngayLap +
                 ", nhanVien=" + nhanVien +
                 ", khoHangNhap=" + khoHangNhap +
-                ", khoHangXuat=" + khoHangXuat +
                 ", soLuong=" + soLuong +
                 '\'' +
                 '}';
