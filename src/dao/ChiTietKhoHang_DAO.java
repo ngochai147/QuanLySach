@@ -30,7 +30,103 @@ public class ChiTietKhoHang_DAO {
     public ChiTietKhoHang_DAO(List<ChiTietKhoHang> ctKhoHang) {
         ct_khoHang = ctKhoHang;
     }
-   
+
+    public List<ChiTietKhoHang> getChiTietKhoHangTheoMaKho(String maKhoHang) {
+        List<ChiTietKhoHang> dsChiTietKhoHang = new ArrayList<>();
+        String sql = "SELECT * FROM ChiTietKhoHang WHERE maKhoHang = ?";
+        Connection con = ConnectDB.getInstance().getConnection();
+        PreparedStatement stmt = null;
+
+        try {
+            stmt = con.prepareStatement(sql);
+            stmt.setString(1, maKhoHang); // Gán tham số mã kho hàng vào câu lệnh SQL
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                String maCTKhoHang = rs.getString("maChiTietKhoHang");
+                String ISBN = rs.getString("ISBN");
+                String maKho = rs.getString("maKhoHang");
+                int soLuong = rs.getInt("soLuong");
+                dsChiTietKhoHang.add(new ChiTietKhoHang(maCTKhoHang, soLuong, new Sach(ISBN), new KhoHang(maKho)));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return dsChiTietKhoHang;
+    }
+
+    public List<ChiTietKhoHang> getDSSachTrongKho(String maKhoHang) {
+        String sql = "SELECT * FROM ChiTietKhoHang WHERE maKhoHang = ?";
+        Connection con = ConnectDB.getInstance().getConnection();
+        PreparedStatement stmt = null;
+        ChiTietKhoHang chiTietKhoHang = null;
+
+        try {
+            stmt = con.prepareStatement(sql);
+            stmt.setString(1, maKhoHang);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                String maCTKhoHang = rs.getString("maChiTietKhoHang");
+                String ISBN = rs.getString("ISBN");
+                int soLuong = rs.getInt("soLuong");
+                chiTietKhoHang = new ChiTietKhoHang(maCTKhoHang, soLuong, new Sach(ISBN), new KhoHang(maKhoHang));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return (List<ChiTietKhoHang>) chiTietKhoHang;
+    }
+
+    public ChiTietKhoHang kiemTraTonTaiISBNTrongKho(String isbn,String maKhoHang) {
+        String sql = "SELECT * FROM ChiTietKhoHang WHERE maKhoHang = ?";
+        Connection con = ConnectDB.getInstance().getConnection();
+        PreparedStatement stmt = null;
+        ChiTietKhoHang chiTietKhoHang = null;
+
+        try {
+            stmt = con.prepareStatement(sql);
+            stmt.setString(1, maKhoHang);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                String maCTKhoHang = rs.getString("maChiTietKhoHang");
+                String ISBN = rs.getString("ISBN");
+                int soLuong = rs.getInt("soLuong");
+                chiTietKhoHang = new ChiTietKhoHang(maCTKhoHang, soLuong, new Sach(ISBN), new KhoHang(maKhoHang));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return chiTietKhoHang;
+    }
+
     public List<String> getMaChiTietKhoHang(){
         List<String> dsMaChiTietKhoHang = new ArrayList<>();
         String sql = "select maChiTietKhoHang from ChiTietKhoHang";

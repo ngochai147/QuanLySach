@@ -25,7 +25,7 @@ public class PhieuNhap_DAO {
         ds_pnk = new ArrayList<>();
     }
 
-    public ArrayList<PhieuNhapKho> getAllPhieuNhap() {
+    public ArrayList<PhieuNhapKho> getAllPhieuNhapKho() {
         ArrayList<PhieuNhapKho> dsPNK = new ArrayList<PhieuNhapKho>();
         Connection con = null;
         Statement statement = null;
@@ -172,5 +172,4 @@ public class PhieuNhap_DAO {
         }
         return pnk;
     }
-    
 }
