@@ -11,6 +11,7 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -36,12 +37,10 @@ public class ChinhSuaThongTinSach extends javax.swing.JDialog {
         jTextField_GiaCu.setText(String.valueOf(sach.getGiaGoc()));
 
     }
-    private  ChinhSuaThongTinSach(java.awt.Frame parent, boolean modal){
+
+    private ChinhSuaThongTinSach(java.awt.Frame parent, boolean modal) {
 
     }
-
- 
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -193,10 +192,35 @@ public class ChinhSuaThongTinSach extends javax.swing.JDialog {
 
     private void jButton_LuuActionPerformed(java.awt.event.ActionEvent evt) throws SQLException {//GEN-FIRST:event_jButton_LuuActionPerformed
         // TODO add your handling code here:
+        String donGiaStr = jTextField_GiaMoi.getText();
+            Double donGia = null;
+            try {
+                donGia = Double.valueOf(donGiaStr);
+                if (donGia <= 0) {
+                    JOptionPane.showMessageDialog(this, "Đơn giá phải lớn hơn 0.", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                    jTextField_GiaMoi.selectAll();
+                    jTextField_GiaMoi.requestFocus();
+                    return;
+                }
 
-        Sach s = new Sach(sach.getISBN(), sach.getTenSach(), sach.getTacGia(), sach.getNamXB(), sach.getNhaXB(), sach.getSoLuong(), Double.parseDouble(jTextField_GiaMoi.getText()), sach.getLoaiSach(), sach.getAnh(), sach.getTrangThai());
-        dsSach.editDataToTable(s);
-        this.dispose();
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Đơn giá phải là một số hợp lệ.", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                jTextField_GiaMoi.selectAll();
+                jTextField_GiaMoi.requestFocus();
+                return;
+            }
+            
+        if (JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn thay đổi giá sách ?", "Thông báo", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            Sach s = new Sach(sach.getISBN(), sach.getTenSach(), sach.getTacGia(), sach.getNamXB(), sach.getNhaXB(), sach.getSoLuong(), donGia, sach.getLoaiSach(), sach.getAnh(), sach.getTrangThai());
+            this.dispose();
+            JOptionPane.showConfirmDialog(this, "Cập nhật giá sách thành công", "Thông báo", JOptionPane.OK_OPTION);
+            dsSach.editDataToTable(s);
+            
+        } else {
+            jTextField_GiaMoi.selectAll();
+            jTextField_GiaMoi.requestFocus();
+        }
+
     }//GEN-LAST:event_jButton_LuuActionPerformed
 
     /**

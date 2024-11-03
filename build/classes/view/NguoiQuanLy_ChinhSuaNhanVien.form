@@ -159,10 +159,10 @@
                           </Group>
                           <Component id="jTextField_TenNhanVien" alignment="0" max="32767" attributes="0"/>
                           <Component id="jTextField_MaNhanVien" alignment="0" pref="472" max="32767" attributes="0"/>
-                          <Component id="jTextField_ChucVu" alignment="0" max="32767" attributes="0"/>
                           <Component id="jTextField_TenDangNhap" alignment="0" max="32767" attributes="0"/>
                           <Component id="jTextField_MatKhau" alignment="0" max="32767" attributes="0"/>
                           <Component id="jTextField_DiaChi" max="32767" attributes="0"/>
+                          <Component id="jComboBox_ChucVu" alignment="0" min="-2" pref="464" max="-2" attributes="0"/>
                       </Group>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -239,12 +239,12 @@
                               </Group>
                           </Group>
                           <Group type="102" attributes="0">
-                              <EmptySpace pref="38" max="32767" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="jLabel_ChucVu" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
-                                  <Component id="jTextField_ChucVu" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
+                              <EmptySpace pref="42" max="32767" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jLabel_ChucVu" min="-2" pref="30" max="-2" attributes="0"/>
+                                  <Component id="jComboBox_ChucVu" min="-2" pref="38" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="jLabel_TenDangNhap" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                                   <Component id="jTextField_TenDangNhap" alignment="3" min="-2" pref="41" max="-2" attributes="0"/>
@@ -372,9 +372,6 @@
             </Component>
             <Component class="javax.swing.JTextField" name="jTextField_TenNhanVien">
               <Properties>
-                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="f0" green="f0" red="f0" type="rgb"/>
-                </Property>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Arial" size="20" style="0"/>
                 </Property>
@@ -383,11 +380,11 @@
                     <BevelBorder/>
                   </Border>
                 </Property>
+                <Property name="opaque" type="boolean" value="true"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="jTextField_MaNhanVien">
               <Properties>
-                <Property name="editable" type="boolean" value="false"/>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="f0" green="f0" red="f0" type="rgb"/>
                 </Property>
@@ -440,9 +437,6 @@
             </Component>
             <Component class="javax.swing.JTextField" name="jTextField_SoDienThoai">
               <Properties>
-                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="f0" green="f0" red="f0" type="rgb"/>
-                </Property>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Arial" size="20" style="0"/>
                 </Property>
@@ -463,24 +457,6 @@
             </Component>
             <Component class="javax.swing.JTextField" name="jTextField_Email">
               <Properties>
-                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="f0" green="f0" red="f0" type="rgb"/>
-                </Property>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Arial" size="20" style="0"/>
-                </Property>
-                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                  <Border info="org.netbeans.modules.form.compat2.border.SoftBevelBorderInfo">
-                    <BevelBorder/>
-                  </Border>
-                </Property>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JTextField" name="jTextField_ChucVu">
-              <Properties>
-                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="f0" green="f0" red="f0" type="rgb"/>
-                </Property>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Arial" size="20" style="0"/>
                 </Property>
@@ -504,6 +480,7 @@
                     <BevelBorder/>
                   </Border>
                 </Property>
+                <Property name="focusable" type="boolean" value="false"/>
               </Properties>
             </Component>
             <Component class="com.toedter.calendar.JDateChooser" name="jDateChooser_NgaySinh">
@@ -573,9 +550,6 @@
             </Container>
             <Component class="javax.swing.JTextField" name="jTextField_MatKhau">
               <Properties>
-                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="f0" green="f0" red="f0" type="rgb"/>
-                </Property>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Arial" size="20" style="0"/>
                 </Property>
@@ -596,9 +570,6 @@
             </Component>
             <Component class="javax.swing.JTextField" name="jTextField_DiaChi">
               <Properties>
-                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="f0" green="f0" red="f0" type="rgb"/>
-                </Property>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Arial" size="20" style="0"/>
                 </Property>
@@ -608,6 +579,22 @@
                   </Border>
                 </Property>
               </Properties>
+            </Component>
+            <Component class="javax.swing.JComboBox" name="jComboBox_ChucVu">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Arial" size="20" style="1"/>
+                </Property>
+                <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                  <StringArray count="2">
+                    <StringItem index="0" value="Nh&#xe2;n vi&#xea;n"/>
+                    <StringItem index="1" value="Th&#x1ee7; kho"/>
+                  </StringArray>
+                </Property>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>

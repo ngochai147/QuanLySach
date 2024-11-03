@@ -353,7 +353,7 @@ public class ThuKho_NhapKho extends JInternalFrame {
         return tongSoLuong;
     }
 
-    public void tao_PhieuNhapKho_tuThemSach(String isbn, java.sql.Date ngayLap, int soLuong, String tenKho) throws SQLException {
+    public void tao_PhieuNhapKho_tuThemSach(String isbn,LocalDate ngayLap, int soLuong, String tenKho) throws SQLException {
         // Thêm sách mới vào bảng
         Sach sach = sach_dao.getSachTheoMaSach(isbn);
 
@@ -362,20 +362,13 @@ public class ThuKho_NhapKho extends JInternalFrame {
         String ma_PNK = taoTuDong_MaPhieuNhapKho();
         String maKH = khoHang_dao.getMaKhoTheoTenKho(tenKho);
         int tong_SL = layTongSoLuong();
-        boolean isInserted = pn_dao.insertPhieuNhapKho(ma_PNK, ngayLap, "22690761", maKH, tong_SL);
+        boolean isInserted = pn_dao.insertPhieuNhapKho(ma_PNK, java.sql.Date.valueOf(ngayLap), "22690761", maKH, tong_SL);
 
         if (isInserted) {
             System.out.println("Thêm phiếu nhập kho thành công!");
         } else {
             System.out.println("Thêm phiếu nhập kho thất bại!");
         }
-
-        try {
-            themChiTietPhieuNhapKho(model, ma_PNK);
-        } catch (SQLException ex) {
-            Logger.getLogger(ThuKho_NhapKho.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
         try {
             themChiTietKhoHang(model, maKH);
             themChiTietPhieuNhapKho(model, ma_PNK);
@@ -664,11 +657,11 @@ public class ThuKho_NhapKho extends JInternalFrame {
 
             boolean isInserted = pn_dao.insertPhieuNhapKho(ma_PNK, sqlDate, "22690761", maKH, tong_SL);
 
-//            if (isInserted) {
-//                System.out.println("Thêm phiếu nhập kho thành công!");
-//            } else {
-//                System.out.println("Thêm phiếu nhập kho thất bại!");
-//            }
+            if (isInserted) {
+                System.out.println("Thêm phiếu nhập kho thành công!");
+            } else {
+                System.out.println("Thêm phiếu nhập kho thất bại!");
+            }
             try {
                 themChiTietKhoHang(model, maKH);
                 themChiTietPhieuNhapKho(model, ma_PNK);
