@@ -17,9 +17,8 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
+import java.awt.*;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -49,10 +48,13 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
     private final DecimalFormat df = new DecimalFormat("#");
     private ChiTietKhoHang_DAO chiTietKhoHangDao;
     private String tieuChi;
+    private boolean isTimKiemUpdated ;
+    private Color customGreen;
+
     /**
      * Creates new form TrangQLSach_GUI
      */
-   
+
     public Sach_QuanLySach() throws SQLException {
         sach_dao = new Sach_DAO();
         initComponents();
@@ -61,9 +63,11 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
         ui.setNorthPane(null);
         model = (DefaultTableModel) jTable_Sach.getModel();
         addButtonToTable(model);
-        for (Sach x : sach_dao.getDSSach()){
-            if(x.getTrangThai().equalsIgnoreCase("Đang bán")){
-
+        jComboBox_TimKiem.addItem("");
+        model.setRowCount(0);
+        for (Sach x : sach_dao.getDSSach()) {
+            if (x.getTrangThai().equalsIgnoreCase("Đang bán")) {
+                jComboBox_TimKiem.addItem(x.getISBN());
                 model.addRow(new Object[]{x.getISBN(),
                         x.getTenSach(),
                         x.getLoaiSach().getTenLoai(),
@@ -71,11 +75,10 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
                         df.format(x.getGiaGoc()) + " VND"});
             }
         }
+
         chiTietKhoHangDao = new ChiTietKhoHang_DAO();
         JTableHeader header =  jTable_Sach.getTableHeader();
         header.setFont(new Font("Arial", Font.BOLD, 18));
-
-
     }
 
 
@@ -149,8 +152,8 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
         jComboBox_TieuChi.setBackground(new java.awt.Color(102, 102, 0));
         jComboBox_TieuChi.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jComboBox_TieuChi.setForeground(new java.awt.Color(255, 255, 255));
-        jComboBox_TieuChi.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {"", "Mã sách", "Tác giả", "Loại sách"}));
-        Color customGreen = new Color(102,102,0);
+        jComboBox_TieuChi.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {"Mã sách", "Tác giả", "Loại sách"}));
+        customGreen = new Color(102,102,0);
         jComboBox_TieuChi.setRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
@@ -232,20 +235,28 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
         jPanel1.add(jButton_XuatExcel);
         jButton_XuatExcel.setBounds(18, 612, 140, 46);
 
-        jComboBox_TimKiem.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
-        jComboBox_TimKiem.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jComboBox_TimKiemMouseClicked(evt);
+        jComboBox_TimKiem.setBackground(new java.awt.Color(102, 102, 0));
+        jComboBox_TimKiem.setFont(new java.awt.Font("Arial", 1, 20));
+        customGreen = new Color(102,102,0);
+        jComboBox_TimKiem.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+
+                if (isSelected) {
+                    c.setBackground(customGreen);   // Màu nền khi mục được chọn
+                    c.setForeground(Color.WHITE);   // Màu chữ khi mục được chọn
+                } else {
+                    c.setBackground(Color.white); // Màu nền cho các mục không được chọn
+                    c.setForeground(customGreen);      // Màu chữ cho các mục không được chọn
+                }
+
+                return c;
             }
         });
         jComboBox_TimKiem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox_TimKiemActionPerformed(evt);
-            }
-        });
-        jComboBox_TimKiem.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                jComboBox_TimKiemPropertyChange(evt);
             }
         });
         jPanel1.add(jComboBox_TimKiem);
@@ -291,21 +302,9 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
         if(jTable_Sach.isEditing()){
             jTable_Sach.getCellEditor().stopCellEditing();
         }
-        model.setRowCount(0);
-        try {
-            for (Sach x : sach_dao.getDSSach()){
-                System.out.println(x.getAnh().getUrl());
-                if(x.getTrangThai().equalsIgnoreCase("Đang bán")){
-                    model.addRow(new Object[]{x.getISBN(),
-                            x.getTenSach(),
-                            x.getLoaiSach().getTenLoai(),
-                            x.getSoLuong(),
-                            df.format(x.getGiaGoc()) + " VND"});
-                }
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(Sach_QuanLySach.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
+        jComboBox_TieuChi.setSelectedIndex(0);
+        getTableDataDefault();
     }//GEN-LAST:event_jButton_LamMoiActionPerformed
 
     private void jButton_XoaNhieuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_XoaNhieuActionPerformed
@@ -315,7 +314,7 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
         }
         int[] n = jTable_Sach.getSelectedRows();
         for (int i = n.length - 1; i >= 0; i--) {
-            String ma = model.getValueAt(n[i], 1).toString();
+            String ma = model.getValueAt(n[i], 0).toString();
             Sach s = null;
             try {
                 s = sach_dao.getSachTheoMaSach(ma);
@@ -336,7 +335,7 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jButton_XoaNhieuActionPerformed
 
-    private void jButton_XuatExcelActionPerformed(java.awt.event.ActionEvent evt) {                                                  
+    private void jButton_XuatExcelActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         try {
             JFileChooser jFileChooser = new JFileChooser();
@@ -375,7 +374,23 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
                 sheet.setColumnWidth(7, 15 * 256); // Độ rộng cho cột Giá gốc
 
                 // Lấy danh sách sách
-                List<Sach> dsSach = sach_dao.getDSSach();  // Lấy toàn bộ danh sách sách
+                List<Sach> dsSach = new ArrayList<>();
+                int[] n = jTable_Sach.getSelectedRows();
+                if(n.length == 0){
+                    // Lấy toàn bộ danh sách sách
+                    dsSach = sach_dao.getDSSach();
+                }else {
+                    for (int j : n) {
+                        String ma = model.getValueAt(j, 0).toString();
+                        Sach s = null;
+                        try {
+                            s = sach_dao.getSachTheoMaSach(ma);
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+                        dsSach.add(s);
+                    }
+                }
 
                 // Xuất tất cả thông tin chi tiết của sách
                 int rowIndex = 1;  // Bắt đầu từ hàng thứ 2 (hàng 1 là tiêu đề)
@@ -404,6 +419,7 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
                 }
 
                 JOptionPane.showMessageDialog(this, "Xuất file Excel thành công!");
+                Desktop.getDesktop().open(saveFile);
             } else {
                 System.out.println("Người dùng đã hủy chọn tệp lưu.");
             }
@@ -413,13 +429,15 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(this, "Có lỗi xảy ra: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
-    }                                                 
+    }
 
     private void jComboBox_TieuChiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_TieuChiActionPerformed
         // TODO add your handling code here:
         tieuChi = jComboBox_TieuChi.getSelectedItem().toString();
+        isTimKiemUpdated = false;
         if (tieuChi.equalsIgnoreCase("Mã sách")) {
             jComboBox_TimKiem.removeAllItems();
+            jComboBox_TimKiem.addItem("");
             try {
                 for (Sach x : sach_dao.getDSSach()) {
                     if(x.getTrangThai().equalsIgnoreCase("Đang bán")){
@@ -431,6 +449,7 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
             }
         } else if (tieuChi.equalsIgnoreCase("Loại sách")) {
             jComboBox_TimKiem.removeAllItems();
+            jComboBox_TimKiem.addItem("");
             Set<String> dsLoaiSach = new HashSet<>();
             try {
                 for (Sach x : sach_dao.getDSSach()) {
@@ -447,10 +466,10 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
             }
         } else {
             jComboBox_TimKiem.removeAllItems();
+            jComboBox_TimKiem.addItem("");
             Set<String> dsTacGia = new HashSet<>();
             try {
                 for (Sach x : sach_dao.getDSSach()) {
-
                     if(x.getTrangThai().equalsIgnoreCase("Đang bán")){
                         String tacGia = x.getTacGia();
                         if(!dsTacGia.contains(tacGia)) {
@@ -459,10 +478,12 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
                         }
                     }
                 }
+
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
         }
+
     }//GEN-LAST:event_jComboBox_TieuChiActionPerformed
 
     private void jComboBox_TimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_TimKiemActionPerformed
@@ -470,111 +491,72 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
         if(jTable_Sach.isEditing()){
             jTable_Sach.getCellEditor().stopCellEditing();
         }
+        Object selectedItem = jComboBox_TimKiem.getSelectedItem();
+        if (selectedItem == null) {
+            return; // Không làm gì nếu không có item nào được chọn
+        }
         String timKiem = jComboBox_TimKiem.getSelectedItem().toString();
         String tieuChi = jComboBox_TieuChi.getSelectedItem().toString();
-        if(tieuChi.equalsIgnoreCase("Mã sách")){
-            Sach sach = null;
-            try {
-                sach = sach_dao.getSachTheoMaSach(timKiem);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-            Sach_ThongTinSach thongTinSach = null;
-            try {
-                thongTinSach = new Sach_ThongTinSach(new JFrame(), true, sach);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-            thongTinSach.setVisible(true);
 
+        if(tieuChi.equalsIgnoreCase("Mã sách")) {
+            if (timKiem.equalsIgnoreCase("")) {
+                getTableDataDefault();
+            }else {
+                model.setRowCount(0);
+                try {
+                    Sach sach = sach_dao.getSachTheoMaSach(timKiem);
+                    model.addRow(new Object[]{sach.getISBN(),
+                            sach.getTenSach(),
+                            sach.getLoaiSach().getTenLoai(),
+                            sach.getSoLuong(),
+                            df.format(sach.getGiaGoc()) + " VND"});
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }else if(tieuChi.equalsIgnoreCase("Loại sách")){
+            if (timKiem.equalsIgnoreCase("")) {
+                getTableDataDefault();
+            }else {
+                try {
+                    model.setRowCount(0);
+                    ArrayList<Sach> dsLoaiSach = sach_dao.getDSSachTheoTenLoai(timKiem);
+
+                    for (Sach x : dsLoaiSach){
+                        if(x.getTrangThai().equalsIgnoreCase("Đang bán")){
+                            model.addRow(new Object[]{x.getISBN(),
+                                    x.getTenSach(),
+                                    x.getLoaiSach().getTenLoai(),
+                                    x.getSoLuong(),
+                                    df.format(x.getGiaGoc()) + " VND"});
+                        }
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(Sach_QuanLySach.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }else {
+            if (timKiem.equalsIgnoreCase("")) {
+                 getTableDataDefault();
+            }else {
+                try {
+                    model.setRowCount(0);
+                    ArrayList<Sach> dsLoaiSach = sach_dao.getDSSachTheoTacGia(timKiem);
+                    for (Sach x : dsLoaiSach){
+                        if(x.getTrangThai().equalsIgnoreCase("Đang bán")){
+                            model.addRow(new Object[]{x.getISBN(),
+                                    x.getTenSach(),
+                                    x.getLoaiSach().getTenLoai(),
+                                    x.getSoLuong(),
+                                    df.format(x.getGiaGoc()) + " VND"});
+                        }
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(Sach_QuanLySach.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
-
-        //        int i = -1;
-        //        String timKiem = jComboBox_TimKiem.getSelectedItem().toString();
-        //        String tieuChi = jComboBox_TieuChi.getSelectedItem().toString();
-        //        if(tieuChi.equalsIgnoreCase("Mã sách")){
-            //            try {
-                //                Sach sach = sach_dao.getSachTheoMaSach(timKiem);
-                //                i = sach_dao.getDSSach().indexOf(sach);
-                //                if(i >= 0){
-                    //                    try {
-                        //                        jTable_Sach.setRowSelectionInterval(i, i);
-                        //                        Sach_ThongTinSach thongTinSach = null;
-                        //                        thongTinSach = new Sach_ThongTinSach(new javax.swing.JFrame(), true, sach);
-                        //                        thongTinSach.setVisible(true);
-                        //                    } catch (SQLException ex) {
-                        //                        Logger.getLogger(Sach_QuanLySach.class.getName()).log(Level.SEVERE, null, ex);
-                        //                    }
-                    //                }
-                //            } catch (SQLException ex) {
-                //                Logger.getLogger(Sach_QuanLySach.class.getName()).log(Level.SEVERE, null, ex);
-                //            }
-            //        }else if(tieuChi.equalsIgnoreCase("Loại sách")){
-            //            try {
-                //                model.setRowCount(0);
-                //                ArrayList<Sach> dsLoaiSach = sach_dao.getDSSachTheoTenLoai(timKiem);
-                //
-                //                for (Sach x : dsLoaiSach){
-                    //                    if(x.getTrangThai().equalsIgnoreCase("Đang bán")){
-                        //                        model.addRow(new Object[]{x.getISBN(),
-                            //                                x.getTenSach(),
-                            //                                x.getLoaiSach().getTenLoai(),
-                            //                                x.getSoLuong(),
-                            //                                df.format(x.getGiaGoc()) + " VND"});
-                    //                    }
-                //                }
-            //            } catch (SQLException ex) {
-            //                Logger.getLogger(Sach_QuanLySach.class.getName()).log(Level.SEVERE, null, ex);
-            //            }
-        //        }else {
-        //            try {
-            //                model.setRowCount(0);
-            //                ArrayList<Sach> dsLoaiSach = sach_dao.getDSSachTheoTacGia(timKiem);
-            //                for (Sach x : dsLoaiSach){
-                //                    if(x.getTrangThai().equalsIgnoreCase("Đang bán")){
-                    //                        model.addRow(new Object[]{x.getISBN(),
-                        //                                x.getTenSach(),
-                        //                                x.getLoaiSach().getTenLoai(),
-                        //                                x.getSoLuong(),
-                        //                                df.format(x.getGiaGoc()) + " VND"});
-                //                    }
-            //                }
-        //            } catch (SQLException ex) {
-        //                Logger.getLogger(Sach_QuanLySach.class.getName()).log(Level.SEVERE, null, ex);
-        //            }
-        //        }
-
     }//GEN-LAST:event_jComboBox_TimKiemActionPerformed
-
-    private void jComboBox_TimKiemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jComboBox_TimKiemMouseClicked
-        // TODO add your handling code here:
-        
-    }//GEN-LAST:event_jComboBox_TimKiemMouseClicked
-
-    private void jComboBox_TimKiemPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jComboBox_TimKiemPropertyChange
-        // TODO add your handling code here:
-//        if(jTable_Sach.isEditing()){
-//            jTable_Sach.getCellEditor().stopCellEditing();
-//        }
-//        String timKiem = jComboBox_TimKiem.getSelectedItem().toString();
-//        String tieuChi = jComboBox_TieuChi.getSelectedItem().toString();
-//        if(tieuChi.equalsIgnoreCase("Mã sách")){
-//            Sach sach = null;
-//            try {
-//                sach = sach_dao.getSachTheoMaSach(timKiem);
-//            } catch (SQLException e) {
-//                throw new RuntimeException(e);
-//            }
-//            Sach_ThongTinSach thongTinSach = null;
-//            try {
-//                thongTinSach = new Sach_ThongTinSach(new JFrame(), true, sach);
-//            } catch (SQLException e) {
-//                throw new RuntimeException(e);
-//            }
-//            thongTinSach.setVisible(true);
-//
-//        }
-    }//GEN-LAST:event_jComboBox_TimKiemPropertyChange
 
 
     private void addButtonToTable(DefaultTableModel model){
@@ -616,10 +598,25 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
         jTable_Sach.getColumnModel().getColumn(5).setCellRenderer(new TableActionRender(2));
         jTable_Sach.getColumnModel().getColumn(5).setCellEditor(new TableActionCellEditor(event, 2));
     }
-
+    private void getTableDataDefault(){
+        model.setRowCount(0);
+        try {
+            for (Sach x : sach_dao.getDSSach()) {
+                if (x.getTrangThai().equalsIgnoreCase("Đang bán")) {
+                    model.addRow(new Object[]{x.getISBN(),
+                            x.getTenSach(),
+                            x.getLoaiSach().getTenLoai(),
+                            x.getSoLuong(),
+                            df.format(x.getGiaGoc()) + " VND"});
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Sach_QuanLySach.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     public boolean addDataToTable(Sach x) throws SQLException{
         if(sach_dao.themSach(x)){
-            model.addRow(new Object[]{x.getISBN(), x.getTenSach(), x.getLoaiSach().getTenLoai(), x.getSoLuong(), df.format(x.getGiaGoc()) + " VND"});
+            model.insertRow(0, new Object[]{x.getISBN(), x.getTenSach(), x.getLoaiSach().getTenLoai(), x.getSoLuong(), df.format(x.getGiaGoc()) + " VND"});
             jComboBox_TimKiem.addItem(x.getISBN());
             JOptionPane.showMessageDialog(this, "Them thanh cong");
             return true;

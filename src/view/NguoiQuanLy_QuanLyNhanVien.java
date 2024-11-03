@@ -16,12 +16,12 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.awt.Color;
-import java.awt.Component;
+import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -42,6 +42,8 @@ public class NguoiQuanLy_QuanLyNhanVien extends javax.swing.JInternalFrame {
     private final DefaultTableModel model;
     private TaiKhoan_DAO taiKhoan_dao;
     private String tieuChi;
+    private Color customGreen;
+
     /**
      * Creates new form TrangQuanLyNhanVien_GUI
      * @throws java.sql.SQLException
@@ -55,7 +57,8 @@ public class NguoiQuanLy_QuanLyNhanVien extends javax.swing.JInternalFrame {
         ui.setNorthPane(null);
         model = (DefaultTableModel) jTable_QuanLyNhanVien.getModel();
         addButtonToTable(model);
-        jComboBox_TimKiem.removeAllItems();
+        jComboBox_TimKiem.addItem("");
+        model.setRowCount(0);
         for (NhanVien x : nhanVien_dao.getDSNhanVien()){
             if(!x.getChucVu().getChucVu().equalsIgnoreCase("Quản lý") && x.getTrangThai().equalsIgnoreCase("Đang làm")){
                 jComboBox_TimKiem.addItem(x.getMaNV());
@@ -66,54 +69,7 @@ public class NguoiQuanLy_QuanLyNhanVien extends javax.swing.JInternalFrame {
             }
         }
        
-//        if(jTable_QuanLyNhanVien.isEditing()){
-//            jTable_QuanLyNhanVien.getCellEditor().stopCellEditing();
-//        }
-//        int i = -1;
-//        String timKiem = jComboBox_TimKiem.getSelectedItem().toString();
-//        String tieuChi = jComboBox_TieuChi.getSelectedItem().toString();
-//        if(tieuChi.equalsIgnoreCase("Mã nhân viên")){
-//            try {
-//                NhanVien nv = nhanVien_dao.getNhanVienTheoMaNV(timKiem);
-//                i = nhanVien_dao.getDSNhanVien().indexOf(nv);
-//                if(i >= 0){
-//                    NguoiQuanLy_ThongTinChiTietNhanVien nguoiQuanLy_ThongTinChiTietNhanVien= null;
-//                    try {
-//                        nguoiQuanLy_ThongTinChiTietNhanVien = new NguoiQuanLy_ThongTinChiTietNhanVien(new javax.swing.JFrame(), true, nv);
-//                    } catch (SQLException e) {
-//                        throw new RuntimeException(e);
-//                    }
-//                    nguoiQuanLy_ThongTinChiTietNhanVien.setVisible(true);
-//                }
-//            } catch (SQLException ex) {
-//                Logger.getLogger(Sach_QuanLySach.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
-//        else if(tieuChi.equalsIgnoreCase("Tên nhân viên")){
-//            try {
-//                model.setRowCount(0);
-//                for (NhanVien x : nhanVien_dao.getDSNhanVienTheoTenNhanVien(timKiem)){
-//                    model.addRow(new Object[]{
-//                            x.getMaNV(), x.getHoTen(), x.getSoDienThoai(),
-//                            x.isGioiTinh() ? "Nữ" : "Nam", x.getChucVu().getChucVu()
-//                    });
-//                }
-//            } catch (SQLException ex) {
-//                Logger.getLogger(Sach_QuanLySach.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        } else {
-//            try {
-//                model.setRowCount(0);
-//                for (NhanVien x : nhanVien_dao.getDSNhanVienTheoChucVu(timKiem)){
-//                    model.addRow(new Object[]{
-//                            x.getMaNV(), x.getHoTen(), x.getSoDienThoai(),
-//                            x.isGioiTinh() ? "Nữ" : "Nam", x.getChucVu().getChucVu()
-//                    });
-//                }
-//            } catch (SQLException ex) {
-//                Logger.getLogger(Sach_QuanLySach.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
+
     }
 
     @SuppressWarnings("unchecked")
@@ -151,11 +107,7 @@ public class NguoiQuanLy_QuanLyNhanVien extends javax.swing.JInternalFrame {
         jButton_XoaNhieu.setBorder(null);
         jButton_XoaNhieu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                try {
-                    jButton_XoaNhieuActionPerformed(evt);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
+                jButton_XoaNhieuActionPerformed(evt);
             }
         });
         jPanel1.add(jButton_XoaNhieu);
@@ -165,7 +117,7 @@ public class NguoiQuanLy_QuanLyNhanVien extends javax.swing.JInternalFrame {
         jComboBox_TieuChi.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jComboBox_TieuChi.setForeground(new java.awt.Color(255, 255, 255));
         jComboBox_TieuChi.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã nhân viên", "Tên nhân viên", "Chức vụ" }));
-        Color customGreen = new Color(102,102,0);
+        customGreen = new Color(102,102,0);
         jComboBox_TieuChi.setRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
@@ -185,11 +137,7 @@ public class NguoiQuanLy_QuanLyNhanVien extends javax.swing.JInternalFrame {
         jComboBox_TieuChi.setBorder(null);
         jComboBox_TieuChi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                try {
-                    jComboBox_TieuChiActionPerformed(evt);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
+                jComboBox_TieuChiActionPerformed(evt);
             }
         });
         jPanel1.add(jComboBox_TieuChi);
@@ -207,9 +155,16 @@ public class NguoiQuanLy_QuanLyNhanVien extends javax.swing.JInternalFrame {
             Class[] types = new Class [] {
                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, true
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         jTable_QuanLyNhanVien.setToolTipText("");
@@ -252,11 +207,7 @@ public class NguoiQuanLy_QuanLyNhanVien extends javax.swing.JInternalFrame {
         jButton_LamMoi.setBorder(null);
         jButton_LamMoi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                try {
-                    jButton_LamMoiActionPerformed(evt);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
+                jButton_LamMoiActionPerformed(evt);
             }
         });
         jPanel1.add(jButton_LamMoi);
@@ -280,7 +231,30 @@ public class NguoiQuanLy_QuanLyNhanVien extends javax.swing.JInternalFrame {
         jPanel1.add(jLabel1);
         jLabel1.setBounds(3, 18, 1580, 118);
 
+        jComboBox_TimKiem.setBackground(new java.awt.Color(102, 102, 0));
         jComboBox_TimKiem.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
+        customGreen = new Color(102,102,0);
+        jComboBox_TimKiem.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+
+                if (isSelected) {
+                    c.setBackground(customGreen);   // Màu nền khi mục được chọn
+                    c.setForeground(Color.WHITE);   // Màu chữ khi mục được chọn
+                } else {
+                    c.setBackground(Color.white); // Màu nền cho các mục không được chọn
+                    c.setForeground(customGreen);      // Màu chữ cho các mục không được chọn
+                }
+
+                return c;
+            }
+        });
+        jComboBox_TimKiem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox_TimKiemActionPerformed(evt);
+            }
+        });
         jPanel1.add(jComboBox_TimKiem);
         jComboBox_TimKiem.setBounds(1070, 162, 280, 50);
 
@@ -355,10 +329,23 @@ public class NguoiQuanLy_QuanLyNhanVien extends javax.swing.JInternalFrame {
                 sheet.setColumnWidth(6, 15 * 256);
                 sheet.setColumnWidth(7, 15 * 256);
 
-                // Lấy danh sách sách
-                List<NhanVien> dsNhanVien = nhanVien_dao.getDSNhanVien();  // Lấy toàn bộ danh sách sách
+                // Lấy danh sách sách cần xuất
+                List<NhanVien> dsNhanVien = new ArrayList<>();
+                int[] n = jTable_QuanLyNhanVien.getSelectedRows();
+                if(n.length == 0){
+                    dsNhanVien = nhanVien_dao.getDSNhanVien();  // Lấy toàn bộ danh sách sách
+                }else {
+                    for (int i = 0; i < n.length; i++) {
+                        String ma = model.getValueAt(n[i], 0).toString();
+                        try {
+                            dsNhanVien.add(nhanVien_dao.getNhanVienTheoMaNV(ma));
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
 
-                // Xuất tất cả thông tin chi tiết của sách
+                // Xuất tất cả thông tin chi tiết của nhan vien
                 int rowIndex = 1;  // Bắt đầu từ hàng thứ 2 (hàng 1 là tiêu đề)
                 for (NhanVien nhanVien : dsNhanVien) {
                     if (nhanVien.getTrangThai().equalsIgnoreCase("Đang làm")) {
@@ -384,6 +371,7 @@ public class NguoiQuanLy_QuanLyNhanVien extends javax.swing.JInternalFrame {
                 }
 
                 JOptionPane.showMessageDialog(this, "Xuất file Excel thành công!");
+                Desktop.getDesktop().open(saveFile);
             } else {
                 System.out.println("Người dùng đã hủy chọn tệp lưu.");
             }
@@ -393,79 +381,166 @@ public class NguoiQuanLy_QuanLyNhanVien extends javax.swing.JInternalFrame {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(this, "Có lỗi xảy ra: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
+
     }//GEN-LAST:event_jButton_XuatExcelActionPerformed
 
-    private void jButton_XoaNhieuActionPerformed(java.awt.event.ActionEvent evt) throws SQLException {//GEN-FIRST:event_jButton_XoaNhieuActionPerformed
+    private void jButton_XoaNhieuActionPerformed(java.awt.event.ActionEvent evt){//GEN-FIRST:event_jButton_XoaNhieuActionPerformed
         // TODO add your handling code here:
         if(jTable_QuanLyNhanVien.isEditing()){
             jTable_QuanLyNhanVien.getCellEditor().stopCellEditing();
         }
         int[] n = jTable_QuanLyNhanVien.getSelectedRows();
         for (int i = n.length - 1; i >= 0; i--) {
-            String ma = model.getValueAt(n[i], 1).toString();
-            if(taiKhoan_dao.xoaTaiKhoan(ma)){
-                if(nhanVien_dao.xoaNhanVien(ma)){
-                    model.removeRow(n[i]);
+            String ma = model.getValueAt(n[i], 0).toString();
+            try {
+                if(taiKhoan_dao.xoaTaiKhoan(ma)){
+                    if(nhanVien_dao.xoaNhanVien(ma)){
+                        model.removeRow(n[i]);
+                    }
                 }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
         }
     }//GEN-LAST:event_jButton_XoaNhieuActionPerformed
 
-    private void jButton_LamMoiActionPerformed(java.awt.event.ActionEvent evt) throws SQLException {//GEN-FIRST:event_jButton_LamMoiActionPerformed
+    private void jButton_LamMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_LamMoiActionPerformed
         // TODO add your handling code here:
         if(jTable_QuanLyNhanVien.isEditing()){
             jTable_QuanLyNhanVien.getCellEditor().stopCellEditing();
         }
         model.setRowCount(0);
 
-        for (NhanVien x : nhanVien_dao.getDSNhanVien()){
-            if(!x.getChucVu().getChucVu().equalsIgnoreCase("Quản lý") && x.getTrangThai().equalsIgnoreCase("Đang làm")){
+        try {
+            for (NhanVien x : nhanVien_dao.getDSNhanVien()){
+                if(!x.getChucVu().getChucVu().equalsIgnoreCase("Quản lý") && x.getTrangThai().equalsIgnoreCase("Đang làm")){
 
-                model.addRow(new Object[]{
-                        x.getMaNV(), x.getHoTen(), x.getSoDienThoai(),
-                        x.isGioiTinh() ? "Nữ" : "Nam", x.getChucVu().getChucVu()
-                });
+                    model.addRow(new Object[]{
+                            x.getMaNV(), x.getHoTen(), x.getSoDienThoai(),
+                            x.isGioiTinh() ? "Nữ" : "Nam", x.getChucVu().getChucVu()
+                    });
+                }
             }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
 
     }//GEN-LAST:event_jButton_LamMoiActionPerformed
 
-    private void jComboBox_TieuChiActionPerformed(java.awt.event.ActionEvent evt) throws SQLException {//GEN-FIRST:event_jComboBox_TieuChiActionPerformed
+    private void jComboBox_TieuChiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_TieuChiActionPerformed
         // TODO add your handling code here:
         tieuChi = jComboBox_TieuChi.getSelectedItem().toString();
         if (tieuChi.equalsIgnoreCase("Mã nhân viên")) {
             jComboBox_TimKiem.removeAllItems();
-            for (NhanVien x : nhanVien_dao.getDSNhanVien()) {
-                if(x.getTrangThai().equalsIgnoreCase("Đang làm") && !x.getChucVu().getChucVu().equalsIgnoreCase("Quản lý")){
-                    jComboBox_TimKiem.addItem(x.getMaNV());
+            jComboBox_TimKiem.addItem("");
+            try {
+                for (NhanVien x : nhanVien_dao.getDSNhanVien()) {
+                    if(x.getTrangThai().equalsIgnoreCase("Đang làm") && !x.getChucVu().getChucVu().equalsIgnoreCase("Quản lý")){
+                        jComboBox_TimKiem.addItem(x.getMaNV());
+                    }
                 }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
         } else if (tieuChi.equalsIgnoreCase("Tên nhân viên")) {
             jComboBox_TimKiem.removeAllItems();
+            jComboBox_TimKiem.addItem("");
             Set<String> dsTen = new HashSet<>();
-            for (NhanVien x : nhanVien_dao.getDSNhanVien()) {
-                if(x.getTrangThai().equalsIgnoreCase("Đang làm") && !x.getChucVu().getChucVu().equalsIgnoreCase("Quản lý")){
-                    String ten = x.getHoTen();
-                    if(!dsTen.contains(ten)) {
-                        dsTen.add(ten);
-                        jComboBox_TimKiem.addItem(ten);
+            try {
+                for (NhanVien x : nhanVien_dao.getDSNhanVien()) {
+                    if(x.getTrangThai().equalsIgnoreCase("Đang làm") && !x.getChucVu().getChucVu().equalsIgnoreCase("Quản lý")){
+                        String ten = x.getHoTen();
+                        if(!dsTen.contains(ten)) {
+                            dsTen.add(ten);
+                            jComboBox_TimKiem.addItem(ten);
+                        }
                     }
                 }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
         } else {
             jComboBox_TimKiem.removeAllItems();
+            jComboBox_TimKiem.addItem("");
             Set<String> dsChucVu = new HashSet<>();
-            for (NhanVien x : nhanVien_dao.getDSNhanVien()) {
-                if(x.getTrangThai().equalsIgnoreCase("Đang làm") && !x.getChucVu().getChucVu().equalsIgnoreCase("Quản lý")){
-                    String ten = x.getChucVu().getChucVu();
-                    if(!dsChucVu.contains(ten)) {
-                        dsChucVu.add(ten);
-                        jComboBox_TimKiem.addItem(ten);
+            try {
+                for (NhanVien x : nhanVien_dao.getDSNhanVien()) {
+                    if(x.getTrangThai().equalsIgnoreCase("Đang làm") && !x.getChucVu().getChucVu().equalsIgnoreCase("Quản lý")){
+                        String ten = x.getChucVu().getChucVu();
+                        if(!dsChucVu.contains(ten)) {
+                            dsChucVu.add(ten);
+                            jComboBox_TimKiem.addItem(ten);
+                        }
                     }
                 }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
         }
     }//GEN-LAST:event_jComboBox_TieuChiActionPerformed
+
+    private void jComboBox_TimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_TimKiemActionPerformed
+        // TODO add your handling code here:
+        if(jTable_QuanLyNhanVien.isEditing()){
+            jTable_QuanLyNhanVien.getCellEditor().stopCellEditing();
+        }
+        Object selectedItem = jComboBox_TimKiem.getSelectedItem();
+        if (selectedItem == null) {
+            return; // Không làm gì nếu không có item nào được chọn
+        }
+        String timKiem = jComboBox_TimKiem.getSelectedItem().toString();
+        String tieuChi = jComboBox_TieuChi.getSelectedItem().toString();
+
+        if(tieuChi.equalsIgnoreCase("Mã nhân viên")) {
+            if (timKiem.equalsIgnoreCase("")) {
+                getTableDataDefault();
+            }else {
+                model.setRowCount(0);
+                try {
+                    NhanVien x = nhanVien_dao.getNhanVienTheoMaNV(timKiem);
+                    model.addRow(new Object[]{
+                            x.getMaNV(), x.getHoTen(), x.getSoDienThoai(),
+                            x.isGioiTinh() ? "Nữ" : "Nam", x.getChucVu().getChucVu()
+                    });
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }else if(tieuChi.equalsIgnoreCase("Tên nhân viên")){
+            if (timKiem.equalsIgnoreCase("")) {
+                getTableDataDefault();
+            }else {
+                try {
+                model.setRowCount(0);
+                    for (NhanVien x : nhanVien_dao.getDSNhanVienTheoTenNhanVien(timKiem)){
+                        model.addRow(new Object[]{
+                                x.getMaNV(), x.getHoTen(), x.getSoDienThoai(),
+                                x.isGioiTinh() ? "Nữ" : "Nam", x.getChucVu().getChucVu()
+                        });
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(Sach_QuanLySach.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+            }
+        }else {
+            if (timKiem.equalsIgnoreCase("")) {
+                 getTableDataDefault();
+            }else {
+                try {
+                    model.setRowCount(0);
+                    for (NhanVien x : nhanVien_dao.getDSNhanVienTheoChucVu(timKiem)){
+                        model.addRow(new Object[]{
+                                x.getMaNV(), x.getHoTen(), x.getSoDienThoai(),
+                                x.isGioiTinh() ? "Nữ" : "Nam", x.getChucVu().getChucVu()
+                        });
+                    }
+                } catch (SQLException ex) {
+                Logger.getLogger(Sach_QuanLySach.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        
+    }//GEN-LAST:event_jComboBox_TimKiemActionPerformed
     private void addButtonToTable(DefaultTableModel model){
         TableActionEvent event;
         event = new TableActionEvent() {
@@ -502,16 +577,31 @@ public class NguoiQuanLy_QuanLyNhanVien extends javax.swing.JInternalFrame {
         jTable_QuanLyNhanVien.getColumnModel().getColumn(5).setCellRenderer(new TableActionRender(2));
         jTable_QuanLyNhanVien.getColumnModel().getColumn(5).setCellEditor(new TableActionCellEditor(event, 2));
     }
+    private void getTableDataDefault(){
+        model.setRowCount(0);
+        try {
+            for (NhanVien x : nhanVien_dao.getDSNhanVien()){
+                if(!x.getChucVu().getChucVu().equalsIgnoreCase("Quản lý") && x.getTrangThai().equalsIgnoreCase("Đang làm")){
+                    model.addRow(new Object[]{
+                            x.getMaNV(), x.getHoTen(), x.getSoDienThoai(),
+                            x.isGioiTinh() ? "Nữ" : "Nam", x.getChucVu().getChucVu()
+                    });
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public NhanVien getDataToNhanVien() throws SQLException {
         int n = jTable_QuanLyNhanVien.getSelectedRow();
         String maNhanVien = model.getValueAt(n, 0).toString();
         return nhanVien_dao.getNhanVienTheoMaNV(maNhanVien);
     }
     public void addDataToTable(NhanVien x){
-        model.addRow(new Object[]{
+        model.insertRow(0,new Object[]{
                 x.getMaNV(), x.getHoTen(), x.getSoDienThoai(),
                 x.isGioiTinh() ? "Nữ" : "Nam", x.getChucVu().getChucVu()
-        });
+        } );
         jComboBox_TimKiem.addItem(x.getMaNV());
     }
     public void editDataToTable(NhanVien x) throws SQLException {
