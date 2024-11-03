@@ -363,7 +363,7 @@ public class TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
                     PhieuHoaDon phieuHoaDon=new PhieuHoaDon();
                     phieuHoaDon.viewReport(dsCTHDTemp,maHoaDon,tongTienHoaDon);
                 }
-                dsHD.create(new HoaDon(maHoaDon, LocalDate.now(),new NhanVien("22687251")));
+                dsHD.create(new HoaDon(maHoaDon, LocalDate.now(),new NhanVien(DangNhap.ma)));
                 for (ChiTietHoaDon cthd: dsCTHDTemp){
 
                     for (ChiTietKhoHang ctkh: ctkh_dao.getAllChiTietKhoHang()){

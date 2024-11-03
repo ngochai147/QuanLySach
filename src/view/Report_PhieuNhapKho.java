@@ -1,6 +1,5 @@
 package view;
 
-import dao.ChiTietPhieuNhap_DAO;
 import dao.PhieuNhap_DAO;
 import dao.Sach_DAO;
 import entity.*;
@@ -34,10 +33,10 @@ public class Report_PhieuNhapKho {
 
     public void ViewReport_PhieuNhapKho(ArrayList<ChiTietPhieuNhapKho> dsCTPNK, String maPhieuNhapKho) {
         try {
-//            System.out.println("Mã PNK:" + maPhieuNhapKho);
+            System.out.println("Mã PNK:" + maPhieuNhapKho);
             PhieuNhapKho pnk = dsPN.getPhieuNhapKhoTheoMaPNK(maPhieuNhapKho);
 
-            System.out.println("Ma phieu nhap kho: " + pnk);
+            System.out.println("phieu nhap kho: " + pnk);
 
             LocalDate nl = pnk.getNgayLap();
             String ngayLap = formatNgayLap(nl);

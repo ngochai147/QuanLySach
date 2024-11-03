@@ -8,12 +8,10 @@ package dao;
 import connectDB.ConnectDB;
 import entity.KhoHang;
 import entity.NhanVien;
+import entity.PhieuNhapKho;
 import entity.PhieuXuatKho;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -23,6 +21,9 @@ import java.util.ArrayList;
  * @author Thế Bảo
  */
 public class PhieuXuat_DAO {
+    public PhieuXuat_DAO() {
+    }
+
     public static ArrayList<PhieuXuatKho> getAllphieuXuatKho() {
         ArrayList<PhieuXuatKho> dsPXK =new ArrayList<PhieuXuatKho>();
         try {
@@ -52,7 +53,47 @@ public class PhieuXuat_DAO {
         return dsPXK;
     }
 
-    public static ArrayList<PhieuXuatKho> getPhieuXuatKhoTheoMa(String tuKhoaNhapVao) {
+    public PhieuXuatKho getPhieuXuatKhoTheoMaPXK(String maPhieuXuatKho) {
+        Connection con = ConnectDB.getInstance().getConnection();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        PhieuXuatKho pxk = null;
+
+        try {
+            String sql = "SELECT * FROM PhieuXuatKho WHERE maPhieuXuatKho = ?";
+            stmt = con.prepareStatement(sql);
+            stmt.setString(1, maPhieuXuatKho);
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                LocalDate ngayLap = rs.getDate(2).toLocalDate();
+                String maNV = rs.getString(3);
+                String maKhoHangXuat = rs.getString(4);
+                String maKhoHangNhap = rs.getString(5);
+                int soLuong = rs.getInt(6);
+
+                NhanVien nv = new NhanVien_DAO().getNhanVienTheoMaNV(maNV);
+                KhoHang khoHangXuat = new KhoHang_DAO().getKhoHangTheoMaKho(maKhoHangXuat);
+                KhoHang khoHangNhap = new KhoHang_DAO().getKhoHangTheoMaKho(maKhoHangNhap);
+
+                pxk = new PhieuXuatKho(maPhieuXuatKho, ngayLap, nv, khoHangXuat, khoHangNhap, soLuong);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+                // Không đóng kết nối ở đây
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return pxk;
+    }
+
+    public static ArrayList<PhieuXuatKho> getDSPhieuXuatKhoTheoMa(String tuKhoaNhapVao) {
         ArrayList<PhieuXuatKho> dsPXK = new ArrayList<PhieuXuatKho>();
         String keyword = "%" + tuKhoaNhapVao + "%";
         try {
@@ -224,6 +265,79 @@ public class PhieuXuat_DAO {
             e.printStackTrace(); // In lỗi ra console để kiểm tra
         }
         return dsPXK;
+    }
+
+    public boolean insertPhieuXuatKho(String maPhieuXuatKho, Date ngayLap, String maNV, String maKhoHangXuat, String maKhoHangNhap, int soLuong) {
+        Connection con = ConnectDB.getInstance().getConnection();
+        PreparedStatement stmt = null;
+
+        String sql = "INSERT INTO PhieuXuatKho (maPhieuXuatKho, ngayLap, maNV, maKhoHangXuat, maKhoHangNhap, soLuong) VALUES (?, ?, ?, ?, ?, ?)";
+
+        try {
+            stmt = con.prepareStatement(sql);
+
+            // Thiết lập giá trị cho các tham số trong câu lệnh SQL
+            stmt.setString(1, maPhieuXuatKho);
+            stmt.setDate(2, ngayLap);
+            stmt.setString(3, maNV);
+            stmt.setString(4, maKhoHangXuat);
+            stmt.setString(5, maKhoHangNhap);
+            stmt.setInt(6, soLuong);
+
+            // Thực thi câu truy vấn
+            int rowsAffected = stmt.executeUpdate();
+
+            // Trả về true nếu insert thành công, false nếu không thành công
+            return rowsAffected > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            // Đảm bảo đóng PreparedStatement sau khi sử dụng
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public String getLastMaPhieuXuatKho() {
+        Connection con = ConnectDB.getInstance().getConnection();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        String lastMaPhieuXuatKho = null;
+        try {
+            // Câu truy vấn SQL
+            String query = "SELECT TOP 1 maPhieuXuatKho FROM PhieuXuatKho ORDER BY maPhieuXuatKho DESC";
+
+            // Chuẩn bị statement
+            stmt = con.prepareStatement(query);
+
+            // Thực thi truy vấn
+            rs = stmt.executeQuery();
+
+            // Kiểm tra và lấy mã chi tiết phiếu nhập kho mới nhất
+            if (rs.next()) {
+                lastMaPhieuXuatKho = rs.getString("maPhieuXuatKho");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Đóng tài nguyên
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+                if (con != null) con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return lastMaPhieuXuatKho;
     }
 
 }

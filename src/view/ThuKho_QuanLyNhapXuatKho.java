@@ -7,7 +7,9 @@ package view;
 import button.TableActionCellEditor;
 import button.TableActionEvent;
 import button.TableActionRender;
+import dao.PhieuNhap_DAO;
 import dao.PhieuXuat_DAO;
+import entity.PhieuNhapKho;
 import entity.PhieuXuatKho;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -24,6 +26,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListCellRenderer;
@@ -41,12 +44,16 @@ import javax.swing.table.JTableHeader;
  * @author Thế Bảo
  */
 public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
-    private PhieuXuat_DAO pxk_dao;
+    private PhieuXuat_DAO pxk_dao = new PhieuXuat_DAO();
+    private PhieuNhap_DAO pnk_dao = new PhieuNhap_DAO();
     private DefaultTableModel modelXuatNhapKho;
+    private ThuKho thuKho;
     /**
      * Creates new form TrangNhapKho_GUI
      */
-    public ThuKho_QuanLyNhapXuatKho() {
+    public ThuKho_QuanLyNhapXuatKho(ThuKho thuKho) {
+        this.thuKho = thuKho;
+
         initComponents();
         this.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         BasicInternalFrameUI ui = (BasicInternalFrameUI)this.getUI();
@@ -86,12 +93,22 @@ public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
         int stt = 1;
         // Đọc dữ liệu từ bảng phiếu xuất kho vào table
         ArrayList<PhieuXuatKho> listPXK = pxk_dao.getAllphieuXuatKho();
+        ArrayList<PhieuNhapKho> listPNK = pnk_dao.getAllPhieuNhapKho();
         for(PhieuXuatKho pxk : listPXK) {
             String loaiPhieu;
             loaiPhieu = "Xuất kho"; // Nếu mã bắt đầu bằng "PXK"
 
             modelXuatNhapKho.addRow(new Object[]{
                     stt++,pxk.getMaPhieuXuatKho(), pxk.getNhanVien().getMaNV(), pxk.getKhoHangNhap().getMaKhoHang(), pxk.getKhoHangXuat().getMaKhoHang(), loaiPhieu, pxk.getSoLuong(),pxk.getNgayLap(), ""
+            });
+        }
+
+        for(PhieuNhapKho pnk : listPNK) {
+            String loaiPhieu;
+            loaiPhieu = "Nhập kho"; // Nếu mã bắt đầu bằng "PNK"
+
+            modelXuatNhapKho.addRow(new Object[]{
+                    stt++,pnk.getMaPhieuNhapKho(), pnk.getNhanVien().getMaNV(), pnk.getKhoHangNhap().getMaKhoHang(), pnk.getKhoHangNhap().getMaKhoHang(), loaiPhieu, pnk.getSoLuong(),pnk.getNgayLap(), ""
             });
         }
     }
@@ -275,7 +292,11 @@ public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
         btn_XuatKho.setPreferredSize(new java.awt.Dimension(120, 42));
         btn_XuatKho.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_XuatKhoActionPerformed(evt);
+                try {
+                    btn_XuatKhoActionPerformed(evt);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
         panel_QLXuatNhapKho.add(btn_XuatKho);
@@ -411,7 +432,7 @@ public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
 
         // Tìm theo mã phiếu
         if (tieuChi.equals("Mã phiếu")) {
-            ArrayList<PhieuXuatKho> listPXK = pxk_dao.getPhieuXuatKhoTheoMa(tuKhoaTK);
+            ArrayList<PhieuXuatKho> listPXK = pxk_dao.getDSPhieuXuatKhoTheoMa(tuKhoaTK);
             modelXuatNhapKho.setRowCount(0); // Xóa dữ liệu cũ trong bảng
             for (PhieuXuatKho pxk : listPXK) {
                 String loaiPhieu = "Xuất kho";
@@ -494,22 +515,12 @@ public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
         chinhSua_btnView();
     }//GEN-LAST:event_btn_lamMoiActionPerformed
 
-    private void btn_XuatKhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_XuatKhoActionPerformed
-        // TODO add your handling code here:
-        panel_QLXuatNhapKho.removeAll();
-        ThuKho_XuatKho trangXuatKho = new ThuKho_XuatKho();
-        trangXuatKho.setSize(panel_QLXuatNhapKho.getSize());
-        trangXuatKho.setVisible(true);
-        panel_QLXuatNhapKho.add(trangXuatKho);
+    private void btn_XuatKhoActionPerformed(java.awt.event.ActionEvent evt) throws SQLException {//GEN-FIRST:event_btn_XuatKhoActionPerformed
+        thuKho.getDesktopPanel(new ThuKho_XuatKho());
     }//GEN-LAST:event_btn_XuatKhoActionPerformed
 
     private void btn_NhapKhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_NhapKhoActionPerformed
-        // TODO add your handling code here:
-        panel_QLXuatNhapKho.removeAll();
-        ThuKho_NhapKho thuKho_QuanLySach = new ThuKho_NhapKho();
-        thuKho_QuanLySach.setSize(panel_QLXuatNhapKho.getSize());
-        thuKho_QuanLySach.setVisible(true);
-        panel_QLXuatNhapKho.add(thuKho_QuanLySach);
+        thuKho.getDesktopPanel(new ThuKho_NhapKho());
     }//GEN-LAST:event_btn_NhapKhoActionPerformed
 
 

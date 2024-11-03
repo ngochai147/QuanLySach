@@ -22,6 +22,7 @@ import net.sf.jasperreports.view.JasperViewer;
 
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,7 +35,7 @@ private List<Sach> sachList = dss.getAllSP();
 
 private ChiTietHoaDon_DAO dsCTHD = new ChiTietHoaDon_DAO();
 private List<ChiTietHoaDon> listCTHD = dsCTHD.getAllChiTietHoaDon();
-
+private    DateTimeFormatter dfDay= DateTimeFormatter.ofPattern("dd-MM-YYYY");
 
 
 
@@ -44,9 +45,8 @@ private List<ChiTietHoaDon> listCTHD = dsCTHD.getAllChiTietHoaDon();
         JasperReport reportPay = JasperCompileManager.compileReport(getClass().getResourceAsStream("/img/report_pay.jrxml"));
         HashMap<String, Object> parameters = new HashMap<>();
         parameters.put("maHD",maHoaDon);
-        parameters.put("maNV", "22687251");
-        parameters.put("ngayTao", LocalDate.now());
-
+        parameters.put("maNV", DangNhap.ma);
+        parameters.put("ngayTao", dfDay.format(LocalDate.now()));
 
         List<FieldCTHD> field = new ArrayList<>();
 //
@@ -88,9 +88,12 @@ private List<ChiTietHoaDon> listCTHD = dsCTHD.getAllChiTietHoaDon();
             JasperReport reportPay = JasperCompileManager.compileReport(getClass().getResourceAsStream("/img/report_HoaDon.jrxml"));
             HashMap<String, Object> parameters = new HashMap<>();
             parameters.put("maHD",maHoaDon);
-            parameters.put("maNV", "22687251");
-            parameters.put("ngayTao", LocalDate.now());
-
+            parameters.put("maNV", DangNhap.ma);
+            for(HoaDon hd: dsHD.getAllHoaDon()){
+                if(maHoaDon.equalsIgnoreCase(hd.getMaHoaDon())){
+                    parameters.put("ngayTao", dfDay.format(hd.getNgayTaoDon()));
+                }
+            }
 
             List<FieldCTHD> field = new ArrayList<>();
 //

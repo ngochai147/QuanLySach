@@ -25,8 +25,9 @@ public class HoaDon_DAO {
 
             while (rs.next()) {
                 String maHD = rs.getString(1);
+                String ngayTaoDon=rs.getString(2);
                 String maNV = rs.getString(3);
-                HoaDon hd=new HoaDon(maHD, LocalDate.now(), new NhanVien(maNV));
+                HoaDon hd=new HoaDon(maHD,Date.valueOf(ngayTaoDon).toLocalDate() , new NhanVien(maNV));
                 dsHD.add(hd);
             }
 
