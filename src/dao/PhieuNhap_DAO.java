@@ -5,13 +5,13 @@
 package dao;
 
 import connectDB.ConnectDB;
+import entity.KhoHang;
+import entity.NhanVien;
 import entity.PhieuNhapKho;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
+import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.sql.Date;
 import java.util.List;
 
 /**
@@ -23,6 +23,42 @@ public class PhieuNhap_DAO {
 
     public PhieuNhap_DAO() {
         ds_pnk = new ArrayList<>();
+    }
+
+    public ArrayList<PhieuNhapKho> getAllPhieuNhap() {
+        ArrayList<PhieuNhapKho> dsPNK = new ArrayList<PhieuNhapKho>();
+        Connection con = null;
+        Statement statement = null;
+        ResultSet rs = null;
+
+        try {
+            con = ConnectDB.getInstance().getConnection();
+            String sql = "SELECT * FROM PhieuNhapKho";
+            statement = con.createStatement();
+            rs = statement.executeQuery(sql);
+
+            while (rs.next()) {
+                String maPNK = rs.getString(1);
+                LocalDate ngayLap = rs.getDate(2).toLocalDate();
+                String maNV = rs.getString(3);
+                String maKhoHangNhap = rs.getString(4);
+                int soLuong = rs.getInt(5);
+                PhieuNhapKho pn= new PhieuNhapKho(maPNK, ngayLap, new NhanVien(maNV), new KhoHang(maKhoHangNhap), soLuong);
+                dsPNK.add(pn);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (statement != null) statement.close();
+                // Không đóng kết nối ở đây
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return dsPNK;
     }
     
     public boolean insertPhieuNhapKho(String maPhieuNhapKho, Date ngayLap, String maNV, String maKhoHangNhap, int soLuong) {
@@ -98,7 +134,43 @@ public class PhieuNhap_DAO {
         }
         return lastMaPhieuNhapKho;
     }
-    
-      
+
+    public PhieuNhapKho getPhieuNhapKhoTheoMaPNK(String maPhieuNhapKho) {
+        Connection con = ConnectDB.getInstance().getConnection();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        PhieuNhapKho pnk = null;
+
+        try {
+            String sql = "SELECT * FROM PhieuNhapKho WHERE maPhieuNhapKho = ?";
+            stmt = con.prepareStatement(sql);
+            stmt.setString(1, maPhieuNhapKho);
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                LocalDate ngayLap = rs.getDate(2).toLocalDate();
+                String maNV = rs.getString(3);
+                String maKhoHangNhap = rs.getString(4);
+                int soLuong = rs.getInt(5);
+
+                NhanVien nv = new NhanVien_DAO().getNhanVienTheoMaNV(maNV);
+                KhoHang khoHang = new KhoHang_DAO().getKhoHangTheoMaKho(maKhoHangNhap);
+
+                pnk = new PhieuNhapKho(maPhieuNhapKho, ngayLap, nv, khoHang, soLuong);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+                // Không đóng kết nối ở đây
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return pnk;
+    }
     
 }

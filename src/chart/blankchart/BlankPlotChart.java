@@ -154,9 +154,11 @@ public class BlankPlotChart extends JComponent {
                 double centerX = ((locationX + space / 2));
                 g2.setColor(getForeground());
                 String text = getChartText(i);
-                Rectangle2D r2 = ft.getStringBounds(text, g2);
-                double textX = centerX - r2.getWidth() / 2;
-                g2.drawString(text, (int) textX, (int) locationText);
+                if (text != null) {
+                    Rectangle2D r2 = ft.getStringBounds(text, g2);
+                    double textX = centerX - r2.getWidth() / 2;
+                    g2.drawString(text, (int) textX, (int) locationText);
+                }
                 locationX += space;
             }
         }

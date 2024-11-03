@@ -10,7 +10,8 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 public class DangNhap extends javax.swing.JFrame {
-
+    
+    public static String ma;
     private boolean ktNV = false;
     private boolean ktNQL = false;
     private boolean ktTK = false;
@@ -228,6 +229,7 @@ public class DangNhap extends javax.swing.JFrame {
                 for (TaiKhoan tk : taiKhoan_DAO.getDSTk()) {
                     if (tk.getNhanVien().getChucVu().getChucVu().equalsIgnoreCase("Nhân viên")) {
                         if (jTextField_Email.getText().equalsIgnoreCase(tk.getNhanVien().getMaNV()) && jPasswordField_MatKhau.getText().equalsIgnoreCase(tk.getMatKhau())) {
+                            ma=jTextField_Email.getText();
                             this.setVisible(false);
                             NhanVien nhanVien = new NhanVien();
                             nhanVien.setVisible(true);
@@ -252,6 +254,7 @@ public class DangNhap extends javax.swing.JFrame {
                 for (TaiKhoan tk : taiKhoan_DAO.getDSTk()) {
                     if (tk.getNhanVien().getChucVu().getChucVu().equalsIgnoreCase("Quản lý")) {
                         if (jTextField_Email.getText().equalsIgnoreCase(tk.getNhanVien().getMaNV()) && jPasswordField_MatKhau.getText().equalsIgnoreCase(tk.getMatKhau())) {
+                            ma=jTextField_Email.getText();
                             this.setVisible(false);
                             NguoiQuanLy nguoiQuanLy = new NguoiQuanLy();
                             nguoiQuanLy.setVisible(true);
@@ -276,6 +279,7 @@ public class DangNhap extends javax.swing.JFrame {
                 for (TaiKhoan tk : taiKhoan_DAO.getDSTk()) {
                     if (tk.getNhanVien().getChucVu().getChucVu().equalsIgnoreCase("Thủ kho")) {
                         if (jTextField_Email.getText().equalsIgnoreCase(tk.getNhanVien().getMaNV()) && jPasswordField_MatKhau.getText().equalsIgnoreCase(tk.getMatKhau())) {
+                            ma=jTextField_Email.getText();
                             this.setVisible(false);
                             ThuKho thuKho = new ThuKho();
                             thuKho.setVisible(true);
