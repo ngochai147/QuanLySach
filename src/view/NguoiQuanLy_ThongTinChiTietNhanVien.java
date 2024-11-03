@@ -427,7 +427,7 @@ public class NguoiQuanLy_ThongTinChiTietNhanVien extends javax.swing.JDialog {
 
     private void jButton_ThoatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ThoatActionPerformed
         // TODO add your handling code here:
-        if(JOptionPane.showConfirmDialog(this, "Ban chac chan muon thoat", "Canh bao", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
+        if(JOptionPane.showConfirmDialog(this, "Bạn chắc chắn muốn thoát?", "Cảnh báo", JOptionPane.WARNING_MESSAGE,JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
             setVisible(false);
         }
     }//GEN-LAST:event_jButton_ThoatActionPerformed

@@ -193,11 +193,8 @@ public class Sach_DAO {
         statement.close();
         return dsSach;
     }
-    public boolean themSach(Sach sach) throws SQLException{
+    public void themSach(Sach sach) throws SQLException{
         String sql = "insert into Sach values (?,?,?,?,?,?,?,(select maLoai from LoaiSach where tenLoai = ?),?,?)";
-        if(dsSach.contains(sach)){
-            return false;
-        }else {
             Connection con = ConnectDB.getInstance().getConnection();
             PreparedStatement stmt = null;
             stmt = con.prepareStatement(sql);
@@ -213,9 +210,10 @@ public class Sach_DAO {
             stmt.setString(10, sach.getTrangThai());
             stmt.executeUpdate();
             stmt.close();
-            return dsSach.add(sach);
-        }
+ 
     }
+
+
     public boolean xoaSach(String maSach) throws SQLException{
         Connection con = ConnectDB.getConnection();
         PreparedStatement stmt = null;

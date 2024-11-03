@@ -6,6 +6,7 @@ package view;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import dao.ChiTietKhoHang_DAO;
@@ -28,6 +29,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -46,6 +49,7 @@ public class Sach_ThemSach extends javax.swing.JDialog {
     private AddImageToData image_url;
     private KhoHang_DAO khoHang_dao;
     private ChiTietKhoHang_DAO chiTietKhoHang_dao;
+
     public Sach_ThemSach(java.awt.Frame parent, boolean modal, Sach_QuanLySach dsSach) {
         super(parent, modal);
         this.setUndecorated(true);
@@ -55,10 +59,10 @@ public class Sach_ThemSach extends javax.swing.JDialog {
         initComponents();
         setLocationRelativeTo(null);
 
-        
     }
-    private Sach_ThemSach(java.awt.Frame parent, boolean modal){
-        
+
+    private Sach_ThemSach(java.awt.Frame parent, boolean modal) {
+
     }
 
     class jPanelGradient extends JPanel {
@@ -90,6 +94,7 @@ public class Sach_ThemSach extends javax.swing.JDialog {
             g2d.fillRect(0, 0, width, height);
         }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -180,6 +185,11 @@ public class Sach_ThemSach extends javax.swing.JDialog {
         jButton_HuyBo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jButton_HuyBoMouseClicked(evt);
+            }
+        });
+        jButton_HuyBo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_HuyBoActionPerformed(evt);
             }
         });
 
@@ -291,8 +301,9 @@ public class Sach_ThemSach extends javax.swing.JDialog {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButton_ThemSach, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton_HuyBo, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton_HuyBo, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(6, 6, 6)))))
                 .addContainerGap(44, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -387,87 +398,215 @@ public class Sach_ThemSach extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private boolean kiemTraISBN(String iSBN) {
+//      Kiểm tra ISBN có đúng 13 chữ số không.
+        String regex = "^\\d{13}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(iSBN);
+        return matcher.matches();
+    }
+
+    private boolean kiemTraTenSach(String tenSach) {
+//      Cho phép tên sách bao gồm chữ cái, chữ số, khoảng trắng, và các ký tự đặc biệt như dấu chấm, 
+//      dấu phẩy, dấu hai chấm, dấu chấm than, dấu hỏi, dấu ngoặc kép, dấu gạch ngang và dấu nháy đơn
+        String regex = "^[\\p{L}\\d\\s,.:;!?\"'-]+$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(tenSach);
+        return matcher.matches();
+    }
+
+    private boolean kiemTratacGia(String tacNha) {
+//      Tên tác giả có thể chứa các chữ cái, khoảng trắng, dấu nháy đơn ('), và dấu gạch ngang (-)
+        String regex = "^[\\p{L}\\s.'-]+$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(tacNha);
+        return matcher.matches();
+    }
+
+    private boolean kiemTraNhaXB(String nhaXB) {
+//      Tên nhà xuất bản có thể bao gồm chữ cái, chữ số, khoảng trắng và các ký tự như dấu chấm, 
+//      dấu phẩy, dấu ngoặc kép ("), dấu nháy đơn ('), và dấu &, gạch ngang
+        String regex = "^[\\p{L}\\d\\s.,&'\"-]+$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(nhaXB);
+        return matcher.matches();
+    }
     private void jButton_ThemSachActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ThemSachActionPerformed
         // TODO add your handling code here:
+
         String ISBN = jTextField_ISBN.getText();
         String tenSach = jTextField_TenSach.getText();
+        String donGiaStr = jTextField_DonGia.getText();
+        Double donGia = null;
+        String loaiSach = jComboBox_LoaiSach.getSelectedItem().toString();
+        int soLuong = 0;
         String tacGia = jTextField_TacGia.getText();
         String nhaXB = jTextField_NhaXuatBan.getText();
-        int namXB = Integer.parseInt(jTextField_NamXuatBan.getText());
-        String loaiSach = jComboBox_LoaiSach.getSelectedItem().toString();
-        Double donGia = Double.valueOf(jTextField_DonGia.getText());
-        int soLuong = (int)jSpinner_SoLuong.getValue();
+        int namXB = 0;
         String tenKho = jComboBox_Kho.getSelectedItem().toString();
-        Sach sach = null;
-        if(anh != null){
-            sach = new Sach(ISBN, tenSach, tacGia, namXB, nhaXB, soLuong, donGia, new LoaiSach("", loaiSach), new HinhAnh(anh), "Đang bán");
-        }else {
-            JOptionPane.showMessageDialog(null, "Vui lòng chọn ảnh");
-        }
-        try {
-            if(dsSach.addDataToTable(sach)){
-                khoHang_dao = new KhoHang_DAO();
-                KhoHang kh = khoHang_dao.getKhoTheoTenKho(tenKho);
-                System.out.println(soLuong);
-                chiTietKhoHang_dao.themChiTietKhoHang(new ChiTietKhoHang(createMaCTKH(), soLuong,  new Sach(sach.getISBN()), new KhoHang(kh.getMaKhoHang())));
-            };
-        } catch (SQLException ex) {
-            Logger.getLogger(Sach_ThemSach.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            int width = 300; // Chiều rộng của mã vạch
-            int height = 100; // Chiều cao của mã vạch
-            String userHome = System.getProperty("user.home");
-            String  myData= "";
-            for(Sach s: sach_dao.getDSSach()){
-                // Dữ liệu mã vạch
-                myData = s.getISBN();
 
-                MultiFormatWriter barcodeWriter = new MultiFormatWriter();
-                // Encode dữ liệu thành BitMatrix cho mã vạch CODE_128
-                BitMatrix bitMatrix = barcodeWriter.encode(myData, BarcodeFormat.CODE_128, width, height);
-
-                // Tạo đường dẫn tới Desktop với tên file là mã sách (ISBN)
-                Path desktopPath = FileSystems.getDefault().getPath(userHome, "Desktop/test", myData + ".png");
-
-                // Lưu ảnh mã vạch ra Desktop với tên file là ISBN
-                MatrixToImageWriter.writeToPath(bitMatrix, "PNG", desktopPath);
-
-                System.out.println("Barcode created successfully for ISBN: " + myData);
+        boolean kiemTra = false;
+        boolean tam = false;
+        while (!kiemTra) {
+            if (!kiemTraISBN(ISBN) || jTextField_ISBN.getText().equalsIgnoreCase("")) {
+                jTextField_ISBN.selectAll();
+                jTextField_ISBN.requestFocus();
+                JOptionPane.showConfirmDialog(this, "ISBN của sách không hợp lệ", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                tam = true;
+                break;
+            } else if (!kiemTraTenSach(tenSach) || jTextField_TenSach.getText().equalsIgnoreCase("")) {
+                jTextField_TenSach.selectAll();
+                jTextField_TenSach.requestFocus();
+                JOptionPane.showConfirmDialog(this, "Tên sách không hợp lệ", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                tam = true;
+                break;
+            } else if (!kiemTratacGia(tacGia) || jTextField_TacGia.getText().equalsIgnoreCase("")) {
+                jTextField_TacGia.selectAll();
+                jTextField_TacGia.requestFocus();
+                JOptionPane.showConfirmDialog(this, "Tên tác giả không hợp lệ", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                tam = true;
+                break;
+            } else if (!kiemTraNhaXB(nhaXB) || jTextField_NhaXuatBan.getText().equalsIgnoreCase("")) {
+                jTextField_NhaXuatBan.selectAll();
+                jTextField_NhaXuatBan.requestFocus();
+                JOptionPane.showConfirmDialog(this, "Tên nhà xuất bản không hợp lệ", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                tam = true;
+                break;
+            } else {
+                kiemTra = true;
+                
             }
-
-
-            System.out.println("Barcode created successfully!");
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-        
-       this.dispose();
+
+        if (!tam) {
+            try {
+                donGia = Double.valueOf(donGiaStr);
+                if (donGia <= 0) {
+                    JOptionPane.showMessageDialog(this, "Đơn giá phải lớn hơn 0.", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                    jTextField_DonGia.selectAll();
+                    jTextField_DonGia.requestFocus();
+                    return;
+                }
+
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Đơn giá phải là một số hợp lệ.", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                jTextField_DonGia.selectAll();
+                jTextField_DonGia.requestFocus();
+                return;
+            }
+            try {
+                soLuong = (int) jSpinner_SoLuong.getValue();
+                if (soLuong <= 0) {
+                    JOptionPane.showMessageDialog(this, "Số lượng không hợp lệ", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+
+                    // Chọn lại toàn bộ văn bản trong JSpinner để dễ sửa
+                    JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) jSpinner_SoLuong.getEditor();
+                    JFormattedTextField textField = editor.getTextField();
+                    textField.selectAll();
+                    textField.requestFocus();
+                    return;
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Số lượng phải là một số nguyên hợp lệ.", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+
+                // Chọn lại toàn bộ văn bản trong JSpinner để dễ sửa
+                JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) jSpinner_SoLuong.getEditor();
+                JFormattedTextField textField = editor.getTextField();
+                textField.selectAll();
+                textField.requestFocus();
+                return;
+            }
+            try {
+                namXB = Integer.parseInt(jTextField_NamXuatBan.getText());
+                if (namXB <= 0) {
+                    JOptionPane.showMessageDialog(this, "Năm xuất bản phải là số dương.", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                    jTextField_NamXuatBan.selectAll();
+                    jTextField_NamXuatBan.requestFocus();
+                    return;
+                }
+
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Năm xuất bản phải là một số nguyên hợp lệ.", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                jTextField_NamXuatBan.selectAll();
+                jTextField_NamXuatBan.requestFocus();
+                return;
+            }
+        }
+        if (kiemTra) {
+            try {
+                Sach sach = null;
+                if (anh != null) {
+                    sach = new Sach(ISBN, tenSach, tacGia, namXB, nhaXB, soLuong, donGia, new LoaiSach("", loaiSach), new HinhAnh(anh), "Đang bán");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Vui lòng chọn ảnh");
+                }
+
+                if (!sach_dao.getDSSach().contains(sach)) {
+                    if (JOptionPane.showConfirmDialog(this, "Bạn chắc chắn muốn thêm sách này?", "Thông báo", JOptionPane.WARNING_MESSAGE, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                        sach_dao.themSach(sach);
+                        dsSach.addDataToTable(sach);
+                        khoHang_dao = new KhoHang_DAO();
+                        KhoHang kh = khoHang_dao.getKhoTheoTenKho(tenKho);
+                        System.out.println(soLuong);
+                        chiTietKhoHang_dao.themChiTietKhoHang(new ChiTietKhoHang(createMaCTKH(), soLuong, new Sach(sach.getISBN()), new KhoHang(kh.getMaKhoHang())));
+                        int width = 300; // Chiều rộng của mã vạch
+                        int height = 100; // Chiều cao của mã vạch
+                        String userHome = System.getProperty("user.home");
+                        String myData = "";
+//                    for (Sach s : sach_dao.getDSSach()) {
+//                        myData = s.getISBN();
+//                        MultiFormatWriter barcodeWriter = new MultiFormatWriter();
+//                        BitMatrix bitMatrix = barcodeWriter.encode(myData, BarcodeFormat.CODE_128, width, height);
+//                        Path desktopPath = FileSystems.getDefault().getPath(userHome, "../isbn/", myData + ".png");
+//                        MatrixToImageWriter.writeToPath(bitMatrix, "PNG", desktopPath);
+//                    }
+                        this.dispose();
+                        JOptionPane.showMessageDialog(this, "Thêm sách thành công", "Thông báo", JOptionPane.OK_OPTION);
+                    } else {
+                        jTextField_ISBN.selectAll();
+                        jTextField_ISBN.requestFocus();
+                        jTextField_TenSach.selectAll();
+                        jTextField_DonGia.selectAll();
+                        jTextField_TacGia.selectAll();
+                        jSpinner_SoLuong.setValue(0);
+                        jTextField_NhaXuatBan.selectAll();
+                        jTextField_NamXuatBan.selectAll();
+                    }
+
+                } else {
+                    jTextField_ISBN.selectAll();
+                    jTextField_ISBN.requestFocus();
+                    JOptionPane.showConfirmDialog(this, "ISBN đã tồn tại", "Cảnh báo", JOptionPane.WARNING_MESSAGE, JOptionPane.YES_NO_OPTION);
+                }
+
+            } catch (SQLException ex) {
+                Logger.getLogger(Sach_ThemSach.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+
     }//GEN-LAST:event_jButton_ThemSachActionPerformed
 
 
     private void jButton_ThemAnhActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ThemAnhActionPerformed
         // TODO add your handling code here:
+
         JFileChooser frame_chonAnh = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("File ảnh", "png", "jpq", "jpeg", "gif");
         frame_chonAnh.setFileFilter(filter);
         frame_chonAnh.setAcceptAllFileFilterUsed(false);
-        
+
         int returnValue = frame_chonAnh.showOpenDialog(null);
-        if(returnValue == JFileChooser.APPROVE_OPTION){
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
             String filePath = frame_chonAnh.getSelectedFile().getPath();
-            
-            
+
             Icon icon = new ImageScale().load(filePath, jLabel_AnhDaiDien.getWidth(), jLabel_AnhDaiDien.getHeight());
             jLabel_AnhDaiDien.setIcon(icon);
-            
+
             image_url = new AddImageToData();
-            String fileName =image_url.duaFileVaoThuMuc(new File(filePath), "src\\ServiceImage\\Sach_IMG", "../ServiceImage/Sach_IMG/");
+            String fileName = image_url.duaFileVaoThuMuc(new File(filePath), "src\\ServiceImage\\Sach_IMG", "../ServiceImage/Sach_IMG/");
             System.out.println(fileName);
             anh = fileName;
-            
-//            String tenFile = new File(filePath).getName();
         }
     }//GEN-LAST:event_jButton_ThemAnhActionPerformed
 
@@ -475,9 +614,19 @@ public class Sach_ThemSach extends javax.swing.JDialog {
         // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_jButton_HuyBoMouseClicked
-    public String createMaCTKH(){
-        List<String> dsMaCT =  chiTietKhoHang_dao.getMaChiTietKhoHang();
-        String lastMaCT = dsMaCT.get(dsMaCT.size()-1);
+
+    private void jButton_HuyBoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_HuyBoActionPerformed
+        // TODO add your handling code here:
+        if (JOptionPane.showConfirmDialog(this, "Bạn chắc chắn muốn hủy?", "Cảnh báo", JOptionPane.WARNING_MESSAGE, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            setVisible(false);
+        }else{
+            jTextField_ISBN.requestFocus();
+                    
+        }
+    }//GEN-LAST:event_jButton_HuyBoActionPerformed
+    public String createMaCTKH() {
+        List<String> dsMaCT = chiTietKhoHang_dao.getMaChiTietKhoHang();
+        String lastMaCT = dsMaCT.get(dsMaCT.size() - 1);
         String prefix = lastMaCT.substring(0, 4);
         String numberPart = lastMaCT.substring(4);
         int number = Integer.parseInt(numberPart);
@@ -490,6 +639,7 @@ public class Sach_ThemSach extends javax.swing.JDialog {
         }
         return prefix + newNumberPart;
     }
+
     /**
      * @param args the command line arguments
      */
