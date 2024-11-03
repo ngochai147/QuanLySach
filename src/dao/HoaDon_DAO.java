@@ -59,21 +59,6 @@ public class HoaDon_DAO {
         }
         return result>0;
     }
-    public boolean deleteByID(String id) {
-        int result = 0;
-        try {
-            Connection con = ConnectDB.getInstance().getConnection();
-            String sql = "Delete HoaDon where maHD=?";
-            PreparedStatement pst = con.prepareStatement(sql);
 
-            pst.setString(1, id);
-
-            result = pst.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return result > 0;
-    }
 
 }

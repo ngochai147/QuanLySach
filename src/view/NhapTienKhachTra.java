@@ -11,12 +11,15 @@ public class NhapTienKhachTra extends JDialog {
     private JButton confirmButton;
     private JButton cancelButton;
     private double tongTienHoaDon;
+    private  String maHoaDon;
     private double tienKhachTra;
     private boolean kiemTra;
-    public NhapTienKhachTra(Frame parent, double tongTienHoaDon) {
+    private boolean hinhThucThanhToan=true;
+    public NhapTienKhachTra(Frame parent, double tongTienHoaDon, String maHoaDon) {
         super(parent, "Nhập Số Tiền Khách Đưa", true);
         initComponents();
-        this. tongTienHoaDon=tongTienHoaDon;
+        this.tongTienHoaDon=tongTienHoaDon;
+        this.maHoaDon=maHoaDon;
         pack();
         setLocationRelativeTo(parent);
 
@@ -32,7 +35,7 @@ public class NhapTienKhachTra extends JDialog {
         jButton_Huy = new JButton();
         jComboBox_TieuChi = new JComboBox<>();
 
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 
         kGradientPanel1.setkEndColor(new Color(139, 119, 101));
         kGradientPanel1.setkStartColor(new Color(205, 175, 149));
@@ -171,9 +174,12 @@ public class NhapTienKhachTra extends JDialog {
         int hinhThuc=jComboBox_TieuChi.getSelectedIndex();
 
         if(hinhThuc==0){
+            hinhThucThanhToan=true;
             jTextField_TienKhachDua.setEnabled(true);
         }else{
             jTextField_TienKhachDua.setEnabled(false);
+            new VietQRGen(tongTienHoaDon,maHoaDon);
+            hinhThucThanhToan=false;
         }
 
     }
@@ -191,7 +197,8 @@ public class NhapTienKhachTra extends JDialog {
                     dispose();
                 }
             }else if(hinhThuc==1){
-
+                hinhThucThanhToan=false;
+                this.dispose();
             }
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(NhapTienKhachTra.this,
@@ -204,6 +211,9 @@ public class NhapTienKhachTra extends JDialog {
 
     public double getTienKhachTra() {
         return tienKhachTra;
+    }
+    public boolean getHinhThucThanhToan() {
+        return hinhThucThanhToan;
     }
     public boolean getKiemtra(){
         return kiemTra;
