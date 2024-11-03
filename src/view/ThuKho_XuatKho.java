@@ -13,8 +13,6 @@ import java.awt.event.*;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 
 import javax.swing.plaf.basic.BasicInternalFrameUI;
@@ -57,24 +55,6 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         canGiua_tableHeader();
         chinhSua_table();
         nhapThongTin();
-
-        this.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                boolean isNgayLapValid = kiemTra_NgayLap();
-
-                // Mở khóa jcb_chonSach và tf_soLuong nếu ngày lập hợp lệ
-                jcb_chonSach.setEnabled(isNgayLapValid);
-                tf_soLuong.setEnabled(isNgayLapValid);
-                String tenKhoNhap = jcb_khoNhap.getSelectedItem().toString();
-                try {
-                    String ma_KN = khoHang_dao.getMaKhoTheoTenKho(tenKhoNhap);
-                    hienThi_Sach(ma_KN);
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-        });
     }
 
     // Hàm kiểm tra nếu ngày lập phiếu lớn hơn hoặc bằng ngày hiện tại
@@ -122,35 +102,22 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         return kiemTraNgayLapPhieu(selectedDate, true);
     }
 
-    public void hienThi_Sach(String maKhoNhap) {
-        try {
-            jcb_chonSach.removeAllItems();
-            List<Sach> ds_sach = sach_dao.getDanhSachSachTheoMaKhoHang(maKhoNhap);
-            for (Sach s : ds_sach) {
-                System.out.println(s);
-                jcb_chonSach.addItem(s.getISBN());
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     // Hàm điều hướng focus giữa các text field và JDateChooser
     public void nhapThongTin() {
 
         jcb_chonSach.setEnabled(false);
         tf_soLuong.setEnabled(false);
 
-        jcb_khoXuat.addItem("");
         jcb_khoNhap.addItem("");
+        jcb_khoXuat.addItem("");
         try {
             KhoHang_DAO dao = new KhoHang_DAO();
             List<KhoHang> danhSachTenKho = dao.getDSKhoHang();
 
             for (KhoHang tenKho : danhSachTenKho) {
 
-                jcb_khoNhap.addItem(tenKho.getTenKho());
                 jcb_khoXuat.addItem(tenKho.getTenKho());
+                jcb_khoNhap.addItem(tenKho.getTenKho());
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -278,8 +245,10 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
             int soLuong = Integer.parseInt(model.getValueAt(i, 5).toString());
 
             // Gọi hàm insert chi tiết phiếu nhập kho vào cơ sở dữ liệu
-            boolean isInserted = ctpx_dao.insertChiTietPhieuXuatKho(maChiTietPhieuXuatKho, maPhieuXuatKho, soLuong, isbn);
 
+            boolean isInserted = ctpx_dao.insertChiTietPhieuXuatKho(maChiTietPhieuXuatKho, maPhieuXuatKho, soLuong, isbn);
+            System.out.println(maChiTietPhieuXuatKho);
+            System.out.println(maPhieuXuatKho);
             // Lấy thông tin sách từ ISBN
             Sach sach = sach_dao.getSachTheoMaSach(isbn); // Giả sử bạn có hàm lấy thông tin sách từ ISBN
             if (sach == null) {
@@ -287,12 +256,12 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
                 sach = new Sach(isbn, "Tên sách mặc định", "Loại sách mặc định", 0, "", 0, 0.0, null, null, ""); // Khởi tạo sách mặc định
             }
 
-            // Tạo chi tiết phiếu nhập kho
-            ChiTietPhieuXuatKho ctpxk = new ChiTietPhieuXuatKho(maChiTietPhieuXuatKho, new PhieuNhapKho(maPhieuXuatKho), soLuong, sach);
+            // Tạo chi tiết phiếu xuất kho
+            ChiTietPhieuXuatKho ctpxk = new ChiTietPhieuXuatKho(maChiTietPhieuXuatKho, new PhieuXuatKho(maPhieuXuatKho), soLuong, sach);
             dsCTPXK.add(ctpxk);
 
 //            if (!isInserted) {
-//                System.out.println("Không thể thêm chi tiết phiếu nhập kho cho ISBN: " + isbn);
+//                System.out.println("Không thể thêm chi tiết phiếu xuất kho cho ISBN: " + isbn);
 //            } else {
 //                System.out.println("Thêm chi tiết phiếu nhập kho thành công cho ISBN: " + isbn);
 //            }
@@ -300,38 +269,46 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
     }
 
     public void themChiTietKhoHang(DefaultTableModel model, String maKhoHangNhap, String maKhoHangXuat) throws SQLException {
+        List<ChiTietKhoHang> ds_SachTrongKhoXuat = new ArrayList<>();
+//        System.out.println("Mã xuất:" + maKhoHangXuat);
+//        System.out.println("Mã nhập:" + maKhoHangNhap);
+
+        System.out.println("============================================================");
         for (int i = 0; i < model.getRowCount(); i++) {
             // Lấy ISBN và số lượng từ bảng
             String isbn = model.getValueAt(i, 1).toString();
-            Sach sach = new Sach(isbn, "","",0,"",0,0.0, null,null,"");
-//            System.out.println("Sach: " + sach.getISBN());
             int soLuong = Integer.parseInt(model.getValueAt(i, 5).toString());
 
-            // Kiểm tra xem sách đã tồn tại trong kho nhập chưa
-            ChiTietKhoHang sach_tonTai = ctkh_dao.kiemTraTonTaiISBNTrongKho(isbn, maKhoHangXuat);
+                for (ChiTietKhoHang ctkh : ctkh_dao.getAllChiTietKhoHang()) {
+                    if (ctkh.getKhoHang().getMaKhoHang().equalsIgnoreCase(maKhoHangNhap) && ctkh.getSach().getISBN().equalsIgnoreCase(isbn)) {
+                        ds_SachTrongKhoXuat.add(ctkh);
+                        System.out.println(ctkh);
 
-            if (sach_tonTai != null) {
-                // Nếu sách đã tồn tại trong kho nhập, cập nhật số lượng
-                int soLuongMoi = sach_tonTai.getSoLuong() + soLuong;
-                sach_tonTai.setSoLuong(soLuongMoi);
-                boolean isUpdated = ctkh_dao.capNhatChiTietKhoHang(sach_tonTai.getSach().getISBN(), sach_tonTai.getKhoHang().getMaKhoHang(), soLuongMoi);
-
-                if (!isUpdated) {
-                    System.out.println("Không thể cập nhật số lượng cho ISBN: " + isbn);
-                } else {
-                    System.out.println("Cập nhật số lượng thành công cho ISBN: " + isbn);
+                        if (ctkh.getSoLuong() >= soLuong) {
+                            int soLuongMoiXuat = ctkh.getSoLuong() - soLuong;
+                            System.out.println("So luong moi xuat: " + soLuongMoiXuat);
+                            ctkh_dao.capNhatChiTietKhoHang(ctkh.getSach().getISBN(), ctkh.getKhoHang().getMaKhoHang(), soLuongMoiXuat);
+                        }
+                    }
                 }
-            } else {
-                // Nếu sách chưa tồn tại, thêm chi tiết kho hàng mới
-                String maChiTietKhoHang = taoTuDong_MaChiTietKhoHang();
 
-                ChiTietKhoHang CTKH_moi = new ChiTietKhoHang(maChiTietKhoHang, soLuong, new Sach(isbn), new KhoHang(maKhoHangXuat));
-                boolean isInserted = ctkh_dao.themChiTietKhoHang(CTKH_moi);
+            List<ChiTietKhoHang> ds_SachTrongKhoNhap = new ArrayList<>();
+            for (ChiTietKhoHang ctkh : ctkh_dao.getAllChiTietKhoHang()) {
+                if (ctkh.getKhoHang().getMaKhoHang().equalsIgnoreCase(maKhoHangXuat) && ctkh.getSach().getISBN().equalsIgnoreCase(isbn)) {
+                    ds_SachTrongKhoNhap.add(ctkh);
+                    System.out.println(ctkh);
 
-                if (!isInserted) {
-                    System.out.println("Không thể thêm chi tiết kho hàng cho ISBN: " + isbn);
+                    if (ctkh.getSoLuong() >= soLuong) {
+                        int soLuongMoi = ctkh.getSoLuong() + soLuong;
+                        System.out.println("So luong moi nhap: " + soLuongMoi);
+                        ctkh_dao.capNhatChiTietKhoHang(ctkh.getSach().getISBN(), ctkh.getKhoHang().getMaKhoHang(), soLuongMoi);
+                        break;
+                    }
                 } else {
-                    System.out.println("Thêm chi tiết kho hàng thành công cho ISBN: " + isbn);
+                    String maChiTietKhoHang = taoTuDong_MaChiTietKhoHang();
+                    ChiTietKhoHang CTKH_moi = new ChiTietKhoHang(maChiTietKhoHang, soLuong, new Sach(isbn), new KhoHang(maKhoHangXuat));
+                    ctkh_dao.themChiTietKhoHang(CTKH_moi);
+                    break;
                 }
             }
         }
@@ -378,9 +355,9 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         btn_xoa = new javax.swing.JButton();
         jLabel14 = new javax.swing.JLabel();
         btn_taoPX = new javax.swing.JButton();
-        jcb_khoXuat = new javax.swing.JComboBox<>();
-        jcb_chonSach = new javax.swing.JComboBox<>();
         jcb_khoNhap = new javax.swing.JComboBox<>();
+        jcb_chonSach = new javax.swing.JComboBox<>();
+        jcb_khoXuat = new javax.swing.JComboBox<>();
         btn_huy = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl_phieuXuatKho = new javax.swing.JTable();
@@ -435,10 +412,17 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         jLabel8.setBounds(190, 270, 30, 40);
 
         jdc_ngayLapPX.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
+        jdc_ngayLapPX.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                jdc_ngayLapPXAncestorAdded(evt);
+            }
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
         jPanel1.add(jdc_ngayLapPX);
         jdc_ngayLapPX.setBounds(250, 150, 340, 40);
-        Locale locale = new Locale("vi", "VN");
-        jdc_ngayLapPX.setLocale(locale);
 
         jLabel16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/jLabel_TaoPhieuXuatKho.png"))); // NOI18N
         jPanel1.add(jLabel16);
@@ -531,24 +515,27 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         jPanel1.add(btn_taoPX);
         btn_taoPX.setBounds(1170, 630, 170, 50);
 
-        jcb_khoXuat.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jcb_khoXuatActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jcb_khoXuat);
-        jcb_khoXuat.setBounds(250, 270, 340, 40);
-
-        jPanel1.add(jcb_chonSach);
-        jcb_chonSach.setBounds(1110, 150, 340, 40);
-
+        jcb_khoNhap.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jcb_khoNhap.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jcb_khoNhapActionPerformed(evt);
             }
         });
         jPanel1.add(jcb_khoNhap);
-        jcb_khoNhap.setBounds(252, 210, 340, 40);
+        jcb_khoNhap.setBounds(250, 270, 340, 40);
+
+        jcb_chonSach.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        jPanel1.add(jcb_chonSach);
+        jcb_chonSach.setBounds(1110, 150, 340, 40);
+
+        jcb_khoXuat.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jcb_khoXuat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcb_khoXuatActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jcb_khoXuat);
+        jcb_khoXuat.setBounds(252, 210, 340, 40);
 
         btn_huy.setBackground(new java.awt.Color(153, 0, 51));
         btn_huy.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
@@ -621,8 +608,8 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         isUpdatingDate = false; // Đặt lại cờ sau khi xóa
 
         // Xóa giá trị trong các TextField
-        jcb_khoXuat.setSelectedItem(0);
         jcb_khoNhap.setSelectedItem(0);
+        jcb_khoXuat.setSelectedItem(0);
         jcb_chonSach.setSelectedItem(0);
         tf_soLuong.setText("");
     }//GEN-LAST:event_btn_huyActionPerformed
@@ -630,8 +617,8 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
     private void btn_taoPXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_taoPXActionPerformed
         DefaultTableModel model = (DefaultTableModel) tbl_phieuXuatKho.getModel();
 
-        String tenKhoXuat = jcb_khoXuat.getSelectedItem().toString();
-        String tenKhoNhap = jcb_khoNhap.getSelectedItem().toString();
+        String tenKhoXuat = jcb_khoNhap.getSelectedItem().toString();
+        String tenKhoNhap = jcb_khoXuat.getSelectedItem().toString();
         Date ngayLapPX = jdc_ngayLapPX.getDate();
 
     //         Kiểm tra và chuyển đổi ngày
@@ -645,24 +632,14 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
             }
             try {
                 String ma_PXK = taoTuDong_MaPhieuXuatKho();
+                System.out.println("Mã phiếu xuất kho: " + ma_PXK);
                 String maKX = khoHang_dao.getMaKhoTheoTenKho(tenKhoXuat);
                 String maKN = khoHang_dao.getMaKhoTheoTenKho(tenKhoNhap);
                 int tong_SL = layTongSoLuong();
 //                System.out.println("Tổng số lượng: " + ma_PXK);
-
-                boolean isInserted = px_dao.insertPhieuXuatKho(ma_PXK, sqlDate, "22690761", maKX, maKN, tong_SL);
-
-                if (isInserted) {
-                    System.out.println("Thêm phiếu xuất kho thành công!");
-                } else {
-                    System.out.println("Thêm phiếu xuất kho thất bại!");
-                }
-                try {
-                    themChiTietPhieuXuatKho(model, ma_PXK);
-                    themChiTietKhoHang(model, maKN, maKX);
-                } catch (SQLException ex) {
-                    Logger.getLogger(ThuKho_XuatKho.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                px_dao.insertPhieuXuatKho(ma_PXK, sqlDate, "22690761", maKN, maKX, tong_SL);
+                themChiTietPhieuXuatKho(model, ma_PXK);
+                themChiTietKhoHang(model, maKN, maKX);
 
                 // Xóa hết thông tin trên màn hình sau khi lưu
                 model.setRowCount(0);
@@ -673,8 +650,8 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
                 isUpdatingDate = false; // Đặt lại cờ sau khi xóa
 
                 // Xóa giá trị trong các TextField
-                jcb_khoXuat.setSelectedItem(0);
                 jcb_khoNhap.setSelectedItem(0);
+                jcb_khoXuat.setSelectedItem(0);
                 jcb_chonSach.setSelectedItem(0);
                 tf_soLuong.setText("");
 
@@ -691,37 +668,72 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         }//GEN-LAST:event_btn_taoPXActionPerformed
 
     private void jcb_khoXuatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcb_khoXuatActionPerformed
-        String maKhoNhap = (String) jcb_khoNhap.getSelectedItem();
-        String maKhoXuat = (String) jcb_khoXuat.getSelectedItem();
+        if (jcb_khoXuat.getSelectedIndex() > 0 && jcb_khoNhap.getSelectedIndex() > 0 && jdc_ngayLapPX.getDate() != null) {
+            jcb_chonSach.setEnabled(true);
+            tf_soLuong.setEnabled(true);
+        } else {
+            jcb_chonSach.setEnabled(false);
+            tf_soLuong.setEnabled(false);
+        }
+        // Lấy mã kho được chọn
+        String tenKhoHang = jcb_khoXuat.getSelectedItem().toString();
+        
+        if (tenKhoHang != null && !tenKhoHang.isEmpty()) {
+            try {
+                for (KhoHang kh : khoHang_dao.getDSKhoHang()) {
+                    for (ChiTietKhoHang ctkh : ctkh_dao.getAllChiTietKhoHang()) {
+                        if (kh.getMaKhoHang().equalsIgnoreCase(ctkh.getKhoHang().getMaKhoHang())) {
+                            jcb_chonSach.addItem(ctkh.getSach().getISBN());
+                        }
+                    }
+                    break;
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }//GEN-LAST:event_jcb_khoXuatActionPerformed
+
+    private void jcb_khoNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcb_khoNhapActionPerformed
+        if (jcb_khoXuat.getSelectedIndex() > 0 && jcb_khoNhap.getSelectedIndex() > 0 && jdc_ngayLapPX.getDate() != null) {
+            jcb_chonSach.setEnabled(true);
+            tf_soLuong.setEnabled(true);
+        } else {
+            jcb_chonSach.setEnabled(false);
+            tf_soLuong.setEnabled(false);
+        }
+
+        String maKhoNhap = (String) jcb_khoXuat.getSelectedItem();
+        String maKhoXuat = (String) jcb_khoNhap.getSelectedItem();
 
         // Kiểm tra nếu kho xuất trùng với kho nhập
         if (maKhoNhap != null && maKhoNhap.equals(maKhoXuat)) {
             JOptionPane.showMessageDialog(this, "Kho xuất không được trùng với kho nhập!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             // Đặt lại giá trị jcb_khoXuat nếu cần
-            jcb_khoXuat.setSelectedIndex(-1);
+            jcb_khoNhap.setSelectedIndex(-1);
         }
-    }//GEN-LAST:event_jcb_khoXuatActionPerformed
+    }//GEN-LAST:event_jcb_khoNhapActionPerformed
 
-    private void jcb_khoNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcb_khoNhapActionPerformed
-        // Lấy mã kho được chọn
-        String maKhoHang = (String) jcb_khoNhap.getSelectedItem();
-        
-        if (maKhoHang != null && !maKhoHang.isEmpty()) {
-            try {
-                // Gọi phương thức để lấy danh sách sách từ mã kho hàng
-                List<Sach> danhSachSach = sach_dao.getDanhSachSachTheoMaKhoHang(maKhoHang);
+    private void jdc_ngayLapPXAncestorAdded(javax.swing.event.AncestorEvent evt) {
+//        if (!isUpdatingDate) {
+//            Date selectedDate = jdc_ngayLapPX.getDate();
+//            boolean isValid = kiemTraNgayLapPhieu(selectedDate, true);
+//
+//            if (!isValid) {
+//                JOptionPane.showMessageDialog(this, "Ngày lập phiếu không hợp lệ!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+//            } else {
+//                System.out.println("Ngày lập phiếu hợp lệ: " + selectedDate);
+//            }
+//        }
 
-                // Xóa các mục cũ trong jcb_chonSach và cập nhật mục mới
-                jcb_chonSach.removeAllItems();
-                for (Sach sach : danhSachSach) {
-                    jcb_chonSach.addItem(sach.getISBN() + " - " + sach.getTenSach()); // Hiển thị ISBN và tên sách
-                }
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-                JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi cập nhật danh sách sách!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            }
+        if (jcb_khoXuat.getSelectedIndex() > 0 && jcb_khoNhap.getSelectedIndex() > 0 && jdc_ngayLapPX.getDate() != null) {
+            jcb_chonSach.setEnabled(true);
+            tf_soLuong.setEnabled(true);
+        } else {
+            jcb_chonSach.setEnabled(false);
+            tf_soLuong.setEnabled(false);
         }
-    }
+    }//GEN-LAST:event_jdc_ngayLapPXAncestorAdded
 
     private void btn_themActionPerformed(java.awt.event.ActionEvent evt) {
         String isbn = jcb_chonSach.getSelectedItem().toString();

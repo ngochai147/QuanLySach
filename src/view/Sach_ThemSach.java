@@ -24,6 +24,7 @@ import java.nio.file.FileSystemException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -46,6 +47,8 @@ public class Sach_ThemSach extends javax.swing.JDialog {
     private AddImageToData image_url;
     private KhoHang_DAO khoHang_dao;
     private ChiTietKhoHang_DAO chiTietKhoHang_dao;
+
+    private ThuKho_NhapKho thuKho ;
     public Sach_ThemSach(java.awt.Frame parent, boolean modal, Sach_QuanLySach dsSach) {
         super(parent, modal);
         this.setUndecorated(true);
@@ -54,7 +57,7 @@ public class Sach_ThemSach extends javax.swing.JDialog {
         chiTietKhoHang_dao = new ChiTietKhoHang_DAO();
         initComponents();
         setLocationRelativeTo(null);
-
+        thuKho = new ThuKho_NhapKho();
         
     }
     private Sach_ThemSach(java.awt.Frame parent, boolean modal){
@@ -490,6 +493,9 @@ public class Sach_ThemSach extends javax.swing.JDialog {
         }
         return prefix + newNumberPart;
     }
+
+
+
     /**
      * @param args the command line arguments
      */
