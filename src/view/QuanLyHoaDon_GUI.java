@@ -599,7 +599,6 @@ public class QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
             int tongSL = 0;
             for (ChiTietHoaDon cthd : listCTHD) {
                 if (x.getMaHoaDon().equalsIgnoreCase(cthd.getHoaDon().getMaHoaDon())) {
-
                     tongSL += cthd.getSoLuong();
                     tongTien += cthd.getSoLuong() * cthd.getDonGia();
                 }
