@@ -63,40 +63,50 @@ public class ChiTietKhoHang_DAO {
         return dsChiTietKhoHang;
     }
 
-    public List<ChiTietKhoHang> getDSSachTrongKho(String maKhoHang) {
-        String sql = "SELECT * FROM ChiTietKhoHang WHERE maKhoHang = ?";
+    public List<ChiTietKhoHang> getDSSachTrongKho(String maKhoHang, String ISBN) {
+        String sql = "SELECT * FROM ChiTietKhoHang WHERE maKhoHang = ? AND ISBN = ?";
         Connection con = ConnectDB.getInstance().getConnection();
         PreparedStatement stmt = null;
-        ChiTietKhoHang chiTietKhoHang = null;
+        List<ChiTietKhoHang> ds_Sach = new ArrayList<>();
 
         try {
             stmt = con.prepareStatement(sql);
             stmt.setString(1, maKhoHang);
+            stmt.setString(2, ISBN);
             ResultSet rs = stmt.executeQuery();
 
-            if (rs.next()) {
+            while (rs.next()) {
                 String maCTKhoHang = rs.getString("maChiTietKhoHang");
-                String ISBN = rs.getString("ISBN");
                 int soLuong = rs.getInt("soLuong");
-                chiTietKhoHang = new ChiTietKhoHang(maCTKhoHang, soLuong, new Sach(ISBN), new KhoHang(maKhoHang));
+                ChiTietKhoHang chiTietKhoHang = new ChiTietKhoHang(maCTKhoHang, soLuong, new Sach(ISBN), new KhoHang(maKhoHang));
+                ds_Sach.add(chiTietKhoHang);
             }
         } catch (SQLException e) {
+            System.out.println("Lỗi xảy ra khi truy vấn dữ liệu từ ChiTietKhoHang: " + e.getMessage());
             e.printStackTrace();
         } finally {
-            if (stmt != null) {
-                try {
+            try {
+                if (stmt != null) {
                     stmt.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
                 }
+                if (con != null) {
+                    con.close(); // Đảm bảo đóng kết nối sau khi sử dụng
+                }
+            } catch (SQLException e) {
+                System.out.println("Lỗi xảy ra khi đóng kết nối: " + e.getMessage());
+                e.printStackTrace();
             }
         }
 
-        return (List<ChiTietKhoHang>) chiTietKhoHang;
+        if (ds_Sach.isEmpty()) {
+            System.out.println("Không tìm thấy dữ liệu cho maKhoHang: " + maKhoHang + " và ISBN: " + ISBN);
+        }
+
+        return ds_Sach;
     }
 
     public ChiTietKhoHang kiemTraTonTaiISBNTrongKho(String isbn,String maKhoHang) {
-        String sql = "SELECT * FROM ChiTietKhoHang WHERE maKhoHang = ?";
+        String sql = "SELECT * FROM ChiTietKhoHang WHERE maKhoHang = ? AND ISBN = ?";
         Connection con = ConnectDB.getInstance().getConnection();
         PreparedStatement stmt = null;
         ChiTietKhoHang chiTietKhoHang = null;
@@ -104,6 +114,7 @@ public class ChiTietKhoHang_DAO {
         try {
             stmt = con.prepareStatement(sql);
             stmt.setString(1, maKhoHang);
+            stmt.setString(2, isbn);
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
