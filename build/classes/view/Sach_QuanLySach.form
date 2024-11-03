@@ -146,7 +146,7 @@
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="new javax.swing.DefaultComboBoxModel&lt;&gt;(new String[] {&quot;&quot;, &quot;M&#xe3; s&#xe1;ch&quot;, &quot;T&#xe1;c gi&#x1ea3;&quot;, &quot;Lo&#x1ea1;i s&#xe1;ch&quot;})" type="code"/>
+              <Connection code="new javax.swing.DefaultComboBoxModel&lt;&gt;(new String[] {&quot;M&#xe3; s&#xe1;ch&quot;, &quot;T&#xe1;c gi&#x1ea3;&quot;, &quot;Lo&#x1ea1;i s&#xe1;ch&quot;})" type="code"/>
             </Property>
           </Properties>
           <Events>
@@ -275,16 +275,18 @@
         </Component>
         <Component class="javax.swing.JComboBox" name="jComboBox_TimKiem">
           <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Arial" size="20" style="1"/>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="66" red="66" type="rgb"/>
+            </Property>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="new java.awt.Font(&quot;Arial&quot;, 1, 20)" type="code"/>
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jComboBox_TimKiemMouseClicked"/>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jComboBox_TimKiemActionPerformed"/>
-            <EventHandler event="propertyChange" listener="java.beans.PropertyChangeListener" parameters="java.beans.PropertyChangeEvent" handler="jComboBox_TimKiemPropertyChange"/>
           </Events>
           <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="Color customGreen = new Color(102,102,0);&#xa;        jComboBox_TimKiem.setRenderer(new DefaultListCellRenderer() {&#xa;            @Override&#xa;            public Component getListCellRendererComponent(JList&lt;?&gt; list, Object value, int index, boolean isSelected, boolean cellHasFocus) {&#xa;                Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);&#xa;&#xa;                if (isSelected) {&#xa;                    c.setBackground(customGreen);   // M&#xe0;u n&#x1ec1;n khi m&#x1ee5;c &#x111;&#x1b0;&#x1ee3;c ch&#x1ecd;n&#xa;                    c.setForeground(Color.WHITE);   // M&#xe0;u ch&#x1eef; khi m&#x1ee5;c &#x111;&#x1b0;&#x1ee3;c ch&#x1ecd;n&#xa;                } else {&#xa;                    c.setBackground(Color.white); // M&#xe0;u n&#x1ec1;n cho c&#xe1;c m&#x1ee5;c kh&#xf4;ng &#x111;&#x1b0;&#x1ee3;c ch&#x1ecd;n&#xa;                    c.setForeground(customGreen);      // M&#xe0;u ch&#x1eef; cho c&#xe1;c m&#x1ee5;c kh&#xf4;ng &#x111;&#x1b0;&#x1ee3;c ch&#x1ecd;n&#xa;                }&#xa;&#xa;                return c;&#xa;            }&#xa;        });"/>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
           <Constraints>
