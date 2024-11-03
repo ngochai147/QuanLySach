@@ -524,10 +524,12 @@ public class NguoiQuanLy_QuanLyNhanVien extends javax.swing.JInternalFrame {
                 try {
                     model.setRowCount(0);
                     for (NhanVien x : nhanVien_dao.getDSNhanVienTheoTenNhanVien(timKiem)) {
-                        model.addRow(new Object[]{
+                        if (!x.getChucVu().getChucVu().equalsIgnoreCase("Quản lý") && x.getTrangThai().equalsIgnoreCase("Đang làm")){
+                            model.addRow(new Object[]{
                             x.getMaNV(), x.getHoTen(), x.getSoDienThoai(),
                             x.isGioiTinh() ? "Nữ" : "Nam", x.getChucVu().getChucVu()
                         });
+                        }
                     }
                 } catch (SQLException ex) {
                     Logger.getLogger(Sach_QuanLySach.class.getName()).log(Level.SEVERE, null, ex);
@@ -540,10 +542,13 @@ public class NguoiQuanLy_QuanLyNhanVien extends javax.swing.JInternalFrame {
                 try {
                     model.setRowCount(0);
                     for (NhanVien x : nhanVien_dao.getDSNhanVienTheoChucVu(timKiem)) {
-                        model.addRow(new Object[]{
+                        if (!x.getChucVu().getChucVu().equalsIgnoreCase("Quản lý") && x.getTrangThai().equalsIgnoreCase("Đang làm")){
+                            model.addRow(new Object[]{
                             x.getMaNV(), x.getHoTen(), x.getSoDienThoai(),
                             x.isGioiTinh() ? "Nữ" : "Nam", x.getChucVu().getChucVu()
                         });
+                        }
+                        
                     }
                 } catch (SQLException ex) {
                     Logger.getLogger(Sach_QuanLySach.class.getName()).log(Level.SEVERE, null, ex);
@@ -616,7 +621,7 @@ public class NguoiQuanLy_QuanLyNhanVien extends javax.swing.JInternalFrame {
             x.getMaNV(), x.getHoTen(), x.getSoDienThoai(),
             x.isGioiTinh() ? "Nữ" : "Nam", x.getChucVu().getChucVu()
         });
-        jComboBox_TimKiem.addItem(x.getMaNV());
+        
     }
 
     public void editDataToTable(NhanVien x) throws SQLException {
