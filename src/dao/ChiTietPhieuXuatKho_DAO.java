@@ -2,6 +2,7 @@ package dao;
 
 import connectDB.ConnectDB;
 import entity.ChiTietPhieuXuatKho;
+import entity.Sach;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,6 +16,28 @@ public class ChiTietPhieuXuatKho_DAO {
 
     public ChiTietPhieuXuatKho_DAO() {
         ds_ctpnk = new ArrayList<>();
+    }
+
+    // Hàm lấy danh sách chi tiết phiếu xuất kho từ cơ sở dữ liệu
+    public List<ChiTietPhieuXuatKho> getDSCTPXK() {
+        Connection con = ConnectDB.getInstance().getConnection();
+        PreparedStatement stmt = null;
+        String sql = "SELECT * FROM ChiTietPhieuXuatKho";
+        try {
+            stmt = con.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                String maChiTietPhieuXuatKho = rs.getString("maChiTietPhieuXuatKho");
+                String maPhieuXuatKho = rs.getString("maPhieuXuatKho");
+                int soLuong = rs.getInt("soLuong");
+                String isbn = rs.getString("ISBN");
+                ChiTietPhieuXuatKho ctpxk = new ChiTietPhieuXuatKho(maChiTietPhieuXuatKho, maPhieuXuatKho, soLuong, new Sach(isbn));
+                ds_ctpnk.add(ctpxk);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ds_ctpnk;
     }
 
     public boolean insertChiTietPhieuXuatKho(String maChiTietPhieuXuatKho, String maPhieuXuatKho, int soLuong, String isbn) {

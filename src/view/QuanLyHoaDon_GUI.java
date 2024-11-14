@@ -565,10 +565,6 @@ public class QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
                 wb.close();  // Close the workbook
             }
 
-
-
-
-
         } catch (FileNotFoundException e) {
             JOptionPane.showMessageDialog(this, "File không tìm thấy: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
         } catch (IOException ioe) {

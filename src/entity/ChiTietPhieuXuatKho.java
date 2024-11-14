@@ -9,7 +9,7 @@ public class ChiTietPhieuXuatKho {
     private Sach sach;
 
 
-    public ChiTietPhieuXuatKho(String maChiTietPhieuXuatKho){
+    public ChiTietPhieuXuatKho(String maChiTietPhieuXuatKho, String maPhieuXuatKho, int soLuong, Sach isbn){
         this.maChiTietPhieuXuatKho=maChiTietPhieuXuatKho;
     }
 
