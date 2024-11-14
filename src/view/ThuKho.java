@@ -9,9 +9,7 @@ import java.awt.Font;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.UIManager;
+import javax.swing.*;
 
 /**
  *
@@ -32,6 +30,13 @@ public class ThuKho extends javax.swing.JFrame {
         defaultColor = new Color(139, 125, 107);
          jPanel_XuatKho.setBackground(clickColor);
         jLabel_XuatKho.setForeground(Color.BLACK);  
+    }
+
+    public void getDesktopPanel(JInternalFrame jframe) {
+        jDesktopPane1.removeAll();
+        jframe.setSize(jDesktopPane1.getSize());
+        jframe.setVisible(true);
+        jDesktopPane1.add(jframe);
     }
 
     /**
@@ -233,7 +238,7 @@ public class ThuKho extends javax.swing.JFrame {
     private void jDesktopPane1ComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jDesktopPane1ComponentResized
         // TODO add your handling code here:
         jDesktopPane1.removeAll();
-        ThuKho_QuanLyNhapXuatKho nhapKho = new ThuKho_QuanLyNhapXuatKho();
+        ThuKho_QuanLyNhapXuatKho nhapKho = new ThuKho_QuanLyNhapXuatKho(this);
         nhapKho.setSize(jDesktopPane1.getSize());
         nhapKho.setVisible(true);
         jDesktopPane1.add(nhapKho);
@@ -244,7 +249,7 @@ public class ThuKho extends javax.swing.JFrame {
     private void jPanel_XuatKhoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel_XuatKhoMouseClicked
         // TODO add your handling code here:
         jDesktopPane1.removeAll();
-        ThuKho_QuanLyNhapXuatKho nhapKho = new ThuKho_QuanLyNhapXuatKho();
+        ThuKho_QuanLyNhapXuatKho nhapKho = new ThuKho_QuanLyNhapXuatKho(this);
         nhapKho.setSize(jDesktopPane1.getSize());
         nhapKho.setVisible(true);
         jDesktopPane1.add(nhapKho);
@@ -281,7 +286,7 @@ public class ThuKho extends javax.swing.JFrame {
     private void jPanel_ThongKeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel_ThongKeMouseClicked
         // TODO add your handling code here:
         jDesktopPane1.removeAll();
-        ThuKho_QuanLySach ql_sach = new ThuKho_QuanLySach();
+        NguoiQuanLy_ThongKeTonKho ql_sach = new NguoiQuanLy_ThongKeTonKho();
         ql_sach.setSize(jDesktopPane1.getSize());
         ql_sach.setVisible(true);
         jDesktopPane1.add(ql_sach);

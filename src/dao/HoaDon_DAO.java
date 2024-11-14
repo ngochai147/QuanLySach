@@ -25,8 +25,9 @@ public class HoaDon_DAO {
 
             while (rs.next()) {
                 String maHD = rs.getString(1);
+                String ngayTaoDon=rs.getString(2);
                 String maNV = rs.getString(3);
-                HoaDon hd=new HoaDon(maHD, LocalDate.now(), new NhanVien(maNV));
+                HoaDon hd=new HoaDon(maHD,Date.valueOf(ngayTaoDon).toLocalDate() , new NhanVien(maNV));
                 dsHD.add(hd);
             }
 
@@ -58,6 +59,38 @@ public class HoaDon_DAO {
             e2.printStackTrace();
         }
         return result>0;
+    }
+    public List<String> getAllMaNV(){
+        List<String> dsMaNV=new ArrayList<>();
+        Connection con = null;
+        Statement statement = null;
+        ResultSet rs = null;
+
+        try {
+            con = ConnectDB.getInstance().getConnection();
+            String sql = "select maNV\n" +
+                    "from Hoadon\n" +
+                    "group by maNV";
+            statement = con.createStatement();
+            rs = statement.executeQuery(sql);
+
+            while (rs.next()) {
+                String maHD = rs.getString(1);
+                dsMaNV.add(maHD);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (statement != null) statement.close();
+                // Không đóng kết nối ở đây
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return dsMaNV;
     }
 
 

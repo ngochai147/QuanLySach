@@ -42,14 +42,14 @@ public class Panel_DoanhThuThongKeTheoNgay extends javax.swing.JPanel{
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        panelShadow1 = new panel.PanelShadow();
+        panelShadow1 = new PanelShadow();
         chart_DoanhThuTheoNgay = new chart.CurveLineChart();
 
-        panelShadow1.setBackground(new java.awt.Color(62, 38, 103));
-        panelShadow1.setColorGradient(new java.awt.Color(5, 5, 75));
+        panelShadow1.setBackground(new Color(62, 38, 103));
+        panelShadow1.setColorGradient(new Color(5, 5, 75));
 
         chart_DoanhThuTheoNgay.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        chart_DoanhThuTheoNgay.setForeground(new java.awt.Color(204, 255, 204));
+        chart_DoanhThuTheoNgay.setForeground(new Color(204, 255, 204));
 
         javax.swing.GroupLayout panelShadow1Layout = new javax.swing.GroupLayout(panelShadow1);
         panelShadow1.setLayout(panelShadow1Layout);
@@ -86,6 +86,6 @@ public class Panel_DoanhThuThongKeTheoNgay extends javax.swing.JPanel{
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private chart.CurveLineChart chart_DoanhThuTheoNgay;
-    private panel.PanelShadow panelShadow1;
+    private PanelShadow panelShadow1;
     // End of variables declaration//GEN-END:variables
 }

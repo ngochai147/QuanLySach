@@ -20,6 +20,8 @@ import java.awt.Graphics2D;
 import java.io.File;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -43,6 +45,7 @@ public class NguoiQuanLy_ThemNV extends javax.swing.JDialog {
     private TaiKhoan taiKhoan;
     private String anh;
     private AddImageToData image_url;
+
     public NguoiQuanLy_ThemNV(java.awt.Frame parent, boolean modal, NguoiQuanLy_QuanLyNhanVien quanLy) {
         super(parent, modal);
         this.setUndecorated(true);
@@ -52,9 +55,18 @@ public class NguoiQuanLy_ThemNV extends javax.swing.JDialog {
         nhanVien = null;
         taiKhoan = null;
         initComponents();
+
+
         setLocationRelativeTo(null);
+        try {
+            jTextField_MaNhanVien.setText(createMaNhanVien());
+            jTextField_TenDangNhap.setText(createMaNhanVien());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
-    private NguoiQuanLy_ThemNV(java.awt.Frame parent, boolean modal){
+
+    private NguoiQuanLy_ThemNV(java.awt.Frame parent, boolean modal) {
 
     }
 
@@ -120,7 +132,6 @@ public class NguoiQuanLy_ThemNV extends javax.swing.JDialog {
         jTextField_SoDienThoai = new javax.swing.JTextField();
         jLabel_Email = new javax.swing.JLabel();
         jTextField_Email = new javax.swing.JTextField();
-        jTextField_ChucVu = new javax.swing.JTextField();
         jTextField_TenDangNhap = new javax.swing.JTextField();
         jDateChooser_NgaySinh = new com.toedter.calendar.JDateChooser();
         jButton_ThemAnh = new javax.swing.JButton();
@@ -129,6 +140,7 @@ public class NguoiQuanLy_ThemNV extends javax.swing.JDialog {
         jLabel_TenDangNhap1 = new javax.swing.JLabel();
         jTextField_DiaChi = new javax.swing.JTextField();
         jTextField_MatKhau = new javax.swing.JTextField();
+        jComboBox_ChucVu = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -184,11 +196,7 @@ public class NguoiQuanLy_ThemNV extends javax.swing.JDialog {
         jButton_Luu.setPreferredSize(new java.awt.Dimension(52, 24));
         jButton_Luu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                try {
-                    jButton_LuuActionPerformed(evt);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
+                jButton_LuuActionPerformed(evt);
             }
         });
 
@@ -209,7 +217,6 @@ public class NguoiQuanLy_ThemNV extends javax.swing.JDialog {
         jLabel_BatBuoc3.setForeground(new java.awt.Color(255, 0, 51));
         jLabel_BatBuoc3.setText("(*)");
 
-        jTextField_TenNhanVien.setBackground(new java.awt.Color(240, 240, 240));
         jTextField_TenNhanVien.setFont(new java.awt.Font("Arial", 0, 20)); // NOI18N
         jTextField_TenNhanVien.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
@@ -228,20 +235,14 @@ public class NguoiQuanLy_ThemNV extends javax.swing.JDialog {
         jLabel_NgaySinh.setText("Ngày sinh");
         jLabel_NgaySinh.setPreferredSize(new java.awt.Dimension(79, 22));
 
-        jTextField_SoDienThoai.setBackground(new java.awt.Color(240, 240, 240));
         jTextField_SoDienThoai.setFont(new java.awt.Font("Arial", 0, 20)); // NOI18N
         jTextField_SoDienThoai.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jLabel_Email.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel_Email.setText("Email");
 
-        jTextField_Email.setBackground(new java.awt.Color(240, 240, 240));
         jTextField_Email.setFont(new java.awt.Font("Arial", 0, 20)); // NOI18N
         jTextField_Email.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-
-        jTextField_ChucVu.setBackground(new java.awt.Color(240, 240, 240));
-        jTextField_ChucVu.setFont(new java.awt.Font("Arial", 0, 20)); // NOI18N
-        jTextField_ChucVu.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jTextField_TenDangNhap.setBackground(new java.awt.Color(240, 240, 240));
         jTextField_TenDangNhap.setFont(new java.awt.Font("Arial", 0, 20)); // NOI18N
@@ -286,13 +287,14 @@ public class NguoiQuanLy_ThemNV extends javax.swing.JDialog {
         jLabel_TenDangNhap1.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel_TenDangNhap1.setText("Địa chỉ");
 
-        jTextField_DiaChi.setBackground(new java.awt.Color(240, 240, 240));
         jTextField_DiaChi.setFont(new java.awt.Font("Arial", 0, 20)); // NOI18N
         jTextField_DiaChi.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        jTextField_MatKhau.setBackground(new java.awt.Color(240, 240, 240));
         jTextField_MatKhau.setFont(new java.awt.Font("Arial", 0, 20)); // NOI18N
         jTextField_MatKhau.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        jComboBox_ChucVu.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
+        jComboBox_ChucVu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Thủ kho", "Nhân viên" }));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -329,7 +331,6 @@ public class NguoiQuanLy_ThemNV extends javax.swing.JDialog {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jTextField_DiaChi, javax.swing.GroupLayout.DEFAULT_SIZE, 505, Short.MAX_VALUE)
                     .addComponent(jTextField_TenDangNhap)
-                    .addComponent(jTextField_ChucVu)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jTextField_SoDienThoai, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -344,7 +345,8 @@ public class NguoiQuanLy_ThemNV extends javax.swing.JDialog {
                         .addComponent(jDateChooser_NgaySinh, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jTextField_TenNhanVien)
                     .addComponent(jTextField_MaNhanVien, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 505, Short.MAX_VALUE)
-                    .addComponent(jTextField_MatKhau))
+                    .addComponent(jTextField_MatKhau)
+                    .addComponent(jComboBox_ChucVu, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -386,15 +388,18 @@ public class NguoiQuanLy_ThemNV extends javax.swing.JDialog {
                             .addComponent(jLabel_SoDienThoai, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jTextField_SoDienThoai, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel_Email)
-                            .addComponent(jTextField_Email, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(40, 40, 40)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel_ChucVu, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField_ChucVu, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jTextField_Email, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jComboBox_GioiTinh, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel_NgaySinh, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                .addGap(44, 44, 44)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel_ChucVu, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jComboBox_ChucVu)
+                        .addGap(32, 32, 32)))
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel_TenDangNhap1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField_DiaChi, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -466,43 +471,124 @@ public class NguoiQuanLy_ThemNV extends javax.swing.JDialog {
 
     private void jButton_HuyBoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_HuyBoActionPerformed
         // TODO add your handling code here:
-        if(JOptionPane.showConfirmDialog(this, "Ban chac chan muon thoat", "Canh bao", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
+        if (JOptionPane.showConfirmDialog(this, "Ban chac chan muon thoat", "Canh bao", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
             setVisible(false);
         }
     }//GEN-LAST:event_jButton_HuyBoActionPerformed
+    private boolean kiemTraTenNV(String ten) {
+        String regex = "^[\\p{L}]+(?:[\\s.'-][\\p{L}]+)*$";
+        return ten.matches(regex);
+    }
 
-    private void jButton_LuuActionPerformed(java.awt.event.ActionEvent evt) throws SQLException {//GEN-FIRST:event_jButton_LuuActionPerformed
+    private boolean kiemTraDiaChi(String diaChi) {
+        String regex = "^[\\p{L}\\d\\s.,-/]+$";
+        return diaChi.matches(regex);
+    }
+
+    private boolean kiemTraEmail(String email) {
+        String regex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+        return email.matches(regex);
+    }
+    private void jButton_LuuActionPerformed(java.awt.event.ActionEvent evt)  {//GEN-FIRST:event_jButton_LuuActionPerformed
         // TODO add your handling code here:
-        String maNhanVien = jTextField_MaNhanVien.getText();
         String tenNhanVien = jTextField_TenNhanVien.getText();
         String gioiTinh = jComboBox_GioiTinh.getSelectedItem().toString();
         String soDienThoai = jTextField_SoDienThoai.getText();
-        String chucVu = jTextField_ChucVu.getText();
-        String tenDangNhap = jTextField_TenDangNhap.getText();
+        String chucVu = jComboBox_ChucVu.getSelectedItem().toString();
         String matKhau = jTextField_MatKhau.getText();
         String diaChi = jTextField_DiaChi.getText();
         String email = jTextField_Email.getText();
-        LocalDate ngaySinh = jDateChooser_NgaySinh.getDate().toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
-        boolean gt = true;
-        if (gioiTinh == "Nam") {
-            gt = false;
+
+        LocalDate ngaySinh = null;
+        boolean gt = gioiTinh.equals("Nam") ? false : true;
+
+        boolean kiemTra = false;
+        boolean tam = false;
+        while (!kiemTra) {
+            if (!kiemTraTenNV(tenNhanVien) || jTextField_TenNhanVien.getText().equalsIgnoreCase("")) {
+                jTextField_TenNhanVien.selectAll();
+                jTextField_TenNhanVien.requestFocus();
+                JOptionPane.showConfirmDialog(this, "Tên nhân viên không hợp lệ", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                tam = true;
+                break;
+            } else if (!kiemTraEmail(email) || jTextField_Email.getText().equalsIgnoreCase("")) {
+                jTextField_Email.selectAll();
+                jTextField_Email.requestFocus();
+                JOptionPane.showConfirmDialog(this, "Email không hợp lệ", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                tam = true;
+                break;
+            } else if (!kiemTraDiaChi(diaChi) || jTextField_DiaChi.getText().equalsIgnoreCase("")) {
+                jTextField_DiaChi.selectAll();
+                jTextField_DiaChi.requestFocus();
+                JOptionPane.showConfirmDialog(this, "Địa chỉ không hợp lệ", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                tam = true;
+                break;
+            } else {
+                kiemTra = true;
+
+            }
         }
+        if (!tam) {
+            if (jDateChooser_NgaySinh.getDate() != null) {
+                // Lấy ngày sinh từ jDateChooser
+                ngaySinh = jDateChooser_NgaySinh.getDate().toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+
+                // Kiểm tra tuổi của nhân viên
+                LocalDate today = LocalDate.now();
+                int age = Period.between(ngaySinh, today).getYears();
+
+                if (age < 18) {
+                    JOptionPane.showMessageDialog(this, "Nhân viên phải từ 18 tuổi trở lên.", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Vui lòng chọn ngày sinh.", "Thông báo", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // Kiểm tra số điện thoại là số hợp lệ
+            try {
+                Long.parseLong(soDienThoai);
+                if (!soDienThoai.matches("^\\d{10}$")) {
+                    JOptionPane.showMessageDialog(this, "Số điện thoại phải là 10 chữ số.", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                    jTextField_SoDienThoai.selectAll();
+                    jTextField_SoDienThoai.requestFocus();
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Số điện thoại phải là một số hợp lệ.", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                jTextField_SoDienThoai.selectAll();
+                jTextField_SoDienThoai.requestFocus();
+                return;
+            }
+        }
+
+        // Kiểm tra nếu chưa chọn ảnh
         if (anh == null) {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn ảnh đại diện");
             return;
         }
-        nhanVien = new NhanVien(tenNhanVien, soDienThoai, diaChi, email, gt, ngaySinh, createMaNhanVien(), new ChucVu(chucVu), new HinhAnh(anh), "Đang làm");
-        if (nhanVien_dao.themNhanVien(nhanVien)) {
-            taiKhoan = new TaiKhoan(createMaTaiKhoan(), nhanVien, matKhau);
-            if (taiKhoan_dao.themTaiKhoan(taiKhoan)) {
-                quanLy.addDataToTable(nhanVien);
-                JOptionPane.showMessageDialog(this, "Thêm nhân viên thành công");
-                setVisible(false);
-            } else {
-                JOptionPane.showMessageDialog(this, "Thêm nhân viên thất bại");
-            }
+        if (kiemTra) {
+            try {
+                nhanVien = new NhanVien(tenNhanVien, soDienThoai, diaChi, email, gt, ngaySinh, createMaNhanVien(), new ChucVu(chucVu), new HinhAnh(anh), "Đang làm");
 
+                if (nhanVien_dao.themNhanVien(nhanVien)) {
+                    taiKhoan = new TaiKhoan(createMaTaiKhoan(), nhanVien, matKhau);
+
+                    if (taiKhoan_dao.themTaiKhoan(taiKhoan)) {
+                        quanLy.addDataToTable(nhanVien);
+                        JOptionPane.showMessageDialog(this, "Thêm nhân viên thành công");
+                        setVisible(false);
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Thêm nhân viên thất bại");
+                    }
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
+
+
     }//GEN-LAST:event_jButton_LuuActionPerformed
     private void jButton_ThemAnhActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ThemAnhActionPerformed
         // TODO add your handling code here:
@@ -512,7 +598,7 @@ public class NguoiQuanLy_ThemNV extends javax.swing.JDialog {
         frame_chonAnh.setAcceptAllFileFilterUsed(false);
 
         int returnValue = frame_chonAnh.showOpenDialog(null);
-        if(returnValue == JFileChooser.APPROVE_OPTION) {
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
             String filePath = frame_chonAnh.getSelectedFile().getPath();
             Icon icon = new ImageScale().load(filePath, jLabel_AnhDaiDien.getWidth(), jLabel_AnhDaiDien.getHeight());
             jLabel_AnhDaiDien.setIcon(icon);
@@ -524,15 +610,15 @@ public class NguoiQuanLy_ThemNV extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton_ThemAnhActionPerformed
     public String createMaNhanVien() throws SQLException {
         List<String> dsMa = new ArrayList<>();
-        for (NhanVien x : nhanVien_dao.getDSNhanVien()){
+        for (NhanVien x : nhanVien_dao.getDSNhanVien()) {
             dsMa.add(x.getMaNV());
         }
         String lastMaNhanVien = dsMa.get(dsMa.size() - 1);
         int number = Integer.parseInt(lastMaNhanVien) + 1;
         return String.valueOf(number);
 
-
     }
+
     public String createMaTaiKhoan() throws SQLException {
         List<String> dsMaTK = taiKhoan_dao.getMaTK();
         String lastMaTaiKhoan = dsMaTK.get(dsMaTK.size() - 1);
@@ -605,6 +691,7 @@ public class NguoiQuanLy_ThemNV extends javax.swing.JDialog {
     private javax.swing.JButton jButton_HuyBo;
     private javax.swing.JButton jButton_Luu;
     private javax.swing.JButton jButton_ThemAnh;
+    private javax.swing.JComboBox<String> jComboBox_ChucVu;
     private javax.swing.JComboBox<String> jComboBox_GioiTinh;
     private com.toedter.calendar.JDateChooser jDateChooser_NgaySinh;
     private javax.swing.JLabel jLabel_AnhDaiDien;
@@ -626,7 +713,6 @@ public class NguoiQuanLy_ThemNV extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JTextField jTextField_ChucVu;
     private javax.swing.JTextField jTextField_DiaChi;
     private javax.swing.JTextField jTextField_Email;
     private javax.swing.JTextField jTextField_MaNhanVien;

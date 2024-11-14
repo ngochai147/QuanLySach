@@ -7,31 +7,28 @@ package view;
 import button.TableActionCellEditor;
 import button.TableActionEvent;
 import button.TableActionRender;
-import dao.PhieuXuat_DAO;
-import entity.PhieuXuatKho;
+import dao.*;
+import entity.*;
 
+import entity.NhanVien;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
+import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import javax.swing.BorderFactory;
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.JFileChooser;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JTable;
+import java.util.HashSet;
+import java.util.Set;
+import javax.swing.*;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -41,61 +38,93 @@ import javax.swing.table.JTableHeader;
  * @author Thế Bảo
  */
 public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
-    private PhieuXuat_DAO pxk_dao;
+    private PhieuXuat_DAO pxk_dao = new PhieuXuat_DAO();
+    private PhieuNhap_DAO pnk_dao = new PhieuNhap_DAO();
+    private NhanVien_DAO nv_dao = new NhanVien_DAO();
+    private ChiTietPhieuXuatKho_DAO ctpxk_dao = new ChiTietPhieuXuatKho_DAO();
+    private KhoHang_DAO khoHang = new KhoHang_DAO();
+    ArrayList<PhieuXuatKho> listPXK = pxk_dao.getAllphieuXuatKho();
+    ArrayList<ChiTietPhieuXuatKho> listCTPXK = (ArrayList<ChiTietPhieuXuatKho>) ctpxk_dao.getDSCTPXK();
     private DefaultTableModel modelXuatNhapKho;
+    private ThuKho thuKho;
     /**
      * Creates new form TrangNhapKho_GUI
      */
-    public ThuKho_QuanLyNhapXuatKho() {
+    public ThuKho_QuanLyNhapXuatKho(ThuKho thuKho) {
+        this.thuKho = thuKho;
+
         initComponents();
         this.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         BasicInternalFrameUI ui = (BasicInternalFrameUI)this.getUI();
         ui.setNorthPane(null);
-        
-        // Chỉnh màu xanh cho combobox
-        Color customGreen = new Color(255, 255, 255);
-        cb_chonTieuChi.setRenderer(new DefaultListCellRenderer() {
-        @Override
-        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-            Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
-            if (isSelected) {
-                c.setBackground(new Color(102,102,0));   // Màu nền khi mục được chọn
-                c.setForeground(customGreen);   // Màu chữ khi mục được chọn
-            } else {
-                c.setBackground(customGreen); // Màu nền cho các mục không được chọn
-                c.setForeground(new Color(102,102,0));      // Màu chữ cho các mục không được chọn
-            }
-
-            return c;
-            }
-        });
-        
-        
          // doc du lieu tu database SQL vao Jtable
         modelXuatNhapKho = new DefaultTableModel(new Object[]{"STT", "Mã phiếu", "Mã thủ kho", "Mã kho hàng nhập", "Mã kho hàng xuất", "Loại phiếu", "Số lượng", "Ngày lập phiếu", ""}, 0);
         DocDuLieuDatabaseVaoTable();
         tbl_QLXuatNhapKho.setModel(modelXuatNhapKho);
-        
+
+        cb_chonTieuChi.setSelectedIndex(0);
+
+        ChinhMauCombobox();
         canGiua_tableHeader();
         chinhSua_table();
         chinhSua_btnView();
     }
-    
+
     private void DocDuLieuDatabaseVaoTable() {
         int stt = 1;
+        DateTimeFormatter dfDay = DateTimeFormatter.ofPattern("dd-MM-YYYY");
         // Đọc dữ liệu từ bảng phiếu xuất kho vào table
         ArrayList<PhieuXuatKho> listPXK = pxk_dao.getAllphieuXuatKho();
+//        ArrayList<PhieuNhapKho> listPNK = pnk_dao.getAllPhieuNhapKho();
         for(PhieuXuatKho pxk : listPXK) {
             String loaiPhieu;
             loaiPhieu = "Xuất kho"; // Nếu mã bắt đầu bằng "PXK"
 
             modelXuatNhapKho.addRow(new Object[]{
-                    stt++,pxk.getMaPhieuXuatKho(), pxk.getNhanVien().getMaNV(), pxk.getKhoHangNhap().getMaKhoHang(), pxk.getKhoHangXuat().getMaKhoHang(), loaiPhieu, pxk.getSoLuong(),pxk.getNgayLap(), ""
+                    stt++,pxk.getMaPhieuXuatKho(), pxk.getNhanVien().getMaNV(), pxk.getKhoHangNhap().getMaKhoHang(), pxk.getKhoHangXuat().getMaKhoHang(), loaiPhieu, pxk.getSoLuong(),dfDay.format(pxk.getNgayLap()), ""
             });
         }
     }
-    
+
+    private void ChinhMauCombobox() {
+        // Chỉnh màu xanh cho combobox
+        Color customGreen = new Color(255, 255, 255);
+        cb_chonTieuChi.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+
+                if (isSelected) {
+                    c.setBackground(new Color(102,102,0));   // Màu nền khi mục được chọn
+                    c.setForeground(customGreen);   // Màu chữ khi mục được chọn
+                } else {
+                    c.setBackground(customGreen); // Màu nền cho các mục không được chọn
+                    c.setForeground(new Color(102,102,0));      // Màu chữ cho các mục không được chọn
+                }
+
+                return c;
+            }
+        });
+
+        jcb_danhSach.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+
+                if (isSelected) {
+                    c.setBackground(new Color(102,102,0));   // Màu nền khi mục được chọn
+                    c.setForeground(customGreen);   // Màu chữ khi mục được chọn
+                } else {
+                    c.setBackground(customGreen); // Màu nền cho các mục không được chọn
+                    c.setForeground(new Color(102,102,0));      // Màu chữ cho các mục không được chọn
+                }
+
+                return c;
+            }
+        });
+    }
+
     public void chinhSua_table() {
         //Căn giữa các giá trị cột STT trong table
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -125,37 +154,67 @@ public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
         event = new TableActionEvent() {
             @Override
             public void onEdit(int row) {
-                 JOptionPane.showMessageDialog(null, "Simple Information Message");
+//
+//                JOptionPane.showMessageDialog(null, "Simple Information Message");
             }
 
             @Override
             public void onDelete(int row) {
-                
+
             }
 
             @Override
             public void onView(int row) {
-                JOptionPane.showMessageDialog(null, "Simple Information Message");
+                try {
+                    // Lấy mã phiếu từ hàng được chọn
+                    String maPhieu = tbl_QLXuatNhapKho.getValueAt(row, 1).toString(); // Cột 1 là mã phiếu
+                    String pdfFilePath = "test/PhieuXuatKho/" + maPhieu + ".pdf"; // Đường dẫn tới tệp PDF
+
+                    File pdfFile = new File(pdfFilePath);
+
+                    if (pdfFile.exists()) {
+                        // Mở file PDF bằng trình xem mặc định của hệ thống
+                        Desktop.getDesktop().open(pdfFile);
+                    } else {
+                        // Thông báo lỗi nếu không tìm thấy tệp PDF
+                        JOptionPane.showMessageDialog(
+                                null,
+                                "Tệp PDF \"" + maPhieu + ".pdf\" không tồn tại trong thư mục!",
+                                "Lỗi",
+                                JOptionPane.ERROR_MESSAGE
+                        );
+                    }
+                } catch (Exception ex) {
+                    // Xử lý các lỗi ngoại lệ
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Đã xảy ra lỗi khi mở tệp PDF: " + ex.getMessage(),
+                            "Lỗi",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                }
             }
         };
         tbl_QLXuatNhapKho.getColumnModel().getColumn(8).setCellRenderer(new TableActionRender(1));
         tbl_QLXuatNhapKho.getColumnModel().getColumn(8).setCellEditor(new TableActionCellEditor(event, 1));
     }
-    
+
     public void canGiua_tableHeader() {
     // Căn giữa và chỉnh kích thước table header
         Font fn = new Font("Arial", Font.BOLD, 18);
         tbl_QLXuatNhapKho.getTableHeader().setFont(fn);
-        
+
         // Lấy header của bảng
         JTableHeader header = tbl_QLXuatNhapKho.getTableHeader();
-        
+
         // Tạo renderer để căn giữa header
         DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) header.getDefaultRenderer();
         renderer.setHorizontalAlignment(JLabel.CENTER);
 
         // Thiết lập renderer cho header
         header.setDefaultRenderer(renderer);
+
+        tbl_QLXuatNhapKho.setPreferredSize(new Dimension(600, modelXuatNhapKho.getRowCount()*40));
     }
 
     public void exportToExcel(JTable tbl_QLXuatNhapKho) {
@@ -199,7 +258,11 @@ public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
                 }
                 wb.close();  // Close the workbook
 
-                // Optionally, open the created file
+                if (Desktop.isDesktopSupported()) {
+                    Desktop.getDesktop().open(saveFile);
+                } else {
+                    System.out.println("Desktop not supported, cannot open the file automatically.");
+                }
 
             } else {
                 System.out.println("Save file selection was canceled.");
@@ -226,15 +289,13 @@ public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
         panel_QLXuatNhapKho = new javax.swing.JPanel();
         btn_xuatExcel = new javax.swing.JButton();
         btn_XuatKho = new javax.swing.JButton();
-        btn_timKiem = new javax.swing.JButton();
         cb_chonTieuChi = new javax.swing.JComboBox<>();
-        tf_timKiem = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl_QLXuatNhapKho = new javax.swing.JTable();
         btn_lamMoi = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         btn_NhapKho = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        jcb_danhSach = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -275,54 +336,47 @@ public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
         btn_XuatKho.setPreferredSize(new java.awt.Dimension(120, 42));
         btn_XuatKho.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_XuatKhoActionPerformed(evt);
+                try {
+                    btn_XuatKhoActionPerformed(evt);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
         panel_QLXuatNhapKho.add(btn_XuatKho);
         btn_XuatKho.setBounds(40, 170, 120, 42);
 
-        btn_timKiem.setBackground(new java.awt.Color(102, 102, 0));
-        btn_timKiem.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
-        btn_timKiem.setForeground(new java.awt.Color(255, 255, 255));
-        btn_timKiem.setText("Tìm kiếm");
-        btn_timKiem.setPreferredSize(new java.awt.Dimension(120, 42));
-        btn_timKiem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_timKiemActionPerformed(evt);
-            }
-        });
-        panel_QLXuatNhapKho.add(btn_timKiem);
-        btn_timKiem.setBounds(1370, 170, 116, 42);
-
         cb_chonTieuChi.setBackground(new java.awt.Color(102, 102, 0));
         cb_chonTieuChi.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         cb_chonTieuChi.setForeground(new java.awt.Color(255, 255, 255));
-        cb_chonTieuChi.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tiêu chí", "Mã phiếu", "Mã kho nhập", "Mã kho xuất", "Mã thủ kho", "Ngày lập phiếu" }));
+        cb_chonTieuChi.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã phiếu", "Mã kho nhập", "Mã kho xuất", "Mã thủ kho", "Ngày lập phiếu" }));
         cb_chonTieuChi.setMinimumSize(new java.awt.Dimension(72, 30));
         cb_chonTieuChi.setPreferredSize(new java.awt.Dimension(300, 42));
-        panel_QLXuatNhapKho.add(cb_chonTieuChi);
-        cb_chonTieuChi.setBounds(900, 170, 160, 42);
-
-        tf_timKiem.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
-        tf_timKiem.setPreferredSize(new java.awt.Dimension(140, 42));
-        tf_timKiem.addActionListener(new java.awt.event.ActionListener() {
+        cb_chonTieuChi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tf_timKiemActionPerformed(evt);
+                cb_chonTieuChiActionPerformed(evt);
             }
         });
-        panel_QLXuatNhapKho.add(tf_timKiem);
-        tf_timKiem.setBounds(1090, 170, 258, 42);
-        tf_timKiem.getAccessibleContext().setAccessibleDescription("");
+        panel_QLXuatNhapKho.add(cb_chonTieuChi);
+        cb_chonTieuChi.setBounds(1010, 170, 220, 42);
 
         tbl_QLXuatNhapKho.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
         tbl_QLXuatNhapKho.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "STT", "Mã phiếu", "Mã kho hàng", "Loại phiếu", "Mã thủ kho", "Số lượng", "Ngày tạo phiếu", ""
+                "STT", "Mã phiếu", "Mã thủ kho", "Mã kho hàng nhập", "Mã kho hàng xuất", "Loại phiếu", "Số lượng", "Ngày lập phiếu", ""
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tbl_QLXuatNhapKho.setAutoscrolls(false);
         tbl_QLXuatNhapKho.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         tbl_QLXuatNhapKho.setPreferredSize(new java.awt.Dimension(600, 1000));
@@ -364,13 +418,16 @@ public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
         panel_QLXuatNhapKho.add(btn_NhapKho);
         btn_NhapKho.setBounds(180, 170, 120, 42);
 
-        jButton1.setBackground(new java.awt.Color(153, 0, 51));
-        jButton1.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Xóa");
-        jButton1.setPreferredSize(new java.awt.Dimension(120, 42));
-        panel_QLXuatNhapKho.add(jButton1);
-        jButton1.setBounds(460, 170, 120, 42);
+        jcb_danhSach.setBackground(new java.awt.Color(102, 102, 0));
+        jcb_danhSach.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jcb_danhSach.setForeground(new java.awt.Color(255, 255, 255));
+        jcb_danhSach.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jcb_danhSachItemStateChanged(evt);
+            }
+        });
+        panel_QLXuatNhapKho.add(jcb_danhSach);
+        jcb_danhSach.setBounds(1250, 170, 260, 40);
 
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/anhnen.jpg"))); // NOI18N
@@ -396,138 +453,237 @@ public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
         exportToExcel(tbl_QLXuatNhapKho);
     }//GEN-LAST:event_btn_xuatExcelActionPerformed
 
-    private void tf_timKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_timKiemActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tf_timKiemActionPerformed
-
-    private void btn_timKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_timKiemActionPerformed
-        String tieuChi = (String) cb_chonTieuChi.getSelectedItem(); // Lấy giá trị từ JComboBox
-        String tuKhoaTK = tf_timKiem.getText();
-
-        // Chuyển đổi từ khóa tìm kiếm về chữ thường
-        String upperTuKhoaTK = tuKhoaTK.toUpperCase();
-
-        modelXuatNhapKho.setRowCount(0); // Xóa dữ liệu cũ trong bảng
-
-        // Tìm theo mã phiếu
-        if (tieuChi.equals("Mã phiếu")) {
-            ArrayList<PhieuXuatKho> listPXK = pxk_dao.getPhieuXuatKhoTheoMa(tuKhoaTK);
-            modelXuatNhapKho.setRowCount(0); // Xóa dữ liệu cũ trong bảng
-            for (PhieuXuatKho pxk : listPXK) {
-                String loaiPhieu = "Xuất kho";
-                int stt = 0;
-
-                // Thêm dữ liệu tìm được vào bảng
-                modelXuatNhapKho.addRow(new Object[]{
-                        // Cần điều chỉnh theo các thuộc tính của `PhieuXuatKho`
-                        stt++,pxk.getMaPhieuXuatKho(), pxk.getNhanVien().getMaNV(), pxk.getKhoHangNhap().getMaKhoHang(), pxk.getKhoHangXuat().getMaKhoHang(), loaiPhieu, pxk.getSoLuong(),pxk.getNgayLap(), ""
-                });
-            }
-        }
-        // Tìm theo mã thủ kho
-        else if (tieuChi.equals("Mã thủ kho")) {
-            ArrayList<PhieuXuatKho> list_PX = PhieuXuat_DAO.getPhieuXuatKhoTheoMaThuKho(tuKhoaTK);
-
-            modelXuatNhapKho.setRowCount(0); // Xóa dữ liệu cũ trong bảng
-            int stt = 1;
-
-            for (PhieuXuatKho pxk : list_PX) {
-                String loaiPhieu = "Xuất kho";
-                modelXuatNhapKho.addRow(new Object[]{
-                        stt++, pxk.getMaPhieuXuatKho(), pxk.getNhanVien().getMaNV(), pxk.getKhoHangNhap().getMaKhoHang(), pxk.getKhoHangXuat().getMaKhoHang(), loaiPhieu, pxk.getSoLuong(), pxk.getNgayLap(), ""
-                });
-            }
-        }
-
-        // Tìm theo mã kho nhập
-        else if (tieuChi.equals("Mã kho nhập")) {
-            ArrayList<PhieuXuatKho> list_PX = PhieuXuat_DAO.getPhieuXuatKhoTheoMaKhoNhap(tuKhoaTK);
-
-            modelXuatNhapKho.setRowCount(0); // Xóa dữ liệu cũ trong bảng
-            int stt = 1;
-            for (PhieuXuatKho pxk : list_PX) {
-                String loaiPhieu = "Xuất kho";
-                modelXuatNhapKho.addRow(new Object[]{
-                        stt++, pxk.getMaPhieuXuatKho(), pxk.getNhanVien().getMaNV(), pxk.getKhoHangNhap().getMaKhoHang(), pxk.getKhoHangXuat().getMaKhoHang(), loaiPhieu, pxk.getSoLuong(), pxk.getNgayLap(), ""
-                });
-            }
-        }
-
-        // Tìm theo mã kho xuất
-        else if (tieuChi.equals("Mã kho xuất")) {
-            ArrayList<PhieuXuatKho> list_PX = PhieuXuat_DAO.getPhieuXuatKhoTheoMaKhoXuat(tuKhoaTK);
-
-            modelXuatNhapKho.setRowCount(0); // Xóa dữ liệu cũ trong bảng
-            int stt = 1;
-
-            for (PhieuXuatKho pxk : list_PX) {
-                String loaiPhieu = "Xuất kho";
-                modelXuatNhapKho.addRow(new Object[]{
-                        stt++, pxk.getMaPhieuXuatKho(), pxk.getNhanVien().getMaNV(), pxk.getKhoHangNhap().getMaKhoHang(), pxk.getKhoHangXuat().getMaKhoHang(), loaiPhieu, pxk.getSoLuong(), pxk.getNgayLap(), ""
-                });
-            }
-        }
-
-        else if (tieuChi.equals("Ngày lập phiếu")) {
-            // Tìm theo ngày lập đơn
-            ArrayList<PhieuXuatKho> list_PX = PhieuXuat_DAO.getPhieuXuatKhoTheoNgayLapDon(tuKhoaTK);
-
-            modelXuatNhapKho.setRowCount(0); // Xóa dữ liệu cũ trong bảng
-            int stt = 1;
-
-            // Hiển thị dữ liệu phiếu xuất kho
-            for (PhieuXuatKho pxk : list_PX) {
-                String loaiPhieu = "Xuất kho";
-                modelXuatNhapKho.addRow(new Object[]{
-                        stt++, pxk.getMaPhieuXuatKho(), pxk.getNhanVien().getMaNV(), pxk.getKhoHangNhap().getMaKhoHang(), pxk.getKhoHangXuat().getMaKhoHang(), loaiPhieu, pxk.getSoLuong(), pxk.getNgayLap(), ""
-                });
-            }
-        }
-    }//GEN-LAST:event_btn_timKiemActionPerformed
-
     private void btn_lamMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_lamMoiActionPerformed
-        modelXuatNhapKho = new DefaultTableModel(new Object[]{"STT", "Mã phiếu", "Mã thủ kho", "Mã kho hàng nhập", "Mã kho hàng xuất", "Loại phiếu", "Số lượng", "Ngày lập phiếu", ""}, 0);
+        modelXuatNhapKho = new DefaultTableModel(new Object[]{"STT", "Mã phiếu", "Mã thủ kho", "Mã kho nhập", "Mã kho xuất", "Loại phiếu", "Số lượng", "Ngày lập phiếu", ""}, 0);
         DocDuLieuDatabaseVaoTable();
         tbl_QLXuatNhapKho.setModel(modelXuatNhapKho);
+
+        cb_chonTieuChi.setSelectedItem("Mã phiếu");
+
         canGiua_tableHeader();
         chinhSua_table();
         chinhSua_btnView();
     }//GEN-LAST:event_btn_lamMoiActionPerformed
 
-    private void btn_XuatKhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_XuatKhoActionPerformed
-        // TODO add your handling code here:
-        panel_QLXuatNhapKho.removeAll();
-        ThuKho_XuatKho trangXuatKho = new ThuKho_XuatKho();
-        trangXuatKho.setSize(panel_QLXuatNhapKho.getSize());
-        trangXuatKho.setVisible(true);
-        panel_QLXuatNhapKho.add(trangXuatKho);
+    private void btn_XuatKhoActionPerformed(java.awt.event.ActionEvent evt) throws SQLException {//GEN-FIRST:event_btn_XuatKhoActionPerformed
+            thuKho.getDesktopPanel(new ThuKho_XuatKho());
+//        thuKho.getDesktopPanel(new ThuKho_XuatKho());
     }//GEN-LAST:event_btn_XuatKhoActionPerformed
 
     private void btn_NhapKhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_NhapKhoActionPerformed
-        // TODO add your handling code here:
-        panel_QLXuatNhapKho.removeAll();
-        ThuKho_NhapKho thuKho_QuanLySach = new ThuKho_NhapKho();
-        thuKho_QuanLySach.setSize(panel_QLXuatNhapKho.getSize());
-        thuKho_QuanLySach.setVisible(true);
-        panel_QLXuatNhapKho.add(thuKho_QuanLySach);
+        thuKho.getDesktopPanel(new ThuKho_NhapKho());
     }//GEN-LAST:event_btn_NhapKhoActionPerformed
 
+    private void cb_chonTieuChiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_chonTieuChiActionPerformed
+        Object selectedItem = cb_chonTieuChi.getSelectedItem();
+        if (selectedItem == null) {
+            return; // Thoát nếu chưa có mục nào được chọn
+        }
+
+        try {
+            String tieuChi = cb_chonTieuChi.getSelectedItem().toString();
+            jcb_danhSach.setVisible(true);
+            jcb_danhSach.removeAllItems();
+            jcb_danhSach.addItem("");
+
+            switch (tieuChi) {
+                case "Mã thủ kho":
+                    for (NhanVien nv : nv_dao.getDSNhanVien()) {
+                        jcb_danhSach.addItem(nv.getMaNV());
+                    }
+                    break;
+
+                case "Mã phiếu":
+                    ArrayList<PhieuXuatKho> listPXK = pxk_dao.getAllphieuXuatKho();
+                    for (PhieuXuatKho pxk : listPXK) {
+                        jcb_danhSach.addItem(pxk.getMaPhieuXuatKho());
+                    }
+                    break;
+
+                case "Mã kho nhập":
+                    Set<String> uniqueMaKhoNhap = new HashSet<>(); // Using Set to store unique codes
+                    for (KhoHang kh : khoHang.getDSKhoHang()) {
+                        uniqueMaKhoNhap.add(kh.getTenKho()); // Add to Set, which automatically handles duplicates
+                    }
+                    for (String tenKho : uniqueMaKhoNhap) {
+                        jcb_danhSach.addItem(tenKho); // Add unique codes to jcb_danhSach
+                    }
+                    break;
+
+                case "Mã kho xuất":
+                    Set<String> uniqueMaKhoXuat = new HashSet<>(); // Using Set to store unique codes
+                    for (KhoHang kh : khoHang.getDSKhoHang()) {
+                        uniqueMaKhoXuat.add(kh.getTenKho()); // Add to Set, which automatically handles duplicates
+                    }
+                    for (String tenKho : uniqueMaKhoXuat) {
+                        jcb_danhSach.addItem(tenKho); // Add unique codes to jcb_danhSach
+                    }
+                    break;
+                case "Ngày lập phiếu":
+                    DateTimeFormatter dfDay = DateTimeFormatter.ofPattern("dd-MM-YYYY");
+                    for (PhieuXuatKho pxk : pxk_dao.getAllphieuXuatKho()) {
+                        jcb_danhSach.addItem(dfDay.format(pxk.getNgayLap()));
+                    }
+                    break;
+                default:
+                    System.out.println("No matching criteria found.");
+                    break;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_cb_chonTieuChiActionPerformed
+
+    private void jcb_danhSachItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcb_danhSachItemStateChanged
+        int stt = 0;
+        if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
+            Object selectedItem = evt.getItem(); // Lấy mục vừa được chọn
+            if (selectedItem != null && !selectedItem.toString().trim().isEmpty()) { // Kiểm tra null hoặc rỗng
+//                System.out.println("Bạn đã chọn: " + selectedItem.toString());
+
+                String textTim = selectedItem.toString();
+                danhSachTimKiem(stt, textTim);
+
+            } else {
+//                System.out.println("Không có mục hợp lệ được chọn."); // Xử lý khi rỗng
+            }
+        }
+    }//GEN-LAST:event_jcb_danhSachItemStateChanged
+
+    public void danhSachTimKiem(int stt, String textTim) {
+        String tieuChi = cb_chonTieuChi.getSelectedItem().toString();
+
+        modelXuatNhapKho = new DefaultTableModel(new Object[]{"STT", "Mã phiếu", "Mã thủ kho", "Mã kho nhập", "Mã kho xuất", "Loại phiếu", "Số lượng", "Ngày lập phiếu", ""}, 0);
+        if (tieuChi.equalsIgnoreCase("Mã phiếu")) {
+            for (PhieuXuatKho pxk : listPXK) {
+                if (pxk.getMaPhieuXuatKho().contains(textTim)) {
+                    String loaiPhieu;
+                    loaiPhieu = "Xuất kho"; // Nếu mã bắt đầu bằng "PXK"
+
+                    modelXuatNhapKho.addRow(new Object[]{
+                            stt++,pxk.getMaPhieuXuatKho(), pxk.getNhanVien().getMaNV(), pxk.getKhoHangNhap().getMaKhoHang(), pxk.getKhoHangXuat().getMaKhoHang(), loaiPhieu, pxk.getSoLuong(),pxk.getNgayLap(), ""
+                    });
+                }
+            }
+        } else if (tieuChi.equalsIgnoreCase("Mã kho nhập")) {
+            Set<String> addedPhieuXuat = new HashSet<>();
+            try {
+                for (KhoHang kh : khoHang.getDSKhoHang()) {
+                    if (kh.getTenKho().contains(textTim)) {
+                        // Lặp qua danh sách phiếu xuất kho
+                        for (PhieuXuatKho pxk : listPXK) {
+                            if (pxk.getKhoHangNhap().getMaKhoHang().contains(kh.getMaKhoHang())) {
+                                String maPhieu = pxk.getMaPhieuXuatKho();
+
+                                // Kiểm tra xem mã phiếu đã được thêm chưa
+                                if (!addedPhieuXuat.contains(maPhieu)) {
+                                    String loaiPhieu = "Xuất kho"; // Nếu mã bắt đầu bằng "PXK"
+
+                                    // Thêm phiếu xuất vào mô hình
+                                    modelXuatNhapKho.addRow(new Object[]{
+                                            stt++,
+                                            pxk.getMaPhieuXuatKho(),
+                                            pxk.getNhanVien().getMaNV(),
+                                            pxk.getKhoHangNhap().getMaKhoHang(),
+                                            pxk.getKhoHangXuat().getMaKhoHang(),
+                                            loaiPhieu,
+                                            pxk.getSoLuong(),
+                                            pxk.getNgayLap(),
+                                            ""
+                                    });
+
+                                    // Thêm mã phiếu vào Set để tránh trùng lặp
+                                    addedPhieuXuat.add(maPhieu);
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        } else if (tieuChi.equalsIgnoreCase("Mã kho xuất")) {
+            Set<String> addedPhieuXuat = new HashSet<>();
+            try {
+                for (KhoHang kh : khoHang.getDSKhoHang()) {
+                    if (kh.getTenKho().contains(textTim)) {
+                        // Lặp qua danh sách phiếu xuất kho
+                        for (PhieuXuatKho pxk : listPXK) {
+                            if (pxk.getKhoHangXuat().getMaKhoHang().contains(kh.getMaKhoHang())) {
+                                String maPhieu = pxk.getMaPhieuXuatKho();
+
+                                // Kiểm tra xem mã phiếu đã được thêm chưa
+                                if (!addedPhieuXuat.contains(maPhieu)) {
+                                    String loaiPhieu = "Xuất kho"; // Nếu mã bắt đầu bằng "PXK"
+
+                                    // Thêm phiếu xuất vào mô hình
+                                    modelXuatNhapKho.addRow(new Object[]{
+                                            stt++,
+                                            pxk.getMaPhieuXuatKho(),
+                                            pxk.getNhanVien().getMaNV(),
+                                            pxk.getKhoHangNhap().getMaKhoHang(),
+                                            pxk.getKhoHangXuat().getMaKhoHang(),
+                                            loaiPhieu,
+                                            pxk.getSoLuong(),
+                                            pxk.getNgayLap(),
+                                            ""
+                                    });
+
+                                    // Thêm mã phiếu vào Set để tránh trùng lặp
+                                    addedPhieuXuat.add(maPhieu);
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        } else if (tieuChi.equalsIgnoreCase("Mã thủ kho")) {
+            for (PhieuXuatKho pxk : listPXK) {
+                if (pxk.getNhanVien().getMaNV().contains(textTim)) {
+                    String loaiPhieu;
+                    loaiPhieu = "Xuất kho"; // Nếu mã bắt đầu bằng "PXK"
+
+                    modelXuatNhapKho.addRow(new Object[]{
+                            stt++,pxk.getMaPhieuXuatKho(), pxk.getNhanVien().getMaNV(), pxk.getKhoHangNhap().getMaKhoHang(), pxk.getKhoHangXuat().getMaKhoHang(), loaiPhieu, pxk.getSoLuong(),pxk.getNgayLap(), ""
+                    });
+                }
+            }
+        } else if (tieuChi.equalsIgnoreCase("Ngày lập phiếu")) {
+            // Định dạng ngày thành dd-MM-yyyy
+            DateTimeFormatter dfDay = DateTimeFormatter.ofPattern("dd-MM-YYYY");
+            for (PhieuXuatKho pxk : listPXK) {
+                if (dfDay.format(pxk.getNgayLap()).equalsIgnoreCase(textTim)) {
+                    String loaiPhieu;
+                    loaiPhieu = "Xuất kho"; // Nếu mã bắt đầu bằng "PXK"
+
+                    modelXuatNhapKho.addRow(new Object[]{
+                            stt++,pxk.getMaPhieuXuatKho(), pxk.getNhanVien().getMaNV(), pxk.getKhoHangNhap().getMaKhoHang(), pxk.getKhoHangXuat().getMaKhoHang(), loaiPhieu, pxk.getSoLuong(),dfDay.format(pxk.getNgayLap()), ""
+                    });
+                }
+            }
+        }
+        tbl_QLXuatNhapKho.setModel(modelXuatNhapKho);
+        canGiua_tableHeader();
+        chinhSua_table();
+        chinhSua_btnView();
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_NhapKho;
     private javax.swing.JButton btn_XuatKho;
     private javax.swing.JButton btn_lamMoi;
-    private javax.swing.JButton btn_timKiem;
     private javax.swing.JButton btn_xuatExcel;
     private javax.swing.JComboBox<String> cb_chonTieuChi;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JComboBox<String> jcb_danhSach;
     private javax.swing.JPanel panel_QLXuatNhapKho;
     private javax.swing.JTable tbl_QLXuatNhapKho;
-    private javax.swing.JTextField tf_timKiem;
     // End of variables declaration//GEN-END:variables
 }
 

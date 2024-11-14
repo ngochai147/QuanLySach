@@ -4,18 +4,16 @@ import java.util.Objects;
 
 public class ChiTietPhieuXuatKho {
     private String maChiTietPhieuXuatKho;
-    private PhieuNhapKho phieuXuatKho;
+    private PhieuXuatKho phieuXuatKho;
     private int soLuong;
     private Sach sach;
 
-    public ChiTietPhieuXuatKho(){
 
-    }
-    public ChiTietPhieuXuatKho(String maChiTietPhieuXuatKho){
+    public ChiTietPhieuXuatKho(String maChiTietPhieuXuatKho, String maPhieuXuatKho, int soLuong, Sach isbn){
         this.maChiTietPhieuXuatKho=maChiTietPhieuXuatKho;
     }
 
-    public ChiTietPhieuXuatKho(String maChiTietPhieuXuatKho, PhieuNhapKho phieuXuatKho, int soLuong, Sach sach) {
+    public ChiTietPhieuXuatKho(String maChiTietPhieuXuatKho, PhieuXuatKho phieuXuatKho, int soLuong, Sach sach) {
         this.maChiTietPhieuXuatKho = maChiTietPhieuXuatKho;
         this.phieuXuatKho = phieuXuatKho;
         this.soLuong = soLuong;
@@ -30,11 +28,11 @@ public class ChiTietPhieuXuatKho {
         this.maChiTietPhieuXuatKho = maChiTietPhieuXuatKho;
     }
 
-    public PhieuNhapKho getPhieuXuatKho() {
+    public PhieuXuatKho getPhieuXuatKho() {
         return phieuXuatKho;
     }
 
-    public void setPhieuXuatKho(PhieuNhapKho phieuXuatKho) {
+    public void setPhieuXuatKho(PhieuXuatKho phieuXuatKho) {
         this.phieuXuatKho = phieuXuatKho;
     }
 

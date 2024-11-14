@@ -50,6 +50,46 @@ public class Sach_DAO {
         }
         return dsSach;
     }
+
+    public List<Sach> getDanhSachSachTheoMaKhoHang(String maKhoHang) throws SQLException {
+        List<Sach> danhSachSach = new ArrayList<>();
+        String sql = "SELECT s.ISBN, s.tenSach, s.tacGia, SUM(ctkh.soLuong) AS soLuongTrongKho, s.giaGoc, s.maLoaiSach, s.trangThai FROM Sach s " +
+                "JOIN ChiTietKhoHang ctkh ON s.ISBN = ctkh.ISBN " +
+                "WHERE ctkh.maKhoHang = ? " +
+                "GROUP BY s.ISBN, s.tenSach, s.tacGia, s.giaGoc, s.maLoaiSach, s.trangThai";
+        Connection con = ConnectDB.getInstance().getConnection();
+        PreparedStatement stmt = null;
+
+        try {
+            stmt = con.prepareStatement(sql);
+            stmt.setString(1, maKhoHang);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                String isbn = rs.getString("ISBN");
+                String tenSach = rs.getString("tenSach");
+                String tacGia = rs.getString("tacGia");
+                int soLuongTrongKho = rs.getInt("soLuongTrongKho");
+                double giaGoc = rs.getDouble("giaGoc");
+                String maLoaiSach = rs.getString("maLoaiSach");
+                String trangThai = rs.getString("trangThai");
+                danhSachSach.add(new Sach(isbn, tenSach, tacGia, 0, "", soLuongTrongKho, giaGoc, new LoaiSach(maLoaiSach), null, trangThai));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return danhSachSach;
+    }
+
     public ArrayList<Sach> getAllSP() {
         ArrayList<Sach> dsSP = new ArrayList<Sach>();
         Connection con = null;
@@ -101,6 +141,7 @@ public class Sach_DAO {
         }
         return ISBNs;
     }
+
     public Sach getSachTheoMaSach(String ma) throws SQLException{
         Sach sach = null;
         Connection con = ConnectDB.getConnection();
@@ -193,11 +234,8 @@ public class Sach_DAO {
         statement.close();
         return dsSach;
     }
-    public boolean themSach(Sach sach) throws SQLException{
+    public void themSach(Sach sach) throws SQLException{
         String sql = "insert into Sach values (?,?,?,?,?,?,?,(select maLoai from LoaiSach where tenLoai = ?),?,?)";
-        if(dsSach.contains(sach)){
-            return false;
-        }else {
             Connection con = ConnectDB.getInstance().getConnection();
             PreparedStatement stmt = null;
             stmt = con.prepareStatement(sql);
@@ -213,9 +251,10 @@ public class Sach_DAO {
             stmt.setString(10, sach.getTrangThai());
             stmt.executeUpdate();
             stmt.close();
-            return dsSach.add(sach);
-        }
+ 
     }
+
+
     public boolean xoaSach(String maSach) throws SQLException{
         Connection con = ConnectDB.getConnection();
         PreparedStatement stmt = null;
