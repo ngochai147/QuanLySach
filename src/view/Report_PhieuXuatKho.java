@@ -79,6 +79,11 @@ public class Report_PhieuXuatKho {
             JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(field);
             JasperPrint print = JasperFillManager.fillReport(reportPay, parameters, dataSource);
 
+            // Lưu báo cáo dưới dạng PDF vào thư mục chỉ định
+            String outputPath = "test/PhieuXuatKho/" + maPhieuXuatKho + ".pdf";
+            JasperExportManager.exportReportToPdfFile(print, outputPath);
+//            System.out.println("Báo cáo PDF đã được tạo thành công tại: " + outputPath);
+
             // Hiển thị báo cáo
             JasperViewer.viewReport(print, false);
         } catch (JRException e) {
