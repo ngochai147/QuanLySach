@@ -2,6 +2,7 @@ package dao;
 
 import connectDB.ConnectDB;
 import entity.ChiTietPhieuXuatKho;
+import entity.PhieuXuatKho;
 import entity.Sach;
 
 import java.sql.Connection;
@@ -31,7 +32,7 @@ public class ChiTietPhieuXuatKho_DAO {
                 String maPhieuXuatKho = rs.getString("maPhieuXuatKho");
                 int soLuong = rs.getInt("soLuong");
                 String isbn = rs.getString("ISBN");
-                ChiTietPhieuXuatKho ctpxk = new ChiTietPhieuXuatKho(maChiTietPhieuXuatKho, maPhieuXuatKho, soLuong, new Sach(isbn));
+                ChiTietPhieuXuatKho ctpxk = new ChiTietPhieuXuatKho(maChiTietPhieuXuatKho, new PhieuXuatKho(maPhieuXuatKho), soLuong, new Sach(isbn));
                 ds_ctpnk.add(ctpxk);
             }
         } catch (SQLException e) {

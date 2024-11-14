@@ -330,7 +330,7 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
                         if (kh.getTenKho().equalsIgnoreCase(tenKhoXuat)) {
                             Set<String> uniqueISBNs = new HashSet<>(); // Set để lưu các ISBN duy nhất
                             for (ChiTietKhoHang ctkh : ctkh_dao.getAllChiTietKhoHang()) {
-                                if (kh.getMaKhoHang().equalsIgnoreCase(ctkh.getKhoHang().getMaKhoHang())) {
+                                if (kh.getMaKhoHang().equalsIgnoreCase(ctkh.getKhoHang().getMaKhoHang()) && ctkh.getSoLuong() > 0) {
                                     String isbn = ctkh.getSach().getISBN();
                                     if (!uniqueISBNs.contains(isbn)) { // Kiểm tra nếu ISBN chưa tồn tại trong Set
                                         uniqueISBNs.add(isbn); // Thêm ISBN vào Set
@@ -804,7 +804,7 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
             for (KhoHang kh : khoHang_dao.getDSKhoHang()) {
                 if (kh.getTenKho().equalsIgnoreCase(tf_khoXuat)) {
                     for (ChiTietKhoHang ctkh : danhSachChiTietKhoTam) {
-                        if (ctkh.getSach().getISBN().equalsIgnoreCase(isbn)) {
+                        if (ctkh.getSach().getISBN().equalsIgnoreCase(isbn) && ctkh.getKhoHang().getMaKhoHang().equalsIgnoreCase(kh.getMaKhoHang())) {
 
                             if (isProcessed) break;
 
