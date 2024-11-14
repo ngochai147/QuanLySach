@@ -625,7 +625,14 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
 
     public void addDataToTable(Sach x) throws SQLException {
         model.insertRow(0, new Object[]{x.getISBN(), x.getTenSach(), x.getLoaiSach().getTenLoai(), x.getSoLuong(), df.format(x.getGiaGoc()) + " VND"});
-        jComboBox_TimKiem.addItem(x.getISBN());
+        String tieuChi = jComboBox_TieuChi.getSelectedItem().toString();
+        if(tieuChi.equalsIgnoreCase("Mã sách")){
+            jComboBox_TimKiem.addItem(x.getISBN());
+        }else if(tieuChi.equalsIgnoreCase("Loại sách")){
+            jComboBox_TimKiem.addItem(x.getLoaiSach().getTenLoai());
+        }else {
+            jComboBox_TimKiem.addItem(x.getTacGia());
+        }
     }
 
     public void editDataToTable(Sach x) throws SQLException {

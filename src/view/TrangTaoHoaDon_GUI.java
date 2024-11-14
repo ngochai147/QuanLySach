@@ -12,6 +12,8 @@ import com.google.zxing.common.HybridBinarizer;
 import dao.*;
 import entity.*;
 import entity.NhanVien;
+import function.NhapTienKhachTra;
+import function.PhieuHoaDon;
 
 import java.awt.*;
 import java.awt.Dimension;
@@ -54,7 +56,19 @@ public class TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
 
 
         });
+        if (jTable_DonHang.getColumnModel().getColumnCount() >= 0) {
 
+            jTable_DonHang.getColumnModel().getColumn(0).setPreferredWidth(20);
+            jTable_DonHang.getColumnModel().getColumn(1).setPreferredWidth(300);
+            jTable_DonHang.getColumnModel().getColumn(2).setPreferredWidth(100);
+            jTable_DonHang.getColumnModel().getColumn(3).setPreferredWidth(50);
+            jTable_DonHang.getColumnModel().getColumn(5).setPreferredWidth(150);
+        }
+        jTextField_LoaiSach.setEnabled(false);
+        jTextField_TenSach.setEnabled(false);
+        df = new DecimalFormat("#,###");
+
+        jTable_DonHang.setPreferredSize(new java.awt.Dimension(1612, 270));
     }
 
     /**
@@ -292,21 +306,6 @@ public class TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
         jPanel1.add(jLabel2);
         jLabel2.setBounds(0, 0, 1612, 733);
 
-        jTextField_LoaiSach.setEnabled(false);
-        jTextField_TenSach.setEnabled(false);
-        df = new DecimalFormat("#,###");
-
-        // Giả sử đây là số bạn muốn định dạng
-
-        if (jTable_DonHang.getColumnModel().getColumnCount() >= 0) {
-
-            jTable_DonHang.getColumnModel().getColumn(0).setPreferredWidth(20);
-            jTable_DonHang.getColumnModel().getColumn(1).setPreferredWidth(300);
-            jTable_DonHang.getColumnModel().getColumn(2).setPreferredWidth(100);
-            jTable_DonHang.getColumnModel().getColumn(3).setPreferredWidth(50);
-            jTable_DonHang.getColumnModel().getColumn(5).setPreferredWidth(150);
-        }
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -321,7 +320,7 @@ public class TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
         );
 
         pack();
-        jTable_DonHang.setPreferredSize(new java.awt.Dimension(1612, 270));
+
     }// </editor-fold>
     private  void jTable_DonHangMouseClicked(java.awt.event.MouseEvent evt){
         int n=jTable_DonHang.getSelectedRow();
@@ -339,27 +338,28 @@ public class TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
     private void jButton_ThemHoaDonActionPerformed(java.awt.event.ActionEvent evt) throws SQLException {//GEN-FIRST:event_jButton_ThemHoaDonActionPerformed
 
         // BasicConfigurator.configure();
-        String maHoaDon=maHoaDonTuDongTang(dsHD.getAllHoaDon().get(dsHD.getAllHoaDon().size()-1).getMaHoaDon());
+        String maHoaDon=taoMaHoaDonTuDongTang(dsHD.getAllHoaDon().get(dsHD.getAllHoaDon().size()-1).getMaHoaDon());
         if(dsCTHDTemp.size()==0){
             jTextField_ISBN.requestFocus();
             JOptionPane.showMessageDialog(this, "Vui lòng thêm sản phẩm vào đơn hàng");
             return;
         }else{
             ChiTietKhoHang_DAO ctkh_dao=new ChiTietKhoHang_DAO();
-            KhoHang_DAO khoHang_dao=new KhoHang_DAO();
+
             NhapTienKhachTra tkt = new NhapTienKhachTra((Frame) SwingUtilities.getWindowAncestor(this),tongTienHoaDon,maHoaDon);
             tkt.setVisible(true);
 
             double tienKhachTra = tkt.getTienKhachTra();
             boolean kiemTra=tkt.getKiemtra();
+            boolean hinhThucThanhToan=tkt.getHinhThucThanhToan();
             int soLuong=0;
-            if(kiemTra==true){
+            if(kiemTra){
                 jTextField_ISBN.requestFocus();
-                if(tkt.getHinhThucThanhToan()==true){
+                if(hinhThucThanhToan){
                     PhieuHoaDon phieuHoaDon=new PhieuHoaDon();
                     phieuHoaDon.viewReport(dsCTHDTemp,maHoaDon,tienKhachTra);
 
-                }else if(tkt.getHinhThucThanhToan()==false){
+                }else if(!hinhThucThanhToan){
                     PhieuHoaDon phieuHoaDon=new PhieuHoaDon();
                     phieuHoaDon.viewReport(dsCTHDTemp,maHoaDon,tongTienHoaDon);
                 }
@@ -372,12 +372,12 @@ public class TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
                             ctkh_dao.capNhatChiTietKhoHang(cthd.getSach().getISBN(),ctkh.getKhoHang().getMaKhoHang(),soLuong);
                         }
                     }
-                    for(Sach s:dsS){
+                    for(Sach s:dsSach){
                         if(cthd.getSach().getISBN().equalsIgnoreCase(s.getISBN())){
                             sachDao.capNhatSoLuongSachTon(s.getISBN(),s.getSoLuong()-cthd.getSoLuong());
                         }
                     }
-                    CTHD.create(cthd);
+                    chiTietHoaDonDao.create(cthd);
                 }
                 model= (DefaultTableModel) jTable_DonHang.getModel();
                 model.setRowCount(0);
@@ -413,7 +413,7 @@ public class TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
             if(thongBao==0){
                 String tenSach=(String)jTable_DonHang.getValueAt(n, 1);
                 String maSach="";
-                for (Sach s:dsS){
+                for (Sach s:dsSach){
                     if(s.getTenSach().equalsIgnoreCase(tenSach))
                         maSach=s.getISBN();
                 }
@@ -454,7 +454,7 @@ public class TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
                 }
             }
         }
-        if(kiemTra==true){
+        if(kiemTra){
             if(jTextField_SoLuong.getText().trim().isEmpty()){
                 JOptionPane.showMessageDialog(this,
                         "Số lượng không được rỗng", "Lỗi", JOptionPane.WARNING_MESSAGE);
@@ -483,7 +483,7 @@ public class TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
                     }else {
                         model= (DefaultTableModel) jTable_DonHang.getModel();
                         boolean timKiem=timSachTrongDonHang(ISBN);
-                        if(timKiem==true){
+                        if(timKiem){
                             for (int i = 0; i < dsCTHDTemp.size(); i++) {
                                 if (dsCTHDTemp.get(i).getSach().getISBN().equalsIgnoreCase(ISBN)) {
                                     int soLuongMoi = dsCTHDTemp.get(i).getSoLuong() + soLuongMua;
@@ -509,16 +509,16 @@ public class TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
                                 }
                             }
                         }else {
-                            stt=model.getRowCount()+1;
+                            soThuTu=model.getRowCount()+1;
                             int soLuong=Integer.parseInt(jTextField_SoLuong.getText()) ;
-                            double thanhTien=sach.getGiaGoc()*soLuong*loiNhuan;
-                            String maHoaDon=maHoaDonTuDongTang(dsHD.getAllHoaDon().get(dsHD.getAllHoaDon().size()-1).getMaHoaDon());
-                            int indexCTHD=CTHD.getAllChiTietHoaDon().size()-1;
-                            String maCTHD=maChiTietHoaDonTuDong(indexCTHD);
+                            double thanhTien=sach.getGiaGoc()*soLuong*LOI_NHUAN;
+                            String maHoaDon=taoMaHoaDonTuDongTang(dsHD.getAllHoaDon().get(dsHD.getAllHoaDon().size()-1).getMaHoaDon());
+                            int indexCTHD=chiTietHoaDonDao.getAllChiTietHoaDon().size()-1;
+                            String maCTHD=taoMaChiTietHoaDonTuDong(indexCTHD);
                             model.addRow(new Object[]{
-                                    stt,tenSach,loaiSach,soLuong,df.format(sach.getGiaGoc()*loiNhuan),df.format(thanhTien)
+                                    soThuTu,tenSach,loaiSach,soLuong,df.format(sach.getGiaGoc()*LOI_NHUAN),df.format(thanhTien)
                             });
-                            dsCTHDTemp.add(new ChiTietHoaDon(maCTHD,new HoaDon(maHoaDon),new Sach(ISBN),soLuong,sach.getGiaGoc()*loiNhuan));
+                            dsCTHDTemp.add(new ChiTietHoaDon(maCTHD,new HoaDon(maHoaDon),new Sach(ISBN),soLuong,sach.getGiaGoc()*LOI_NHUAN));
                             tongTienHoaDon+=thanhTien;
                             jLabel_TongTienHoaDon.setText(df.format(tongTienHoaDon));
                         }
@@ -545,28 +545,7 @@ public class TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
 
 
     }//GEN-LAST:event_jButton_ThemSachActionPerformed
-    public String maHoaDonTuDongTang(String maHDCuoiCung) {
-        String part1 = maHDCuoiCung.substring(0, 2);  // Lấy 2 ký tự đầu tiên
-        int part2 = Integer.parseInt(maHDCuoiCung.substring(4))+1;
-        String maHD = part1 + String.format("%04d", part2);
-        return maHD;
-    }
-    private static String decodeBarcode(BufferedImage image) {
-        try {
-            LuminanceSource source = new BufferedImageLuminanceSource(image);
-            BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
-            Map<DecodeHintType, Object> hints = new EnumMap<>(DecodeHintType.class);
-            List<BarcodeFormat> formats = new ArrayList<>();
-            formats.add(BarcodeFormat.CODE_128);
-            formats.add(BarcodeFormat.EAN_13);
-            formats.add(BarcodeFormat.UPC_A);
-            hints.put(DecodeHintType.POSSIBLE_FORMATS, formats);
-            Result result = new MultiFormatReader().decode(bitmap, hints);
-            return result.getText();  // Trả về kết quả đã giải mã
-        } catch (NotFoundException e) {
-            return null;
-        }
-    }
+
     private void clear(){
         dsCTHDTemp.clear();
         jTextField_ISBN.setText("");
@@ -604,22 +583,82 @@ public class TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
         if(jTextField_ISBN.getText()!=null && jTextField_SoLuong.isRequestFocusEnabled()){
             Sach_DAO sachDao=new Sach_DAO();
             List<Sach> dss= sachDao.getAllSP();
-            Sach sach=new Sach();
             for (Sach s: dss){
                 if(ISBN.equals(s.getISBN())){
-                    sach=s;
                     jTextField_TenSach.setText(s.getTenSach());
                     jTextField_LoaiSach.setText(s.getLoaiSach().getTenLoai());
                 }
             }
         }
     }
-
-    private String maChiTietHoaDonTuDong(int index){
-        String part1 = CTHD.getAllChiTietHoaDon().get(index).getMaChiTietHoaDon().substring(0, 4);  // Lấy 4 ký tự đầu tiên
-        int part2 = Integer.parseInt(CTHD.getAllChiTietHoaDon().get(index).getMaChiTietHoaDon().substring(5))+stt;
+    private void jButton_QuetMaActionPerformed(java.awt.event.ActionEvent evt) {
+// TODO add your handling code here:
+        Thread scannerThread = new Thread(() -> {
+            Sach_DAO dsS=new Sach_DAO();
+            Webcam webcam = Webcam.getWebcams().get(0);
+            if (webcam == null) {
+                System.out.println("Không tìm thấy webcam.");
+                return;
+            }
+            webcam.setViewSize(new Dimension(320, 240));
+            JFrame window=createWebcamWindow(webcam);
+            window.setVisible(true);
+            while (true) {
+                try {
+                    BufferedImage image = webcam.getImage();  // Lấy hình ảnh từ webcam
+                    String barcodeText = decodeBarcode(image);
+                    if (barcodeText != null) {
+                        for(Sach s: dsS.getAllSP()){
+                            if(barcodeText.equalsIgnoreCase(s.getISBN())){
+                                jTextField_ISBN.setText(s.getISBN());
+                                jTextField_TenSach.setText(s.getTenSach());
+                                jTextField_LoaiSach.setText(s.getLoaiSach().getTenLoai());
+                                jTextField_SoLuong.setText("1");
+                                webcam.close();
+                                window.setVisible(false);
+                            }
+                        }
+                    }
+                    //      jLabel_TongTienHoaDon.setText(df.format(tongTienHoaDon));
+                }catch (NullPointerException  e){
+                    break;
+                }
+                try {
+                    Thread.sleep(100);  // Tạm dừng 100ms để giảm tải
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        scannerThread.start();
+    }
+    private String taoMaChiTietHoaDonTuDong(int index){
+        String part1 = chiTietHoaDonDao.getAllChiTietHoaDon().get(index).getMaChiTietHoaDon().substring(0, 4);  // Lấy 4 ký tự đầu tiên
+        int part2 = Integer.parseInt(chiTietHoaDonDao.getAllChiTietHoaDon().get(index).getMaChiTietHoaDon().substring(5))+soThuTu;
         String maCTHD = part1 + String.format("%05d", part2);
         return maCTHD;
+    }
+    public String taoMaHoaDonTuDongTang(String maHDCuoiCung) {
+        String part1 = maHDCuoiCung.substring(0, 2);  // Lấy 2 ký tự đầu tiên
+        int part2 = Integer.parseInt(maHDCuoiCung.substring(4))+1;
+        String maHD = part1 + String.format("%04d", part2);
+        return maHD;
+    }
+    private static String decodeBarcode(BufferedImage image) {
+        try {
+            LuminanceSource source = new BufferedImageLuminanceSource(image);
+            BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
+            Map<DecodeHintType, Object> hints = new EnumMap<>(DecodeHintType.class);
+            List<BarcodeFormat> formats = new ArrayList<>();
+            formats.add(BarcodeFormat.CODE_128);
+            formats.add(BarcodeFormat.EAN_13);
+            formats.add(BarcodeFormat.UPC_A);
+            hints.put(DecodeHintType.POSSIBLE_FORMATS, formats);
+            Result result = new MultiFormatReader().decode(bitmap, hints);
+            return result.getText();  // Trả về kết quả đã giải mã
+        } catch (NotFoundException e) {
+            return null;
+        }
     }
     private boolean timSachTrongDonHang(String maSach){
         boolean timKiem=false;
@@ -653,90 +692,22 @@ public class TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
         });
         return window;
     }//GEN-LAST:event_jTextField_SoLuongFocusGained
-    private void jButton_QuetMaActionPerformed(java.awt.event.ActionEvent evt) {
-// TODO add your handling code here:
-        Thread scannerThread = new Thread(() -> {
-            Sach_DAO dsS=new Sach_DAO();
-            Webcam webcam = Webcam.getWebcams().get(0);
-            if (webcam == null) {
-                System.out.println("Không tìm thấy webcam.");
-                return;
-            }
-            webcam.setViewSize(new Dimension(320, 240));
-            JFrame window=createWebcamWindow(webcam);
-            window.setVisible(true);
-            while (true) {
-                try {
-                    BufferedImage image = webcam.getImage();  // Lấy hình ảnh từ webcam
-                    String barcodeText = decodeBarcode(image);
-                    boolean timKiem=timSachTrongDonHang(barcodeText);// Giải mã mã vạch
-                    if (barcodeText != null) {
-                        for(Sach s: dsS.getAllSP()){
-                            if(barcodeText.equalsIgnoreCase(s.getISBN())){
-                                jTextField_ISBN.setText(s.getISBN());
-                                jTextField_TenSach.setText(s.getTenSach());
-                                jTextField_LoaiSach.setText(s.getLoaiSach().getTenLoai());
-                                jTextField_SoLuong.setText("1");
-                                webcam.close();
-                                window.setVisible(false);
-//                                if(timKiem==true){
-//                                    for(int i=0;i<dsCTHDTemp.size();i++) {
-//                                        if (dsCTHDTemp.get(i).getSach().getISBN().equalsIgnoreCase(barcodeText)) {
-//                                            tongTienHoaDon=tongTienHoaDon-(dsCTHDTemp.get(i).getSoLuong()*dsCTHDTemp.get(i).getDonGia());
-//                                            int soLuong = dsCTHDTemp.get(i).getSoLuong() + 1;
-//                                            double thanhTien = dsCTHDTemp.get(i).getDonGia() * soLuong;
-//                                            dsCTHDTemp.get(i).setSoLuong(soLuong);
-//
-//                                            model = (DefaultTableModel) jTable_DonHang.getModel();
-//                                            model.setValueAt(soLuong, i, 3);
-//                                            model.setValueAt(df.format(thanhTien), i, 5);
-//                                            tongTienHoaDon+=thanhTien;
-//                                        }
-//                                    }
-//                                }else{
-//                                    model= (DefaultTableModel) jTable_DonHang.getModel();
-//                                    stt=model.getRowCount()+1;
-//                                    double thanhTien=s.getGiaGoc()*1;
-//                                    String maHoaDon=maHoaDonTuDongTang(dsHD.getAllHoaDon().get(dsHD.getAllHoaDon().size()-1).getMaHoaDon());
-//                                    int indexCTHD=CTHD.getAllChiTietHoaDon().size()-1;
-//                                    String maCTHD = maChiTietHoaDonTuDong(indexCTHD);
-//                                    model.addRow(new Object[]{
-//                                            stt,s.getTenSach(),s.getLoaiSach().getTenLoai(),1,df.format(s.getGiaGoc()),df.format(thanhTien)
-//                                    });
-//                                    dsCTHDTemp.add(new ChiTietHoaDon(maCTHD,new HoaDon(maHoaDon),new Sach(s.getISBN()),1,s.getGiaGoc()));
-//                                    tongTienHoaDon+=thanhTien;
-//                                }
-                            }
-                        }
-                    }
-              //      jLabel_TongTienHoaDon.setText(df.format(tongTienHoaDon));
-                }catch (NullPointerException  e){
-                    break;
-                }
-                try {
-                    Thread.sleep(100);  // Tạm dừng 100ms để giảm tải
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        scannerThread.start();
-    }
+
 
     private DefaultTableModel model;
-    private int stt;
+    private int soThuTu;
     private DecimalFormat df;
-    private  static final double loiNhuan=1.4;
+    private  static final double LOI_NHUAN=1.4;
     private  double tongTienHoaDon=0;
     private JLabel jLabel_TongTien;
     private JLabel jLabel_TongTienHoaDon;
     private HoaDon_DAO dsHD = new HoaDon_DAO();
-    private List<HoaDon> listhD = dsHD.getAllHoaDon();
-    private ChiTietHoaDon_DAO CTHD=new ChiTietHoaDon_DAO();
-    private List<ChiTietHoaDon> listCTHD=CTHD.getAllChiTietHoaDon();
+
+    private ChiTietHoaDon_DAO chiTietHoaDonDao=new ChiTietHoaDon_DAO();
+
     private ArrayList<ChiTietHoaDon> dsCTHDTemp = new ArrayList<>();
     private Sach_DAO sachDao=new Sach_DAO();
-    private List<Sach> dsS= sachDao.getAllSP();// Variables declaration - do not modify//GEN-BEGIN:variables
+    private List<Sach> dsSach= sachDao.getAllSP();// Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton_QuetMa;
     private javax.swing.JButton jButton_HuyDonHang;
     private javax.swing.JButton jButton_ThemHoaDon;

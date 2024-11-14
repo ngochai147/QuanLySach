@@ -55,6 +55,8 @@ public class NguoiQuanLy_ThemNV extends javax.swing.JDialog {
         nhanVien = null;
         taiKhoan = null;
         initComponents();
+
+
         setLocationRelativeTo(null);
         try {
             jTextField_MaNhanVien.setText(createMaNhanVien());

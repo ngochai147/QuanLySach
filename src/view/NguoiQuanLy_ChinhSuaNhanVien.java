@@ -538,7 +538,7 @@ public class NguoiQuanLy_ChinhSuaNhanVien extends javax.swing.JDialog {
                 int age = Period.between(ngaySinh, today).getYears();
 
                 if (age < 18) {
-                    JOptionPane.showMessageDialog(this, "Nhân viên phải từ 18 tuổi trở lên.", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Nhân viên phải từ     18 tuổi trở lên.", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
                     return null;
                 }
             } else {

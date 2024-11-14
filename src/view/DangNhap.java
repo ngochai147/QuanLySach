@@ -91,7 +91,7 @@ public class DangNhap extends javax.swing.JFrame {
         jRadioButton_ThuKho.setBorder(null);
 
         jTextField_Email.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
-        jTextField_Email.setToolTipText("Hãy nhập Email của bạn");
+        jTextField_Email.setToolTipText("Hãy nhập tài khoản của bạn");
         jTextField_Email.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 jTextField_EmailFocusGained(evt);
