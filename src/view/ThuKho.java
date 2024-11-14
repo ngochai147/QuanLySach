@@ -286,7 +286,7 @@ public class ThuKho extends javax.swing.JFrame {
     private void jPanel_ThongKeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel_ThongKeMouseClicked
         // TODO add your handling code here:
         jDesktopPane1.removeAll();
-        ThuKho_QuanLySach ql_sach = new ThuKho_QuanLySach();
+        NguoiQuanLy_ThongKeTonKho ql_sach = new NguoiQuanLy_ThongKeTonKho();
         ql_sach.setSize(jDesktopPane1.getSize());
         ql_sach.setVisible(true);
         jDesktopPane1.add(ql_sach);

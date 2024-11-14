@@ -19,6 +19,7 @@ import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.HeadlessException;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystemException;
@@ -259,6 +260,23 @@ public class Sach_ThemSach extends javax.swing.JDialog {
 
         jSpinner_SoLuong.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jSpinner_SoLuong.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
+        jSpinner_SoLuong.setModel(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
+        JFormattedTextField spinnerTextField = ((JSpinner.NumberEditor) jSpinner_SoLuong.getEditor()).getTextField();
+        spinnerTextField.setInputVerifier(new InputVerifier() {
+            @Override
+            public boolean verify(JComponent input) {
+                String text = spinnerTextField.getText().trim();
+
+                // Kiểm tra nếu chuỗi không phải là số nguyên dương
+                if (!text.matches("^[1-9][0-9]*$")) {
+                    JOptionPane.showMessageDialog(null, "Vui lòng chỉ nhập số nguyên dương!", "Lỗi nhập liệu", JOptionPane.ERROR_MESSAGE);
+                    spinnerTextField.setText("0"); // Đặt lại về 1 nếu không hợp lệ
+                    return false;
+                }
+
+                return true; // Đầu vào hợp lệ
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -399,155 +417,215 @@ public class Sach_ThemSach extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private boolean kiemTraISBN(String iSBN) {
-//      Kiểm tra ISBN có đúng 13 chữ số không.
+//        1. ^ và $: Đảm bảo rằng toàn bộ chuỗi chỉ chứa ký tự được mô tả trong regex.
+//        2. \\d{13}: Đảm bảo chuỗi chỉ chứa 13 ký tự số liên tiếp (từ 0-9).
         String regex = "^\\d{13}$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(iSBN);
-        return matcher.matches();
+        return iSBN != null && iSBN.matches(regex);
     }
 
     private boolean kiemTraTenSach(String tenSach) {
-//      Cho phép tên sách bao gồm chữ cái, chữ số, khoảng trắng, và các ký tự đặc biệt như dấu chấm, 
-//      dấu phẩy, dấu hai chấm, dấu chấm than, dấu hỏi, dấu ngoặc kép, dấu gạch ngang và dấu nháy đơn
-        String regex = "^[\\p{L}\\d\\s,.:;!?\"'-]+$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(tenSach);
-        return matcher.matches();
+//        1. ^ và $: Đảm bảo toàn bộ chuỗi tuân theo các ký tự trong regex.
+//        2. \\p{L}: Cho phép các chữ cái, bao gồm cả chữ cái có dấu.
+//        3. 0-9: Cho phép các chữ số từ 0 đến 9.
+//        4. \\s: Cho phép khoảng trắng.
+//        5. [.,'-:]: Cho phép các ký tự đặc biệt như dấu chấm, dấu phẩy, dấu gạch ngang, dấu nháy đơn, và dấu hai chấm.
+//        6. +: Đảm bảo chuỗi có ít nhất một ký tự và có thể có nhiều ký tự.
+//        VD tên sách hợp lệ:
+//              Lập Trình Java
+//              Cơ sở dữ liệu: Nguyên lý và Ứng dụng
+//        VD tên sách không hợp lệ:
+//              C# căn bản!
+        String regex = "^[\\p{L}0-9\\s.,'-:]+$";
+        return tenSach != null && !tenSach.trim().isEmpty() && tenSach.matches(regex);
     }
 
-    private boolean kiemTratacGia(String tacNha) {
-//      Tên tác giả có thể chứa các chữ cái, khoảng trắng, dấu nháy đơn ('), và dấu gạch ngang (-)
+    private boolean kiemTraDonGia(String donGiaStr) {
+        // Sử dụng regex để đảm bảo donGiaStr là một số hợp lệ
+        String regex = "^[0-9]+(\\.[0-9]+)?$";
+        if (donGiaStr == null || !donGiaStr.matches(regex)) {
+            JOptionPane.showMessageDialog(this, "Đơn giá phải là một số hợp lệ!!!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        }
+
+        try {
+            double donGia = Double.parseDouble(donGiaStr);
+            if (donGia <= 0) {
+                JOptionPane.showMessageDialog(this, "Đơn giá phải > 0!!!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Đơn giá không hợp lệ!!!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        }
+        return true;
+    }
+
+//    1111111111111
+
+    private boolean kiemTraSoLuong() {
+    jSpinner_SoLuong.addChangeListener(e -> {
+        Object value = jSpinner_SoLuong.getValue();
+        if (value instanceof Integer) {
+            int soLuong = (Integer) value;
+            if (soLuong <= 0) {
+                JOptionPane.showMessageDialog(null, "Số lượng phải là số nguyên dương!", "Lỗi nhập liệu", JOptionPane.ERROR_MESSAGE);
+                jSpinner_SoLuong.setValue(1); // Đặt lại giá trị về 1 nếu không hợp lệ
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Vui lòng chỉ nhập số nguyên!", "Lỗi nhập liệu", JOptionPane.ERROR_MESSAGE);
+            jSpinner_SoLuong.setValue(1); // Đặt lại giá trị về 1 nếu không hợp lệ
+        }
+    });
+
+    // Kiểm tra cuối cùng khi nhấn nút xác nhận
+    try {
+        int soLuong = (int) jSpinner_SoLuong.getValue();
+        if (soLuong > 0) {
+            return true; // Số lượng hợp lệ nếu lớn hơn 0
+        } else {
+            JOptionPane.showMessageDialog(this, "Số lượng phải lớn hơn 0!!!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        }
+    } catch (HeadlessException e) {
+        JOptionPane.showMessageDialog(this, "Số lượng không hợp lệ!!!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+        return false;
+    }
+}
+
+
+    private boolean kiemTratacGia(String tacGia) {
+//        1. ^ và $: Đảm bảo toàn bộ chuỗi chỉ chứa các ký tự mô tả trong regex.
+//        2. \\p{L}: Cho phép các ký tự chữ từ nhiều ngôn ngữ, bao gồm chữ cái có dấu.
+//        3. \\s: Cho phép khoảng trắng.
+//        4. [.'-]: Cho phép các ký tự đặc biệt như dấu chấm (.), dấu nháy đơn ('), và dấu gạch ngang (-).
+//        5. +: Đảm bảo chuỗi có ít nhất một ký tự và có thể lặp lại nhiều lần.
+//        VD tên tác giả hợp lệ:
+//              Nguyễn Nhật Ánh
+//              J.K. Rowling
+//              O'Neill
+//        VD tên tác giả không hợp lệ:
+//              123 Tác Giả
         String regex = "^[\\p{L}\\s.'-]+$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(tacNha);
-        return matcher.matches();
+        return tacGia != null && !tacGia.trim().isEmpty() && tacGia.matches(regex);
     }
 
     private boolean kiemTraNhaXB(String nhaXB) {
-//      Tên nhà xuất bản có thể bao gồm chữ cái, chữ số, khoảng trắng và các ký tự như dấu chấm, 
-//      dấu phẩy, dấu ngoặc kép ("), dấu nháy đơn ('), và dấu &, gạch ngang
-        String regex = "^[\\p{L}\\d\\s.,&'\"-]+$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(nhaXB);
-        return matcher.matches();
+//        1. ^ và $: Đảm bảo rằng toàn bộ chuỗi tuân theo định dạng regex.
+//        2. \\p{L}: Cho phép các chữ cái từ nhiều ngôn ngữ, bao gồm cả chữ cái có dấu.
+//        3. 0-9: Cho phép các chữ số từ 0 đến 9.
+//        4. \\s: Cho phép khoảng trắng.
+//        5. [.,'-]: Cho phép các ký tự đặc biệt như dấu chấm (.), dấu phẩy (,), dấu gạch ngang (-), và dấu nháy đơn (').
+//        6. +: Đảm bảo chuỗi có ít nhất một ký tự hợp lệ và có thể lặp lại nhiều lần.
+//        VD tên nhà xuất bản hợp lệ:
+//              Nhà Xuất Bản Trẻ
+//              NXB Kim Đồng
+//              123 Nhà Xuất Bản
+//        VD tên nhà xuất bản không hợp lệ:
+//              Nhà Xuất Bản & Co
+        String regex = "^[\\p{L}0-9\\s.,'-]+$";
+        return nhaXB != null && !nhaXB.trim().isEmpty() && nhaXB.matches(regex);
+    }
+
+    private boolean kiemTraNamXB(String namXBStr) {
+        try {
+            int namXB = Integer.parseInt(namXBStr);
+            if (namXB <= 0) {
+                JOptionPane.showMessageDialog(this, "Năm xuất bản phải lớn hơn 0!!!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                return false;
+            }
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Năm xuất bản không hợp lệ", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        }
+        return true;
+    }
+
+    private boolean kiemTraTatCa() {
+        String ISBN = jTextField_ISBN.getText();
+        String tenSach = jTextField_TenSach.getText();
+        String donGiaStr = jTextField_DonGia.getText();
+        String tacGia = jTextField_TacGia.getText();
+        String nhaXB = jTextField_NhaXuatBan.getText();
+        String namXBStr = jTextField_NamXuatBan.getText();
+
+        if (ISBN.trim().length() == 0 || !kiemTraISBN(ISBN)) {
+            JOptionPane.showMessageDialog(this, "ISBN phải là 13 chữ số!!!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            jTextField_ISBN.requestFocus();
+            jTextField_ISBN.selectAll();
+            return false;
+        }
+        if (tenSach.trim().length() == 0 || !kiemTraTenSach(tenSach)) {
+            JOptionPane.showMessageDialog(this, "Tên sách không hợp lệ!!!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            jTextField_TenSach.requestFocus();
+            jTextField_TenSach.selectAll();
+            return false;
+        }
+        if (donGiaStr.trim().length() == 0 || !kiemTraDonGia(donGiaStr)) {
+            if (donGiaStr.trim().length() == 0) {
+                JOptionPane.showMessageDialog(this, "Đơn giá không hợp lệ!!!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            }
+            jTextField_DonGia.requestFocus();
+            jTextField_DonGia.selectAll();
+            return false;
+        }
+//        if (!kiemTraSoLuong()) {
+//            jSpinner_SoLuong.requestFocus(); // Đặt focus vào JSpinner
+//            JFormattedTextField spinnerTextField = ((JSpinner.DefaultEditor) jSpinner_SoLuong.getEditor()).getTextField();
+//            spinnerTextField.requestFocus(); // Đặt focus vào trường văn bản bên trong JSpinner
+//            spinnerTextField.selectAll(); // Chọn tất cả văn bản trong trường
+//            return false;
+//        }
+        if (tacGia.trim().length() == 0 || !kiemTratacGia(tacGia)) {
+            JOptionPane.showMessageDialog(this, "Tác giả không hợp lệ!!!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            jTextField_TacGia.requestFocus();
+            jTextField_TacGia.selectAll();
+            return false;
+        }
+        if (nhaXB.trim().length() == 0 || !kiemTraNhaXB(nhaXB)) {
+            JOptionPane.showMessageDialog(this, "Tên nhà xuất bản không hợp lệ!!!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            jTextField_NhaXuatBan.requestFocus();
+            jTextField_NhaXuatBan.selectAll();
+            return false;
+        }
+        if (namXBStr.trim().length() == 0 || !kiemTraNamXB(namXBStr)) {
+            if (namXBStr.trim().length() == 0) {
+                JOptionPane.showMessageDialog(this, "Năm xuất bản không hợp lệ!!!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            }
+            jTextField_NamXuatBan.requestFocus();
+            jTextField_NamXuatBan.selectAll();
+            return false;
+        }
+        if (anh == null) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn ảnh!!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        }
+        return true;
     }
     private void jButton_ThemSachActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ThemSachActionPerformed
         // TODO add your handling code here:
 
-        String ISBN = jTextField_ISBN.getText();
-        String tenSach = jTextField_TenSach.getText();
-        String donGiaStr = jTextField_DonGia.getText();
-        Double donGia = null;
-        String loaiSach = jComboBox_LoaiSach.getSelectedItem().toString();
-        int soLuong = 0;
-        String tacGia = jTextField_TacGia.getText();
-        String nhaXB = jTextField_NhaXuatBan.getText();
-        int namXB = 0;
-        String tenKho = jComboBox_Kho.getSelectedItem().toString();
-
-        boolean kiemTra = false;
-        boolean tam = false;
-        while (!kiemTra) {
-            if (!kiemTraISBN(ISBN) || jTextField_ISBN.getText().equalsIgnoreCase("")) {
-                jTextField_ISBN.selectAll();
-                jTextField_ISBN.requestFocus();
-                JOptionPane.showConfirmDialog(this, "ISBN của sách không hợp lệ", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
-                tam = true;
-                break;
-            } else if (!kiemTraTenSach(tenSach) || jTextField_TenSach.getText().equalsIgnoreCase("")) {
-                jTextField_TenSach.selectAll();
-                jTextField_TenSach.requestFocus();
-                JOptionPane.showConfirmDialog(this, "Tên sách không hợp lệ", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
-                tam = true;
-                break;
-            } else if (!kiemTratacGia(tacGia) || jTextField_TacGia.getText().equalsIgnoreCase("")) {
-                jTextField_TacGia.selectAll();
-                jTextField_TacGia.requestFocus();
-                JOptionPane.showConfirmDialog(this, "Tên tác giả không hợp lệ", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
-                tam = true;
-                break;
-            } else if (!kiemTraNhaXB(nhaXB) || jTextField_NhaXuatBan.getText().equalsIgnoreCase("")) {
-                jTextField_NhaXuatBan.selectAll();
-                jTextField_NhaXuatBan.requestFocus();
-                JOptionPane.showConfirmDialog(this, "Tên nhà xuất bản không hợp lệ", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
-                tam = true;
-                break;
-            } else {
-                kiemTra = true;
-                
-            }
-        }
-
-        if (!tam) {
-            try {
-                donGia = Double.valueOf(donGiaStr);
-                if (donGia <= 0) {
-                    JOptionPane.showMessageDialog(this, "Đơn giá phải lớn hơn 0.", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
-                    jTextField_DonGia.selectAll();
-                    jTextField_DonGia.requestFocus();
-                    return;
-                }
-
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(this, "Đơn giá phải là một số hợp lệ.", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
-                jTextField_DonGia.selectAll();
-                jTextField_DonGia.requestFocus();
-                return;
-            }
-            try {
-                soLuong = (int) jSpinner_SoLuong.getValue();
-                if (soLuong <= 0) {
-                    JOptionPane.showMessageDialog(this, "Số lượng không hợp lệ", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
-
-                    // Chọn lại toàn bộ văn bản trong JSpinner để dễ sửa
-                    JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) jSpinner_SoLuong.getEditor();
-                    JFormattedTextField textField = editor.getTextField();
-                    textField.selectAll();
-                    textField.requestFocus();
-                    return;
-                }
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Số lượng phải là một số nguyên hợp lệ.", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
-
-                // Chọn lại toàn bộ văn bản trong JSpinner để dễ sửa
-                JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) jSpinner_SoLuong.getEditor();
-                JFormattedTextField textField = editor.getTextField();
-                textField.selectAll();
-                textField.requestFocus();
-                return;
-            }
-            try {
-                namXB = Integer.parseInt(jTextField_NamXuatBan.getText());
-                if (namXB <= 0) {
-                    JOptionPane.showMessageDialog(this, "Năm xuất bản phải là số dương.", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
-                    jTextField_NamXuatBan.selectAll();
-                    jTextField_NamXuatBan.requestFocus();
-                    return;
-                }
-
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(this, "Năm xuất bản phải là một số nguyên hợp lệ.", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
-                jTextField_NamXuatBan.selectAll();
-                jTextField_NamXuatBan.requestFocus();
-                return;
-            }
-        }
+        boolean kiemTra = kiemTraTatCa();
         if (kiemTra) {
+            String ISBN = jTextField_ISBN.getText();
+            String tenSach = jTextField_TenSach.getText();
+            String donGiaStr = jTextField_DonGia.getText();
+            double donGia = Double.parseDouble(donGiaStr);
+            String loaiSach = jComboBox_LoaiSach.getSelectedItem().toString();
+            int soLuong = (int) jSpinner_SoLuong.getValue();
+            String tacGia = jTextField_TacGia.getText();
+            String nhaXB = jTextField_NhaXuatBan.getText();
+            String namXBStr = jTextField_NamXuatBan.getText();
+            int namXB = Integer.parseInt(namXBStr);
+            String tenKho = jComboBox_Kho.getSelectedItem().toString();
             try {
-                Sach sach = null;
-                if (anh != null) {
-                    sach = new Sach(ISBN, tenSach, tacGia, namXB, nhaXB, soLuong, donGia, new LoaiSach("", loaiSach), new HinhAnh(anh), "Đang bán");
-                } else {
-                    JOptionPane.showMessageDialog(null, "Vui lòng chọn ảnh");
-                }
-
+                Sach sach = new Sach(ISBN, tenSach, tacGia, namXB, nhaXB, soLuong, donGia, new LoaiSach("", loaiSach), new HinhAnh(anh), "Đang bán");
                 if (!sach_dao.getDSSach().contains(sach)) {
                     if (JOptionPane.showConfirmDialog(this, "Bạn chắc chắn muốn thêm sách này?", "Thông báo", JOptionPane.WARNING_MESSAGE, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                         sach_dao.themSach(sach);
                         dsSach.addDataToTable(sach);
                         khoHang_dao = new KhoHang_DAO();
                         KhoHang kh = khoHang_dao.getKhoTheoTenKho(tenKho);
-                        System.out.println(soLuong);
                         chiTietKhoHang_dao.themChiTietKhoHang(new ChiTietKhoHang(createMaCTKH(), soLuong, new Sach(sach.getISBN()), new KhoHang(kh.getMaKhoHang())));
                         int width = 300; // Chiều rộng của mã vạch
                         int height = 100; // Chiều cao của mã vạch
@@ -565,12 +643,6 @@ public class Sach_ThemSach extends javax.swing.JDialog {
                     } else {
                         jTextField_ISBN.selectAll();
                         jTextField_ISBN.requestFocus();
-                        jTextField_TenSach.selectAll();
-                        jTextField_DonGia.selectAll();
-                        jTextField_TacGia.selectAll();
-//                        jSpinner_SoLuong.setValue(0);
-                        jTextField_NhaXuatBan.selectAll();
-                        jTextField_NamXuatBan.selectAll();
                     }
 
                 } else {
@@ -619,9 +691,9 @@ public class Sach_ThemSach extends javax.swing.JDialog {
         // TODO add your handling code here:
         if (JOptionPane.showConfirmDialog(this, "Bạn chắc chắn muốn hủy?", "Cảnh báo", JOptionPane.WARNING_MESSAGE, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
             setVisible(false);
-        }else{
+        } else {
             jTextField_ISBN.requestFocus();
-                    
+
         }
     }//GEN-LAST:event_jButton_HuyBoActionPerformed
     public String createMaCTKH() {

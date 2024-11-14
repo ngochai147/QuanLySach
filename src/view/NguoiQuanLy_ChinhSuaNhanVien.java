@@ -17,6 +17,7 @@ import java.io.File;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -445,24 +446,10 @@ public class NguoiQuanLy_ChinhSuaNhanVien extends javax.swing.JDialog {
             anh = fileName;
         }
     }//GEN-LAST:event_jButton_ThemAnhActionPerformed
-    private boolean kiemTraTenNV(String ten) {
-        String regex = "^[\\p{L}]+(?:[\\s.'-][\\p{L}]+)*$";
-        return ten.matches(regex);
-    }
-
-    private boolean kiemTraDiaChi(String diaChi) {
-        String regex = "^[\\p{L}\\d\\s.,-/]+$";
-        return diaChi.matches(regex);
-    }
-
-    private boolean kiemTraEmail(String email) {
-        String regex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
-        return email.matches(regex);
-    }
+  
     private void jButton_LuuActionPerformed(java.awt.event.ActionEvent evt)   {//GEN-FIRST:event_jButton_LuuActionPerformed
         // TODO add your handling code here:
         NhanVien nv = newData();
-        System.out.println(nv);
 
         try {
             if(checkTrue){
@@ -497,79 +484,135 @@ public class NguoiQuanLy_ChinhSuaNhanVien extends javax.swing.JDialog {
         Image imageFit = image.getImage().getScaledInstance(jLabel_Anh.getWidth(), jLabel_Anh.getHeight(), Image.SCALE_SMOOTH);
         jLabel_Anh.setIcon(new ImageIcon(imageFit));
         anh = nhanVien.getAnh().getUrl();
-        System.out.println(anh);
+    }
+     private boolean kiemTraTenNV(String ten) {
+        String regex = "^[\\p{L}]+(?:[\\s.'-][\\p{L}]+)*$";
+//        1. ^ và $ xác định bắt đầu và kết thúc chuỗi.
+//        2. \\p{L} đại diện cho bất kỳ ký tự chữ nào (bao gồm cả chữ cái có dấu từ nhiều ngôn ngữ khác nhau).
+//        3. + yêu cầu ít nhất một ký tự chữ đầu tiên trong tên.
+//        4. (?: ... )* là nhóm không bắt buộc lặp lại nhiều lần. Bên trong nhóm này:
+//                  [\\s.'-] cho phép khoảng trắng, dấu chấm (.), dấu nháy đơn ('), hoặc dấu gạch ngang (-) giữa các từ.
+//                  \\p{L}+ yêu cầu ít nhất một ký tự chữ sau khoảng trắng hoặc dấu.
+//          VD:
+//                "Nguyễn Văn A"
+//                "O'Neill"
+//                "Trần Minh-Châu"
+//                "Lê Hữu Đ."
+        return ten.matches(regex);
     }
 
-    public NhanVien newData() 
-    {
-        boolean kiemTra = false;
-        boolean tam = false;
-        while (!kiemTra) {
-            if (!kiemTraTenNV(jTextField_TenNhanVien.getText()) || jTextField_TenNhanVien.getText().equalsIgnoreCase("")) {
-                jTextField_TenNhanVien.selectAll();
-                jTextField_TenNhanVien.requestFocus();
-                JOptionPane.showConfirmDialog(this, "Tên nhân viên không hợp lệ", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
-                tam = true;
-                break;
-            } else if (!kiemTraEmail(jTextField_Email.getText()) || jTextField_Email.getText().equalsIgnoreCase("")) {
-                jTextField_Email.selectAll();
-                jTextField_Email.requestFocus();
-                JOptionPane.showConfirmDialog(this, "Email không hợp lệ", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
-                tam = true;
-                break;
-            } else if (!kiemTraDiaChi(jTextField_DiaChi.getText()) || jTextField_DiaChi.getText().equalsIgnoreCase("")) {
-                jTextField_DiaChi.selectAll();
-                jTextField_DiaChi.requestFocus();
-                JOptionPane.showConfirmDialog(this, "Địa chỉ không hợp lệ", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
-                tam = true;
-                break;
-            } else {
-                kiemTra = true;
-            }
+    private boolean kiemTraNgaySinh(LocalDate ngaySinh) {
+        if (ngaySinh != null) {
+            LocalDate today = LocalDate.now();
+
+            // Tính số năm tuổi
+            int age = Period.between(ngaySinh, today).getYears();
+
+            // Kiểm tra tuổi có đủ 18 hay không
+            return age >= 18;
+        } else {
+            // Trường hợp ngày sinh chưa được cung cấp
+            return false;
         }
-        LocalDate ngaySinh = null;
-        if (!tam) {
-            if (jDateChooser_NgaySinh.getDate() != null) {
-                // Lấy ngày sinh từ jDateChooser
-                ngaySinh = jDateChooser_NgaySinh.getDate().toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+    }
 
-                // Kiểm tra tuổi của nhân viên
-                LocalDate today = LocalDate.now();
-                int age = Period.between(ngaySinh, today).getYears();
+    private boolean kiemTraSDT(String sDT) {
+        String regex = "^\\d{10}$";
+        return sDT != null && sDT.matches(regex);
+    }
 
-                if (age < 18) {
-                    JOptionPane.showMessageDialog(this, "Nhân viên phải từ 18 tuổi trở lên.", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
-                    return null;
-                }
-            } else {
-                JOptionPane.showMessageDialog(this, "Vui lòng chọn ngày sinh.", "Thông báo", JOptionPane.WARNING_MESSAGE);
-                return null;
+    private boolean kiemTraEmail(String email) {
+        String regex = "^(?!\\.)[a-zA-Z0-9._%+-]+(?<!\\.)@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+//            1. ^(?!\\.): Đảm bảo chuỗi không bắt đầu bằng dấu chấm (.).
+//            2. [a-zA-Z0-9._%+-]+: Cho phép các ký tự chữ cái, số và các ký tự ._%+- trong phần tên email.
+//            3. (?<!\\.): Đảm bảo chuỗi không kết thúc bằng dấu chấm (.).
+//            4. @: Ký tự bắt buộc phân chia phần tên email và phần tên miền.
+//            5. [a-zA-Z0-9.-]+: Cho phép các ký tự chữ cái, số và dấu gạch ngang (-) trong phần tên miền.
+//            6. \\.[a-zA-Z]{2,}$: Kiểm tra phần mở rộng của tên miền với ít nhất 2 ký tự chữ cái.
+//            VD email hợp lệ:
+//                example@gmail.com
+//                user.name@domain.com
+//                my-email+tag@sub.domain.org
+//            VD email không hợp lệ:
+//                user..name@domain.com (dấu chấm liên tiếp trong phần tên email).
+//                .username@domain.com (dấu chấm ở đầu phần tên).
+//                username.@domain.com (dấu chấm ở cuối phần tên).
+        return email.matches(regex);
+    }
 
-            }
+    private boolean kiemTraDiaChi(String diaChi) {
+        String regex = "^[\\p{L}\\d\\s.,-/]+$";
+//        1. ^ và $: Xác định bắt đầu và kết thúc chuỗi.
+//        2. \\p{L}: Cho phép các ký tự chữ từ nhiều ngôn ngữ (bao gồm cả tiếng Việt có dấu).
+//        3. \\d: Cho phép các chữ số.
+//        4. \\s: Cho phép khoảng trắng.
+//        5. [.,-/]: Cho phép các ký tự đặc biệt phổ biến trong địa chỉ (dấu chấm, dấu phẩy, gạch chéo, và gạch ngang).
+//        6. +: Yêu cầu chuỗi phải có ít nhất một ký tự hợp lệ và có thể lặp lại nhiều lần.
+//          VD:
+//                "123 Đường Láng, P. Láng Hạ, Q. Đống Đa"
+//                "Số 5 Ngõ 7, Phố Trần Duy Hưng"
+//                "12A-B Phường 5, Quận 3, TP.HCM"
+//                "1/234 Khu phố Tân Phong - Thủ Đức"
+        return diaChi.matches(regex);
+    }
 
-            // Kiểm tra số điện thoại là số hợp lệ
-            try {
-                Long.parseLong(jTextField_SoDienThoai.getText());
-                if (!jTextField_SoDienThoai.getText().matches("^\\d{10}$")) {
-                    JOptionPane.showMessageDialog(this, "Số điện thoại phải là 10 chữ số.", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
-                    jTextField_SoDienThoai.selectAll();
-                    jTextField_SoDienThoai.requestFocus();
+    private boolean kiemTraTatCa() {
+        String tenNhanVien = jTextField_TenNhanVien.getText();
+        Date date = jDateChooser_NgaySinh.getDate();
 
-                }
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(this, "Số điện thoại phải là một số hợp lệ.", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
-                jTextField_SoDienThoai.selectAll();
-                jTextField_SoDienThoai.requestFocus();
-
-            }
-            kiemTra=true;
+        String soDienThoai = jTextField_SoDienThoai.getText();
+        String email = jTextField_Email.getText();
+        String diaChi = jTextField_DiaChi.getText();
+        // Kiểm tra từng điều kiện và hiển thị thông báo nếu có lỗi
+        if (tenNhanVien.trim().isEmpty() || !kiemTraTenNV(tenNhanVien)) {
+            JOptionPane.showMessageDialog(this, "Tên nhân viên không hợp lệ!!!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            jTextField_TenNhanVien.requestFocus();
+            jTextField_TenNhanVien.selectAll();
+            return false;
         }
 
-        // Kiểm tra nếu chưa chọn ảnh
+        // Kiểm tra ngày sinh
+        if (date == null) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn ngày sinh!!!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        }
+
+        LocalDate ngaySinh = date.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+        if (!kiemTraNgaySinh(ngaySinh)) {
+            JOptionPane.showMessageDialog(this, "Nhân viên phải trên 18 tuổi!!!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        }
+
+        if (soDienThoai.trim().isEmpty() || !kiemTraSDT(soDienThoai)) {
+            JOptionPane.showMessageDialog(this, "Số điện thoại không hợp lệ!!!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            jTextField_SoDienThoai.requestFocus();
+            jTextField_SoDienThoai.selectAll();
+            return false;
+        }
+
+        if (email.trim().isEmpty() || !kiemTraEmail(email)) {
+            JOptionPane.showMessageDialog(this, "Email không hợp lệ!!!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            jTextField_Email.requestFocus();
+            jTextField_Email.selectAll();
+            return false;
+        }
+
+        if (diaChi.trim().isEmpty() || !kiemTraDiaChi(diaChi)) {
+            JOptionPane.showMessageDialog(this, "Địa chỉ không hợp lệ!!!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            jTextField_DiaChi.requestFocus();
+            jTextField_DiaChi.selectAll();
+            return false;
+        }
         if (anh == null) {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn ảnh đại diện");
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn ảnh đại diện!!!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            return false;
         }
+        // Nếu tất cả kiểm tra đều hợp lệ
+        return true;
+    }
+    public NhanVien newData(){
         NhanVien nhanVien = new NhanVien();
+        boolean kiemTra=kiemTraTatCa();
         if (kiemTra) {
             nhanVien.setMaNV(jTextField_MaNhanVien.getText());
             nhanVien.setHoTen(jTextField_TenNhanVien.getText());

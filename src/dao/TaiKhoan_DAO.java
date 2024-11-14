@@ -101,4 +101,18 @@ public class TaiKhoan_DAO {
         statement.close();
         return rs > 0;
     }
+    public boolean capNhatTaiKhoan(TaiKhoan taiKhoan) throws SQLException {
+        Connection con = ConnectDB.getConnection();
+        int n = 0;
+        String sql = "update TaiKhoan " +
+                "set matKhau = ? " +
+                "where tenDangNhap = ?";
+        PreparedStatement stmt = null;
+        stmt = con.prepareStatement(sql);
+        stmt.setString(1, taiKhoan.getMatKhau());
+        stmt.setString(2, taiKhoan.getNhanVien().getMaNV());
+        n = stmt.executeUpdate();
+        stmt.close();
+        return n > 0;
+    }
 }

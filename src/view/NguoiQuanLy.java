@@ -292,16 +292,6 @@ public class NguoiQuanLy extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jDesktopPane1ComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jDesktopPane1ComponentResized
-//        NguoiQuanLy_QuanLyNhanVien nguoiQuanLy_QuanLyNhanVien = null;
-//        try {
-//            nguoiQuanLy_QuanLyNhanVien = new NguoiQuanLy_QuanLyNhanVien();
-//        } catch (SQLException ex) {
-//            Logger.getLogger(NguoiQuanLy.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        nguoiQuanLy_QuanLyNhanVien.setSize(jDesktopPane1.getSize());
-//        nguoiQuanLy_QuanLyNhanVien.setVisible(true);
-//        jDesktopPane1.add(nguoiQuanLy_QuanLyNhanVien);
-
         Sach_QuanLySach sach_QuanLySach = null;
         try {
             sach_QuanLySach = new Sach_QuanLySach();
@@ -413,7 +403,6 @@ public class NguoiQuanLy extends javax.swing.JFrame {
         jLabel_ThongKe.setForeground(Color.BLACK);
         jPanel1.setBackground(defaultColor);
         jLabel2.setForeground(Color.WHITE);
-
         jDesktopPane1.removeAll();
         NguoiQuanLy_ThongKeTongQuan tk_TongQuan = new NguoiQuanLy_ThongKeTongQuan();
         tk_TongQuan.setSize(jDesktopPane1.getSize());
