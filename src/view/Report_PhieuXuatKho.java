@@ -7,6 +7,9 @@ import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.view.JasperViewer;
 
+import javax.print.PrintService;
+import javax.print.PrintServiceLookup;
+import java.awt.print.PrinterJob;
 import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
@@ -78,11 +81,6 @@ public class Report_PhieuXuatKho {
 
             JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(field);
             JasperPrint print = JasperFillManager.fillReport(reportPay, parameters, dataSource);
-
-            // Lưu báo cáo dưới dạng PDF vào thư mục chỉ định
-            String outputPath = "test/PhieuXuatKho/" + maPhieuXuatKho + ".pdf";
-            JasperExportManager.exportReportToPdfFile(print, outputPath);
-//            System.out.println("Báo cáo PDF đã được tạo thành công tại: " + outputPath);
 
             // Hiển thị báo cáo
             JasperViewer.viewReport(print, false);

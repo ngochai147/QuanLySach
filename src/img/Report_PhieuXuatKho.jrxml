@@ -27,126 +27,126 @@
 			<staticText>
 				<reportElement x="1" y="29" width="122" height="20" uuid="4555f565-4b6f-49a0-a4d4-d9b9d8500ecf"/>
 				<textElement>
-					<font fontName="Times New Roman" size="6"/>
+					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<text><![CDATA[ĐC: 12 đường Nguyễn Văn Bảo - phường 4 Gò Vấp - TP. Hồ Chí Minh ]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="49" width="98" height="10" uuid="a898909d-3ed0-4487-aaa5-7cc8dd9519b4"/>
 				<textElement>
-					<font fontName="Times New Roman" size="6"/>
+					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<text><![CDATA[Tel: 0184.748.374 - 0643.263.486]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="9" width="123" height="20" uuid="d4186984-930e-4090-a83c-18435161f464"/>
 				<textElement>
-					<font fontName="Times New Roman" size="12" isBold="true"/>
+					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[NHÀ SÁCH FAHASA]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="1" y="108" width="80" height="20" uuid="bd24e757-f223-4cc7-aa05-9dfc9e99476c"/>
 				<textElement>
-					<font fontName="Times New Roman" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[- Tên người giao:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="1" y="128" width="80" height="19" uuid="a334204a-5e0c-45ac-8eaa-f2cc9a3dd985"/>
 				<textElement>
-					<font fontName="Times New Roman" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[- Mã phiếu xuất kho:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="1" y="147" width="80" height="20" uuid="82cf0cd5-5033-44bf-98c6-184f2ac05a43"/>
 				<textElement>
-					<font fontName="Times New Roman" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[- Tên kho hàng xuất: ]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="81" y="108" width="100" height="20" uuid="6d9231e5-e0a0-4794-89fd-3ca5a6e56e65"/>
 				<textElement>
-					<font fontName="Times New Roman" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{tenNV}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="1" y="59" width="409" height="24" uuid="e7294802-e8ab-4c26-9822-dae10d44654d"/>
 				<textElement textAlignment="Center">
-					<font fontName="Times New Roman" size="16" isBold="true"/>
+					<font fontName="SansSerif" size="16" isBold="true"/>
 				</textElement>
 				<text><![CDATA[PHIẾU XUẤT KHO]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="81" y="128" width="117" height="19" uuid="9d35246d-b97c-415b-bf74-ee32e61db154"/>
 				<textElement>
-					<font fontName="Times New Roman" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{maPhieuXuatKho}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="81" y="147" width="100" height="20" uuid="a0221f28-48e6-4a4f-b762-dabfdb1dcbcc"/>
 				<textElement>
-					<font fontName="Times New Roman" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{tenKhoHangXuat}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="271" y="9" width="139" height="20" uuid="94afd7dc-134b-4552-99cd-9290ef243a24"/>
 				<textElement textAlignment="Center">
-					<font fontName="Times New Roman" size="12" isBold="true"/>
+					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Mẫu số: 01 -VT]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="271" y="29" width="139" height="14" uuid="16e80b52-2d16-437a-95f4-1677af56f9d1"/>
 				<textElement textAlignment="Center">
-					<font fontName="Times New Roman" size="6"/>
+					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<text><![CDATA[(Ban hành theo Thông tư số 133/2016/TT-BTC]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="271" y="43" width="139" height="16" uuid="e6cdd443-8320-41a8-9182-a12908d5edff"/>
 				<textElement textAlignment="Center">
-					<font fontName="Times New Roman" size="6"/>
+					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<text><![CDATA[Ngày 26/08/2016 của Bộ tài chính)]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="226" y="128" width="58" height="17" uuid="db08e613-5613-4102-ad0a-50a79ae80ccb"/>
 				<textElement>
-					<font fontName="Times New Roman" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[Địa chỉ kho nhập:]]></text>
 			</staticText>
 			<textField>
 				<reportElement stretchType="RelativeToBandHeight" x="284" y="128" width="126" height="33" uuid="00cb4813-7485-41ec-98ce-3b3b5f497600"/>
 				<textElement>
-					<font fontName="Times New Roman" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{diaChi}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="1" y="83" width="409" height="14" uuid="b2f89f3c-fe2c-47a7-8a5a-4c7d1cd5feb1"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Times New Roman"/>
+					<font fontName="SansSerif"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{ngayLap}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="1" y="167" width="80" height="20" uuid="46aafdaa-6268-464e-94bc-df8e7426d87f"/>
 				<textElement>
-					<font fontName="Times New Roman" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[- Tên kho hàng nhập: ]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="81" y="167" width="100" height="20" uuid="aee1d3fc-5626-426b-9ca1-4a6b8c460caa"/>
 				<textElement>
-					<font fontName="Times New Roman" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{tenKhoHangNhap}]]></textFieldExpression>
 			</textField>
@@ -163,7 +163,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="8" isBold="true"/>
+					<font fontName="SansSerif" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[STT]]></text>
 			</staticText>
@@ -176,7 +176,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="8" isBold="true"/>
+					<font fontName="SansSerif" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[ISBN]]></text>
 			</staticText>
@@ -189,7 +189,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="8" isBold="true"/>
+					<font fontName="SansSerif" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Tên sách]]></text>
 			</staticText>
@@ -202,7 +202,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="8" isBold="true"/>
+					<font fontName="SansSerif" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Loại sách]]></text>
 			</staticText>
@@ -215,7 +215,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="8" isBold="true"/>
+					<font fontName="SansSerif" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Đơn giá]]></text>
 			</staticText>
@@ -228,7 +228,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="8" isBold="true"/>
+					<font fontName="SansSerif" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Số lượng]]></text>
 			</staticText>
@@ -241,7 +241,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="8" isBold="true"/>
+					<font fontName="SansSerif" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Thành tiền]]></text>
 			</staticText>
@@ -258,7 +258,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{ISBN}]]></textFieldExpression>
 			</textField>
@@ -271,7 +271,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{tenSach}]]></textFieldExpression>
 			</textField>
@@ -284,7 +284,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{loaiSach}]]></textFieldExpression>
 			</textField>
@@ -297,7 +297,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{formattedGiaGoc}]]></textFieldExpression>
 			</textField>
@@ -310,7 +310,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{soLuong}]]></textFieldExpression>
 			</textField>
@@ -323,7 +323,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{formattedThanhTien}]]></textFieldExpression>
 			</textField>
@@ -336,7 +336,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{STT}]]></textFieldExpression>
 			</textField>
@@ -348,42 +348,42 @@
 			<staticText>
 				<reportElement x="1" y="34" width="97" height="20" uuid="f2ef4f7a-a440-45b5-a39c-6304b2ae8b6e"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="10" isBold="true"/>
+					<font fontName="SansSerif" size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Người lập phiếu]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="158" y="34" width="97" height="20" uuid="bab32bb1-499d-45bc-bbe1-93307ab8cae8"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="10" isBold="true"/>
+					<font fontName="SansSerif" size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Người lập phiếu]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="306" y="34" width="104" height="20" uuid="79af669a-a817-4837-a2e2-d3bb440baaa4"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="10" isBold="true"/>
+					<font fontName="SansSerif" size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Người lập phiếu]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="1" y="54" width="97" height="20" uuid="35f7a1e7-7316-45cd-a6ed-417fe1a06f57"/>
 				<textElement textAlignment="Center" verticalAlignment="Top">
-					<font fontName="Times New Roman" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[(Ký, họ tên)]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="158" y="54" width="97" height="20" uuid="82285ae6-d4d3-4453-8f9d-f3c039ccd5a3"/>
 				<textElement textAlignment="Center" verticalAlignment="Top">
-					<font fontName="Times New Roman" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[(Ký, họ tên)]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="306" y="54" width="104" height="20" uuid="ab808577-4c96-4d53-ab8e-75c7b1798e1c"/>
 				<textElement textAlignment="Center" verticalAlignment="Top">
-					<font fontName="Times New Roman" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[(Ký, họ tên)]]></text>
 			</staticText>
@@ -396,7 +396,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{tongTien}]]></textFieldExpression>
 			</textField>
@@ -409,7 +409,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="10" isBold="true"/>
+					<font fontName="SansSerif" size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Tổng tiền]]></text>
 			</staticText>
