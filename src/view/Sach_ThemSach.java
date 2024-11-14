@@ -410,6 +410,8 @@ public class Sach_ThemSach extends javax.swing.JDialog {
                 KhoHang kh = khoHang_dao.getKhoTheoTenKho(tenKho);
                 System.out.println(soLuong);
                 chiTietKhoHang_dao.themChiTietKhoHang(new ChiTietKhoHang(createMaCTKH(), soLuong,  new Sach(sach.getISBN()), new KhoHang(kh.getMaKhoHang())));
+            }else {
+                return;
             };
         } catch (SQLException ex) {
             Logger.getLogger(Sach_ThemSach.class.getName()).log(Level.SEVERE, null, ex);

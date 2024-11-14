@@ -225,38 +225,24 @@ public class Sach_DAO {
         stmt.executeUpdate();
         return dsSach.removeIf(x -> x.getISBN().equalsIgnoreCase(maSach));
     }
-    //    public boolean capNhatSach(Sach sach) throws SQLException {
-//        Connection con = ConnectDB.getConnection();
-//        int n = 0;
-//        String sql = "update Sach " +
-//                     "set tenSach = ?, tacGia = ?, namXB = ?, nhaXB = ?, soLuongTrongKho = ?, giaGoc = ?, "
-//                     + "maLoaiSach = (select maLoai from LoaiSach where tenLoai = ?), hinhAnh = ? "
-//                     + "where ISBN = ?";
-//        PreparedStatement stmt = null;
-//        stmt = con.prepareStatement(sql);
-//        stmt.setString(1, sach.getTenSach());
-//        stmt.setString(2, sach.getTacGia());
-//        stmt.setInt(3, sach.getNamXB());
-//        stmt.setString(4, sach.getNhaXB());
-//        stmt.setInt(5, sach.getSoLuong());
-//        stmt.setDouble(6, sach.getGiaGoc());
-//        stmt.setString(7, sach.getLoaiSach().getTenLoai());
-//        stmt.setString(8, sach.getAnh().getUrl());
-//        stmt.setString(9, sach.getISBN());
-//        n = stmt.executeUpdate();
-//        stmt.close();
-//        return n > 0;
-//    }
-    public boolean capNhatSach(Sach sach) throws SQLException {
+        public boolean capNhatSach(Sach sach) throws SQLException {
         Connection con = ConnectDB.getConnection();
         int n = 0;
         String sql = "update Sach " +
-                "set giaGoc = ? "
-                + "where ISBN = ?";
+                     "set tenSach = ?, tacGia = ?, namXB = ?, nhaXB = ?, soLuongTrongKho = ?, giaGoc = ?, "
+                     + "maLoaiSach = (select maLoai from LoaiSach where tenLoai = ?), hinhAnh = ? "
+                     + "where ISBN = ?";
         PreparedStatement stmt = null;
         stmt = con.prepareStatement(sql);
-        stmt.setDouble(1, sach.getGiaGoc());
-        stmt.setString(2, sach.getISBN());
+        stmt.setString(1, sach.getTenSach());
+        stmt.setString(2, sach.getTacGia());
+        stmt.setInt(3, sach.getNamXB());
+        stmt.setString(4, sach.getNhaXB());
+        stmt.setInt(5, sach.getSoLuong());
+        stmt.setDouble(6, sach.getGiaGoc());
+        stmt.setString(7, sach.getLoaiSach().getTenLoai());
+        stmt.setString(8, sach.getAnh().getUrl());
+        stmt.setString(9, sach.getISBN());
         n = stmt.executeUpdate();
         stmt.close();
         return n > 0;

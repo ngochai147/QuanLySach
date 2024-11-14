@@ -411,15 +411,16 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
 
                 // Ghi dữ liệu vào tệp
                 try (FileOutputStream out = new FileOutputStream(saveFile)) {
-                    wb.write(out);  // Ghi nội dung workbook vào tệp
+                    wb.write(out);
+                    JOptionPane.showMessageDialog(this, "Xuất file Excel thành công!");
+                    Desktop.getDesktop().open(saveFile);// Ghi nội dung workbook vào tệp
                 } catch (IOException e) {
                     JOptionPane.showMessageDialog(this, "Lỗi khi ghi file: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
                 } finally {
                     wb.close();  // Đóng workbook
                 }
 
-                JOptionPane.showMessageDialog(this, "Xuất file Excel thành công!");
-                Desktop.getDesktop().open(saveFile);
+
             } else {
                 System.out.println("Người dùng đã hủy chọn tệp lưu.");
             }
@@ -567,8 +568,8 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
             public void onEdit(int row) {
                 try {
                     sach = getDataToBook();
-                    ChinhSuaThongTinSach suaSach ;
-                    suaSach = new ChinhSuaThongTinSach(new javax.swing.JFrame(), true, Sach_QuanLySach.this, sach);
+                    Sach_SuaSach suaSach ;
+                    suaSach = new Sach_SuaSach(new javax.swing.JFrame(), true, Sach_QuanLySach.this, sach);
                     suaSach.setVisible(true);
                 } catch (SQLException ex) {
                     Logger.getLogger(Sach_QuanLySach.class.getName()).log(Level.SEVERE, null, ex);
@@ -628,6 +629,7 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
     }
     public void editDataToTable(Sach x) throws SQLException {
         if(sach_dao.capNhatSach(x)){
+            System.out.println(x);
             int n = jTable_Sach.getSelectedRow();
             model.setValueAt(x.getISBN(), n, 0);
             model.setValueAt(x.getTenSach(), n, 1);
