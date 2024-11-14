@@ -44,6 +44,7 @@ public final class NguoiQuanLy_ThongKeTongQuan extends javax.swing.JInternalFram
         Map<String, Integer> stats = thongKe_Dao.getStatisticIn7Days();
         jTextField_SoLuongSach.setText(String.valueOf(stats.get("TongSoLuongSachDaBan")));
         jTextField_TongSLHD.setText(String.valueOf(stats.get("TongSoLuongHoaDon")));
+
         formatVNDTextField(jTextField_TongDoanhThu, stats.get("TongDoanhThu"));
 
         chart.setTitle("Thống kê tổng quan 7 ngày gần nhất");
@@ -103,6 +104,10 @@ public final class NguoiQuanLy_ThongKeTongQuan extends javax.swing.JInternalFram
         panelHoldChart = new javax.swing.JPanel();
         panelShadow1 = new panel.PanelShadow();
         chart = new chart.CurveLineChart();
+
+        jTextField_TongDoanhThu.setEditable(false);
+        jTextField_TongSLHD.setEditable(false);
+        jTextField_SoLuongSach.setEditable(false);
 
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(1495, 436));

@@ -568,7 +568,7 @@ public class Sach_ThemSach extends javax.swing.JDialog {
                         jTextField_TenSach.selectAll();
                         jTextField_DonGia.selectAll();
                         jTextField_TacGia.selectAll();
-                        jSpinner_SoLuong.setValue(0);
+//                        jSpinner_SoLuong.setValue(0);
                         jTextField_NhaXuatBan.selectAll();
                         jTextField_NamXuatBan.selectAll();
                     }

@@ -404,12 +404,8 @@ public class QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
                jComboBox_DanhSach.removeAllItems();
                jComboBox_DanhSach.addItem("");
                addDataToTable();
-               try {
-                   for (entity.NhanVien x : nhanVien_dao.getDSNhanVien()) {
-                       jComboBox_DanhSach.addItem(x.getMaNV());
-                   }
-               } catch (SQLException e) {
-                   throw new RuntimeException(e);
+               for (String x : dsHD.getAllMaNV()) {
+                   jComboBox_DanhSach.addItem(x);
                }
            } else if (tieuChi.equalsIgnoreCase("Mã hóa đơn")) {
                jDateChooser_NgayTaoDon.setVisible(false);
@@ -490,7 +486,7 @@ public class QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
                             tongTien += cthd.getSoLuong() * cthd.getDonGia();
                         }
                     }
-                    DecimalFormat df = new DecimalFormat("#,###");
+                    DecimalFormat df = new DecimalFormat("#,### VND");
                     // Giả sử đây là số bạn muốn định dạng
                     String formattedTongTien = df.format(tongTien);
                     ((DefaultTableModel) jTable_HoaDon.getModel()).addRow(new Object[]{stt, hd.getMaHoaDon(),
@@ -506,7 +502,7 @@ public class QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
                             tongTien += cthd.getSoLuong() * cthd.getDonGia();
                         }
                     }
-                    DecimalFormat df = new DecimalFormat("#,###");
+                    DecimalFormat df = new DecimalFormat("#,### VND");
                     // Giả sử đây là số bạn muốn định dạng
                     String formattedTongTien = df.format(tongTien);
                     ((DefaultTableModel) jTable_HoaDon.getModel()).addRow(new Object[]{stt, hd.getMaHoaDon(),
@@ -599,7 +595,7 @@ public class QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
                     tongTien += cthd.getSoLuong() * cthd.getDonGia();
                 }
             }
-            DecimalFormat df = new DecimalFormat("#,###");
+            DecimalFormat df = new DecimalFormat("#,### VND");
             DateTimeFormatter dfDay= DateTimeFormatter.ofPattern("dd-MM-YYYY");
             // Giả sử đây là số bạn muốn định dạng
             String formattedTongTien = df.format(tongTien);
