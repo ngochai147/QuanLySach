@@ -29,6 +29,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
+import javax.swing.plaf.basic.BasicScrollBarUI;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
@@ -69,6 +70,7 @@ public class NguoiQuanLy_QuanLyNhanVien extends javax.swing.JInternalFrame {
                 });
             }
         }
+        jTable_QuanLyNhanVien.setPreferredSize(new Dimension(1500,jTable_QuanLyNhanVien.getRowCount()*40));
 
     }
 
@@ -169,7 +171,7 @@ public class NguoiQuanLy_QuanLyNhanVien extends javax.swing.JInternalFrame {
         });
         jTable_QuanLyNhanVien.setToolTipText("");
         jTable_QuanLyNhanVien.setFocusable(false);
-        jTable_QuanLyNhanVien.setRowHeight(50);
+        jTable_QuanLyNhanVien.setRowHeight(40);
         jTable_QuanLyNhanVien.setRowMargin(2);
         jTable_QuanLyNhanVien.setSelectionBackground(new java.awt.Color(153, 204, 0));
         jTable_QuanLyNhanVien.setShowHorizontalLines(true);
@@ -184,6 +186,50 @@ public class NguoiQuanLy_QuanLyNhanVien extends javax.swing.JInternalFrame {
             jTable_QuanLyNhanVien.getColumnModel().getColumn(4).setPreferredWidth(45);
             jTable_QuanLyNhanVien.getColumnModel().getColumn(5).setPreferredWidth(70);
         }
+
+        // Code of sub-components and layout - not shown here
+        jScrollPane1.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
+            @Override
+            protected void configureScrollBarColors() {
+                thumbColor = new Color(100, 100, 100); // Màu của thumb
+                trackColor = new Color(220, 220, 220); // Màu của track
+            }
+
+            @Override
+            protected JButton createDecreaseButton(int orientation) {
+                return createZeroButton();
+            }
+
+            @Override
+            protected JButton createIncreaseButton(int orientation) {
+                return createZeroButton();
+            }
+
+            private JButton createZeroButton() {
+                JButton button = new JButton();
+                button.setPreferredSize(new Dimension(0, 0));
+                button.setMinimumSize(new Dimension(0, 0));
+                button.setMaximumSize(new Dimension(0, 0));
+                return button;
+            }
+
+            // Ghi đè phương thức paintThumb để bo tròn và làm ngắn chiều dài của thumb
+            @Override
+            protected void paintThumb(Graphics g, JComponent c, Rectangle thumbBounds) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+                // Điều chỉnh kích thước chiều dài (height) của thumb để ngắn hơn
+                int adjustedHeight = Math.max(30, thumbBounds.height - 20);  // Làm cho thumb ngắn hơn nhưng không thấp hơn 30 pixels
+                int adjustedWidth = thumbBounds.width;
+
+                // Thiết lập màu và hình dạng bo tròn
+                g2.setColor(thumbColor);
+                g2.fillRoundRect(thumbBounds.x, thumbBounds.y, adjustedWidth, adjustedHeight, 10, 10); // Bo tròn 10 pixel
+
+                g2.dispose();
+            }
+        });
 
         jPanel1.add(jScrollPane1);
         jScrollPane1.setBounds(25, 236, 1490, 375);

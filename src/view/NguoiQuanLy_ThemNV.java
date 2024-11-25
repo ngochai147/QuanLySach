@@ -57,7 +57,7 @@ public class NguoiQuanLy_ThemNV extends javax.swing.JDialog {
         taiKhoan = null;
         initComponents();
 
-
+        
         setLocationRelativeTo(null);
         try {
             jTextField_MaNhanVien.setText(createMaNhanVien());
@@ -465,18 +465,7 @@ public class NguoiQuanLy_ThemNV extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField_DiaChiActionPerformed
     private boolean kiemTraTenNV(String ten) {
-        String regex = "^\\s*([A-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠƯỲÝỶỸỴ][a-zàáâãèéêìíòóôõùúăđĩũơưỳýỷỹỵ]*)(?:\\s+[A-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠƯỲÝỶỸỴ][a-zàáâãèéêìíòóôõùúăđĩũơưỳýỷỹỵ]*)+\\s*$$";
-//        1. ^ và $ xác định bắt đầu và kết thúc chuỗi.
-//        2. \\p{L} đại diện cho bất kỳ ký tự chữ nào (bao gồm cả chữ cái có dấu từ nhiều ngôn ngữ khác nhau).
-//        3. + yêu cầu ít nhất một ký tự chữ đầu tiên trong tên.
-//        4. (?: ... )* là nhóm không bắt buộc lặp lại nhiều lần. Bên trong nhóm này:
-//                  [\\s.'-] cho phép khoảng trắng, dấu chấm (.), dấu nháy đơn ('), hoặc dấu gạch ngang (-) giữa các từ.
-//                  \\p{L}+ yêu cầu ít nhất một ký tự chữ sau khoảng trắng hoặc dấu.
-//          VD:
-//                "Nguyễn Văn A"
-//                "O'Neill"
-//                "Trần Minh-Châu"
-//                "Lê Hữu Đ."
+        String regex = "^[\\p{L}]+(\\s[\\p{L}]+)*$";
         return ten.matches(regex);
     }
 

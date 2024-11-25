@@ -299,16 +299,16 @@ public class Sach_ThemSach extends javax.swing.JDialog {
                             .addComponent(jTextField_TenSach, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTextField_ISBN, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTextField_NamXuatBan)
-                            .addComponent(jComboBox_Kho, 0, 490, Short.MAX_VALUE)
+                            .addComponent(jComboBox_Kho, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jComboBox_LoaiSach, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGap(18, 18, 18)
                                 .addComponent(jSpinner_SoLuong, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(88, 88, 88)
+                                .addGap(76, 76, 76)
                                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -316,7 +316,7 @@ public class Sach_ThemSach extends javax.swing.JDialog {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButton_HuyBo, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(6, 6, 6)))))
-                .addContainerGap(44, Short.MAX_VALUE))
+                .addContainerGap(53, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -337,11 +337,12 @@ public class Sach_ThemSach extends javax.swing.JDialog {
                             .addComponent(jLabel_DonGia, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(30, 30, 30)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jSpinner_SoLuong))
                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel_TenLoaiSach)
-                                .addComponent(jComboBox_LoaiSach, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jSpinner_SoLuong))
+                                .addComponent(jComboBox_LoaiSach, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(30, 30, 30)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel_TacGia, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -444,8 +445,8 @@ public class Sach_ThemSach extends javax.swing.JDialog {
 
         try {
             double donGia = Double.parseDouble(donGiaStr);
-            if (donGia <= 0) {
-                JOptionPane.showMessageDialog(this, "Đơn giá phải > 0!!!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            if (donGia < 1000) {
+                JOptionPane.showMessageDialog(this, "Đơn giá phải > 1000!!!", "Thông báo", JOptionPane.WARNING_MESSAGE);
                 return false;
             }
         } catch (NumberFormatException e) {

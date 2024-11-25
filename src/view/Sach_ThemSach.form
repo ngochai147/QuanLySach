@@ -143,18 +143,18 @@
                                   <Component id="jTextField_TenSach" alignment="0" max="32767" attributes="0"/>
                                   <Component id="jTextField_ISBN" alignment="0" max="32767" attributes="0"/>
                                   <Component id="jTextField_NamXuatBan" max="32767" attributes="0"/>
-                                  <Component id="jComboBox_Kho" pref="490" max="32767" attributes="0"/>
+                                  <Component id="jComboBox_Kho" max="32767" attributes="0"/>
                                   <Group type="102" alignment="1" attributes="0">
                                       <Component id="jComboBox_LoaiSach" max="32767" attributes="0"/>
                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                       <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
                                       <Component id="jSpinner_SoLuong" min="-2" pref="182" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" attributes="0">
-                                      <EmptySpace min="-2" pref="88" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="76" max="-2" attributes="0"/>
                                       <Component id="jPanel3" min="-2" pref="326" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="102" alignment="1" attributes="0">
@@ -167,7 +167,7 @@
                               </Group>
                           </Group>
                       </Group>
-                      <EmptySpace pref="44" max="32767" attributes="0"/>
+                      <EmptySpace pref="53" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -193,12 +193,14 @@
                               </Group>
                               <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="jLabel2" max="32767" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="jLabel2" alignment="3" max="32767" attributes="0"/>
+                                      <Component id="jSpinner_SoLuong" alignment="3" max="32767" attributes="0"/>
+                                  </Group>
                                   <Group type="103" groupAlignment="3" attributes="0">
                                       <Component id="jLabel_TenLoaiSach" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="jComboBox_LoaiSach" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="jSpinner_SoLuong" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
