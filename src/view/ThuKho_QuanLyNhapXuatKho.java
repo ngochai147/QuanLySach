@@ -131,6 +131,8 @@ public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
         centerRenderer.setHorizontalAlignment( JLabel.CENTER );
         centerRenderer.setVerticalAlignment(JLabel.CENTER );
         tbl_QLXuatNhapKho.getColumnModel().getColumn(0).setCellRenderer( centerRenderer);
+        tbl_QLXuatNhapKho.getColumnModel().getColumn(6).setCellRenderer( centerRenderer);
+        tbl_QLXuatNhapKho.getColumnModel().getColumn(7).setCellRenderer( centerRenderer);
 
         // Thiết lập kích thước font cho các phần tử trong table
         Font font = new Font("Arial", Font.PLAIN, 18);
@@ -154,7 +156,6 @@ public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
         event = new TableActionEvent() {
             @Override
             public void onEdit(int row) {
-//
 //                JOptionPane.showMessageDialog(null, "Simple Information Message");
             }
 
@@ -165,18 +166,26 @@ public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
 
             @Override
             public void onView(int row) {
-                PhieuXuatKho pxk = new PhieuXuatKho();
+//                PhieuXuatKho pxk = new PhieuXuatKho();
                 int n = tbl_QLXuatNhapKho.getSelectedRow();
                 String maPXK = pxk_dao.getAllphieuXuatKho().get(n).getMaPhieuXuatKho();
 
                 ArrayList<ChiTietPhieuXuatKho> dsCTPXKtemp = new ArrayList<>();
-                dsCTPXKtemp.forEach(x-> System.out.println(x));
+
                 for(ChiTietPhieuXuatKho ctpxk : ctpxk_dao.getDSCTPXK()){
+
                     if(ctpxk.getPhieuXuatKho().getMaPhieuXuatKho().equalsIgnoreCase(maPXK)){
+                        Sach s = new Sach();
+                        for(Sach sach : new Sach_DAO().getAllSP()){
+                            if(sach.getISBN().equalsIgnoreCase(ctpxk.getSach().getISBN())){
+                                s = sach;
+                            }
+                        }
+                        ctpxk.setSach(s);
                         dsCTPXKtemp.add(ctpxk);
                     }
                 }
-                Report_PhieuXuatKho.ViewReport_PhieuXuatKho(dsCTPXKtemp,maPXK);
+                Report_PhieuXuatKho.ViewRp_PhieuXuatKho(dsCTPXKtemp,maPXK);
             }
         };
         tbl_QLXuatNhapKho.getColumnModel().getColumn(8).setCellRenderer(new TableActionRender(1));
@@ -278,7 +287,6 @@ public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
         tbl_QLXuatNhapKho = new javax.swing.JTable();
         btn_lamMoi = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        btn_NhapKho = new javax.swing.JButton();
         jcb_danhSach = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
 
@@ -350,7 +358,7 @@ public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
                 {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "STT", "Mã phiếu", "Mã thủ kho", "Tên kho nhập", "Tên kho xuất", "Loại phiếu", "Số lượng", "Ngày lập phiếu", ""
+                "STT", "Mã phiếu", "Mã thủ kho", "Mã kho hàng nhập", "Mã kho hàng xuất", "Loại phiếu", "Số lượng", "Ngày lập phiếu", ""
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -382,25 +390,12 @@ public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
             }
         });
         panel_QLXuatNhapKho.add(btn_lamMoi);
-        btn_lamMoi.setBounds(320, 170, 120, 42);
+        btn_lamMoi.setBounds(180, 170, 120, 42);
 
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/jLabel_QuanLyXuatKho.png"))); // NOI18N
         panel_QLXuatNhapKho.add(jLabel1);
         jLabel1.setBounds(420, 20, 670, 88);
-
-        btn_NhapKho.setBackground(new java.awt.Color(102, 102, 0));
-        btn_NhapKho.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
-        btn_NhapKho.setForeground(new java.awt.Color(255, 255, 255));
-        btn_NhapKho.setText("Nhập kho");
-        btn_NhapKho.setPreferredSize(new java.awt.Dimension(120, 42));
-        btn_NhapKho.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_NhapKhoActionPerformed(evt);
-            }
-        });
-        panel_QLXuatNhapKho.add(btn_NhapKho);
-        btn_NhapKho.setBounds(180, 170, 120, 42);
 
         jcb_danhSach.setBackground(new java.awt.Color(102, 102, 0));
         jcb_danhSach.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -453,10 +448,6 @@ public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
             thuKho.getDesktopPanel(new ThuKho_XuatKho());
 //        thuKho.getDesktopPanel(new ThuKho_XuatKho());
     }//GEN-LAST:event_btn_XuatKhoActionPerformed
-
-    private void btn_NhapKhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_NhapKhoActionPerformed
-        thuKho.getDesktopPanel(new ThuKho_NhapKho());
-    }//GEN-LAST:event_btn_NhapKhoActionPerformed
 
     private void cb_chonTieuChiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_chonTieuChiActionPerformed
         Object selectedItem = cb_chonTieuChi.getSelectedItem();
@@ -670,7 +661,6 @@ public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn_NhapKho;
     private javax.swing.JButton btn_XuatKho;
     private javax.swing.JButton btn_lamMoi;
     private javax.swing.JButton btn_xuatExcel;

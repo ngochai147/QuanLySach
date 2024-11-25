@@ -6,10 +6,6 @@ import entity.*;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.view.JasperViewer;
-
-import javax.print.PrintService;
-import javax.print.PrintServiceLookup;
-import java.awt.print.PrinterJob;
 import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
@@ -58,7 +54,7 @@ public class Report_PhieuXuatKho {
             parameters.put("diaChi", pxk.getKhoHangNhap().getDiaChi());
             parameters.put("ngayLap", ngayLap);
 
-            List<FieldCTPNK> field = new ArrayList<>();
+            List<FieldCTPXK> field = new ArrayList<>();
             DecimalFormat df = new DecimalFormat("#,###");
 
             double tongTien = 0;
@@ -72,12 +68,66 @@ public class Report_PhieuXuatKho {
                         loaiSach = s.getLoaiSach().getTenLoai();
                     }
                 }
-                field.add(new FieldCTPNK(ctpx.getSach().getISBN(), tenSach, loaiSach, ctpx.getSoLuong(), giaGoc));
+                field.add(new FieldCTPXK(ctpx.getSach().getISBN(), tenSach, loaiSach, ctpx.getSoLuong(), giaGoc));
                 tongTien += ctpx.getSoLuong() * giaGoc;
             }
 
-            String formattedTongTien = df.format(tongTien);
-            parameters.put("tongTien", formattedTongTien);
+            String formattedThanhTien = df.format(tongTien);
+            parameters.put("tongTien", formattedThanhTien);
+
+            JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(field);
+            JasperPrint print = JasperFillManager.fillReport(reportPay, parameters, dataSource);
+
+            // Hiển thị báo cáo
+            JasperViewer.viewReport(print, false);
+        } catch (JRException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void ViewRp_PhieuXuatKho(ArrayList<ChiTietPhieuXuatKho> dsCTPXK, String maPhieuXuatKho) {
+        try {
+            PhieuXuatKho pxk = dsPXK.getPhieuXuatKhoTheoMaPXK(maPhieuXuatKho);
+
+            LocalDate nl = pxk.getNgayLap();
+            String ngayLap = formatNgayLap(nl);
+
+            // Nạp file .jrxml
+            InputStream reportStream = getClass().getResourceAsStream("/img/Report_PhieuXuatKho.jrxml");
+            if (reportStream == null) {
+                System.out.println("Không tìm thấy file .jrxml");
+                return;
+            }
+            JasperReport reportPay = JasperCompileManager.compileReport(reportStream);
+
+            HashMap<String, Object> parameters = new HashMap<>();
+            parameters.put("maPhieuXuatKho", maPhieuXuatKho);
+            parameters.put("tenNV", pxk.getNhanVien().getHoTen());
+            parameters.put("tenKhoHangXuat", pxk.getKhoHangXuat().getTenKho());
+            parameters.put("tenKhoHangNhap", pxk.getKhoHangNhap().getTenKho());
+            parameters.put("diaChi", pxk.getKhoHangNhap().getDiaChi());
+            parameters.put("ngayLap", ngayLap);
+
+            List<FieldCTPXK> field = new ArrayList<>();
+            DecimalFormat df = new DecimalFormat("#,###");
+
+            double tongTien = 0;
+            for (ChiTietPhieuXuatKho ctpx : dsCTPXK) {
+                String tenSach = "";
+                String loaiSach = "";
+                double giaGoc = ctpx.getSach().getGiaGoc();
+                for (Sach s : dss.getAllSP()) {
+                    if (s.getISBN().equalsIgnoreCase(ctpx.getSach().getISBN())) {
+                        tenSach = s.getTenSach();
+                        loaiSach = s.getLoaiSach().getTenLoai();
+                    }
+                }
+                field.add(new FieldCTPXK(ctpx.getSach().getISBN(), tenSach, loaiSach, ctpx.getSoLuong(), giaGoc));
+                tongTien += ctpx.getSoLuong() * giaGoc;
+            }
+
+            String formattedThanhTien = df.format(tongTien);
+            parameters.put("tongTien", formattedThanhTien);
 
             JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(field);
             JasperPrint print = JasperFillManager.fillReport(reportPay, parameters, dataSource);

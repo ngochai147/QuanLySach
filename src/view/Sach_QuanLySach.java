@@ -19,6 +19,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -46,7 +47,7 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
 
     private final Sach_DAO sach_dao;
     private DefaultTableModel model = null;
-    private final DecimalFormat df = new DecimalFormat("#");
+    private final DecimalFormat df = new DecimalFormat("#,###");
     private ChiTietKhoHang_DAO chiTietKhoHangDao;
     private KhoHang_DAO khoHang_dao;
     private String tieuChi;
@@ -101,7 +102,6 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
         jComboBox_TieuChi = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable_Sach = new javax.swing.JTable();
-        jButton_XuatExcel = new javax.swing.JButton();
         jComboBox_TimKiem = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -224,19 +224,6 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
         jPanel1.add(jScrollPane1);
         jScrollPane1.setBounds(18, 208, 1500, 386);
 
-        jButton_XuatExcel.setBackground(new java.awt.Color(102, 102, 0));
-        jButton_XuatExcel.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
-        jButton_XuatExcel.setForeground(new java.awt.Color(255, 255, 255));
-        jButton_XuatExcel.setText("Xuất excel");
-        jButton_XuatExcel.setPreferredSize(new java.awt.Dimension(200, 60));
-        jButton_XuatExcel.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_XuatExcelActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jButton_XuatExcel);
-        jButton_XuatExcel.setBounds(18, 612, 140, 46);
-
         jComboBox_TimKiem.setBackground(new java.awt.Color(102, 102, 0));
         jComboBox_TimKiem.setFont(new java.awt.Font("Arial", 1, 20));
         customGreen = new Color(102,102,0);
@@ -292,6 +279,8 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+
     private void jButton_ThemSachActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ThemSachActionPerformed
         // TODO add your handling code here:
         Sach_ThemSach themSach;
@@ -341,102 +330,6 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
         }
 
     }//GEN-LAST:event_jButton_XoaNhieuActionPerformed
-
-    private void jButton_XuatExcelActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-        try {
-            JFileChooser jFileChooser = new JFileChooser();
-            int returnValue = jFileChooser.showSaveDialog(this);
-            File saveFile = jFileChooser.getSelectedFile();
-
-            // Kiểm tra xem người dùng có chọn tệp không
-            if (returnValue == JFileChooser.APPROVE_OPTION && saveFile != null) {
-                // Kiểm tra nếu tên tệp không kết thúc bằng ".xlsx", thêm vào
-                if (!saveFile.getName().toLowerCase().endsWith(".xlsx")) {
-                    saveFile = new File(saveFile.getAbsolutePath() + ".xlsx");
-                }
-
-                Workbook wb = new XSSFWorkbook();  // Tạo một workbook Excel mới
-                Sheet sheet = wb.createSheet("DanhSachSach");  // Tạo một sheet có tên "DanhSachSach"
-
-                // Tạo hàng tiêu đề
-                Row headerRow = sheet.createRow(0);
-                headerRow.createCell(0).setCellValue("ISBN");
-                headerRow.createCell(1).setCellValue("Tên sách");
-                headerRow.createCell(2).setCellValue("Loại sách");
-                headerRow.createCell(3).setCellValue("Tác giả");
-                headerRow.createCell(4).setCellValue("Năm xuất bản");
-                headerRow.createCell(5).setCellValue("Nhà xuất bản");
-                headerRow.createCell(6).setCellValue("Số lượng");
-                headerRow.createCell(7).setCellValue("Giá gốc");
-
-                // Thiết lập độ rộng cho các cột
-                sheet.setColumnWidth(0, 20 * 256); // Độ rộng cho cột ISBN
-                sheet.setColumnWidth(1, 40 * 256); // Độ rộng cho cột Tên sách
-                sheet.setColumnWidth(2, 20 * 256); // Độ rộng cho cột Loại sách
-                sheet.setColumnWidth(3, 20 * 256); // Độ rộng cho cột Tác giả
-                sheet.setColumnWidth(4, 15 * 256); // Độ rộng cho cột Năm xuất bản
-                sheet.setColumnWidth(5, 25 * 256); // Độ rộng cho cột Nhà xuất bản
-                sheet.setColumnWidth(6, 15 * 256); // Độ rộng cho cột Số lượng
-                sheet.setColumnWidth(7, 15 * 256); // Độ rộng cho cột Giá gốc
-
-                // Lấy danh sách sách
-                List<Sach> dsSach = new ArrayList<>();
-                int[] n = jTable_Sach.getSelectedRows();
-                if (n.length == 0) {
-                    // Lấy toàn bộ danh sách sách
-                    dsSach = sach_dao.getDSSach();
-                } else {
-                    for (int j : n) {
-                        String ma = model.getValueAt(j, 0).toString();
-                        Sach s = null;
-                        try {
-                            s = sach_dao.getSachTheoMaSach(ma);
-                        } catch (SQLException e) {
-                            throw new RuntimeException(e);
-                        }
-                        dsSach.add(s);
-                    }
-                }
-
-                // Xuất tất cả thông tin chi tiết của sách
-                int rowIndex = 1;  // Bắt đầu từ hàng thứ 2 (hàng 1 là tiêu đề)
-                for (Sach sach : dsSach) {
-                    // Chỉ xuất sách đang bán
-                    if (sach.getTrangThai().equalsIgnoreCase("Đang bán")) {
-                        Row row = sheet.createRow(rowIndex++);
-                        row.createCell(0).setCellValue(sach.getISBN());
-                        row.createCell(1).setCellValue(sach.getTenSach());
-                        row.createCell(2).setCellValue(sach.getLoaiSach().getTenLoai());
-                        row.createCell(3).setCellValue(sach.getTacGia());
-                        row.createCell(4).setCellValue(sach.getNamXB());
-                        row.createCell(5).setCellValue(sach.getNhaXB());
-                        row.createCell(6).setCellValue(sach.getSoLuong());
-                        row.createCell(7).setCellValue(sach.getGiaGoc());
-                    }
-                }
-
-                // Ghi dữ liệu vào tệp
-                try (FileOutputStream out = new FileOutputStream(saveFile)) {
-                    wb.write(out);  // Ghi nội dung workbook vào tệp
-                } catch (IOException e) {
-                    JOptionPane.showMessageDialog(this, "Lỗi khi ghi file: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
-                } finally {
-                    wb.close();  // Đóng workbook
-                }
-
-                JOptionPane.showMessageDialog(this, "Xuất file Excel thành công!");
-                Desktop.getDesktop().open(saveFile);
-            } else {
-                System.out.println("Người dùng đã hủy chọn tệp lưu.");
-            }
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, "Lỗi IO: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Có lỗi xảy ra: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
-        }
-    }
 
     private void jComboBox_TieuChiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_TieuChiActionPerformed
         // TODO add your handling code here:
@@ -648,7 +541,6 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton_LamMoi;
     private javax.swing.JButton jButton_ThemSach;
     private javax.swing.JButton jButton_XoaNhieu;
-    private javax.swing.JButton jButton_XuatExcel;
     private javax.swing.JComboBox<String> jComboBox_TieuChi;
     private javax.swing.JComboBox<String> jComboBox_TimKiem;
     private javax.swing.JLabel jLabel2;

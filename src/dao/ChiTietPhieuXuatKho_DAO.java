@@ -21,6 +21,7 @@ public class ChiTietPhieuXuatKho_DAO {
 
     // Hàm lấy danh sách chi tiết phiếu xuất kho từ cơ sở dữ liệu
     public List<ChiTietPhieuXuatKho> getDSCTPXK() {
+        ds_ctpnk.clear();
         Connection con = ConnectDB.getInstance().getConnection();
         PreparedStatement stmt = null;
         String sql = "SELECT * FROM ChiTietPhieuXuatKho";

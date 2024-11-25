@@ -2,7 +2,7 @@ package entity;
 
 import java.text.DecimalFormat;
 
-public class FieldCTPNK {
+public class FieldCTPXK {
     private String ISBN;
     private String tenSach;
     private String loaiSach;
@@ -12,7 +12,7 @@ public class FieldCTPNK {
     private String formattedThanhTien;
 
     // Constructor
-    public FieldCTPNK(String ISBN, String tenSach, String loaiSach, int soLuong, double giaGoc) {
+    public FieldCTPXK(String ISBN, String tenSach, String loaiSach, int soLuong, double giaGoc) {
         this.ISBN = ISBN;
         this.tenSach = tenSach;
         this.loaiSach = loaiSach;
@@ -26,7 +26,7 @@ public class FieldCTPNK {
         this.formattedThanhTien = df.format(thanhTien);
     }
 
-    // Getters
+    // Getters & Setters
     public String getISBN() {
         return ISBN;
     }
