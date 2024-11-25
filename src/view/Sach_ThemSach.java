@@ -47,10 +47,7 @@ public class Sach_ThemSach extends javax.swing.JDialog {
      */
     // Biến để giữ tham chiếu đến JFormattedTextField của jSpinner_SoLuong
     private JFormattedTextField spinnerTextField;
-    private boolean isCanceling = false;
-
     // Biến để giữ tham chiếu đến InputVerifier của jSpinner_SoLuong
-    private InputVerifier spinnerInputVerifier;
 
     private Sach_QuanLySach dsSach;
     private Sach_DAO sach_dao;
@@ -74,37 +71,6 @@ public class Sach_ThemSach extends javax.swing.JDialog {
         chiTietPhieuNhap_dao = new ChiTietPhieuNhap_DAO();
         initComponents();
         setLocationRelativeTo(null);
-
-        spinnerTextField = ((JSpinner.NumberEditor) jSpinner_SoLuong.getEditor()).getTextField();
-
-        // Tạo và gán InputVerifier
-        spinnerInputVerifier = new InputVerifier() {
-            @Override
-            public boolean verify(JComponent input) {
-                if (isCanceling) {
-                    return true; // Bỏ qua xác thực khi đang hủy bỏ
-                }
-                String text = spinnerTextField.getText().trim();
-
-                // Kiểm tra nếu chuỗi không phải là số nguyên dương
-                if (!text.matches("^[1-9][0-9]*$")) {
-                    JOptionPane.showMessageDialog(null, "Vui lòng chỉ nhập số nguyên dương!", "Lỗi nhập liệu", JOptionPane.ERROR_MESSAGE);
-                    spinnerTextField.setText("0"); // Đặt lại về 0 nếu không hợp lệ
-                    return false;
-                }
-
-                return true; // Đầu vào hợp lệ
-            }
-        };
-
-//      Gán InputVerifier cho spinnerTextField
-        spinnerTextField.setInputVerifier(spinnerInputVerifier);
-        jButton_HuyBo.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                isCanceling = true;
-            }
-        });
     }
 
     private Sach_ThemSach(java.awt.Frame parent, boolean modal) {
@@ -464,9 +430,8 @@ public class Sach_ThemSach extends javax.swing.JDialog {
 
     private boolean kiemTraDonGia(String donGiaStr) {
         // Sử dụng regex để đảm bảo donGiaStr là một số hợp lệ
-        
+
 //        ^[0-9]+:Đảm bảo chuỗi bắt đầu với ít nhất một chữ số (số nguyên).
-        
 //        (\\.[0-9]+)?:
 //        (\\.: Cho phép một dấu chấm (thập phân).
 //        [0-9]+: Yêu cầu ít nhất một chữ số sau dấu chấm.
@@ -487,6 +452,36 @@ public class Sach_ThemSach extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, "Đơn giá phải là một chữ số hợp lệ!!!", "Thông báo", JOptionPane.WARNING_MESSAGE);
             return false;
         }
+        return true;
+    }
+
+    private boolean kiemTraSoLuong() throws SQLException {
+        spinnerTextField = ((JSpinner.NumberEditor) jSpinner_SoLuong.getEditor()).getTextField();
+//      1212121212122
+        String text = spinnerTextField.getText().trim().replace(",", "");
+        // Kiểm tra nếu chuỗi không phải là số nguyên dương
+        if (Integer.parseInt(text) == 0) {
+            JOptionPane.showMessageDialog(null, "Số lượng phải > 0!!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        if (!text.matches("^[1-9][0-9]*$")) {
+            JOptionPane.showMessageDialog(null, "Vui lòng chỉ nhập số nguyên dương!", "Lỗi nhập liệu", JOptionPane.ERROR_MESSAGE);
+            spinnerTextField.setText("0"); // Đặt lại về 0 nếu không hợp lệ
+            return false;
+        }
+        String tenKho = jComboBox_Kho.getSelectedItem().toString();
+        String maKho = khoHang_dao.getMaKhoTheoTenKho(tenKho);
+        int sucChua = khoHang_dao.getKhoHangTheoMaKho(maKho).getSucChua();
+        int soLuongSach = chiTietKhoHang_dao.getSoLuongSachTheoKho(maKho);
+        int soLuongSachConLai = sucChua - soLuongSach;
+        if (Integer.parseInt(text) > soLuongSachConLai) {
+            JOptionPane.showMessageDialog(this, "Số lượng sách lớn hơn sức chứa trong kho!!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            jSpinner_SoLuong.requestFocus(); // Đặt focus vào JSpinner
+            spinnerTextField.requestFocus(); // Đặt focus vào trường văn bản bên trong JSpinner
+            spinnerTextField.selectAll(); // Chọn tất cả văn bản trong trường
+            return false;
+        }
+
         return true;
     }
 
@@ -559,6 +554,12 @@ public class Sach_ThemSach extends javax.swing.JDialog {
             jTextField_DonGia.selectAll();
             return false;
         }
+        if (!kiemTraSoLuong()) {
+            jSpinner_SoLuong.requestFocus(); // Đặt focus vào JSpinner
+            spinnerTextField.requestFocus(); // Đặt focus vào trường văn bản bên trong JSpinner
+            spinnerTextField.selectAll(); // Chọn tất cả văn bản trong trường
+            return false;
+        }
         if (tacGia.trim().length() == 0 || !kiemTratacGia(tacGia)) {
             JOptionPane.showMessageDialog(this, "Tác giả không hợp lệ!!!", "Thông báo", JOptionPane.WARNING_MESSAGE);
             jTextField_TacGia.requestFocus();
@@ -584,27 +585,6 @@ public class Sach_ThemSach extends javax.swing.JDialog {
             return false;
         }
 
-        
-//        System.out.println("Sua chua con lai trong kho: " + (sucChua - soLuongSach));
-        if ((int) jSpinner_SoLuong.getValue() == 0) {
-            JOptionPane.showMessageDialog(this, "Số lượng phải > 0!!", "Thông báo", JOptionPane.WARNING_MESSAGE);
-            jSpinner_SoLuong.requestFocus(); // Đặt focus vào JSpinner
-            spinnerTextField.requestFocus(); // Đặt focus vào trường văn bản bên trong JSpinner
-            spinnerTextField.selectAll(); // Chọn tất cả văn bản trong trường
-            return false;
-        }
-        String tenKho = jComboBox_Kho.getSelectedItem().toString();
-        String maKho = khoHang_dao.getMaKhoTheoTenKho(tenKho);
-        int sucChua = khoHang_dao.getKhoHangTheoMaKho(maKho).getSucChua();
-        int soLuongSach = chiTietKhoHang_dao.getSoLuongSachTheoKho(maKho);
-        int soLuongSachConLai=sucChua-soLuongSach;
-        if ((int) jSpinner_SoLuong.getValue() > soLuongSachConLai) {
-            JOptionPane.showMessageDialog(this, "Số lượng sách lớn hơn sức chứa trong kho!!", "Thông báo", JOptionPane.WARNING_MESSAGE);
-            jSpinner_SoLuong.requestFocus(); // Đặt focus vào JSpinner
-            spinnerTextField.requestFocus(); // Đặt focus vào trường văn bản bên trong JSpinner
-            spinnerTextField.selectAll(); // Chọn tất cả văn bản trong trường
-            return false;
-        }
         return true;
     }
     private void jButton_ThemSachActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ThemSachActionPerformed
@@ -701,10 +681,6 @@ public class Sach_ThemSach extends javax.swing.JDialog {
         int result = JOptionPane.showConfirmDialog(null, "Bạn chắc chắn muốn hủy, các thông tin sẽ không đươc lưu?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 
         if (result == JOptionPane.YES_OPTION) {
-            if (spinnerInputVerifier != null && spinnerTextField != null) {
-                spinnerTextField.setInputVerifier(null);
-            }
-            // Đóng dialog
             this.dispose();
         } else {
             jTextField_ISBN.requestFocus();
@@ -717,13 +693,6 @@ public class Sach_ThemSach extends javax.swing.JDialog {
 
 
     }//GEN-LAST:event_jButton_HuyBoActionPerformed
-    @Override
-    public void dispose() {
-        if (spinnerInputVerifier != null && spinnerTextField != null) {
-            spinnerTextField.setInputVerifier(null);
-        }
-        super.dispose();
-    }
 
     public String createMaCTKH() {
         List<String> dsMaCT = chiTietKhoHang_dao.getMaChiTietKhoHang();

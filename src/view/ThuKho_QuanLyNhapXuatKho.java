@@ -69,6 +69,23 @@ public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
         chinhSua_table();
         chinhSua_btnView();
     }
+    public ThuKho_QuanLyNhapXuatKho() {
+
+        initComponents();
+        this.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        BasicInternalFrameUI ui = (BasicInternalFrameUI)this.getUI();
+        ui.setNorthPane(null);
+
+         // doc du lieu tu database SQL vao Jtable
+        modelXuatNhapKho = new DefaultTableModel(new Object[]{"STT", "Mã phiếu", "Mã thủ kho", "Tên kho nhập", "Tên kho xuất", "Loại phiếu", "Số lượng", "Ngày lập phiếu", ""}, 0);
+        DocDuLieuDatabaseVaoTable();
+        tbl_QLXuatNhapKho.setModel(modelXuatNhapKho);
+
+        cb_chonTieuChi.setSelectedIndex(0);
+
+        ChinhMauCombobox();
+        
+    }
 
     private void DocDuLieuDatabaseVaoTable() {
         int stt = 1;
