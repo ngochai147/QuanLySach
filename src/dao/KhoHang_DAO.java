@@ -147,6 +147,5 @@ public class KhoHang_DAO {
         return false;
     }
 
-    // Lấy kho hàng theo mã kho
 
 }

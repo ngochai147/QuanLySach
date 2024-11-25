@@ -27,10 +27,6 @@ public class ChiTietKhoHang_DAO {
         ct_khoHang = new ArrayList<>();
     }
 
-    public ChiTietKhoHang_DAO(List<ChiTietKhoHang> ctKhoHang) {
-        ct_khoHang = ctKhoHang;
-    }
-
     public List<ChiTietKhoHang> getChiTietKhoHangTheoMaKho(String maKhoHang) {
         List<ChiTietKhoHang> dsChiTietKhoHang = new ArrayList<>();
         String sql = "SELECT * FROM ChiTietKhoHang WHERE maKhoHang = ?";
@@ -105,7 +101,7 @@ public class ChiTietKhoHang_DAO {
         return ds_Sach;
     }
 
-    public ChiTietKhoHang kiemTraTonTaiISBNTrongKho(String isbn,String maKhoHang) {
+    public ChiTietKhoHang kiemTraTonTaiISBNTrongKho(String isbn, String maKhoHang) {
         String sql = "SELECT * FROM ChiTietKhoHang WHERE maKhoHang = ? AND ISBN = ?";
         Connection con = ConnectDB.getInstance().getConnection();
         PreparedStatement stmt = null;
@@ -138,7 +134,7 @@ public class ChiTietKhoHang_DAO {
         return chiTietKhoHang;
     }
 
-    public List<String> getMaChiTietKhoHang(){
+    public List<String> getMaChiTietKhoHang() {
         List<String> dsMaChiTietKhoHang = new ArrayList<>();
         String sql = "select maChiTietKhoHang from ChiTietKhoHang";
         Connection con = ConnectDB.getInstance().getConnection();
@@ -146,7 +142,7 @@ public class ChiTietKhoHang_DAO {
         try {
             stmt = con.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 dsMaChiTietKhoHang.add(rs.getString("maChiTietKhoHang"));
             }
         } catch (SQLException e) {
@@ -154,11 +150,12 @@ public class ChiTietKhoHang_DAO {
         }
         return dsMaChiTietKhoHang;
     }
+
     public boolean themChiTietKhoHang(ChiTietKhoHang chiTietKhoHang) throws SQLException {
         String sql = "insert into ChiTietKhoHang values (?,?,?,?)";
-        if(ct_khoHang.contains(chiTietKhoHang)){
+        if (ct_khoHang.contains(chiTietKhoHang)) {
             return false;
-        }else {
+        } else {
             Connection con = ConnectDB.getInstance().getConnection();
             PreparedStatement stmt = null;
             stmt = con.prepareStatement(sql);
@@ -171,7 +168,8 @@ public class ChiTietKhoHang_DAO {
             return ct_khoHang.add(chiTietKhoHang);
         }
     }
-    public List<ChiTietKhoHang> getAllChiTietKhoHang(){
+
+    public List<ChiTietKhoHang> getAllChiTietKhoHang() {
         List<ChiTietKhoHang> dsChiTietKhoHang = new ArrayList<>();
         String sql = "select * from ChiTietKhoHang";
         Connection con = ConnectDB.getInstance().getConnection();
@@ -179,12 +177,12 @@ public class ChiTietKhoHang_DAO {
         try {
             stmt = con.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 String maCTKhoHang = rs.getString(1);
                 String ISBN = rs.getString(2);
                 String maKhoHang = rs.getString(3);
                 int soLuong = rs.getInt(4);
-                dsChiTietKhoHang.add(new ChiTietKhoHang(maCTKhoHang,soLuong,new Sach(ISBN),new KhoHang(maKhoHang)));
+                dsChiTietKhoHang.add(new ChiTietKhoHang(maCTKhoHang, soLuong, new Sach(ISBN), new KhoHang(maKhoHang)));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -219,6 +217,7 @@ public class ChiTietKhoHang_DAO {
         }
         return tenKho;
     }
+
     public boolean xoaChiTietKhoHang(String ISBN) throws SQLException {
         Connection con = ConnectDB.getConnection();
         PreparedStatement stmt = null;
@@ -227,7 +226,8 @@ public class ChiTietKhoHang_DAO {
         stmt.executeUpdate();
         return true;
     }
-    public boolean capNhatChiTietKhoHang(String ISBN,String maKho,int soLuong) throws SQLException {
+
+    public boolean capNhatChiTietKhoHang(String ISBN, String maKho, int soLuong) throws SQLException {
         Connection con = ConnectDB.getConnection();
         PreparedStatement stmt = null;
         stmt = con.prepareStatement("update ChiTietKhoHang " +

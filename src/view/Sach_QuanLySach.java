@@ -8,6 +8,7 @@ import button.TableActionCellEditor;
 import button.TableActionEvent;
 import button.TableActionRender;
 import dao.ChiTietKhoHang_DAO;
+import dao.KhoHang_DAO;
 import dao.Sach_DAO;
 import entity.ChiTietKhoHang;
 import entity.Sach;
@@ -47,6 +48,7 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
     private DefaultTableModel model = null;
     private final DecimalFormat df = new DecimalFormat("#");
     private ChiTietKhoHang_DAO chiTietKhoHangDao;
+    private KhoHang_DAO khoHang_dao;
     private String tieuChi;
     private boolean isTimKiemUpdated;
     private Color customGreen;
@@ -56,6 +58,8 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
      */
     public Sach_QuanLySach() throws SQLException {
         sach_dao = new Sach_DAO();
+        khoHang_dao = new KhoHang_DAO();
+        chiTietKhoHangDao = new ChiTietKhoHang_DAO();
         initComponents();
         this.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         BasicInternalFrameUI ui = (BasicInternalFrameUI) this.getUI();
@@ -74,10 +78,10 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
                     df.format(x.getGiaGoc()) + " VND"});
             }
         }
-
-        chiTietKhoHangDao = new ChiTietKhoHang_DAO();
         JTableHeader header = jTable_Sach.getTableHeader();
         header.setFont(new Font("Arial", Font.BOLD, 18));
+
+
     }
 
     /**
@@ -323,22 +327,17 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
                     }
-                    if (s.getSoLuong() <= 0) {
-                        try {
-                            if (sach_dao.xoaSach(ma)) {
-                                model.removeRow(n[i]);
-                            }
-                        } catch (SQLException e) {
-                            throw new RuntimeException(e);
+                    try {
+                        if (sach_dao.xoaSach(ma)) {
+                            model.removeRow(n[i]);
                         }
-                    } else {
-                        JOptionPane.showMessageDialog(this, "Không thể xóa sách có số lượng lớn hơn 0");
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
                     }
                 }
             }else{
                 jTable_Sach.clearSelection();
             }
-
         }
 
     }//GEN-LAST:event_jButton_XoaNhieuActionPerformed

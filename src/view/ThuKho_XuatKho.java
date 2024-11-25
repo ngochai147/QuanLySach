@@ -502,6 +502,11 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
 
         tf_soLuong.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
         tf_soLuong.setPreferredSize(new java.awt.Dimension(64, 40));
+        tf_soLuong.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+//                tf_soLuongActionPerformed(evt);
+            }
+        });
         jPanel1.add(tf_soLuong);
         tf_soLuong.setBounds(1110, 210, 340, 40);
 
@@ -624,7 +629,7 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/anhnen.jpg"))); // NOI18N
         jLabel15.setPreferredSize(new java.awt.Dimension(1612, 733));
         jPanel1.add(jLabel15);
-        jLabel15.setBounds(0, 0, 1610, 700);
+        jLabel15.setBounds(0, 0, 1610, 733);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
