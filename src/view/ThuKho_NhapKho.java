@@ -13,12 +13,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -39,7 +35,7 @@ public class ThuKho_NhapKho extends JInternalFrame {
     ChiTietKhoHang_DAO ctkh_dao = new ChiTietKhoHang_DAO();
     Sach_DAO sach_dao = new Sach_DAO();
     PhieuNhap_DAO pn_dao = new PhieuNhap_DAO();
-    ChiTietPhieuNhap_DAO ctpn_dao = new ChiTietPhieuNhap_DAO();
+    ChiTietPhieuNhapKho_DAO ctpn_dao = new ChiTietPhieuNhapKho_DAO();
 
     private static final String ma_CT_PNK = "CTPNK";
     private static final String ma_PNK = "PNK";
@@ -356,7 +352,6 @@ public class ThuKho_NhapKho extends JInternalFrame {
     public void tao_PhieuNhapKho_tuThemSach(String isbn,LocalDate ngayLap, int soLuong, String tenKho) throws SQLException {
         // Thêm sách mới vào bảng
         Sach sach = sach_dao.getSachTheoMaSach(isbn);
-
         DefaultTableModel model = (DefaultTableModel) tbl_phieuNhapKho.getModel();
         model.addRow(new Object[]{"", sach.getISBN(),"", "", sach.getGiaGoc(), soLuong, "", ""});
         String ma_PNK = taoTuDong_MaPhieuNhapKho();

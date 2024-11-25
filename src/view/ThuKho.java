@@ -78,7 +78,7 @@ public class ThuKho extends javax.swing.JFrame {
 
         jLabel_XuatKho.setFont(new java.awt.Font("Arial", 1, 25)); // NOI18N
         jLabel_XuatKho.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel_XuatKho.setText("Xuất kho");
+        jLabel_XuatKho.setText("Quản lý kho");
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icon_XuatKho.png"))); // NOI18N
 

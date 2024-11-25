@@ -85,57 +85,57 @@ public class Report_PhieuXuatKho {
         }
     }
 
-    public void ViewRp_PhieuXuatKho(ArrayList<ChiTietPhieuXuatKho> dsCTPXK, String maPhieuXuatKho) {
-        try {
-            PhieuXuatKho pxk = dsPXK.getPhieuXuatKhoTheoMaPXK(maPhieuXuatKho);
-
-            LocalDate nl = pxk.getNgayLap();
-            String ngayLap = formatNgayLap(nl);
-
-            // Nạp file .jrxml
-            InputStream reportStream = getClass().getResourceAsStream("/img/Report_PhieuXuatKho.jrxml");
-            if (reportStream == null) {
-                System.out.println("Không tìm thấy file .jrxml");
-                return;
-            }
-            JasperReport reportPay = JasperCompileManager.compileReport(reportStream);
-
-            HashMap<String, Object> parameters = new HashMap<>();
-            parameters.put("maPhieuXuatKho", maPhieuXuatKho);
-            parameters.put("tenNV", pxk.getNhanVien().getHoTen());
-            parameters.put("tenKhoHangXuat", pxk.getKhoHangXuat().getTenKho());
-            parameters.put("tenKhoHangNhap", pxk.getKhoHangNhap().getTenKho());
-            parameters.put("diaChi", pxk.getKhoHangNhap().getDiaChi());
-            parameters.put("ngayLap", ngayLap);
-
-            List<FieldCTPXK> field = new ArrayList<>();
-            DecimalFormat df = new DecimalFormat("#,###");
-
-            double tongTien = 0;
-            for (ChiTietPhieuXuatKho ctpx : dsCTPXK) {
-                String tenSach = "";
-                String loaiSach = "";
-                double giaGoc = ctpx.getSach().getGiaGoc();
-                for (Sach s : dss.getAllSP()) {
-                    if (s.getISBN().equalsIgnoreCase(ctpx.getSach().getISBN())) {
-                        tenSach = s.getTenSach();
-                        loaiSach = s.getLoaiSach().getTenLoai();
-                    }
-                }
-                field.add(new FieldCTPXK(ctpx.getSach().getISBN(), tenSach, loaiSach, ctpx.getSoLuong(), giaGoc));
-                tongTien += ctpx.getSoLuong() * giaGoc;
-            }
-
-            String formattedThanhTien = df.format(tongTien);
-            parameters.put("tongTien", formattedThanhTien);
-
-            JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(field);
-            JasperPrint print = JasperFillManager.fillReport(reportPay, parameters, dataSource);
-
-            // Hiển thị báo cáo
-            JasperViewer.viewReport(print, false);
-        } catch (JRException e) {
-            e.printStackTrace();
-        }
-    }
+//    public void ViewRp_PhieuXuatKho(ArrayList<ChiTietPhieuXuatKho> dsCTPXK, String maPhieuXuatKho) {
+//        try {
+//            PhieuXuatKho pxk = dsPXK.getPhieuXuatKhoTheoMaPXK(maPhieuXuatKho);
+//
+//            LocalDate nl = pxk.getNgayLap();
+//            String ngayLap = formatNgayLap(nl);
+//
+//            // Nạp file .jrxml
+//            InputStream reportStream = getClass().getResourceAsStream("/img/Report_PhieuXuatKho.jrxml");
+//            if (reportStream == null) {
+//                System.out.println("Không tìm thấy file .jrxml");
+//                return;
+//            }
+//            JasperReport reportPay = JasperCompileManager.compileReport(reportStream);
+//
+//            HashMap<String, Object> parameters = new HashMap<>();
+//            parameters.put("maPhieuXuatKho", maPhieuXuatKho);
+//            parameters.put("tenNV", pxk.getNhanVien().getHoTen());
+//            parameters.put("tenKhoHangXuat", pxk.getKhoHangXuat().getTenKho());
+//            parameters.put("tenKhoHangNhap", pxk.getKhoHangNhap().getTenKho());
+//            parameters.put("diaChi", pxk.getKhoHangNhap().getDiaChi());
+//            parameters.put("ngayLap", ngayLap);
+//
+//            List<FieldCTPXK> field = new ArrayList<>();
+//            DecimalFormat df = new DecimalFormat("#,###");
+//
+//            double tongTien = 0;
+//            for (ChiTietPhieuXuatKho ctpx : dsCTPXK) {
+//                String tenSach = "";
+//                String loaiSach = "";
+//                double giaGoc = ctpx.getSach().getGiaGoc();
+//                for (Sach s : dss.getAllSP()) {
+//                    if (s.getISBN().equalsIgnoreCase(ctpx.getSach().getISBN())) {
+//                        tenSach = s.getTenSach();
+//                        loaiSach = s.getLoaiSach().getTenLoai();
+//                    }
+//                }
+//                field.add(new FieldCTPXK(ctpx.getSach().getISBN(), tenSach, loaiSach, ctpx.getSoLuong(), giaGoc));
+//                tongTien += ctpx.getSoLuong() * giaGoc;
+//            }
+//
+//            String formattedThanhTien = df.format(tongTien);
+//            parameters.put("tongTien", formattedThanhTien);
+//
+//            JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(field);
+//            JasperPrint print = JasperFillManager.fillReport(reportPay, parameters, dataSource);
+//
+//            // Hiển thị báo cáo
+//            JasperViewer.viewReport(print, false);
+//        } catch (JRException e) {
+//            e.printStackTrace();
+//        }
+//    }
 }

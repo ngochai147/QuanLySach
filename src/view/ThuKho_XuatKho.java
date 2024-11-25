@@ -57,6 +57,25 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
     }
 
     // Hàm kiểm tra nếu ngày lập phiếu lớn hơn hoặc bằng ngày hiện tại
+    private void jdc_ngayLapPXAncestorAdded(javax.swing.event.AncestorEvent evt) {
+        jdc_ngayLapPX.getDateEditor().addPropertyChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                if ("date".equals(evt.getPropertyName())) {
+                    if (!isUpdatingDate) {
+                        isUpdatingDate = true; // Đặt cờ trước khi kiểm tra
+                        Date selectedDate = jdc_ngayLapPX.getDate();
+                        boolean isValid = kiemTraNgayLapPhieu(selectedDate, true);
+                        if (isValid) {
+                            kiemTraTrangThai();
+                        }
+                        isUpdatingDate = false; // Đặt lại cờ sau khi xử lý xong
+                    }
+                }
+            }
+        });
+    }
+
     private boolean kiemTraNgayLapPhieu(Date ngayLapPhieu, boolean showMessage) {
         if (ngayLapPhieu == null) return false;
 
@@ -83,9 +102,11 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         // Hiển thị thông báo và xử lý giao diện nếu cần
         if (!isValid && showMessage) {
             JOptionPane.showMessageDialog(null, "Vui lòng nhập ngày lập bằng hoặc sau ngày hiện tại.");
-            isUpdatingDate = true; // Đặt cờ để tránh vòng lặp khi xóa ngày
-            jdc_ngayLapPX.setDate(null); // Xóa ngày lập nếu không hợp lệ
-            isUpdatingDate = false; // Đặt lại cờ sau khi xóa
+            SwingUtilities.invokeLater(() -> {
+                isUpdatingDate = true; // Đặt cờ để tránh vòng lặp khi xóa ngày
+                jdc_ngayLapPX.setDate(null); // Xóa ngày lập nếu không hợp lệ
+                isUpdatingDate = false; // Đặt lại cờ sau khi xóa
+            });
         }
 
         return isValid;
@@ -248,12 +269,6 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
             // Tạo chi tiết phiếu xuất kho
             ChiTietPhieuXuatKho ctpxk = new ChiTietPhieuXuatKho(maChiTietPhieuXuatKho, new PhieuXuatKho(maPhieuXuatKho), soLuong, sach);
             dsCTPXK.add(ctpxk);
-
-//            if (!isInserted) {
-//                System.out.println("Không thể thêm chi tiết phiếu xuất kho cho ISBN: " + isbn);
-//            } else {
-//                System.out.println("Thêm chi tiết phiếu nhập kho thành công cho ISBN: " + isbn);
-//            }
         }
     }
 
@@ -758,22 +773,7 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
                 jcb_khoNhap.setSelectedIndex(-1);
             }
         }
-    }                                           
-
-    private void jdc_ngayLapPXAncestorAdded(javax.swing.event.AncestorEvent evt) {
-        jdc_ngayLapPX.getDateEditor().addPropertyChangeListener(new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                if ("date".equals(evt.getPropertyName())) {
-                    if (!isUpdatingDate) {
-                        Date selectedDate = jdc_ngayLapPX.getDate();
-                        kiemTraNgayLapPhieu(selectedDate, true);
-                        kiemTraTrangThai();
-                    }
-                }
-            }
-        });
-    }                                           
+    }
 
     private void btn_themActionPerformed(java.awt.event.ActionEvent evt) {
         List<ChiTietKhoHang> danhSachChiTietKhoTam = new ArrayList<>(ctkh_dao.getAllChiTietKhoHang());
