@@ -316,6 +316,16 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         return tongSoLuong;
     }
 
+    private void kiemTraTrangThai() {
+        if (jcb_khoXuat.getSelectedIndex() > 0 && jcb_khoNhap.getSelectedIndex() > 0 && jdc_ngayLapPX.getDate() != null) {
+            jcb_chonSach.setEnabled(true);
+            tf_soLuong.setEnabled(true);
+        } else {
+            jcb_chonSach.setEnabled(false);
+            tf_soLuong.setEnabled(false);
+        }
+    }
+
     private void handleKhoXuatChange() {
         // Reset lại jcb_chonSach khi lựa chọn thay đổi
         jcb_chonSach.removeAllItems();
@@ -347,14 +357,7 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
             }
         }
 
-        // Kiểm tra các điều kiện để bật hoặc tắt các thành phần giao diện
-        if (jcb_khoXuat.getSelectedIndex() > 0 && jcb_khoNhap.getSelectedIndex() > 0 && jdc_ngayLapPX.getDate() != null) {
-            jcb_chonSach.setEnabled(true);
-            tf_soLuong.setEnabled(true);
-        } else {
-            jcb_chonSach.setEnabled(false);
-            tf_soLuong.setEnabled(false);
-        }
+        kiemTraTrangThai();
 
         // Kiểm tra nếu kho xuất trùng với kho nhập
         if (jcb_khoXuat.getSelectedIndex() > 0 && jcb_khoNhap.getSelectedIndex() > 0) {
@@ -362,6 +365,8 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
             if (tenKhoNhap.equalsIgnoreCase(jcb_khoXuat.getSelectedItem().toString())) {
                 JOptionPane.showMessageDialog(this, "Kho xuất không được trùng với kho nhập!", "Lỗi", JOptionPane.ERROR_MESSAGE);
                 jcb_khoXuat.setSelectedIndex(-1); // Đặt lại giá trị jcb_khoXuat nếu cần
+                jcb_chonSach.removeAllItems();
+                jcb_chonSach.repaint();
             }
         }
     }
@@ -502,6 +507,10 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
 
         tf_soLuong.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
         tf_soLuong.setPreferredSize(new java.awt.Dimension(64, 40));
+        tf_soLuong.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            }
+        });
         jPanel1.add(tf_soLuong);
         tf_soLuong.setBounds(1110, 210, 340, 40);
 
@@ -566,7 +575,6 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         jcb_khoXuat.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jcb_khoXuat.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                jcb_khoXuatItemStateChanged(evt);
             }
         });
         jcb_khoXuat.addActionListener(new java.awt.event.ActionListener() {
@@ -609,7 +617,7 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "STT", "ISBN", "Tên sách", "Loại sách", "Giá gốc", "Số lượng", "Thành tiền", ""
+                "STT", "ISBN", "Tên sách", "Loại sách", "Giá gốc", "Số lượng", "Thành tiền"
             }
         ));
         tbl_phieuXuatKho.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -716,12 +724,9 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
             }
         }//GEN-LAST:event_btn_taoPXActionPerformed
 
-    private void jcb_khoXuatItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcb_khoXuatItemStateChanged
-        handleKhoXuatChange();
-    }//GEN-LAST:event_jcb_khoXuatItemStateChanged
-
     private void jcb_khoXuatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcb_khoXuatActionPerformed
         handleKhoXuatChange();
+        kiemTraTrangThai();
     }//GEN-LAST:event_jcb_khoXuatActionPerformed
 
     private void btn_xoaSachActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_xoaSachActionPerformed
@@ -738,14 +743,8 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_btn_xoaSachActionPerformed
 
-    private void jcb_khoNhapActionPerformed(java.awt.event.ActionEvent evt) {                                           
-        if (jcb_khoXuat.getSelectedIndex() > 0 && jcb_khoNhap.getSelectedIndex() > 0 && jdc_ngayLapPX.getDate() != null) {
-            jcb_chonSach.setEnabled(true);
-            tf_soLuong.setEnabled(true);
-        } else {
-            jcb_chonSach.setEnabled(false);
-            tf_soLuong.setEnabled(false);
-        }
+    private void jcb_khoNhapActionPerformed(java.awt.event.ActionEvent evt) {
+        kiemTraTrangThai();
 
         String tenKhoNhap = jcb_khoXuat.getSelectedItem().toString();
         String tenKhoXuat = jcb_khoNhap.getSelectedItem().toString();
@@ -769,18 +768,11 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
                     if (!isUpdatingDate) {
                         Date selectedDate = jdc_ngayLapPX.getDate();
                         kiemTraNgayLapPhieu(selectedDate, true);
+                        kiemTraTrangThai();
                     }
                 }
             }
         });
-
-        if (jcb_khoXuat.getSelectedIndex() > 0 && jcb_khoNhap.getSelectedIndex() > 0 && jdc_ngayLapPX.getDate() != null) {
-            jcb_chonSach.setEnabled(true);
-            tf_soLuong.setEnabled(true);
-        } else {
-            jcb_chonSach.setEnabled(false);
-            tf_soLuong.setEnabled(false);
-        }
     }                                           
 
     private void btn_themActionPerformed(java.awt.event.ActionEvent evt) {
@@ -927,11 +919,4 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
     private javax.swing.JTable tbl_phieuXuatKho;
     private javax.swing.JTextField tf_soLuong;
     // End of variables declaration//GEN-END:variables
-
-    // Phương thức để loại bỏ dấu trong chuỗi truyền vào
-    private String removeAccents(String text) {
-        return java.text.Normalizer.normalize(text, java.text.Normalizer.Form.NFD)
-                .replaceAll("\\p{M}", "")
-                .replaceAll("[đĐ]", "d"); // Thay thế ký tự 'đ' và 'Đ' thành 'd'
-    }
 }

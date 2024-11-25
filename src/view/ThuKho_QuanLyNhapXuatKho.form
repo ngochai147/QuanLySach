@@ -132,8 +132,8 @@
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="5">
                 <StringItem index="0" value="M&#xe3; phi&#x1ebf;u"/>
-                <StringItem index="1" value="M&#xe3; kho nh&#x1ead;p"/>
-                <StringItem index="2" value="M&#xe3; kho xu&#x1ea5;t"/>
+                <StringItem index="1" value="T&#xea;n kho nh&#x1ead;p"/>
+                <StringItem index="2" value="T&#xea;n kho xu&#x1ea5;t"/>
                 <StringItem index="3" value="M&#xe3; th&#x1ee7; kho"/>
                 <StringItem index="4" value="Ng&#xe0;y l&#x1ead;p phi&#x1ebf;u"/>
               </StringArray>
@@ -268,7 +268,7 @@
           </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="320" y="170" width="-1" height="-1"/>
+              <AbsoluteConstraints x="180" y="170" width="-1" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -284,31 +284,6 @@
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
               <AbsoluteConstraints x="420" y="20" width="-1" height="-1"/>
-            </Constraint>
-          </Constraints>
-        </Component>
-        <Component class="javax.swing.JButton" name="btn_NhapKho">
-          <Properties>
-            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="0" green="66" red="66" type="rgb"/>
-            </Property>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Arial" size="20" style="1"/>
-            </Property>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="ff" green="ff" red="ff" type="rgb"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Nh&#x1ead;p kho"/>
-            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[120, 42]"/>
-            </Property>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_NhapKhoActionPerformed"/>
-          </Events>
-          <Constraints>
-            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="180" y="170" width="120" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
