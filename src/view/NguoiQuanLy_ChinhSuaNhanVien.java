@@ -450,10 +450,11 @@ public class NguoiQuanLy_ChinhSuaNhanVien extends javax.swing.JDialog {
     private void jButton_LuuActionPerformed(java.awt.event.ActionEvent evt)   {//GEN-FIRST:event_jButton_LuuActionPerformed
         // TODO add your handling code here:
         NhanVien nv = newData();
-
+        TaiKhoan tk = new TaiKhoan(taiKhoan.getMaTK(), taiKhoan.getNhanVien(), jTextField_MatKhau.getText());
         try {
             if(checkTrue){
                 quanLy.editDataToTable(nv);
+                tkDAO.capNhatTaiKhoan(tk);
                 this.dispose();
             }
             
