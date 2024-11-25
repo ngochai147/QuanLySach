@@ -56,10 +56,11 @@ public class Report_PhieuNhapKho {
             parameters.put("diaChi", pnk.getKhoHangNhap().getDiaChi());
             parameters.put("ngayLap", ngayLap);
 
-            List<FieldCTPNK> field = new ArrayList<>();
+            List<FieldCTPXK> field = new ArrayList<>();
             DecimalFormat df = new DecimalFormat("#,###");
 
             double tongTien = 0;
+            int STT = 0;
             for (ChiTietPhieuNhapKho ctpn : dsCTPNK) {
                 String tenSach = "";
                 String loaiSach = "";
@@ -70,7 +71,7 @@ public class Report_PhieuNhapKho {
                         loaiSach = s.getLoaiSach().getTenLoai();
                     }
                 }
-                field.add(new FieldCTPNK(ctpn.getSach().getISBN(), tenSach, loaiSach, ctpn.getSoLuong(), giaGoc));
+                field.add(new FieldCTPXK(ctpn.getSach().getISBN(), tenSach, loaiSach, ctpn.getSoLuong(), giaGoc));
                 tongTien += ctpn.getSoLuong() * giaGoc;
             }
 

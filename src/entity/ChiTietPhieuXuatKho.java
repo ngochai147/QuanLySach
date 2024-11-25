@@ -8,11 +8,6 @@ public class ChiTietPhieuXuatKho {
     private int soLuong;
     private Sach sach;
 
-
-    public ChiTietPhieuXuatKho(String maChiTietPhieuXuatKho, String maPhieuXuatKho, int soLuong, Sach isbn){
-        this.maChiTietPhieuXuatKho=maChiTietPhieuXuatKho;
-    }
-
     public ChiTietPhieuXuatKho(String maChiTietPhieuXuatKho, PhieuXuatKho phieuXuatKho, int soLuong, Sach sach) {
         this.maChiTietPhieuXuatKho = maChiTietPhieuXuatKho;
         this.phieuXuatKho = phieuXuatKho;
