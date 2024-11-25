@@ -477,7 +477,7 @@ public class NguoiQuanLy_ThemNV extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_jButton_HuyBoActionPerformed
     private boolean kiemTraTenNV(String ten) {
-        String regex = "^[\\p{L}]+(?:[\\s.'-][\\p{L}]+)*$";
+        String regex = "^\\s*([A-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠƯỲÝỶỸỴ][a-zàáâãèéêìíòóôõùúăđĩũơưỳýỷỹỵ]*)(?:\\s+[A-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠƯỲÝỶỸỴ][a-zàáâãèéêìíòóôõùúăđĩũơưỳýỷỹỵ]*)+\\s*$$";
 //        1. ^ và $ xác định bắt đầu và kết thúc chuỗi.
 //        2. \\p{L} đại diện cho bất kỳ ký tự chữ nào (bao gồm cả chữ cái có dấu từ nhiều ngôn ngữ khác nhau).
 //        3. + yêu cầu ít nhất một ký tự chữ đầu tiên trong tên.

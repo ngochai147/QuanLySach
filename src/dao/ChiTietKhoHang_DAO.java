@@ -257,4 +257,23 @@ public class ChiTietKhoHang_DAO {
 
         return lastMaChiTietKhoHang; // Trả về mã cuối cùng hoặc null nếu không có mã nào
     }
+    public int getSoLuongSachTheoKho(String maKhoHang) {
+        String sql = "select sum(soLuong) from ChiTietKhoHang where maKhoHang = ?";
+        Connection con = ConnectDB.getInstance().getConnection();
+        PreparedStatement stmt = null;
+        int soLuong = 0;
+
+        try {
+            stmt = con.prepareStatement(sql);
+            stmt.setString(1, maKhoHang);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                soLuong = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return soLuong;
+    }
 }

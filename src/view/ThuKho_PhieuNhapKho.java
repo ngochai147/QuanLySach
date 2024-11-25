@@ -136,7 +136,7 @@ public class ThuKho_PhieuNhapKho extends javax.swing.JInternalFrame {
                 .addComponent(jLabel10)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel11)
-                .addContainerGap(451, Short.MAX_VALUE))
+                .addContainerGap(454, Short.MAX_VALUE))
         );
 
         jPanel_PNK.add(jPanel1);
