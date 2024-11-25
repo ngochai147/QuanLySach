@@ -143,18 +143,18 @@
                                   <Component id="jTextField_TenSach" alignment="0" max="32767" attributes="0"/>
                                   <Component id="jTextField_ISBN" alignment="0" max="32767" attributes="0"/>
                                   <Component id="jTextField_NamXuatBan" max="32767" attributes="0"/>
-                                  <Component id="jComboBox_Kho" pref="490" max="32767" attributes="0"/>
+                                  <Component id="jComboBox_Kho" max="32767" attributes="0"/>
                                   <Group type="102" alignment="1" attributes="0">
                                       <Component id="jComboBox_LoaiSach" max="32767" attributes="0"/>
                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                       <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
                                       <Component id="jSpinner_SoLuong" min="-2" pref="182" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" attributes="0">
-                                      <EmptySpace min="-2" pref="88" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="76" max="-2" attributes="0"/>
                                       <Component id="jPanel3" min="-2" pref="326" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="102" alignment="1" attributes="0">
@@ -167,7 +167,7 @@
                               </Group>
                           </Group>
                       </Group>
-                      <EmptySpace pref="44" max="32767" attributes="0"/>
+                      <EmptySpace pref="53" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -193,12 +193,14 @@
                               </Group>
                               <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="jLabel2" max="32767" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="jLabel2" alignment="3" max="32767" attributes="0"/>
+                                      <Component id="jSpinner_SoLuong" alignment="3" max="32767" attributes="0"/>
+                                  </Group>
                                   <Group type="103" groupAlignment="3" attributes="0">
                                       <Component id="jLabel_TenLoaiSach" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="jComboBox_LoaiSach" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="jSpinner_SoLuong" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
@@ -544,9 +546,6 @@
                   <Connection code="new javax.swing.SpinnerNumberModel(0, 0, null, 1)" type="code"/>
                 </Property>
               </Properties>
-              <AuxValues>
-                <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="jSpinner_SoLuong.setModel(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));&#xa;JFormattedTextField spinnerTextField = ((JSpinner.NumberEditor) jSpinner_SoLuong.getEditor()).getTextField();&#xa;spinnerTextField.setInputVerifier(new InputVerifier() {&#xa;    @Override&#xa;    public boolean verify(JComponent input) {&#xa;        String text = spinnerTextField.getText().trim();&#xa;        &#xa;        // Ki&#x1ec3;m tra n&#x1ebf;u chu&#x1ed7;i kh&#xf4;ng ph&#x1ea3;i l&#xe0; s&#x1ed1; nguy&#xea;n d&#x1b0;&#x1a1;ng&#xa;        if (!text.matches(&quot;^[1-9][0-9]*$&quot;)) {&#xa;            JOptionPane.showMessageDialog(null, &quot;Vui l&#xf2;ng ch&#x1ec9; nh&#x1ead;p s&#x1ed1; nguy&#xea;n d&#x1b0;&#x1a1;ng!&quot;, &quot;L&#x1ed7;i nh&#x1ead;p li&#x1ec7;u&quot;, JOptionPane.ERROR_MESSAGE);&#xa;            spinnerTextField.setText(&quot;0&quot;); // &#x110;&#x1eb7;t l&#x1ea1;i v&#x1ec1; 1 n&#x1ebf;u kh&#xf4;ng h&#x1ee3;p l&#x1ec7;&#xa;            return false;&#xa;        }&#xa;        &#xa;        return true; // &#x110;&#x1ea7;u v&#xe0;o h&#x1ee3;p l&#x1ec7;&#xa;    }&#xa;});"/>
-              </AuxValues>
             </Component>
           </SubComponents>
         </Container>

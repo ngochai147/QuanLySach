@@ -29,7 +29,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
+import javax.swing.plaf.basic.BasicScrollBarUI;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 
 /**
@@ -69,6 +71,9 @@ public class NguoiQuanLy_QuanLyNhanVien extends javax.swing.JInternalFrame {
                 });
             }
         }
+        JTableHeader header = jTable_QuanLyNhanVien.getTableHeader();
+        header.setFont(new Font("Arial", Font.BOLD, 18));
+        jTable_QuanLyNhanVien.setPreferredSize(new Dimension(1500,jTable_QuanLyNhanVien.getRowCount()*40));
 
     }
 
@@ -82,7 +87,6 @@ public class NguoiQuanLy_QuanLyNhanVien extends javax.swing.JInternalFrame {
         jComboBox_TieuChi = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable_QuanLyNhanVien = new javax.swing.JTable();
-        jButton_XuatExcel = new javax.swing.JButton();
         jButton_LamMoi = new javax.swing.JButton();
         jButton_ThemNhanVien = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -169,7 +173,7 @@ public class NguoiQuanLy_QuanLyNhanVien extends javax.swing.JInternalFrame {
         });
         jTable_QuanLyNhanVien.setToolTipText("");
         jTable_QuanLyNhanVien.setFocusable(false);
-        jTable_QuanLyNhanVien.setRowHeight(50);
+        jTable_QuanLyNhanVien.setRowHeight(40);
         jTable_QuanLyNhanVien.setRowMargin(2);
         jTable_QuanLyNhanVien.setSelectionBackground(new java.awt.Color(153, 204, 0));
         jTable_QuanLyNhanVien.setShowHorizontalLines(true);
@@ -185,20 +189,52 @@ public class NguoiQuanLy_QuanLyNhanVien extends javax.swing.JInternalFrame {
             jTable_QuanLyNhanVien.getColumnModel().getColumn(5).setPreferredWidth(70);
         }
 
-        jPanel1.add(jScrollPane1);
-        jScrollPane1.setBounds(25, 236, 1490, 375);
+        // Code of sub-components and layout - not shown here
+        jScrollPane1.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
+            @Override
+            protected void configureScrollBarColors() {
+                thumbColor = new Color(100, 100, 100); // Màu của thumb
+                trackColor = new Color(220, 220, 220); // Màu của track
+            }
 
-        jButton_XuatExcel.setBackground(new java.awt.Color(102, 102, 0));
-        jButton_XuatExcel.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
-        jButton_XuatExcel.setForeground(new java.awt.Color(255, 255, 255));
-        jButton_XuatExcel.setText("Xuất excel");
-        jButton_XuatExcel.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_XuatExcelActionPerformed(evt);
+            @Override
+            protected JButton createDecreaseButton(int orientation) {
+                return createZeroButton();
+            }
+
+            @Override
+            protected JButton createIncreaseButton(int orientation) {
+                return createZeroButton();
+            }
+
+            private JButton createZeroButton() {
+                JButton button = new JButton();
+                button.setPreferredSize(new Dimension(0, 0));
+                button.setMinimumSize(new Dimension(0, 0));
+                button.setMaximumSize(new Dimension(0, 0));
+                return button;
+            }
+
+            // Ghi đè phương thức paintThumb để bo tròn và làm ngắn chiều dài của thumb
+            @Override
+            protected void paintThumb(Graphics g, JComponent c, Rectangle thumbBounds) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+                // Điều chỉnh kích thước chiều dài (height) của thumb để ngắn hơn
+                int adjustedHeight = Math.max(30, thumbBounds.height - 20);  // Làm cho thumb ngắn hơn nhưng không thấp hơn 30 pixels
+                int adjustedWidth = thumbBounds.width;
+
+                // Thiết lập màu và hình dạng bo tròn
+                g2.setColor(thumbColor);
+                g2.fillRoundRect(thumbBounds.x, thumbBounds.y, adjustedWidth, adjustedHeight, 10, 10); // Bo tròn 10 pixel
+
+                g2.dispose();
             }
         });
-        jPanel1.add(jButton_XuatExcel);
-        jButton_XuatExcel.setBounds(30, 630, 140, 50);
+
+        jPanel1.add(jScrollPane1);
+        jScrollPane1.setBounds(25, 236, 1490, 375);
 
         jButton_LamMoi.setBackground(new java.awt.Color(102, 102, 0));
         jButton_LamMoi.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
@@ -290,99 +326,6 @@ public class NguoiQuanLy_QuanLyNhanVien extends javax.swing.JInternalFrame {
         NguoiQuanLy_ThemNV nguoiQuanLy_ThemNV = new NguoiQuanLy_ThemNV(new javax.swing.JFrame(), true, this);
         nguoiQuanLy_ThemNV.setVisible(true);
     }//GEN-LAST:event_jButton_ThemNhanVienActionPerformed
-
-    private void jButton_XuatExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_XuatExcelActionPerformed
-        // TODO add your handling code here:
-        try {
-            JFileChooser jFileChooser = new JFileChooser();
-            int returnValue = jFileChooser.showSaveDialog(this);
-            File saveFile = jFileChooser.getSelectedFile();
-
-            // Kiểm tra xem người dùng có chọn tệp không
-            if (returnValue == JFileChooser.APPROVE_OPTION && saveFile != null) {
-                // Kiểm tra nếu tên tệp không kết thúc bằng ".xlsx", thêm vào
-                if (!saveFile.getName().toLowerCase().endsWith(".xlsx")) {
-                    saveFile = new File(saveFile.getAbsolutePath() + ".xlsx");
-                }
-
-                Workbook wb = new XSSFWorkbook();  // Tạo một workbook Excel mới
-                Sheet sheet = wb.createSheet("DanhSachNhanVien");  // Tạo một sheet có tên "DanhSachSach"
-
-                // Tạo hàng tiêu đề
-                Row headerRow = sheet.createRow(0);
-                headerRow.createCell(0).setCellValue("Mã nhân viên");
-                headerRow.createCell(1).setCellValue("Họ tên");
-                headerRow.createCell(2).setCellValue("Số điện thoại");
-                headerRow.createCell(3).setCellValue("Địa chỉ");
-                headerRow.createCell(4).setCellValue("Email");
-                headerRow.createCell(5).setCellValue("Giới tính");
-                headerRow.createCell(6).setCellValue("Chức vụ");
-                headerRow.createCell(7).setCellValue("Ngày sinh");
-
-                // Thiết lập độ rộng cho các cột
-                sheet.setColumnWidth(0, 20 * 256);
-                sheet.setColumnWidth(1, 30 * 256);
-                sheet.setColumnWidth(2, 20 * 256);
-                sheet.setColumnWidth(3, 50 * 256);
-                sheet.setColumnWidth(4, 35 * 256);
-                sheet.setColumnWidth(5, 25 * 256);
-                sheet.setColumnWidth(6, 15 * 256);
-                sheet.setColumnWidth(7, 15 * 256);
-
-                // Lấy danh sách sách cần xuất
-                List<NhanVien> dsNhanVien = new ArrayList<>();
-                int[] n = jTable_QuanLyNhanVien.getSelectedRows();
-                if (n.length == 0) {
-                    dsNhanVien = nhanVien_dao.getDSNhanVien();  // Lấy toàn bộ danh sách sách
-                } else {
-                    for (int i = 0; i < n.length; i++) {
-                        String ma = model.getValueAt(n[i], 0).toString();
-                        try {
-                            dsNhanVien.add(nhanVien_dao.getNhanVienTheoMaNV(ma));
-                        } catch (SQLException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                }
-
-                // Xuất tất cả thông tin chi tiết của nhan vien
-                int rowIndex = 1;  // Bắt đầu từ hàng thứ 2 (hàng 1 là tiêu đề)
-                for (NhanVien nhanVien : dsNhanVien) {
-                    if (nhanVien.getTrangThai().equalsIgnoreCase("Đang làm")) {
-                        Row row = sheet.createRow(rowIndex++);
-                        row.createCell(0).setCellValue(nhanVien.getMaNV());
-                        row.createCell(1).setCellValue(nhanVien.getHoTen());
-                        row.createCell(2).setCellValue(nhanVien.getSoDienThoai());
-                        row.createCell(3).setCellValue(nhanVien.getDiaChi());
-                        row.createCell(4).setCellValue(nhanVien.getEmail());
-                        row.createCell(5).setCellValue(nhanVien.isGioiTinh() ? "Nữ" : "Nam");
-                        row.createCell(6).setCellValue(nhanVien.getChucVu().getChucVu());
-                        row.createCell(7).setCellValue(nhanVien.getNgaySinh().toString());
-                    }
-                }
-
-                // Ghi dữ liệu vào tệp
-                try (FileOutputStream out = new FileOutputStream(saveFile)) {
-                    wb.write(out);  // Ghi nội dung workbook vào tệp
-                } catch (IOException e) {
-                    JOptionPane.showMessageDialog(this, "Lỗi khi ghi file: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
-                } finally {
-                    wb.close();  // Đóng workbook
-                }
-
-                JOptionPane.showMessageDialog(this, "Xuất file Excel thành công!");
-                Desktop.getDesktop().open(saveFile);
-            } else {
-                System.out.println("Người dùng đã hủy chọn tệp lưu.");
-            }
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, "Lỗi IO: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Có lỗi xảy ra: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
-        }
-
-    }//GEN-LAST:event_jButton_XuatExcelActionPerformed
 
     private void jButton_XoaNhieuActionPerformed(java.awt.event.ActionEvent evt){//GEN-FIRST:event_jButton_XoaNhieuActionPerformed
         // TODO add your handling code here:
@@ -638,7 +581,6 @@ public class NguoiQuanLy_QuanLyNhanVien extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton_LamMoi;
     private javax.swing.JButton jButton_ThemNhanVien;
     private javax.swing.JButton jButton_XoaNhieu;
-    private javax.swing.JButton jButton_XuatExcel;
     private javax.swing.JComboBox<String> jComboBox_TieuChi;
     private javax.swing.JComboBox<String> jComboBox_TimKiem;
     private javax.swing.JLabel jLabel1;

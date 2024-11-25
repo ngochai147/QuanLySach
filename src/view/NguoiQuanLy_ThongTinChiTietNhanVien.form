@@ -34,7 +34,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-              <Component id="jPanel1" min="-2" pref="733" max="-2" attributes="0"/>
+              <Component id="jPanel1" min="-2" pref="689" max="-2" attributes="0"/>
               <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -77,7 +77,7 @@
                   <Component id="jLabel_ThemNhanVien" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
                   <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="366" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="358" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -117,7 +117,6 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="jTextField_ChucVu" alignment="1" min="-2" pref="472" max="-2" attributes="0"/>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
@@ -131,6 +130,7 @@
                                           <Component id="jLabel_GioiTinh" alignment="1" min="-2" pref="88" max="-2" attributes="0"/>
                                           <Component id="jLabel_SoDienThoai" alignment="1" min="-2" max="-2" attributes="0"/>
                                           <Component id="jLabel_ChucVu" alignment="1" min="-2" max="-2" attributes="0"/>
+                                          <Component id="jLabel_TenDangNhap1" alignment="1" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
@@ -155,20 +155,9 @@
                                   </Group>
                               </Group>
                           </Group>
-                          <Component id="jTextField_TenDangNhap" min="-2" pref="472" max="-2" attributes="0"/>
-                          <Component id="jTextField_MatKhau" min="-2" pref="472" max="-2" attributes="0"/>
                           <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="1" attributes="0">
-                                  <Component id="jLabel_TenDangNhap1" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  <Group type="103" alignment="1" groupAlignment="0" attributes="0">
-                                      <Component id="jLabel_TenDangNhap" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Group type="102" alignment="1" attributes="0">
-                                          <Component id="jLabel_MatKhau" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
-                                      </Group>
-                                  </Group>
-                              </Group>
-                              <EmptySpace min="537" pref="537" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="166" max="-2" attributes="0"/>
+                              <Component id="jTextField_ChucVu" min="-2" pref="472" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace min="-2" pref="119" max="-2" attributes="0"/>
@@ -183,62 +172,48 @@
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel_MaNhanVien" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                           <Component id="jTextField_MaNhanVien" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel_TenNhanVien" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                           <Component id="jTextField_TenNhanVien" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="82" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="jLabel_SoDienThoai" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
-                                  <Component id="jLabel_Email" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jTextField_Email" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
-                                  <Component id="jTextField_SoDienThoai" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="jLabel_ChucVu" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
-                                  <Component id="jTextField_DiaChi" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
-                          <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                              <Component id="jLabel_NgaySinh" alignment="3" min="-2" pref="42" max="-2" attributes="0"/>
-                              <Component id="jLabel_GioiTinh" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
-                              <Component id="jTextField_GioiTinh" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
-                              <Component id="jTextField_NgaySinh" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <EmptySpace pref="44" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel_TenDangNhap1" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                          <Component id="jLabel_NgaySinh" alignment="3" min="-2" pref="42" max="-2" attributes="0"/>
+                          <Component id="jLabel_GioiTinh" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                          <Component id="jTextField_GioiTinh" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
+                          <Component id="jTextField_NgaySinh" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jTextField_Email" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
+                          <Component id="jLabel_Email" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jTextField_SoDienThoai" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
+                          <Component id="jLabel_SoDienThoai" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="jTextField_DiaChi" min="-2" pref="38" max="-2" attributes="0"/>
+                          <Component id="jLabel_ChucVu" min="-2" pref="30" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace pref="46" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jTextField_ChucVu" alignment="3" min="-2" pref="41" max="-2" attributes="0"/>
+                          <Component id="jLabel_TenDangNhap1" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel_TenDangNhap" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
-                          <Component id="jTextField_TenDangNhap" alignment="3" min="-2" pref="41" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel_MatKhau" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
-                          <Component id="jTextField_MatKhau" alignment="3" min="-2" pref="41" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="78" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="67" max="-2" attributes="0"/>
                       <Component id="jPanel3" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="66" max="-2" attributes="0"/>
                       <Component id="jButton_Thoat" min="-2" pref="41" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -282,22 +257,6 @@
                   <Font name="Arial" size="20" style="1"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="&#x110;&#x1ecb;a ch&#x1ec9;"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JLabel" name="jLabel_TenDangNhap">
-              <Properties>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Arial" size="20" style="1"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="T&#xea;n &#x111;&#x103;ng nh&#x1ead;p"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JLabel" name="jLabel_MatKhau">
-              <Properties>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Arial" size="20" style="1"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="M&#x1ead;t kh&#x1ea9;u"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JButton" name="jButton_Thoat">
@@ -428,25 +387,6 @@
                 <Property name="focusable" type="boolean" value="false"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="jTextField_TenDangNhap">
-              <Properties>
-                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="f0" green="f0" red="f0" type="rgb"/>
-                </Property>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Arial" size="20" style="0"/>
-                </Property>
-                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                  <Border info="org.netbeans.modules.form.compat2.border.SoftBevelBorderInfo">
-                    <BevelBorder/>
-                  </Border>
-                </Property>
-                <Property name="focusable" type="boolean" value="false"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextField_TenDangNhapActionPerformed"/>
-              </Events>
-            </Component>
             <Container class="javax.swing.JPanel" name="jPanel3">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -519,25 +459,6 @@
                 </Property>
                 <Property name="focusable" type="boolean" value="false"/>
               </Properties>
-            </Component>
-            <Component class="javax.swing.JTextField" name="jTextField_MatKhau">
-              <Properties>
-                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="f0" green="f0" red="f0" type="rgb"/>
-                </Property>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Arial" size="20" style="0"/>
-                </Property>
-                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                  <Border info="org.netbeans.modules.form.compat2.border.SoftBevelBorderInfo">
-                    <BevelBorder/>
-                  </Border>
-                </Property>
-                <Property name="focusable" type="boolean" value="false"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextField_MatKhauActionPerformed"/>
-              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel_TenDangNhap1">
               <Properties>

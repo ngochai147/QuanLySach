@@ -69,12 +69,8 @@
                                   <Component id="jPasswordField_MatKhau" max="32767" attributes="0"/>
                                   <Component id="jTextField_Email" max="32767" attributes="0"/>
                                   <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace min="-2" pref="195" max="-2" attributes="0"/>
-                                      <Component id="jLabel2" min="-2" pref="190" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="0" attributes="0">
                                       <Component id="jRadioButton_NhanVien" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="32767" attributes="0"/>
+                                      <EmptySpace pref="35" max="32767" attributes="0"/>
                                       <Component id="jRadioButton_QuanLy" min="-2" pref="102" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
                                       <Component id="jRadioButton_ThuKho" min="-2" max="-2" attributes="0"/>
@@ -87,6 +83,11 @@
                           <EmptySpace max="32767" attributes="0"/>
                           <Component id="jButton_DangNhap" min="-2" pref="220" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="194" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="jLabel2" min="-2" pref="190" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="209" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
