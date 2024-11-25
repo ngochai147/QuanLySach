@@ -4,9 +4,7 @@
  */
 package view;
 
-import dao.ChiTietKhoHang_DAO;
-import dao.KhoHang_DAO;
-import dao.Sach_DAO;
+import dao.*;
 import entity.HinhAnh;
 import entity.KhoHang;
 import entity.LoaiSach;
@@ -19,7 +17,9 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.io.File;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -41,6 +41,10 @@ public class Sach_SuaSach extends javax.swing.JDialog {
     private ChiTietKhoHang_DAO chiTietKhoHang_dao;
     private KhoHang_DAO khoHang_dao;
     private Sach_DAO sach_dao;
+    private PhieuNhap_DAO phieuNhapDao;
+    private ChiTietPhieuNhap_DAO chiTietPhieuNhap_dao;
+    private static final String ma_CT_PNK = "CTPNK";
+    private static final String ma_PNK = "PNK";
     public Sach_SuaSach(java.awt.Frame parent, boolean modal, Sach_QuanLySach dsSach, Sach sach) {
         super(parent, modal);
         this.setUndecorated(true);
@@ -48,6 +52,8 @@ public class Sach_SuaSach extends javax.swing.JDialog {
         chiTietKhoHang_dao = new ChiTietKhoHang_DAO();
         sach_dao = new Sach_DAO();
         khoHang_dao = new KhoHang_DAO();
+        phieuNhapDao = new PhieuNhap_DAO();
+        chiTietPhieuNhap_dao = new ChiTietPhieuNhap_DAO();
         initComponents();
         setLocationRelativeTo(null);
         initialData(sach);
@@ -420,6 +426,9 @@ public class Sach_SuaSach extends javax.swing.JDialog {
             String maKho = khoHang_dao.getMaKhoTheoTenKho(tenKho);
             if(sach_dao.capNhatSach(sach)){
                 chiTietKhoHang_dao.capNhatChiTietKhoHang(sach.getISBN(), maKho, sach.getSoLuong());
+                String maPhieuNhapKho = taoTuDong_MaPhieuNhapKho();
+                phieuNhapDao.insertPhieuNhapKho(maPhieuNhapKho, Date.valueOf(LocalDate.now()), "22685411", maKho, sach.getSoLuong());
+                chiTietPhieuNhap_dao.insertChiTietPhieuNhapKho(taoTuDong_MaChiTietPhieuNhapKho(), maPhieuNhapKho, sach.getSoLuong(), sach.getISBN());
                 dsSach.editDataToTable(sach);
             }
             this.dispose();
@@ -452,6 +461,42 @@ public class Sach_SuaSach extends javax.swing.JDialog {
         Double donGia = Double.valueOf(jTextField_DonGia.getText());
         int soLuong = (int) jSpinner_SoLuong.getValue();
         return new Sach(ISBN, tenSach, tacGia, namXB, nhaXB, soLuong, donGia, new LoaiSach("", loaiSach), new HinhAnh(anh), "Đang bán");
+    }
+    public String taoTuDong_MaChiTietPhieuNhapKho() {
+        // Lấy mã chi tiết phiếu nhập kho mới nhất từ cơ sở dữ liệu
+        String lastMaChiTietPhieuNhapKho = chiTietPhieuNhap_dao.getLastMaChiTietPhieuNhapKho();
+
+        int newNumber;
+        if (lastMaChiTietPhieuNhapKho != null && lastMaChiTietPhieuNhapKho.startsWith(ma_CT_PNK)) {
+            // Tách phần số ra khỏi mã và tăng lên 1
+            String numberPart = lastMaChiTietPhieuNhapKho.substring(ma_CT_PNK.length());
+            newNumber = Integer.parseInt(numberPart) + 1;
+        } else {
+            // Nếu không có mã nào trong CSDL, bắt đầu từ 1
+            newNumber = 1;
+        }
+
+        // Định dạng lại mã với tiền tố và phần số đủ 5 chữ số
+        return ma_CT_PNK + String.format("%05d", newNumber);
+    }
+
+    // Hàm tạo mã phiếu nhập kho tự động tăng
+    public String taoTuDong_MaPhieuNhapKho() {
+        // Lấy mã phiếu nhập kho cuối cùng từ cơ sở dữ liệu
+        String lastMaPhieuNhapKho = phieuNhapDao.getLastMaPhieuNhapKho();
+
+        int newNumber;
+        if (lastMaPhieuNhapKho != null && lastMaPhieuNhapKho.startsWith(ma_PNK)) {
+            // Tách phần số ra khỏi mã và tăng lên 1
+            String numberPart = lastMaPhieuNhapKho.substring(ma_PNK.length());
+            newNumber = Integer.parseInt(numberPart) + 1;
+        } else {
+            // Nếu không có mã nào trong CSDL, bắt đầu từ 1
+            newNumber = 1;
+        }
+
+        // Định dạng lại mã với tiền tố và phần số đủ 5 chữ số
+        return ma_PNK + String.format("%04d", newNumber);
     }
     /**
      * @param args the command line arguments
