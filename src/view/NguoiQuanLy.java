@@ -24,7 +24,7 @@ public class NguoiQuanLy extends javax.swing.JFrame {
         initComponents();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         clickColor = new Color(205, 175, 149);
-        defaultColor = new Color(139, 125,107);
+        defaultColor = new Color(139, 125, 107);
 
         jPanel_QLSach.setBackground(clickColor);
         jLabel_QLSach.setForeground(Color.BLACK);
@@ -50,7 +50,7 @@ public class NguoiQuanLy extends javax.swing.JFrame {
         jLabel_QLNhanVien = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jPanel_KhoHang = new javax.swing.JPanel();
-        jLabel_ThongKe2 = new javax.swing.JLabel();
+        jLabel_KhoHang = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jDesktopPane1 = new javax.swing.JDesktopPane();
 
@@ -233,9 +233,9 @@ public class NguoiQuanLy extends javax.swing.JFrame {
             }
         });
 
-        jLabel_ThongKe2.setFont(new java.awt.Font("Arial", 1, 25)); // NOI18N
-        jLabel_ThongKe2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel_ThongKe2.setText("Kho hàng");
+        jLabel_KhoHang.setFont(new java.awt.Font("Arial", 1, 25)); // NOI18N
+        jLabel_KhoHang.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel_KhoHang.setText("Kho hàng");
 
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/khoHang.png"))); // NOI18N
 
@@ -247,7 +247,7 @@ public class NguoiQuanLy extends javax.swing.JFrame {
                 .addGap(25, 25, 25)
                 .addComponent(jLabel9)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel_ThongKe2)
+                .addComponent(jLabel_KhoHang)
                 .addContainerGap(33, Short.MAX_VALUE))
         );
         jPanel_KhoHangLayout.setVerticalGroup(
@@ -255,7 +255,7 @@ public class NguoiQuanLy extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_KhoHangLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel_KhoHangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel_ThongKe2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel_KhoHang, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(22, 22, 22))
         );
@@ -355,6 +355,8 @@ public class NguoiQuanLy extends javax.swing.JFrame {
         jLabel_QLNhanVien.setForeground(Color.BLACK);
         jPanel_ThongKe.setBackground(defaultColor);
         jLabel_ThongKe.setForeground(Color.WHITE);
+        jPanel_KhoHang.setBackground(defaultColor);
+        jLabel_KhoHang.setForeground(Color.WHITE);
         jPanel1.setBackground(defaultColor);
         jLabel2.setForeground(Color.BLACK);
         jDesktopPane1.removeAll();
@@ -378,6 +380,8 @@ public class NguoiQuanLy extends javax.swing.JFrame {
         jLabel_QLNhanVien.setForeground(Color.WHITE);
         jPanel_ThongKe.setBackground(defaultColor);
         jLabel_ThongKe.setForeground(Color.WHITE);
+        jPanel_KhoHang.setBackground(defaultColor);
+        jLabel_KhoHang.setForeground(Color.WHITE);
         jPanel1.setBackground(defaultColor);
         jLabel2.setForeground(Color.BLACK);
         jDesktopPane1.removeAll();
@@ -396,6 +400,8 @@ public class NguoiQuanLy extends javax.swing.JFrame {
         jLabel_QLNhanVien.setForeground(Color.WHITE);
         jPanel_ThongKe.setBackground(defaultColor);
         jLabel_ThongKe.setForeground(Color.WHITE);
+        jPanel_KhoHang.setBackground(defaultColor);
+        jLabel_KhoHang.setForeground(Color.WHITE);
         jPanel1.setBackground(defaultColor);
         jLabel2.setForeground(Color.BLACK);
         try {
@@ -413,12 +419,14 @@ public class NguoiQuanLy extends javax.swing.JFrame {
         // TODO add your handling code here:
         jPanel_HoaDon.setBackground(defaultColor);
         jLabel_HoaDon.setForeground(Color.WHITE);
-        jPanel_QLSach.setBackground(clickColor);
-        jLabel_QLSach.setForeground(Color.BLACK);
+        jPanel_QLSach.setBackground(defaultColor);
+        jLabel_QLSach.setForeground(Color.WHITE);
         jPanel_QLNhanVien.setBackground(defaultColor);
         jLabel_QLNhanVien.setForeground(Color.WHITE);
         jPanel_ThongKe.setBackground(defaultColor);
         jLabel_ThongKe.setForeground(Color.WHITE);
+        jPanel_KhoHang.setBackground(clickColor);
+        jLabel_KhoHang.setForeground(Color.BLACK);
         jPanel1.setBackground(defaultColor);
         jLabel2.setForeground(Color.BLACK);
 
@@ -441,6 +449,8 @@ public class NguoiQuanLy extends javax.swing.JFrame {
         jLabel_QLNhanVien.setForeground(Color.WHITE);
         jPanel_ThongKe.setBackground(clickColor);
         jLabel_ThongKe.setForeground(Color.BLACK);
+        jPanel_KhoHang.setBackground(defaultColor);
+        jLabel_KhoHang.setForeground(Color.WHITE);
         jPanel1.setBackground(defaultColor);
         jLabel2.setForeground(Color.WHITE);
         jDesktopPane1.removeAll();
@@ -474,8 +484,6 @@ public class NguoiQuanLy extends javax.swing.JFrame {
             dangNhap.setVisible(true);
         }
     }
-
-    
 
     public static void main(String args[]) {
 
@@ -511,10 +519,10 @@ public class NguoiQuanLy extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel jLabel_HoaDon;
+    private javax.swing.JLabel jLabel_KhoHang;
     private javax.swing.JLabel jLabel_QLNhanVien;
     private javax.swing.JLabel jLabel_QLSach;
     private javax.swing.JLabel jLabel_ThongKe;
-    private javax.swing.JLabel jLabel_ThongKe2;
     private javax.swing.JPanel jMenu;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel_HoaDon;

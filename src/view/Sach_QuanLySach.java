@@ -210,11 +210,12 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable_Sach.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_NEXT_COLUMN);
+        jTable_Sach.setFocusable(false);
         jTable_Sach.setPreferredSize(new java.awt.Dimension(1500, 1000));
         jTable_Sach.setRowHeight(40);
+        jTable_Sach.setRowMargin(2);
         jTable_Sach.setSelectionBackground(new java.awt.Color(153, 204, 0));
-        jTable_Sach.setSelectionForeground(new java.awt.Color(51, 51, 51));
+        jTable_Sach.setSelectionForeground(new java.awt.Color(255, 255, 255));
         jTable_Sach.setShowGrid(true);
         jScrollPane1.setViewportView(jTable_Sach);
         if (jTable_Sach.getColumnModel().getColumnCount() > 0) {
@@ -267,7 +268,7 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
         });
 
         jPanel1.add(jScrollPane1);
-        jScrollPane1.setBounds(18, 208, 1500, 386);
+        jScrollPane1.setBounds(18, 208, 1500, 470);
 
         jComboBox_TimKiem.setBackground(new java.awt.Color(102, 102, 0));
         jComboBox_TimKiem.setFont(new java.awt.Font("Arial", 1, 20));
