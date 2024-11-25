@@ -24,9 +24,7 @@ public class NguoiQuanLy extends javax.swing.JFrame {
         initComponents();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         clickColor = new Color(205, 175, 149);
-        defaultColor = new Color(139, 125, 107);
-//        jPanel_QLNhanVien.setBackground(clickColor);
-//        jLabel_QLNhanVien.setForeground(Color.BLACK);
+        defaultColor = new Color(139, 125,107);
 
         jPanel_QLSach.setBackground(clickColor);
         jLabel_QLSach.setForeground(Color.BLACK);
@@ -137,6 +135,11 @@ public class NguoiQuanLy extends javax.swing.JFrame {
 
         jPanel_ThongKe.setBackground(new java.awt.Color(139, 125, 107));
         jPanel_ThongKe.setPreferredSize(new java.awt.Dimension(202, 67));
+        jPanel_ThongKe.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel_ThongKeMouseClicked(evt);
+            }
+        });
 
         jLabel_ThongKe.setFont(new java.awt.Font("Arial", 1, 25)); // NOI18N
         jLabel_ThongKe.setForeground(new java.awt.Color(255, 255, 255));
@@ -420,13 +423,32 @@ public class NguoiQuanLy extends javax.swing.JFrame {
         jLabel2.setForeground(Color.BLACK);
 
         jDesktopPane1.removeAll();
-//        ThuKho_QuanLyNhapXuatKho thuKho_QuanLyNhapXuatKho = new ThuKho_QuanLyNhapXuatKho();
-//        thuKho_QuanLyNhapXuatKho.setSize(jDesktopPane1.getSize());
-//        thuKho_QuanLyNhapXuatKho.setVisible(true);
-//        jDesktopPane1.add(thuKho_QuanLyNhapXuatKho);
+        ThuKho_QuanLyNhapXuatKho thuKho_QuanLyNhapXuatKho = new ThuKho_QuanLyNhapXuatKho();
+        thuKho_QuanLyNhapXuatKho.setSize(jDesktopPane1.getSize());
+        thuKho_QuanLyNhapXuatKho.setVisible(true);
+        jDesktopPane1.add(thuKho_QuanLyNhapXuatKho);
 
 
     }//GEN-LAST:event_jPanel_KhoHangMouseClicked
+
+    private void jPanel_ThongKeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel_ThongKeMouseClicked
+        // TODO add your handling code here:
+        jPanel_HoaDon.setBackground(defaultColor);
+        jLabel_HoaDon.setForeground(Color.WHITE);
+        jPanel_QLSach.setBackground(defaultColor);
+        jLabel_QLSach.setForeground(Color.WHITE);
+        jPanel_QLNhanVien.setBackground(defaultColor);
+        jLabel_QLNhanVien.setForeground(Color.WHITE);
+        jPanel_ThongKe.setBackground(clickColor);
+        jLabel_ThongKe.setForeground(Color.BLACK);
+        jPanel1.setBackground(defaultColor);
+        jLabel2.setForeground(Color.WHITE);
+        jDesktopPane1.removeAll();
+        NguoiQuanLy_ThongKeTongQuan tk_TongQuan = new NguoiQuanLy_ThongKeTongQuan();
+        tk_TongQuan.setSize(jDesktopPane1.getSize());
+        tk_TongQuan.setVisible(true);
+        jDesktopPane1.add(tk_TongQuan);
+    }//GEN-LAST:event_jPanel_ThongKeMouseClicked
 
     private void jPanel1MouseClicked(java.awt.event.MouseEvent evt) {
         jPanel_HoaDon.setBackground(defaultColor);
@@ -453,23 +475,7 @@ public class NguoiQuanLy extends javax.swing.JFrame {
         }
     }
 
-    private void jPanel_ThongKeMouseClicked(java.awt.event.MouseEvent evt) {
-        jPanel_HoaDon.setBackground(defaultColor);
-        jLabel_HoaDon.setForeground(Color.WHITE);
-        jPanel_QLSach.setBackground(defaultColor);
-        jLabel_QLSach.setForeground(Color.WHITE);
-        jPanel_QLNhanVien.setBackground(defaultColor);
-        jLabel_QLNhanVien.setForeground(Color.WHITE);
-        jPanel_ThongKe.setBackground(clickColor);
-        jLabel_ThongKe.setForeground(Color.BLACK);
-        jPanel1.setBackground(defaultColor);
-        jLabel2.setForeground(Color.WHITE);
-        jDesktopPane1.removeAll();
-        NguoiQuanLy_ThongKeTongQuan tk_TongQuan = new NguoiQuanLy_ThongKeTongQuan();
-        tk_TongQuan.setSize(jDesktopPane1.getSize());
-        tk_TongQuan.setVisible(true);
-        jDesktopPane1.add(tk_TongQuan);
-    }
+    
 
     public static void main(String args[]) {
 

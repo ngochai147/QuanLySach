@@ -223,6 +223,9 @@
               <Dimension value="[202, 67]"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jPanel_ThongKeMouseClicked"/>
+          </Events>
 
           <Layout>
             <DimensionLayout dim="0">
