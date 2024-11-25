@@ -9,9 +9,7 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
-import dao.ChiTietKhoHang_DAO;
-import dao.KhoHang_DAO;
-import dao.Sach_DAO;
+import dao.*;
 import entity.*;
 import function.AddImageToData;
 import function.ImageScale;
@@ -26,7 +24,9 @@ import java.io.IOException;
 import java.nio.file.FileSystemException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -58,13 +58,20 @@ public class Sach_ThemSach extends javax.swing.JDialog {
     private AddImageToData image_url;
     private KhoHang_DAO khoHang_dao;
     private ChiTietKhoHang_DAO chiTietKhoHang_dao;
+    private PhieuNhap_DAO phieuNhapDao;
+    private ChiTietPhieuNhap_DAO chiTietPhieuNhap_dao;
+    private static final String ma_CT_PNK = "CTPNK";
+    private static final String ma_PNK = "PNK";
 
     public Sach_ThemSach(java.awt.Frame parent, boolean modal, Sach_QuanLySach dsSach) {
         super(parent, modal);
         this.setUndecorated(true);
         this.dsSach = dsSach;
         sach_dao = new Sach_DAO();
+        khoHang_dao = new KhoHang_DAO();
         chiTietKhoHang_dao = new ChiTietKhoHang_DAO();
+        phieuNhapDao = new PhieuNhap_DAO();
+        chiTietPhieuNhap_dao = new ChiTietPhieuNhap_DAO();
         initComponents();
         setLocationRelativeTo(null);
 
@@ -627,9 +634,11 @@ public class Sach_ThemSach extends javax.swing.JDialog {
                     if (JOptionPane.showConfirmDialog(this, "Bạn chắc chắn muốn thêm sách này?", "Thông báo", JOptionPane.INFORMATION_MESSAGE, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                         sach_dao.themSach(sach);
                         dsSach.addDataToTable(sach);
-                        khoHang_dao = new KhoHang_DAO();
                         KhoHang kh = khoHang_dao.getKhoTheoTenKho(tenKho);
                         chiTietKhoHang_dao.themChiTietKhoHang(new ChiTietKhoHang(createMaCTKH(), soLuong, new Sach(sach.getISBN()), new KhoHang(kh.getMaKhoHang())));
+                        String maPhieuNhapKho = taoTuDong_MaPhieuNhapKho();
+                        phieuNhapDao.insertPhieuNhapKho(maPhieuNhapKho, Date.valueOf(LocalDate.now()), "22685411", kh.getMaKhoHang(), soLuong);
+                        chiTietPhieuNhap_dao.insertChiTietPhieuNhapKho(taoTuDong_MaChiTietPhieuNhapKho(), maPhieuNhapKho, soLuong, sach.getISBN());
                         int width = 300; // Chiều rộng của mã vạch
                         int height = 100; // Chiều cao của mã vạch
                         String userHome = System.getProperty("user.home");
@@ -731,6 +740,44 @@ public class Sach_ThemSach extends javax.swing.JDialog {
         }
         return prefix + newNumberPart;
     }
+    public String taoTuDong_MaChiTietPhieuNhapKho() {
+        // Lấy mã chi tiết phiếu nhập kho mới nhất từ cơ sở dữ liệu
+        String lastMaChiTietPhieuNhapKho = chiTietPhieuNhap_dao.getLastMaChiTietPhieuNhapKho();
+
+        int newNumber;
+        if (lastMaChiTietPhieuNhapKho != null && lastMaChiTietPhieuNhapKho.startsWith(ma_CT_PNK)) {
+            // Tách phần số ra khỏi mã và tăng lên 1
+            String numberPart = lastMaChiTietPhieuNhapKho.substring(ma_CT_PNK.length());
+            newNumber = Integer.parseInt(numberPart) + 1;
+        } else {
+            // Nếu không có mã nào trong CSDL, bắt đầu từ 1
+            newNumber = 1;
+        }
+
+        // Định dạng lại mã với tiền tố và phần số đủ 5 chữ số
+        return ma_CT_PNK + String.format("%05d", newNumber);
+    }
+
+    // Hàm tạo mã phiếu nhập kho tự động tăng
+    public String taoTuDong_MaPhieuNhapKho() {
+        // Lấy mã phiếu nhập kho cuối cùng từ cơ sở dữ liệu
+        String lastMaPhieuNhapKho = phieuNhapDao.getLastMaPhieuNhapKho();
+
+        int newNumber;
+        if (lastMaPhieuNhapKho != null && lastMaPhieuNhapKho.startsWith(ma_PNK)) {
+            // Tách phần số ra khỏi mã và tăng lên 1
+            String numberPart = lastMaPhieuNhapKho.substring(ma_PNK.length());
+            newNumber = Integer.parseInt(numberPart) + 1;
+        } else {
+            // Nếu không có mã nào trong CSDL, bắt đầu từ 1
+            newNumber = 1;
+        }
+
+        // Định dạng lại mã với tiền tố và phần số đủ 5 chữ số
+        return ma_PNK + String.format("%04d", newNumber);
+    }
+
+
 
     /**
      * @param args the command line arguments
