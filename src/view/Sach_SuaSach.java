@@ -407,7 +407,7 @@ public class Sach_SuaSach extends javax.swing.JDialog {
 
     private void jButton_HuyBoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_HuyBoActionPerformed
         // TODO add your handling code here:
-        this.dispose();
+        
     }//GEN-LAST:event_jButton_HuyBoActionPerformed
 
     private void jButton_LuuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_LuuActionPerformed

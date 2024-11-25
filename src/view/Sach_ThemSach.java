@@ -617,7 +617,7 @@ public class Sach_ThemSach extends javax.swing.JDialog {
                         KhoHang kh = khoHang_dao.getKhoTheoTenKho(tenKho);
                         chiTietKhoHang_dao.themChiTietKhoHang(new ChiTietKhoHang(createMaCTKH(), soLuong, new Sach(sach.getISBN()), new KhoHang(kh.getMaKhoHang())));
                         String maPhieuNhapKho = taoTuDong_MaPhieuNhapKho();
-                        phieuNhapDao.insertPhieuNhapKho(maPhieuNhapKho, Date.valueOf(LocalDate.now()), "22685411", kh.getMaKhoHang(), soLuong);
+                        phieuNhapDao.insertPhieuNhapKho(maPhieuNhapKho, Date.valueOf(LocalDate.now()), DangNhap.ma, kh.getMaKhoHang(), soLuong);
                         chiTietPhieuNhap_dao.insertChiTietPhieuNhapKho(taoTuDong_MaChiTietPhieuNhapKho(), maPhieuNhapKho, soLuong, sach.getISBN());
                         int width = 300; // Chiều rộng của mã vạch
                         int height = 100; // Chiều cao của mã vạch
@@ -709,6 +709,7 @@ public class Sach_ThemSach extends javax.swing.JDialog {
         }
         return prefix + newNumberPart;
     }
+
     public String taoTuDong_MaChiTietPhieuNhapKho() {
         // Lấy mã chi tiết phiếu nhập kho mới nhất từ cơ sở dữ liệu
         String lastMaChiTietPhieuNhapKho = chiTietPhieuNhap_dao.getLastMaChiTietPhieuNhapKho();
@@ -745,8 +746,6 @@ public class Sach_ThemSach extends javax.swing.JDialog {
         // Định dạng lại mã với tiền tố và phần số đủ 5 chữ số
         return ma_PNK + String.format("%04d", newNumber);
     }
-
-
 
     /**
      * @param args the command line arguments
