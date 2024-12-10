@@ -33,10 +33,7 @@ public class Report_PhieuNhapKho {
 
     public void ViewReport_PhieuNhapKho(ArrayList<ChiTietPhieuNhapKho> dsCTPNK, String maPhieuNhapKho) {
         try {
-            System.out.println("Mã PNK:" + maPhieuNhapKho);
             PhieuNhapKho pnk = dsPN.getPhieuNhapKhoTheoMaPNK(maPhieuNhapKho);
-
-            System.out.println("phieu nhap kho: " + pnk);
 
             LocalDate nl = pnk.getNgayLap();
             String ngayLap = formatNgayLap(nl);
@@ -60,7 +57,6 @@ public class Report_PhieuNhapKho {
             DecimalFormat df = new DecimalFormat("#,###");
 
             double tongTien = 0;
-            int STT = 0;
             for (ChiTietPhieuNhapKho ctpn : dsCTPNK) {
                 String tenSach = "";
                 String loaiSach = "";

@@ -45,7 +45,7 @@ public class Sach_SuaSach extends javax.swing.JDialog {
     private KhoHang_DAO khoHang_dao;
     private Sach_DAO sach_dao;
     private PhieuNhap_DAO phieuNhapDao;
-    private ChiTietPhieuNhap_DAO chiTietPhieuNhap_dao;
+    private ChiTietPhieuNhapKho_DAO chiTietPhieuNhap_dao;
     private static final String ma_CT_PNK = "CTPNK";
     private static final String ma_PNK = "PNK";
 
@@ -57,7 +57,7 @@ public class Sach_SuaSach extends javax.swing.JDialog {
         sach_dao = new Sach_DAO();
         khoHang_dao = new KhoHang_DAO();
         phieuNhapDao = new PhieuNhap_DAO();
-        chiTietPhieuNhap_dao = new ChiTietPhieuNhap_DAO();
+        chiTietPhieuNhap_dao = new ChiTietPhieuNhapKho_DAO();
         initComponents();
         setLocationRelativeTo(null);
         initialData(sach);

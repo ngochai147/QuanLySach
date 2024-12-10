@@ -17,10 +17,10 @@ import java.util.List;
  *
  * @author Dell
  */
-public class ChiTietPhieuNhap_DAO {
+public class ChiTietPhieuNhapKho_DAO {
     private final List<ChiTietPhieuNhapKho> ds_ctpnk;
 
-      public ChiTietPhieuNhap_DAO() {
+      public ChiTietPhieuNhapKho_DAO() {
         ds_ctpnk = new ArrayList<>();
     }
 

@@ -69,7 +69,6 @@ public class PhieuNhap_DAO {
 
         try {
             stmt = con.prepareStatement(sql);
-
             // Thiết lập giá trị cho các tham số trong câu lệnh SQL
             stmt.setString(1, maPhieuNhapKho);
             stmt.setDate(2, ngayLap);

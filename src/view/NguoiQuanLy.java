@@ -11,9 +11,7 @@ import java.awt.event.ComponentEvent;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.UIManager;
+import javax.swing.*;
 
 public class NguoiQuanLy extends javax.swing.JFrame {
 
@@ -431,7 +429,7 @@ public class NguoiQuanLy extends javax.swing.JFrame {
         jLabel2.setForeground(Color.BLACK);
 
         jDesktopPane1.removeAll();
-        ThuKho_QuanLyNhapXuatKho thuKho_QuanLyNhapXuatKho = new ThuKho_QuanLyNhapXuatKho();
+        ThuKho_QuanLyNhapXuatKho thuKho_QuanLyNhapXuatKho = new ThuKho_QuanLyNhapXuatKho(this);
         thuKho_QuanLyNhapXuatKho.setSize(jDesktopPane1.getSize());
         thuKho_QuanLyNhapXuatKho.setVisible(true);
         jDesktopPane1.add(thuKho_QuanLyNhapXuatKho);
@@ -483,6 +481,12 @@ public class NguoiQuanLy extends javax.swing.JFrame {
             }
             dangNhap.setVisible(true);
         }
+    }
+    public void getDesktopPanel(JInternalFrame jframe) {
+        jDesktopPane1.removeAll();
+        jframe.setSize(jDesktopPane1.getSize());
+        jframe.setVisible(true);
+        jDesktopPane1.add(jframe);
     }
 
     public static void main(String args[]) {
