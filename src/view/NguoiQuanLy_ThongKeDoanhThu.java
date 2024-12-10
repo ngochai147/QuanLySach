@@ -765,34 +765,43 @@ public class NguoiQuanLy_ThongKeDoanhThu extends javax.swing.JInternalFrame {
             if (!filePath.endsWith(".xlsx")) {
                 filePath += ".xlsx";
             }
-            Date fromDate = jDateChooser_From.getDate();
-            Date toDate = jDateChooser_To.getDate();
+            Date tuNgay = jDateChooser_From.getDate();
+            Date denNgay = jDateChooser_To.getDate();
 
+            Calendar cal = Calendar.getInstance();
             // Kiểm tra nếu xuất theo năm, tính ngày đầu và cuối năm
             if ("nam".equals(selectedPeriod)) {
-                Calendar cal = Calendar.getInstance();
 
-                // Tính ngày đầu năm
-                cal.set(Calendar.YEAR, cal.get(Calendar.YEAR)); // Năm hiện tại
+                // Tính ngày bắt đầu của năm đầu tiên (từ tháng 1 năm đầu)
+                cal.setTime(tuNgay); // Sử dụng fromDate để xác định năm
                 cal.set(Calendar.MONTH, Calendar.JANUARY); // Tháng 1
                 cal.set(Calendar.DAY_OF_MONTH, 1); // Ngày đầu năm
-                fromDate = cal.getTime();
+                tuNgay = cal.getTime();
 
-                // Tính ngày cuối năm
+                // Tính ngày kết thúc của năm thứ hai (ngày cuối tháng 12 của năm sau)
+                cal.setTime(denNgay); // Sử dụng toDate để xác định năm
                 cal.set(Calendar.MONTH, Calendar.DECEMBER); // Tháng 12
                 cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH)); // Ngày cuối tháng 12
-                toDate = cal.getTime();
+                denNgay = cal.getTime();
+            } else if ("thang".equals(selectedPeriod)) {
+                cal.setTime(tuNgay);
+                cal.set(Calendar.DAY_OF_MONTH, 1); // Ngày đầu tháng
+                tuNgay = cal.getTime();
+
+                cal.setTime(denNgay);
+                cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH)); // Ngày cuối tháng
+                denNgay = cal.getTime();
             }
 
             // Gọi phương thức DAO để xuất dữ liệu tồn kho ra Excel
             try {
                 switch (selectedPeriod) {
                     case "ngay" ->
-                        excel_DAO.exportExcel_Ngay(filePath, fromDate, toDate);
+                        excel_DAO.exportExcel_Ngay(filePath, tuNgay, denNgay);
                     case "thang" ->
-                        excel_DAO.exportExcel_Thang(filePath, fromDate, toDate);
+                        excel_DAO.exportExcel_Thang(filePath, tuNgay, denNgay);
                     case "nam" ->
-                        excel_DAO.exportExcel_Nam(filePath, fromDate, toDate);
+                        excel_DAO.exportExcel_Nam(filePath, tuNgay, denNgay);
                     default ->
                         JOptionPane.showMessageDialog(null, "Loại xuất không hợp lệ.");
                 }
