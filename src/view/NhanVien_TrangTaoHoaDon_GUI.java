@@ -39,7 +39,7 @@ import javax.swing.SwingUtilities;
  *
  * @author Ngọc Hải
  */
-public class TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
+public class NhanVien_TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
 
 
 
@@ -47,7 +47,7 @@ public class TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
     /**
      * Creates new form TrangTaoHoaDon_GUI
      */
-    public TrangTaoHoaDon_GUI() {
+    public NhanVien_TrangTaoHoaDon_GUI() {
         initComponents();
         SwingUtilities.invokeLater(() -> {
             this.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
@@ -381,7 +381,7 @@ public class TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
                 }
                 model= (DefaultTableModel) jTable_DonHang.getModel();
                 model.setRowCount(0);
-                clear();
+                xoaRong();
             }else{
                 return;
             }
@@ -398,7 +398,7 @@ public class TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
             model.setRowCount(0);
             dsCTHDTemp.clear();
             jTextField_ISBN.requestFocus();
-            clear();
+            xoaRong();
         }
     }//GEN-LAST:event_jButton_HuyDonHangActionPerformed
 
@@ -546,7 +546,7 @@ public class TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_jButton_ThemSachActionPerformed
 
-    private void clear(){
+    private void xoaRong(){
         dsCTHDTemp.clear();
         jTextField_ISBN.setText("");
         jTextField_TenSach.setText("");
@@ -601,12 +601,13 @@ public class TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
                 return;
             }
             webcam.setViewSize(new Dimension(320, 240));
-            JFrame window=createWebcamWindow(webcam);
+            JFrame window=taoWebcamWindow(webcam);
             window.setVisible(true);
             while (true) {
                 try {
                     BufferedImage image = webcam.getImage();  // Lấy hình ảnh từ webcam
                     String barcodeText = decodeBarcode(image);
+                    boolean kiemTra=false;
                     if (barcodeText != null) {
                         for(Sach s: dsS.getAllSP()){
                             if(barcodeText.equalsIgnoreCase(s.getISBN())){
@@ -616,8 +617,12 @@ public class TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
                                 jTextField_SoLuong.setText("1");
                                 webcam.close();
                                 window.setVisible(false);
+                                kiemTra=true;
                             }
                         }
+                    }else if(kiemTra==false){
+                        JOptionPane.showMessageDialog(this,
+                                "Mã ISBN không tồn tại", "Lỗi", JOptionPane.WARNING_MESSAGE);
                     }
                     //      jLabel_TongTienHoaDon.setText(df.format(tongTienHoaDon));
                 }catch (NullPointerException  e){
@@ -672,7 +677,7 @@ public class TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
         }
         return timKiem;
     }
-    private JFrame createWebcamWindow(Webcam webcam) {
+    private JFrame taoWebcamWindow(Webcam webcam) {
         JFrame window = new JFrame();
         WebcamPanel panel = new WebcamPanel(webcam);
         panel.setMirrored(false);// Lật hình ảnh để dễ nhìn

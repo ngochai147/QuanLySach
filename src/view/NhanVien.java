@@ -6,8 +6,6 @@ package view;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -189,8 +187,8 @@ public class NhanVien extends javax.swing.JFrame {
 
     private void jDesktopPane1ComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jDesktopPane1ComponentResized
       
-        QuanLyHoaDon_GUI qlhdgui=null;
-        qlhdgui = new QuanLyHoaDon_GUI();
+        NhanVien_QuanLyHoaDon_GUI qlhdgui=null;
+        qlhdgui = new NhanVien_QuanLyHoaDon_GUI();
         qlhdgui.setSize(jDesktopPane1.getSize());
         qlhdgui.setVisible(true);
         jDesktopPane1.add(qlhdgui);  
@@ -203,7 +201,7 @@ public class NhanVien extends javax.swing.JFrame {
     private void jPanel_HoaDonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel_HoaDonMouseClicked
         // TODO add your handling code here:
         jDesktopPane1.removeAll();
-        QuanLyHoaDon_GUI quanLyHoaDon_GUI = new QuanLyHoaDon_GUI();
+        NhanVien_QuanLyHoaDon_GUI quanLyHoaDon_GUI = new NhanVien_QuanLyHoaDon_GUI();
         quanLyHoaDon_GUI.setSize(jDesktopPane1.getSize());
         quanLyHoaDon_GUI.setVisible(true);
         jDesktopPane1.add(quanLyHoaDon_GUI);

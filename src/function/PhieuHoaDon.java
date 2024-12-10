@@ -89,9 +89,10 @@ private    DateTimeFormatter dfDay= DateTimeFormatter.ofPattern("dd-MM-YYYY");
             JasperReport reportPay = JasperCompileManager.compileReport(getClass().getResourceAsStream("/img/report_HoaDon.jrxml"));
             HashMap<String, Object> parameters = new HashMap<>();
             parameters.put("maHD",maHoaDon);
-            parameters.put("maNV", DangNhap.ma);
+
             for(HoaDon hd: dsHD.getAllHoaDon()){
                 if(maHoaDon.equalsIgnoreCase(hd.getMaHoaDon())){
+                    parameters.put("maNV", hd.getNhanVien().getMaNV());
                     parameters.put("ngayTao", dfDay.format(hd.getNgayTaoDon()));
                 }
             }
@@ -117,7 +118,7 @@ private    DateTimeFormatter dfDay= DateTimeFormatter.ofPattern("dd-MM-YYYY");
 
 
             // Giả sử đây là số bạn muốn định dạng
-            String formattedTongTien = df.format(tongTien);
+            String formattedTongTien = df.format(tongTien)+" đ";
             parameters.put("tongSL", tongSL);
             parameters.put("tongTien", formattedTongTien);
 
