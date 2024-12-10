@@ -74,26 +74,7 @@ public class ThongKeTonKho_DAO {
         return dataList;
     }
 
-    public List<String> getSuggestions(String input) {
-        List<String> suggestions = new ArrayList<>();
-
-        String sql = "SELECT tenSach FROM Sach WHERE tenSach LIKE ?"; // Câu lệnh SQL
-
-        try {
-            Connection conn = ConnectDB.getInstance().getConnection();
-            PreparedStatement p = conn.prepareStatement(sql);
-            p.setString(1, input + "%"); // Tìm kiếm từ khóa bắt đầu bằng input
-            try (ResultSet rs = p.executeQuery()) {
-                while (rs.next()) {
-                    suggestions.add(rs.getString("tenSach")); // Thêm gợi ý vào danh sách
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return suggestions; // Trả về danh sách gợi ý
-    }
+    
 
     public List<ThongKeTonKho_model> getBarChartData(){
         List<ThongKeTonKho_model> listData = new ArrayList<>();
