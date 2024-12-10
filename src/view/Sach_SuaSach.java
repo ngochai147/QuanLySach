@@ -35,7 +35,7 @@ public class Sach_SuaSach extends javax.swing.JDialog {
     /**
      * Creates new form NewJDialog
      */
-    private final DecimalFormat df = new DecimalFormat("#,###");
+    private final DecimalFormat df = new DecimalFormat("#.###");
     private JFormattedTextField spinnerTextField;
     private Sach_QuanLySach dsSach;
     private Sach sach;
@@ -418,8 +418,12 @@ public class Sach_SuaSach extends javax.swing.JDialog {
 
     private void jButton_HuyBoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_HuyBoActionPerformed
         // TODO add your handling code here:
-        this.dispose();
-
+        int result = JOptionPane.showConfirmDialog(null, "Bạn chắc chắn muốn hủy, các thông tin sẽ không đươc lưu?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+        if (result == JOptionPane.YES_OPTION) {
+            this.dispose();
+        } else {
+            jTextField_ISBN.requestFocus();
+        }
     }//GEN-LAST:event_jButton_HuyBoActionPerformed
     private boolean kiemTraISBN(String iSBN) {
 //        1. ^ và $: Đảm bảo rằng toàn bộ chuỗi chỉ chứa ký tự được mô tả trong regex.
@@ -447,7 +451,7 @@ public class Sach_SuaSach extends javax.swing.JDialog {
 //        (\\.: Cho phép một dấu chấm (thập phân).
 //        [0-9]{3}: Yêu cầu 3 chữ số sau dấu chấm.
 //        ?: Toàn bộ nhóm này là tùy chọn, nghĩa là phần thập phân có thể không xuất hiện.
-        String regex = "^[0-9]+(\\.[0-9]{3})?$";
+        String regex = "^[0-9]{4,}$";
         if (donGiaStr == null || !donGiaStr.matches(regex)) {
             JOptionPane.showMessageDialog(this, "Đơn giá không hợp lệ!!!", "Thông báo", JOptionPane.WARNING_MESSAGE);
             return false;
@@ -497,27 +501,11 @@ public class Sach_SuaSach extends javax.swing.JDialog {
     }
 
     private boolean kiemTratacGia(String tacGia) {
-//        \\p{L}:Khớp với bất kỳ chữ cái Unicode nào (bao gồm cả tiếng Việt như Đ, á, é, v.v.).
-//        \\p{M}:Hỗ trợ các ký tự dấu kết hợp, như dấu sắc ́, dấu huyền ̀, dấu nặng ̣, v.v. Điều này giúp nhận diện đúng các ký tự tiếng Việt.
-//        \\s:Khớp với khoảng trắng (dấu cách giữa các từ trong tên tác giả).
-//        .:Cho phép dấu chấm trong tên (như trong "J.R.R. Tolkien").
-//        ':Hỗ trợ dấu nháy đơn trong tên (như "D'Artagnan").
-//        -:Cho phép dấu gạch ngang (như trong "Jean-Paul Sartre").
-//        +:Cho phép lặp lại bất kỳ số lần nào (1 hoặc nhiều ký tự).
         String regex = "^[\\p{L}\\s.'-]+$";
         return tacGia != null && !tacGia.trim().isEmpty() && tacGia.matches(regex);
     }
 
     private boolean kiemTraNhaXB(String nhaXB) {
-//    \\p{L}:Khớp với các chữ cái Unicode (bao gồm chữ cái có dấu tiếng Việt).
-//    \\p{M}:Khớp với các dấu kết hợp (như dấu sắc, dấu huyền) để hỗ trợ tiếng Việt đầy đủ.
-//    0-9:Khớp với các chữ số.
-//    \\s:Khớp với khoảng trắng giữa các từ.
-//    Dấu chấm (.): Ví dụ: "NXB Văn Học."
-//    Dấu phẩy (,): Không phổ biến nhưng có thể xuất hiện.
-//    Dấu nháy đơn ('): Ví dụ: "Hội Nhà Văn's Collection."
-//    Dấu gạch ngang (-): Ví dụ: "Mint-Books."
-
         String regex = "^[\\p{L}\\p{M}0-9\\s.,'-]+$";
         return nhaXB != null && !nhaXB.trim().isEmpty() && nhaXB.matches(regex);
     }

@@ -492,9 +492,8 @@ public class Sach_ThemSach extends javax.swing.JDialog {
 //        \\s:Khớp với khoảng trắng (dấu cách giữa các từ trong tên tác giả).
 //        .:Cho phép dấu chấm trong tên (như trong "J.R.R. Tolkien").
 //        ':Hỗ trợ dấu nháy đơn trong tên (như "D'Artagnan").
-//        -:Cho phép dấu gạch ngang (như trong "Jean-Paul Sartre").
 //        +:Cho phép lặp lại bất kỳ số lần nào (1 hoặc nhiều ký tự).
-        String regex = "^[\\p{L}\\s.'-]+$";
+        String regex = "^[\\p{L}\\s.']+$";
         return tacGia != null && !tacGia.trim().isEmpty() && tacGia.matches(regex);
     }
 
@@ -612,13 +611,16 @@ public class Sach_ThemSach extends javax.swing.JDialog {
             try {
                 Sach sach = new Sach(ISBN, tenSach, tacGia, namXB, nhaXB, soLuong, donGia, new LoaiSach("", loaiSach), new HinhAnh(anh), "Đang bán");
                 if (!sach_dao.getDSSach().contains(sach)) {
-                    if (JOptionPane.showConfirmDialog(this, "Bạn chắc chắn muốn thêm sách này?", "Thông báo", JOptionPane.INFORMATION_MESSAGE, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+
+                    int result = JOptionPane.showConfirmDialog(null, "Bạn chắc chắn muốn thêm sách này?", "Thông báo", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+
+                    if (result == JOptionPane.YES_OPTION) {
                         sach_dao.themSach(sach);
                         dsSach.addDataToTable(sach);
                         KhoHang kh = khoHang_dao.getKhoTheoTenKho(tenKho);
                         chiTietKhoHang_dao.themChiTietKhoHang(new ChiTietKhoHang(createMaCTKH(), soLuong, new Sach(sach.getISBN()), new KhoHang(kh.getMaKhoHang())));
                         String maPhieuNhapKho = taoTuDong_MaPhieuNhapKho();
-                        phieuNhapDao.insertPhieuNhapKho(maPhieuNhapKho, Date.valueOf(LocalDate.now()), DangNhap.ma, kh.getMaKhoHang(), soLuong);
+//                        phieuNhapDao.insertPhieuNhapKho(maPhieuNhapKho, Date.valueOf(LocalDate.now()), DangNhap.ma, kh.getMaKhoHang(), soLuong);
                         chiTietPhieuNhap_dao.insertChiTietPhieuNhapKho(taoTuDong_MaChiTietPhieuNhapKho(), maPhieuNhapKho, soLuong, sach.getISBN());
                         int width = 300; // Chiều rộng của mã vạch
                         int height = 100; // Chiều cao của mã vạch
@@ -632,11 +634,12 @@ public class Sach_ThemSach extends javax.swing.JDialog {
 //                        MatrixToImageWriter.writeToPath(bitMatrix, "PNG", desktopPath);
 //                    }
                         this.dispose();
-                        JOptionPane.showMessageDialog(this, "Thêm sách thành công", "Thông báo", JOptionPane.OK_OPTION);
+                        JOptionPane.showMessageDialog(this, "Thêm sách thành công", "Thông báo", JOptionPane.WARNING_MESSAGE);
                     } else {
                         jTextField_ISBN.selectAll();
                         jTextField_ISBN.requestFocus();
                     }
+
 
                 } else {
                     jTextField_ISBN.selectAll();

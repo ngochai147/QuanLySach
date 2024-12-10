@@ -389,8 +389,11 @@ public class NguoiQuanLy_ChinhSuaNhanVien extends javax.swing.JDialog {
 
     private void jButton_HuyBoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_HuyBoActionPerformed
         // TODO add your handling code here:
-        if (JOptionPane.showConfirmDialog(this, "Ban chac chan muon thoat", "Canh bao", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-            setVisible(false);
+                int result = JOptionPane.showConfirmDialog(null, "Bạn chắc chắn muốn hủy, các thông tin sẽ không đươc lưu?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+        if (result == JOptionPane.YES_OPTION) {
+            this.dispose();
+        } else {
+            jTextField_TenNhanVien.requestFocus();
         }
     }//GEN-LAST:event_jButton_HuyBoActionPerformed
 
@@ -410,21 +413,21 @@ public class NguoiQuanLy_ChinhSuaNhanVien extends javax.swing.JDialog {
             anh = fileName;
         }
     }//GEN-LAST:event_jButton_ThemAnhActionPerformed
-  
+
     private void jButton_LuuActionPerformed(java.awt.event.ActionEvent evt)   {//GEN-FIRST:event_jButton_LuuActionPerformed
         // TODO add your handling code here:
         NhanVien nv = newData();
 
         try {
-            if(checkTrue){
+            if (checkTrue) {
                 quanLy.editDataToTable(nv);
                 this.dispose();
             }
-            
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        
+
     }//GEN-LAST:event_jButton_LuuActionPerformed
 
     private void initialData(NhanVien nhanVien) throws SQLException {
@@ -447,19 +450,9 @@ public class NguoiQuanLy_ChinhSuaNhanVien extends javax.swing.JDialog {
         jLabel_Anh.setIcon(new ImageIcon(imageFit));
         anh = nhanVien.getAnh().getUrl();
     }
-     private boolean kiemTraTenNV(String ten) {
-        String regex = "^[\\p{L}]+(?:[\\s.'-][\\p{L}]+)*$";
-//        1. ^ và $ xác định bắt đầu và kết thúc chuỗi.
-//        2. \\p{L} đại diện cho bất kỳ ký tự chữ nào (bao gồm cả chữ cái có dấu từ nhiều ngôn ngữ khác nhau).
-//        3. + yêu cầu ít nhất một ký tự chữ đầu tiên trong tên.
-//        4. (?: ... )* là nhóm không bắt buộc lặp lại nhiều lần. Bên trong nhóm này:
-//                  [\\s.'-] cho phép khoảng trắng, dấu chấm (.), dấu nháy đơn ('), hoặc dấu gạch ngang (-) giữa các từ.
-//                  \\p{L}+ yêu cầu ít nhất một ký tự chữ sau khoảng trắng hoặc dấu.
-//          VD:
-//                "Nguyễn Văn A"
-//                "O'Neill"
-//                "Trần Minh-Châu"
-//                "Lê Hữu Đ."
+
+    private boolean kiemTraTenNV(String ten) {
+        String regex = "^[A-ZÁÀÃẢẠĂẮẰẴẲẶÂẤẦẪẨẬÊẾỀỄỂỆÍÌĨỈỊÓÒÕỎỌÔỐỒỖỔỘƠỚỜỠỞỢÚÙŨỦỤƯỨỪỮỬỰÝỲỸỶỴ][a-záàãảạăắằẵẳặâấầẫẩậêếềễểệíìĩỉịóòõỏọôốồỗổộơớờỡởợúùũủụưứừữửựýỳỹỷỵ]{0,6}(\\s[A-ZÁÀÃẢẠĂẮẰẴẲẶÂẤẦẪẨẬÊẾỀỄỂỆÍÌĨỈỊÓÒÕỎỌÔỐỒỖỔỘƠỚỜỠỞỢÚÙŨỦỤƯỨỪỮỬỰÝỲỸỶỴ][a-záàãảạăắằẵẳặâấầẫẩậêếềễểệíìĩỉịóòõỏọôốồỗổộơớờỡởợúùũủụưứừữửựýỳỹỷỵ]{0,6})*$";
         return ten.matches(regex);
     }
 
@@ -484,37 +477,20 @@ public class NguoiQuanLy_ChinhSuaNhanVien extends javax.swing.JDialog {
     }
 
     private boolean kiemTraEmail(String email) {
-        String regex = "^(?!\\.)[a-zA-Z0-9._%+-]+(?<!\\.)@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
-//            1. ^(?!\\.): Đảm bảo chuỗi không bắt đầu bằng dấu chấm (.).
-//            2. [a-zA-Z0-9._%+-]+: Cho phép các ký tự chữ cái, số và các ký tự ._%+- trong phần tên email.
-//            3. (?<!\\.): Đảm bảo chuỗi không kết thúc bằng dấu chấm (.).
-//            4. @: Ký tự bắt buộc phân chia phần tên email và phần tên miền.
-//            5. [a-zA-Z0-9.-]+: Cho phép các ký tự chữ cái, số và dấu gạch ngang (-) trong phần tên miền.
-//            6. \\.[a-zA-Z]{2,}$: Kiểm tra phần mở rộng của tên miền với ít nhất 2 ký tự chữ cái.
-//            VD email hợp lệ:
-//                example@gmail.com
-//                user.name@domain.com
-//                my-email+tag@sub.domain.org
-//            VD email không hợp lệ:
-//                user..name@domain.com (dấu chấm liên tiếp trong phần tên email).
-//                .username@domain.com (dấu chấm ở đầu phần tên).
-//                username.@domain.com (dấu chấm ở cuối phần tên).
+//    (?!\\.):Nó đảm bảo rằng chuỗi không bắt đầu bằng dấu chấm (.)
+//    [a-zA-Z0-9._%+-]+: Phần này kiểm tra phần tên người dùng (trước ký tự @). Nó cho phép các ký tự sau:
+        //    Chữ cái viết hoa và viết thường (a-zA-Z),
+        //    Các chữ số (0-9),
+        //    Dấu chấm (.), dấu gạch dưới (_), dấu phần trăm (%), dấu cộng (+), và dấu gạch nối (-).
+        //    Dấu + có nghĩa là ít nhất một ký tự trong số này phải có mặt.
+//    (?<!\\.):Nó đảm bảo rằng chuỗi không kết thúc bằng dấu chấm (.). Nói cách khác, không được có dấu chấm ở cuối phần tên người dùng.
+//    @gmail\\.com: Kiểm tra phần tên miền, yêu cầu nó phải là @gmail.com. Lưu ý rằng dấu chấm (.) phải được escape (\\.) vì trong regex, dấu chấm có ý nghĩa đặc biệt.
+        String regex = "^(?!\\.)[a-zA-Z0-9._%+-]+(?<!\\.)@gmail\\.com$";
         return email.matches(regex);
     }
 
     private boolean kiemTraDiaChi(String diaChi) {
-        String regex = "^[\\p{L}\\d\\s.,-/]+$";
-//        1. ^ và $: Xác định bắt đầu và kết thúc chuỗi.
-//        2. \\p{L}: Cho phép các ký tự chữ từ nhiều ngôn ngữ (bao gồm cả tiếng Việt có dấu).
-//        3. \\d: Cho phép các chữ số.
-//        4. \\s: Cho phép khoảng trắng.
-//        5. [.,-/]: Cho phép các ký tự đặc biệt phổ biến trong địa chỉ (dấu chấm, dấu phẩy, gạch chéo, và gạch ngang).
-//        6. +: Yêu cầu chuỗi phải có ít nhất một ký tự hợp lệ và có thể lặp lại nhiều lần.
-//          VD:
-//                "123 Đường Láng, P. Láng Hạ, Q. Đống Đa"
-//                "Số 5 Ngõ 7, Phố Trần Duy Hưng"
-//                "12A-B Phường 5, Quận 3, TP.HCM"
-//                "1/234 Khu phố Tân Phong - Thủ Đức"
+        String regex = "^[a-zA-Z0-9.\\s\\u00C0-\\u1EF9-]+$";
         return diaChi.matches(regex);
     }
 
@@ -524,7 +500,7 @@ public class NguoiQuanLy_ChinhSuaNhanVien extends javax.swing.JDialog {
 
         String soDienThoai = jTextField_SoDienThoai.getText();
         String email = jTextField_Email.getText();
-        String diaChi = jTextField_DiaChi.getText();
+        String diaChi = jTextField_DiaChi.getText();    
         // Kiểm tra từng điều kiện và hiển thị thông báo nếu có lỗi
         if (tenNhanVien.trim().isEmpty() || !kiemTraTenNV(tenNhanVien)) {
             JOptionPane.showMessageDialog(this, "Tên nhân viên không hợp lệ!!!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
@@ -559,7 +535,7 @@ public class NguoiQuanLy_ChinhSuaNhanVien extends javax.swing.JDialog {
             return false;
         }
 
-        if (diaChi.trim().isEmpty() || !kiemTraDiaChi(diaChi)) {
+        if (diaChi.trim().isEmpty()||!kiemTraDiaChi(diaChi)) {
             JOptionPane.showMessageDialog(this, "Địa chỉ không hợp lệ!!!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             jTextField_DiaChi.requestFocus();
             jTextField_DiaChi.selectAll();
@@ -572,9 +548,10 @@ public class NguoiQuanLy_ChinhSuaNhanVien extends javax.swing.JDialog {
         // Nếu tất cả kiểm tra đều hợp lệ
         return true;
     }
-    public NhanVien newData(){
+
+    public NhanVien newData() {
         NhanVien nhanVien = new NhanVien();
-        boolean kiemTra=kiemTraTatCa();
+        boolean kiemTra = kiemTraTatCa();
         if (kiemTra) {
             nhanVien.setMaNV(jTextField_MaNhanVien.getText());
             nhanVien.setHoTen(jTextField_TenNhanVien.getText());
@@ -587,7 +564,7 @@ public class NguoiQuanLy_ChinhSuaNhanVien extends javax.swing.JDialog {
             nhanVien.setAnh(new HinhAnh(anh));
             checkTrue = true;
         }
-          return nhanVien;
+        return nhanVien;
     }
 
     /**
