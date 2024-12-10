@@ -12,6 +12,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.io.File;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -25,18 +26,21 @@ public class Sach_ThongTinSach extends javax.swing.JDialog {
 
     /**
      * Creates new form NewJDialog
+     * 
      */
+    private final DecimalFormat df = new DecimalFormat("#.###");
         public Sach_ThongTinSach(java.awt.Frame parent, boolean modal, Sach sach) throws SQLException {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
+        
         jTextField_ISBN.setText(sach.getISBN());
         jTextField_TenSach.setText(sach.getTenSach());
         jTextField_LoaiSach.setText(sach.getLoaiSach().getTenLoai());
         jTextField_TacGia.setText(sach.getTacGia());
         jTextField_NamXB.setText(String.valueOf(sach.getNamXB()));
         jTextField_NhaXB.setText(sach.getNhaXB());
-        jTextField_DonGia.setText(String.valueOf(sach.getGiaGoc()));
+        jTextField_DonGia.setText(String.valueOf(df.format(sach.getGiaGoc())));
         jTextField_SoLuong.setText(String.valueOf(sach.getSoLuong()));
 
         String duongDanChinh = sach.getAnh().getUrl().replace("..", "src");
