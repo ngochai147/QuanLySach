@@ -70,7 +70,7 @@ public class ExportExcel_DAO {
 
     public void exportExcel_Ngay(String filePath, Date fromDate, Date toDate) {
         String sql = """
-                    SELECT FORMAT(ngayTaoDon, 'dd-MM-yyyy') AS Ngay,
+                    SELECT CONVERT(varchar, ngayTaoDon, 103) AS Ngay,
                            COUNT(DISTINCT HoaDon.maHoaDon) AS tongSoLuongHoaDon,
                            SUM(ChiTietHoaDon.soLuong) AS tongSoLuongSachDaBan,
                            SUM(ChiTietHoaDon.soLuong * ChiTietHoaDon.donGia) AS TongDoanhThu,
@@ -78,7 +78,7 @@ public class ExportExcel_DAO {
                     FROM HoaDon
                     JOIN ChiTietHoaDon ON HoaDon.maHoaDon = ChiTietHoaDon.maHoaDon
                     WHERE ngayTaoDon BETWEEN ? AND ?
-                    GROUP BY FORMAT(ngayTaoDon, 'dd-MM-yyyy')
+                    GROUP BY CONVERT(varchar, ngayTaoDon, 103)
                     ORDER BY Ngay;
                 """;
         executeExport(filePath, fromDate, toDate, sql);
@@ -86,7 +86,7 @@ public class ExportExcel_DAO {
 
     public void exportExcel_Thang(String filePath, Date fromDate, Date toDate) {
         String sql = """
-                    SELECT FORMAT(ngayTaoDon, 'MM-yyyy') AS Thang,
+                    SELECT RIGHT(CONVERT(varchar, ngayTaoDon, 103), 7) AS Thang,
                            COUNT(DISTINCT HoaDon.maHoaDon) AS tongSoLuongHoaDon,
                            SUM(ChiTietHoaDon.soLuong) AS tongSoLuongSachDaBan,
                            SUM(ChiTietHoaDon.soLuong * ChiTietHoaDon.donGia) AS TongDoanhThu,
@@ -94,7 +94,7 @@ public class ExportExcel_DAO {
                     FROM HoaDon
                     JOIN ChiTietHoaDon ON HoaDon.maHoaDon = ChiTietHoaDon.maHoaDon
                     WHERE ngayTaoDon BETWEEN ? AND ?
-                    GROUP BY FORMAT(ngayTaoDon, 'MM-yyyy')
+                    GROUP BY RIGHT(CONVERT(varchar, ngayTaoDon, 103), 7)
                     ORDER BY Thang;
                 """;
         executeExport(filePath, fromDate, toDate, sql);
@@ -102,7 +102,7 @@ public class ExportExcel_DAO {
 
     public void exportExcel_Nam(String filePath, Date fromDate, Date toDate) {
         String sql = """
-                    SELECT FORMAT(ngayTaoDon, 'yyyy') AS Nam,
+                    SELECT YEAR(ngayTaoDon) AS Nam,
                            COUNT(DISTINCT HoaDon.maHoaDon) AS tongSoLuongHoaDon,
                            SUM(ChiTietHoaDon.soLuong) AS tongSoLuongSachDaBan,
                            SUM(ChiTietHoaDon.soLuong * ChiTietHoaDon.donGia) AS TongDoanhThu,
@@ -110,7 +110,7 @@ public class ExportExcel_DAO {
                     FROM HoaDon
                     JOIN ChiTietHoaDon ON HoaDon.maHoaDon = ChiTietHoaDon.maHoaDon
                     WHERE ngayTaoDon BETWEEN ? AND ?
-                    GROUP BY FORMAT(ngayTaoDon, 'yyyy')
+                    GROUP BY YEAR(ngayTaoDon)
                     ORDER BY Nam;
                 """;
         executeExport(filePath, fromDate, toDate, sql);
