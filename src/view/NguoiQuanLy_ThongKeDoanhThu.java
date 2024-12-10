@@ -637,11 +637,13 @@ public class NguoiQuanLy_ThongKeDoanhThu extends javax.swing.JInternalFrame {
         jPanel_DoanhThu.add(jPanel_Nam);
         jPanel_Nam.setBounds(1008, 66, 530, 44);
 
-        jDateChooser_From.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true), "Từ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 18))); // NOI18N
+        jDateChooser_From.setBackground(new java.awt.Color(102, 102, 0));
+        jDateChooser_From.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true), "Từ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 18), new java.awt.Color(255, 255, 255))); // NOI18N
         jPanel_DoanhThu.add(jDateChooser_From);
         jDateChooser_From.setBounds(360, 120, 250, 60);
 
-        jDateChooser_To.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true), "Đến", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 18))); // NOI18N
+        jDateChooser_To.setBackground(new java.awt.Color(102, 102, 0));
+        jDateChooser_To.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true), "Đến", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 18), new java.awt.Color(255, 255, 255))); // NOI18N
         jPanel_DoanhThu.add(jDateChooser_To);
         jDateChooser_To.setBounds(620, 120, 250, 60);
 
@@ -655,7 +657,7 @@ public class NguoiQuanLy_ThongKeDoanhThu extends javax.swing.JInternalFrame {
             }
         });
         jPanel_DoanhThu.add(jButton_Xem);
-        jButton_Xem.setBounds(900, 140, 166, 30);
+        jButton_Xem.setBounds(900, 130, 166, 40);
 
         jButton_XuatExcel.setBackground(new java.awt.Color(102, 102, 0));
         jButton_XuatExcel.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
@@ -667,7 +669,7 @@ public class NguoiQuanLy_ThongKeDoanhThu extends javax.swing.JInternalFrame {
             }
         });
         jPanel_DoanhThu.add(jButton_XuatExcel);
-        jButton_XuatExcel.setBounds(1080, 140, 133, 30);
+        jButton_XuatExcel.setBounds(1080, 130, 133, 40);
 
         jButton_LamMoi.setBackground(new java.awt.Color(255, 0, 0));
         jButton_LamMoi.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
@@ -679,7 +681,7 @@ public class NguoiQuanLy_ThongKeDoanhThu extends javax.swing.JInternalFrame {
             }
         });
         jPanel_DoanhThu.add(jButton_LamMoi);
-        jButton_LamMoi.setBounds(1220, 140, 115, 30);
+        jButton_LamMoi.setBounds(1220, 130, 115, 40);
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/anhnen.jpg"))); // NOI18N
         jLabel3.setPreferredSize(new java.awt.Dimension(1520, 716));
@@ -763,34 +765,43 @@ public class NguoiQuanLy_ThongKeDoanhThu extends javax.swing.JInternalFrame {
             if (!filePath.endsWith(".xlsx")) {
                 filePath += ".xlsx";
             }
-            Date fromDate = jDateChooser_From.getDate();
-            Date toDate = jDateChooser_To.getDate();
+            Date tuNgay = jDateChooser_From.getDate();
+            Date denNgay = jDateChooser_To.getDate();
 
+            Calendar cal = Calendar.getInstance();
             // Kiểm tra nếu xuất theo năm, tính ngày đầu và cuối năm
             if ("nam".equals(selectedPeriod)) {
-                Calendar cal = Calendar.getInstance();
 
-                // Tính ngày đầu năm
-                cal.set(Calendar.YEAR, cal.get(Calendar.YEAR)); // Năm hiện tại
+                // Tính ngày bắt đầu của năm đầu tiên (từ tháng 1 năm đầu)
+                cal.setTime(tuNgay); // Sử dụng fromDate để xác định năm
                 cal.set(Calendar.MONTH, Calendar.JANUARY); // Tháng 1
                 cal.set(Calendar.DAY_OF_MONTH, 1); // Ngày đầu năm
-                fromDate = cal.getTime();
+                tuNgay = cal.getTime();
 
-                // Tính ngày cuối năm
+                // Tính ngày kết thúc của năm thứ hai (ngày cuối tháng 12 của năm sau)
+                cal.setTime(denNgay); // Sử dụng toDate để xác định năm
                 cal.set(Calendar.MONTH, Calendar.DECEMBER); // Tháng 12
                 cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH)); // Ngày cuối tháng 12
-                toDate = cal.getTime();
+                denNgay = cal.getTime();
+            } else if ("thang".equals(selectedPeriod)) {
+                cal.setTime(tuNgay);
+                cal.set(Calendar.DAY_OF_MONTH, 1); // Ngày đầu tháng
+                tuNgay = cal.getTime();
+
+                cal.setTime(denNgay);
+                cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH)); // Ngày cuối tháng
+                denNgay = cal.getTime();
             }
 
             // Gọi phương thức DAO để xuất dữ liệu tồn kho ra Excel
             try {
                 switch (selectedPeriod) {
                     case "ngay" ->
-                        excel_DAO.exportExcel_Ngay(filePath, fromDate, toDate);
+                        excel_DAO.exportExcel_Ngay(filePath, tuNgay, denNgay);
                     case "thang" ->
-                        excel_DAO.exportExcel_Thang(filePath, fromDate, toDate);
+                        excel_DAO.exportExcel_Thang(filePath, tuNgay, denNgay);
                     case "nam" ->
-                        excel_DAO.exportExcel_Nam(filePath, fromDate, toDate);
+                        excel_DAO.exportExcel_Nam(filePath, tuNgay, denNgay);
                     default ->
                         JOptionPane.showMessageDialog(null, "Loại xuất không hợp lệ.");
                 }

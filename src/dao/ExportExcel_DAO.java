@@ -74,7 +74,7 @@ public class ExportExcel_DAO {
                            COUNT(DISTINCT HoaDon.maHoaDon) AS tongSoLuongHoaDon,
                            SUM(ChiTietHoaDon.soLuong) AS tongSoLuongSachDaBan,
                            SUM(ChiTietHoaDon.soLuong * ChiTietHoaDon.donGia) AS TongDoanhThu,
-                           SUM(ChiTietHoaDon.soLuong * ChiTietHoaDon.donGia * 0.2) AS LoiNhuan
+                           SUM(ChiTietHoaDon.soLuong * ChiTietHoaDon.donGia * 0.4) AS LoiNhuan
                     FROM HoaDon
                     JOIN ChiTietHoaDon ON HoaDon.maHoaDon = ChiTietHoaDon.maHoaDon
                     WHERE ngayTaoDon BETWEEN ? AND ?
@@ -90,7 +90,7 @@ public class ExportExcel_DAO {
                            COUNT(DISTINCT HoaDon.maHoaDon) AS tongSoLuongHoaDon,
                            SUM(ChiTietHoaDon.soLuong) AS tongSoLuongSachDaBan,
                            SUM(ChiTietHoaDon.soLuong * ChiTietHoaDon.donGia) AS TongDoanhThu,
-                           SUM(ChiTietHoaDon.soLuong * ChiTietHoaDon.donGia * 0.2) AS LoiNhuan
+                           SUM(ChiTietHoaDon.soLuong * ChiTietHoaDon.donGia * 0.4) AS LoiNhuan
                     FROM HoaDon
                     JOIN ChiTietHoaDon ON HoaDon.maHoaDon = ChiTietHoaDon.maHoaDon
                     WHERE ngayTaoDon BETWEEN ? AND ?
@@ -106,7 +106,7 @@ public class ExportExcel_DAO {
                            COUNT(DISTINCT HoaDon.maHoaDon) AS tongSoLuongHoaDon,
                            SUM(ChiTietHoaDon.soLuong) AS tongSoLuongSachDaBan,
                            SUM(ChiTietHoaDon.soLuong * ChiTietHoaDon.donGia) AS TongDoanhThu,
-                           SUM(ChiTietHoaDon.soLuong * ChiTietHoaDon.donGia * 0.2) AS LoiNhuan
+                           SUM(ChiTietHoaDon.soLuong * ChiTietHoaDon.donGia * 0.4) AS LoiNhuan
                     FROM HoaDon
                     JOIN ChiTietHoaDon ON HoaDon.maHoaDon = ChiTietHoaDon.maHoaDon
                     WHERE ngayTaoDon BETWEEN ? AND ?
