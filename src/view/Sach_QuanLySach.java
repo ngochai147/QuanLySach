@@ -451,6 +451,7 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
                 model.setRowCount(0);
                 try {
                     Sach sach = sach_dao.getSachTheoMaSach(timKiem);
+                    System.out.println(sach);
                     model.addRow(new Object[]{sach.getISBN(),
                         sach.getTenSach(),
                         sach.getLoaiSach().getTenLoai(),
@@ -489,7 +490,9 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
                     model.setRowCount(0);
                     ArrayList<Sach> dsLoaiSach = sach_dao.getDSSachTheoTacGia(timKiem);
                     for (Sach x : dsLoaiSach) {
+                        
                         if (x.getTrangThai().equalsIgnoreCase("Đang bán")) {
+                            System.out.println(x);
                             model.addRow(new Object[]{x.getISBN(),
                                 x.getTenSach(),
                                 x.getLoaiSach().getTenLoai(),

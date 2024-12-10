@@ -10,14 +10,12 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 public class DangNhap extends javax.swing.JFrame {
-    
+
     public static String ma;
     private boolean ktNV = false;
     private boolean ktNQL = false;
     private boolean ktTK = false;
-    
-    
-    
+
     private TaiKhoan_DAO taiKhoan_DAO;
 
     public DangNhap() throws SQLException {
@@ -217,44 +215,61 @@ public class DangNhap extends javax.swing.JFrame {
 
     private void jButton_DangNhapMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_DangNhapMouseClicked
         // TODO add your handling code here:
-        boolean ktCheck=false;
+        boolean ktCheck = false;
         if (jRadioButton_NhanVien.isSelected()) {
-            ktCheck=true;
-            boolean found = false;
+            ktCheck = true;
             try {
                 for (TaiKhoan tk : taiKhoan_DAO.getDSTk()) {
                     if (tk.getNhanVien().getChucVu().getChucVu().equalsIgnoreCase("Nhân viên")) {
-                        if (jTextField_Email.getText().equalsIgnoreCase(tk.getNhanVien().getMaNV()) && jPasswordField_MatKhau.getText().equalsIgnoreCase(tk.getMatKhau())) {
-                            ma=jTextField_Email.getText();
-                            this.setVisible(false);
-                            NhanVien nhanVien = new NhanVien();
-                            nhanVien.setVisible(true);
-                            found = true;
+                        if (jTextField_Email.getText().equalsIgnoreCase(tk.getNhanVien().getMaNV())) {
+                            if (jPasswordField_MatKhau.getText().equalsIgnoreCase(tk.getMatKhau())) {
+                                ma = jTextField_Email.getText();
+                                this.setVisible(false);
+                                NhanVien nhanVien = new NhanVien();
+                                nhanVien.setVisible(true);
+                                break;
+                            } else {
+                                JOptionPane.showMessageDialog(this, "Tài khoản không chính xác", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                                jTextField_Email.requestFocus();
+                                jTextField_Email.selectAll();
+                                break;
+                            }
+
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Tài khoản không tồn tại", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                            jTextField_Email.requestFocus();
+                            jTextField_Email.selectAll();
                             break;
                         }
                     }
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(DangNhap.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            if (!found) {
-                JOptionPane.showMessageDialog(this, "Thông tin không chính xác", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
-                jTextField_Email.requestFocus();
-                jTextField_Email.selectAll();
             }
 
         } else if (jRadioButton_QuanLy.isSelected()) {
-            ktCheck=true;
-            boolean found = false;
+            ktCheck = true;
             try {
                 for (TaiKhoan tk : taiKhoan_DAO.getDSTk()) {
                     if (tk.getNhanVien().getChucVu().getChucVu().equalsIgnoreCase("Quản lý")) {
-                        if (jTextField_Email.getText().equalsIgnoreCase(tk.getNhanVien().getMaNV()) && jPasswordField_MatKhau.getText().equalsIgnoreCase(tk.getMatKhau())) {
-                            ma=jTextField_Email.getText();
-                            this.setVisible(false);
-                            NguoiQuanLy nguoiQuanLy = new NguoiQuanLy();
-                            nguoiQuanLy.setVisible(true);
-                            found = true;
+                        if (jTextField_Email.getText().equalsIgnoreCase(tk.getNhanVien().getMaNV())) {
+                            if (jPasswordField_MatKhau.getText().equalsIgnoreCase(tk.getMatKhau())) {
+                                ma = jTextField_Email.getText();
+                                this.setVisible(false);
+                                NguoiQuanLy nguoiQuanLy = new NguoiQuanLy();
+                                nguoiQuanLy.setVisible(true);
+                                break;
+                            } else {
+                                JOptionPane.showMessageDialog(this, "Tài khoản không chính xác", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                                jTextField_Email.requestFocus();
+                                jTextField_Email.selectAll();
+                                break;
+                            }
+
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Tài khoản không tồn tại", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                            jTextField_Email.requestFocus();
+                            jTextField_Email.selectAll();
                             break;
                         }
                     }
@@ -262,24 +277,31 @@ public class DangNhap extends javax.swing.JFrame {
             } catch (SQLException ex) {
                 Logger.getLogger(DangNhap.class.getName()).log(Level.SEVERE, null, ex);
             }
-            if (!found) {
-                JOptionPane.showMessageDialog(this, "Thông tin không chính xác", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
-                jTextField_Email.requestFocus();
-                jTextField_Email.selectAll();
-            }
+            
 
         } else if (jRadioButton_ThuKho.isSelected()) {
-            ktCheck=true;
-            boolean found = false;
+            ktCheck = true;
             try {
                 for (TaiKhoan tk : taiKhoan_DAO.getDSTk()) {
                     if (tk.getNhanVien().getChucVu().getChucVu().equalsIgnoreCase("Thủ kho")) {
-                        if (jTextField_Email.getText().equalsIgnoreCase(tk.getNhanVien().getMaNV()) && jPasswordField_MatKhau.getText().equalsIgnoreCase(tk.getMatKhau())) {
-                            ma=jTextField_Email.getText();
-                            this.setVisible(false);
-                            ThuKho thuKho = new ThuKho();
-                            thuKho.setVisible(true);
-                            found = true;
+                        if (jTextField_Email.getText().equalsIgnoreCase(tk.getNhanVien().getMaNV())) {
+                            if (jPasswordField_MatKhau.getText().equalsIgnoreCase(tk.getMatKhau())) {
+                                ma = jTextField_Email.getText();
+                                this.setVisible(false);
+                                ThuKho thuKho = new ThuKho();
+                                thuKho.setVisible(true);
+                                break;
+                            } else {
+                                JOptionPane.showMessageDialog(this, "Tài khoản không chính xác", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                                jTextField_Email.requestFocus();
+                                jTextField_Email.selectAll();
+                                break;
+                            }
+
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Tài khoản không tồn tại", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                            jTextField_Email.requestFocus();
+                            jTextField_Email.selectAll();
                             break;
                         }
                     }
@@ -287,14 +309,10 @@ public class DangNhap extends javax.swing.JFrame {
             } catch (SQLException ex) {
                 Logger.getLogger(DangNhap.class.getName()).log(Level.SEVERE, null, ex);
             }
-            if (!found) {
-                JOptionPane.showMessageDialog(this, "Thông tin không chính xác", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
-                jTextField_Email.requestFocus();
-                jTextField_Email.selectAll();
-            }
+            
 
         }
-        if(!ktCheck){
+        if (!ktCheck) {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn chức vụ phù hợp", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_jButton_DangNhapMouseClicked

@@ -1,10 +1,12 @@
 package dao;
 
+import chart.ModelPieChart;
+import chart.PieChart;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-
 import connectDB.ConnectDB;
 import entity.ThongKe_model;
+import java.awt.Color;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -35,6 +37,36 @@ public class ThongKe_Dao {
             e.printStackTrace();
         }
         return ressult;
+    }
+
+    public Map<String, Integer> getTongThongKe(Date fromDate, Date toDate) {
+        String sql = """
+        SELECT 
+            COUNT(DISTINCT HoaDon.maHoaDon) AS TongSoHoaDon,
+            SUM(ChiTietHoaDon.soLuong) AS TongSoLuongSach,
+            SUM(ChiTietHoaDon.soLuong * ChiTietHoaDon.donGia) AS TongDoanhThu
+        FROM HoaDon
+        JOIN ChiTietHoaDon ON HoaDon.maHoaDon = ChiTietHoaDon.maHoaDon
+        WHERE ngayTaoDon BETWEEN ? AND ?
+        """;
+
+        Map<String, Integer> result = new HashMap<>();
+        try (Connection con = ConnectDB.getInstance().getConnection(); 
+             PreparedStatement p = con.prepareStatement(sql)) {
+            p.setDate(1, new java.sql.Date(fromDate.getTime()));
+            p.setDate(2, new java.sql.Date(toDate.getTime()));
+            
+            try (ResultSet rs = p.executeQuery()) {
+                if (rs.next()) {
+                    result.put("TongSoHoaDon", rs.getInt("TongSoHoaDon"));
+                    result.put("TongSoLuongSach", rs.getInt("TongSoLuongSach"));
+                    result.put("TongDoanhThu", rs.getInt("TongDoanhThu"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     public List<ThongKe_model> getChartThongKeLast7Days() {
@@ -147,24 +179,17 @@ public class ThongKe_Dao {
     public List<ThongKe_model> getChartThongKeTheoNgay(Date fromDate, Date toDate) {
         List<ThongKe_model> day_statistic = new ArrayList<>();
         String sql = """
-            WITH DateRange AS (
-                SELECT CAST(? AS DATE) AS ngayTaoDon
-                UNION ALL
-                SELECT DATEADD(DAY, 1, ngayTaoDon)
-                FROM DateRange
-                WHERE DATEADD(DAY, 1, ngayTaoDon) <= CAST(? AS DATE)
-            )
             SELECT 
-                DAY(DateRange.ngayTaoDon) AS ngay, 
-                MONTH(DateRange.ngayTaoDon) AS thang, 
-                YEAR(DateRange.ngayTaoDon) AS nam, 
-                COALESCE(SUM(cthd.donGia * cthd.soLuong), 0) AS doanhThu, 
+                DAY(hd.ngayTaoDon) AS ngay,
+                MONTH(hd.ngayTaoDon) AS thang,
+                YEAR(hd.ngayTaoDon) AS nam,
+                COALESCE(SUM(cthd.donGia * cthd.soLuong), 0) AS doanhThu,
                 COALESCE(SUM(cthd.donGia * cthd.soLuong * 0.4), 0) AS loiNhuan
-            FROM DateRange
-            LEFT JOIN HoaDon AS hd ON CAST(hd.ngayTaoDon AS DATE) = DateRange.ngayTaoDon
-            LEFT JOIN ChiTietHoaDon AS cthd ON hd.maHoaDon = cthd.maHoaDon
-            GROUP BY YEAR(DateRange.ngayTaoDon), MONTH(DateRange.ngayTaoDon), DAY(DateRange.ngayTaoDon)
-            ORDER BY nam DESC, thang DESC, ngay DESC
+            FROM HoaDon hd
+            LEFT JOIN ChiTietHoaDon cthd ON hd.maHoaDon = cthd.maHoaDon
+            WHERE CAST(hd.ngayTaoDon AS DATE) BETWEEN ? AND ?
+            GROUP BY YEAR(hd.ngayTaoDon), MONTH(hd.ngayTaoDon), DAY(hd.ngayTaoDon)
+            ORDER BY nam DESC, thang DESC, ngay DESC;
             """;
 
         try {
@@ -194,9 +219,9 @@ public class ThongKe_Dao {
                 double loiNhuan = rs.getDouble("loiNhuan");
 
                 // Định dạng ngày tháng năm theo dd/MM/yyyy
-                String ngayThangNam = String.format("%02d/%02d/%d", ngay, thang, nam);
+                String ngaytk = String.format("%d/%d", ngay, thang);
 
-                ThongKe_model tk = new ThongKe_model(ngayThangNam, String.valueOf(nam), doanhThu, loiNhuan);
+                ThongKe_model tk = new ThongKe_model(ngaytk, String.valueOf(nam), doanhThu, loiNhuan);
                 day_statistic.add(tk);
             }
         } catch (SQLException e) {
@@ -263,4 +288,140 @@ public class ThongKe_Dao {
         return nam_statistic;
     }
 
+    public void showPieChart_LoaiSach(PieChart pieChart, Date tuNgay, Date denNgay) {
+
+        String sql = """
+                select ls.tenLoai, SUM(cthd.donGia*cthd.soLuong) as doanhThu
+                from HoaDon hd 
+                join ChiTietHoaDon cthd
+                on hd.maHoaDon = cthd.maHoaDon
+                join Sach s 
+                on cthd.ISBN = s.ISBN
+                join LoaiSach ls
+                on ls.maLoai = s.maLoaiSach
+                where hd.ngayTaoDon BETWEEN ? AND ?
+                group by ls.tenLoai
+                order by ls.tenLoai
+                """;
+
+        // Using try-with-resources to automatically close the resources
+        try (Connection con = ConnectDB.getInstance().getConnection(); PreparedStatement p = con.prepareStatement(sql)) {
+
+            // Set the dates as java.sql.Date to ensure correct format for the database
+            p.setDate(1, new java.sql.Date(tuNgay.getTime()));
+            p.setDate(2, new java.sql.Date(denNgay.getTime()));
+
+            try (ResultSet rs = p.executeQuery()) {
+                pieChart.clearData();
+                int index = 0;
+                while (rs.next()) {
+                    String tenLoai = rs.getString("tenLoai");
+                    double doanhThu = rs.getDouble("doanhThu");
+                    // Handle color index in a circular way to avoid exceeding the available colors
+                    pieChart.addData(new ModelPieChart(tenLoai, doanhThu, getColor(index++)));
+                }
+                p.close();
+                rs.close();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showPieChart_TacGia(PieChart pieChart, Date tuNgay, Date denNgay) {
+
+        String sql = """
+                select s.tacGia, SUM(cthd.donGia*cthd.soLuong) as doanhThu
+                from HoaDon hd 
+                join ChiTietHoaDon cthd
+                on hd.maHoaDon = cthd.maHoaDon
+                join Sach s 
+                on cthd.ISBN = s.ISBN
+                join LoaiSach ls
+                on ls.maLoai = s.maLoaiSach
+                where hd.ngayTaoDon BETWEEN ? AND ?
+                group by s.tacGia
+                order by s.tacGia
+                """;
+
+        try (Connection con = ConnectDB.getInstance().getConnection(); PreparedStatement p = con.prepareStatement(sql)) {
+
+            p.setDate(1, new java.sql.Date(tuNgay.getTime()));
+            p.setDate(2, new java.sql.Date(denNgay.getTime()));
+
+            try (ResultSet rs = p.executeQuery()) {
+                pieChart.clearData();
+                int index = 0;
+                while (rs.next()) {
+                    String tacGia = rs.getString("tacGia");
+                    double doanhThu = rs.getDouble("doanhThu");
+                    // Handle color index in a circular way to avoid exceeding the available colors
+                    pieChart.addData(new ModelPieChart(tacGia, doanhThu, getColor(index++)));
+                }
+                p.close();
+                rs.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Color getColor(int index) {
+        Random random = new Random(index);
+        int red = random.nextInt(256);
+        int green = random.nextInt(256);
+        int blue = random.nextInt(256);
+        return new Color(red, green, blue);
+    }
+
+    // Hàm tải dữ liệu từ cơ sở dữ liệu và trả về danh sách các đối tượng thống kê
+    public List<ThongKe_model> loadStatisticData(Date fromDate, Date toDate) {
+        List<ThongKe_model> statisticData = new ArrayList<>();
+
+        String sql = """
+            SELECT 
+                hd.maHoaDon, 
+                s.tenSach, 
+                s.tacGia, 
+                ls.tenLoai, 
+                cthd.soLuong, 
+                cthd.donGia, 
+                cthd.donGia * cthd.soLuong AS doanhThu, 
+                (cthd.donGia * cthd.soLuong * 0.4) AS loiNhuan
+            FROM HoaDon hd
+            JOIN ChiTietHoaDon cthd ON hd.maHoaDon = cthd.maHoaDon
+            JOIN Sach s ON cthd.ISBN = s.ISBN
+            JOIN LoaiSach ls ON s.maLoaiSach = ls.maLoai
+            WHERE hd.ngayTaoDon BETWEEN ? AND ?
+        """;
+
+        try (Connection con = ConnectDB.getInstance().getConnection(); PreparedStatement p = con.prepareStatement(sql)) {
+
+            // Chuyển đổi từ Date sang java.sql.Date
+            p.setDate(1, new java.sql.Date(fromDate.getTime()));
+            p.setDate(2, new java.sql.Date(toDate.getTime()));
+
+            ResultSet rs = p.executeQuery();
+
+            while (rs.next()) {
+                String maHoaDon = rs.getString("maHoaDon");
+                String tenSach = rs.getString("tenSach");
+                String tacGia = rs.getString("tacGia");
+                String tenLoai = rs.getString("tenLoai");
+                int soLuong = rs.getInt("soLuong");
+                double donGia = rs.getDouble("donGia");
+                double doanhThu = rs.getDouble("doanhThu");
+                double loiNhuan = rs.getDouble("loiNhuan");
+
+                // Tạo đối tượng ThongKeModel để lưu thông tin
+                ThongKe_model model = new ThongKe_model(maHoaDon, tenSach, tacGia, tenLoai, soLuong, donGia, doanhThu, loiNhuan);
+                statisticData.add(model);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return statisticData;
+    }
 }
