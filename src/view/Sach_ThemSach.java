@@ -437,7 +437,7 @@ public class Sach_ThemSach extends javax.swing.JDialog {
 //        (\\.: Cho phép một dấu chấm (thập phân).
 //        [0-9]+: Yêu cầu ít nhất một chữ số sau dấu chấm.
 //        ?: Toàn bộ nhóm này là tùy chọn, nghĩa là phần thập phân có thể không xuất hiện.
-        String regex = "^[0-9]+(\\.[0-9]{3})?$";
+        String regex = "^[0-9]{4,}$";
         if (donGiaStr == null || !donGiaStr.matches(regex)) {
             JOptionPane.showMessageDialog(this, "Đơn giá không hợp lệ!!!", "Thông báo", JOptionPane.WARNING_MESSAGE);
             return false;
