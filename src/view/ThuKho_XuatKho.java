@@ -4,6 +4,7 @@
  */
 package view;
 
+import com.toedter.calendar.JDateChooser;
 import dao.*;
 import entity.*;
 
@@ -12,6 +13,9 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
@@ -104,7 +108,14 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Vui lòng nhập ngày lập bằng hoặc sau ngày hiện tại.");
             SwingUtilities.invokeLater(() -> {
                 isUpdatingDate = true; // Đặt cờ để tránh vòng lặp khi xóa ngày
-                jdc_ngayLapPX.setDate(null); // Xóa ngày lập nếu không hợp lệ
+                // Lấy ngày hiện tại
+                LocalDate ngayHT = LocalDate.now();
+
+                // Chuyển đổi LocalDate sang java.util.Date
+                Date date = Date.from(ngayHT.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+                // Đặt ngày hiện tại cho JDateChooser
+                jdc_ngayLapPX.setDate(date);
                 isUpdatingDate = false; // Đặt lại cờ sau khi xóa
             });
         }
@@ -117,6 +128,15 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         jcb_chonSach.setEnabled(false);
         tf_soLuong.setEnabled(false);
 
+        // Lấy ngày hiện tại
+        LocalDate ngayHienTai = LocalDate.now();
+
+        // Chuyển đổi LocalDate sang java.util.Date
+        Date date = Date.from(ngayHienTai.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+        // Đặt ngày hiện tại cho JDateChooser
+        jdc_ngayLapPX.setDate(date);
+
         jcb_khoXuat.addItem("");
         jcb_khoNhap.addItem("");
 
@@ -126,7 +146,6 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
             List<KhoHang> danhSachTenKho = dao.getDSKhoHang();
 
             for (KhoHang tenKho : danhSachTenKho) {
-
                 jcb_khoXuat.addItem(tenKho.getTenKho());
                 jcb_khoNhap.addItem(tenKho.getTenKho());
             }
@@ -277,7 +296,6 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
 //        System.out.println("Mã xuất:" + maKhoHangXuat);
 //        System.out.println("Mã nhập:" + maKhoHangNhap);
 
-        System.out.println("============================================================");
         for (int i = 0; i < model.getRowCount(); i++) {
             // Lấy ISBN và số lượng từ bảng
             String isbn = model.getValueAt(i, 1).toString();
@@ -471,7 +489,7 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         jPanel1.add(jLabel8);
         jLabel8.setBounds(190, 270, 30, 40);
 
-        jdc_ngayLapPX.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
+        jdc_ngayLapPX.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jdc_ngayLapPX.addAncestorListener(new javax.swing.event.AncestorListener() {
             public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
                 jdc_ngayLapPXAncestorAdded(evt);
@@ -504,6 +522,7 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         jLabel10.setBackground(new java.awt.Color(255, 255, 255));
         jLabel10.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel10.setText("ISBN");
         jPanel1.add(jLabel10);
         jLabel10.setBounds(1000, 160, 60, 30);
@@ -520,10 +539,11 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         jPanel1.add(jLabel13);
         jLabel13.setBounds(1070, 224, 24, 20);
 
-        tf_soLuong.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
+        tf_soLuong.setFont(new java.awt.Font("Arial", 0, 20)); // NOI18N
         tf_soLuong.setPreferredSize(new java.awt.Dimension(64, 40));
         tf_soLuong.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
+
             }
         });
         jPanel1.add(tf_soLuong);
@@ -574,7 +594,7 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         jPanel1.add(btn_taoPX);
         btn_taoPX.setBounds(1050, 630, 170, 50);
 
-        jcb_khoNhap.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jcb_khoNhap.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jcb_khoNhap.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jcb_khoNhapActionPerformed(evt);
@@ -583,11 +603,11 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         jPanel1.add(jcb_khoNhap);
         jcb_khoNhap.setBounds(250, 270, 340, 40);
 
-        jcb_chonSach.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        jcb_chonSach.setFont(new java.awt.Font("Arial", 0, 20)); // NOI18N
         jPanel1.add(jcb_chonSach);
         jcb_chonSach.setBounds(1110, 150, 340, 40);
 
-        jcb_khoXuat.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jcb_khoXuat.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jcb_khoXuat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jcb_khoXuatActionPerformed(evt);
@@ -622,7 +642,7 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         jPanel1.add(btn_xoaSach);
         btn_xoaSach.setBounds(1350, 630, 120, 50);
 
-        tbl_phieuXuatKho.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
+        tbl_phieuXuatKho.setFont(new java.awt.Font("Arial", 0, 20)); // NOI18N
         tbl_phieuXuatKho.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -662,8 +682,18 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_xoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_xoaActionPerformed
-        jcb_chonSach.setSelectedItem(0);
+        // Lấy ngày hiện tại
+        LocalDate ngayHienTai = LocalDate.now();
+
+        // Chuyển đổi LocalDate sang java.util.Date
+        Date date = Date.from(ngayHienTai.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+        // Đặt ngày hiện tại cho JDateChooser
+        jdc_ngayLapPX.setDate(date);
         tf_soLuong.setText("");
+        jcb_khoNhap.setSelectedIndex(0);
+        jcb_khoXuat.setSelectedIndex(0);
+        jcb_chonSach.setSelectedIndex(0);
     }//GEN-LAST:event_btn_xoaActionPerformed
 
     private void btn_huyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_huyActionPerformed
@@ -672,14 +702,21 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
 
         // Bắt đầu cập nhật ngày lập
         isUpdatingDate = true; // Đặt cờ để tránh thông báo lỗi
-        jdc_ngayLapPX.setDate(null); // Xóa ngày lập
-        isUpdatingDate = false; // Đặt lại cờ sau khi xóa
 
-        // Xóa giá trị trong các TextField
-        jcb_khoNhap.setSelectedItem(0);
-        jcb_khoXuat.setSelectedItem(0);
-        jcb_chonSach.setSelectedItem(0);
+        // Lấy ngày hiện tại
+        LocalDate ngayHienTai = LocalDate.now();
+
+        // Chuyển đổi LocalDate sang java.util.Date
+        Date date = Date.from(ngayHienTai.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+        // Đặt ngày hiện tại cho JDateChooser
+        jdc_ngayLapPX.setDate(date);
         tf_soLuong.setText("");
+        jcb_khoNhap.setSelectedIndex(0);
+        jcb_khoXuat.setSelectedIndex(0);
+        jcb_chonSach.setSelectedIndex(0);
+
+        isUpdatingDate = false; // Đặt lại cờ sau khi xóa
     }//GEN-LAST:event_btn_huyActionPerformed
 
     private void btn_taoPXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_taoPXActionPerformed
@@ -718,10 +755,10 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
                 isUpdatingDate = false; // Đặt lại cờ sau khi xóa
 
                 // Xóa giá trị trong các TextField
-                jcb_khoNhap.setSelectedItem(0);
-                jcb_khoXuat.setSelectedItem(0);
-                jcb_chonSach.setSelectedItem(0);
                 tf_soLuong.setText("");
+                jcb_khoNhap.setSelectedIndex(0);
+                jcb_khoXuat.setSelectedIndex(0);
+                jcb_chonSach.setSelectedIndex(0);
 
                 // In ra PDF, truyền dsCTPXK vào
                 if (dsCTPXK != null) {
@@ -733,7 +770,7 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
-        }//GEN-LAST:event_btn_taoPXActionPerformed
+        }
 
     private void jcb_khoXuatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcb_khoXuatActionPerformed
         handleKhoXuatChange();
@@ -874,8 +911,21 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
                 }
 
                 // Xóa các text fields sau khi thêm thành công
-                jcb_chonSach.setSelectedItem(0);
+                // Bắt đầu cập nhật ngày lập
+                isUpdatingDate = true; // Đặt cờ để tránh thông báo lỗi
+
+                // Lấy ngày hiện tại
+                LocalDate ngayHienTai = LocalDate.now();
+
+                // Chuyển đổi LocalDate sang java.util.Date
+                Date date = Date.from(ngayHienTai.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+                // Đặt ngày hiện tại cho JDateChooser
+                jdc_ngayLapPX.setDate(date);
                 tf_soLuong.setText("");
+                jcb_khoNhap.setSelectedIndex(0);
+                jcb_khoXuat.setSelectedIndex(0);
+                jcb_chonSach.setSelectedIndex(0);
 
             } else {
                 JOptionPane.showMessageDialog(null, "Không tìm thấy sách với ISBN: " + isbn);
