@@ -794,7 +794,6 @@ public class NguoiQuanLy_ThongKeDoanhThu extends javax.swing.JInternalFrame {
                     default ->
                         JOptionPane.showMessageDialog(null, "Loại xuất không hợp lệ.");
                 }
-                JOptionPane.showMessageDialog(this, "Xuất file Excel thành công!");
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "Xuất file Excel thất bại: " + e.getMessage());
             }
