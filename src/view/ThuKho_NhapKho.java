@@ -650,7 +650,7 @@ public class ThuKho_NhapKho extends JInternalFrame {
 
 //            System.out.println("Mã phiếu nhập kho: " + ma_PNK);
 
-            boolean isInserted = pn_dao.insertPhieuNhapKho(ma_PNK, sqlDate, "22690761", maKH, tong_SL);
+            boolean isInserted = pn_dao.insertPhieuNhapKho(ma_PNK, sqlDate, DangNhap.ma, maKH, tong_SL);
 
             if (isInserted) {
                 System.out.println("Thêm phiếu nhập kho thành công!");
