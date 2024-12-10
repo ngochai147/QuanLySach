@@ -219,11 +219,13 @@ public final class NguoiQuanLy_ThongKeTongQuan extends javax.swing.JInternalFram
         jPanel_SLNhanVien.setBackground(new java.awt.Color(102, 102, 0));
         jPanel_SLNhanVien.setForeground(new java.awt.Color(255, 255, 255));
 
+        jTextField_TongSLHD.setEditable(false);
         jTextField_TongSLHD.setBackground(new java.awt.Color(102, 102, 0));
         jTextField_TongSLHD.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jTextField_TongSLHD.setForeground(new java.awt.Color(255, 255, 255));
         jTextField_TongSLHD.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField_TongSLHD.setBorder(null);
+        jTextField_TongSLHD.setFocusable(false);
 
         jLabel_TongSLHD.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel_TongSLHD.setForeground(new java.awt.Color(255, 255, 255));
@@ -333,11 +335,13 @@ public final class NguoiQuanLy_ThongKeTongQuan extends javax.swing.JInternalFram
         jPanel_TongDoanhThu.setBackground(new java.awt.Color(102, 102, 0));
         jPanel_TongDoanhThu.setForeground(new java.awt.Color(255, 255, 255));
 
+        jTextField_TongDoanhThu.setEditable(false);
         jTextField_TongDoanhThu.setBackground(new java.awt.Color(102, 102, 0));
         jTextField_TongDoanhThu.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jTextField_TongDoanhThu.setForeground(new java.awt.Color(255, 255, 255));
         jTextField_TongDoanhThu.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField_TongDoanhThu.setBorder(null);
+        jTextField_TongDoanhThu.setFocusable(false);
 
         jLabel_NhanVien1.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel_NhanVien1.setForeground(new java.awt.Color(255, 255, 255));
@@ -369,11 +373,13 @@ public final class NguoiQuanLy_ThongKeTongQuan extends javax.swing.JInternalFram
         jPanel_SL_Sach.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
         jPanel_SL_Sach.setForeground(new java.awt.Color(255, 255, 255));
 
+        jTextField_SoLuongSach.setEditable(false);
         jTextField_SoLuongSach.setBackground(new java.awt.Color(102, 102, 0));
         jTextField_SoLuongSach.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jTextField_SoLuongSach.setForeground(new java.awt.Color(255, 255, 255));
         jTextField_SoLuongSach.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField_SoLuongSach.setBorder(null);
+        jTextField_SoLuongSach.setFocusable(false);
 
         jLabel_SoLuongSach.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel_SoLuongSach.setForeground(new java.awt.Color(255, 255, 255));
@@ -449,7 +455,7 @@ public final class NguoiQuanLy_ThongKeTongQuan extends javax.swing.JInternalFram
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(panelShadow1, javax.swing.GroupLayout.DEFAULT_SIZE, 661, Short.MAX_VALUE)))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)

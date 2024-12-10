@@ -637,11 +637,13 @@ public class NguoiQuanLy_ThongKeDoanhThu extends javax.swing.JInternalFrame {
         jPanel_DoanhThu.add(jPanel_Nam);
         jPanel_Nam.setBounds(1008, 66, 530, 44);
 
-        jDateChooser_From.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true), "Từ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 18))); // NOI18N
+        jDateChooser_From.setBackground(new java.awt.Color(102, 102, 0));
+        jDateChooser_From.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true), "Từ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 18), new java.awt.Color(255, 255, 255))); // NOI18N
         jPanel_DoanhThu.add(jDateChooser_From);
         jDateChooser_From.setBounds(360, 120, 250, 60);
 
-        jDateChooser_To.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true), "Đến", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 18))); // NOI18N
+        jDateChooser_To.setBackground(new java.awt.Color(102, 102, 0));
+        jDateChooser_To.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true), "Đến", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 18), new java.awt.Color(255, 255, 255))); // NOI18N
         jPanel_DoanhThu.add(jDateChooser_To);
         jDateChooser_To.setBounds(620, 120, 250, 60);
 
@@ -655,7 +657,7 @@ public class NguoiQuanLy_ThongKeDoanhThu extends javax.swing.JInternalFrame {
             }
         });
         jPanel_DoanhThu.add(jButton_Xem);
-        jButton_Xem.setBounds(900, 140, 166, 30);
+        jButton_Xem.setBounds(900, 130, 166, 40);
 
         jButton_XuatExcel.setBackground(new java.awt.Color(102, 102, 0));
         jButton_XuatExcel.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
@@ -667,7 +669,7 @@ public class NguoiQuanLy_ThongKeDoanhThu extends javax.swing.JInternalFrame {
             }
         });
         jPanel_DoanhThu.add(jButton_XuatExcel);
-        jButton_XuatExcel.setBounds(1080, 140, 133, 30);
+        jButton_XuatExcel.setBounds(1080, 130, 133, 40);
 
         jButton_LamMoi.setBackground(new java.awt.Color(255, 0, 0));
         jButton_LamMoi.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
@@ -679,7 +681,7 @@ public class NguoiQuanLy_ThongKeDoanhThu extends javax.swing.JInternalFrame {
             }
         });
         jPanel_DoanhThu.add(jButton_LamMoi);
-        jButton_LamMoi.setBounds(1220, 140, 115, 30);
+        jButton_LamMoi.setBounds(1220, 130, 115, 40);
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/anhnen.jpg"))); // NOI18N
         jLabel3.setPreferredSize(new java.awt.Dimension(1520, 716));

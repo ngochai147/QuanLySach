@@ -761,6 +761,9 @@
         </Container>
         <Component class="com.toedter.calendar.JDateChooser" name="jDateChooser_From">
           <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="66" red="66" type="rgb"/>
+            </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
                 <TitledBorder title="T&#x1eeb;">
@@ -768,6 +771,7 @@
                     <LineBorder roundedCorners="true"/>
                   </Border>
                   <Font PropertyName="font" name="Arial" size="18" style="1"/>
+                  <Color PropertyName="color" blue="ff" green="ff" red="ff" type="rgb"/>
                 </TitledBorder>
               </Border>
             </Property>
@@ -780,6 +784,9 @@
         </Component>
         <Component class="com.toedter.calendar.JDateChooser" name="jDateChooser_To">
           <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="66" red="66" type="rgb"/>
+            </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
                 <TitledBorder title="&#x110;&#x1ebf;n">
@@ -787,6 +794,7 @@
                     <LineBorder roundedCorners="true"/>
                   </Border>
                   <Font PropertyName="font" name="Arial" size="18" style="1"/>
+                  <Color PropertyName="color" blue="ff" green="ff" red="ff" type="rgb"/>
                 </TitledBorder>
               </Border>
             </Property>
@@ -815,7 +823,7 @@
           </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="900" y="140" width="166" height="30"/>
+              <AbsoluteConstraints x="900" y="130" width="166" height="40"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -837,7 +845,7 @@
           </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="1080" y="140" width="133" height="30"/>
+              <AbsoluteConstraints x="1080" y="130" width="133" height="40"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -859,7 +867,7 @@
           </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="1220" y="140" width="-1" height="30"/>
+              <AbsoluteConstraints x="1220" y="130" width="-1" height="40"/>
             </Constraint>
           </Constraints>
         </Component>
