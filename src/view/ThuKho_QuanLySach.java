@@ -68,25 +68,25 @@ public class ThuKho_QuanLySach extends javax.swing.JInternalFrame {
             return c;
             }
         });
-        TableActionEvent event;
-        event = new TableActionEvent() {
-            @Override
-            public void onEdit(int row) {
-                 JOptionPane.showMessageDialog(null, "Simple Information Message");
-            }
-
-            @Override
-            public void onDelete(int row) {
-                
-            }
-
-            @Override
-            public void onView(int row) {
-                JOptionPane.showMessageDialog(null, "Simple Information Message");
-            }
-        };
-        tbl_dsSach.getColumnModel().getColumn(6).setCellRenderer(new TableActionRender(1));
-        tbl_dsSach.getColumnModel().getColumn(6).setCellEditor(new TableActionCellEditor(event, 1));
+//        TableActionEvent event;
+//        event = new TableActionEvent() {
+//            @Override
+//            public void onEdit(int row) {
+//                 JOptionPane.showMessageDialog(null, "Simple Information Message");
+//            }
+//
+//            @Override
+//            public void onDelete(int row) {
+//
+//            }
+//
+//            @Override
+//            public void onView(int row) {
+//                JOptionPane.showMessageDialog(null, "Simple Information Message");
+//            }
+//        };
+//        tbl_dsSach.getColumnModel().getColumn(6).setCellRenderer(new TableActionRender(1));
+//        tbl_dsSach.getColumnModel().getColumn(6).setCellEditor(new TableActionCellEditor(event, 1));
     }
     
     public void canGiua_tableHeader() {

@@ -51,11 +51,16 @@ public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
     ArrayList<PhieuNhapKho> listPNK = pnk_dao.getAllPhieuNhapKho();
     private DefaultTableModel modelXuatNhapKho;
     private ThuKho thuKho;
+    private NguoiQuanLy nguoiQuanLy;
     /**
      * Creates new form TrangNhapKho_GUI
      */
-    public ThuKho_QuanLyNhapXuatKho(ThuKho thuKho) {
-        this.thuKho = thuKho;
+    public ThuKho_QuanLyNhapXuatKho(JFrame jFrame) {
+        if(jFrame instanceof ThuKho) {
+            thuKho = (ThuKho) jFrame;
+        }else {
+            nguoiQuanLy = (NguoiQuanLy) jFrame;
+        }
 
         initComponents();
         this.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
@@ -63,7 +68,22 @@ public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
         ui.setNorthPane(null);
 
          // doc du lieu tu database SQL vao Jtable
-        modelXuatNhapKho = new DefaultTableModel(new Object[]{"STT", "Mã phiếu", "Mã thủ kho", "Tên kho nhập", "Tên kho xuất", "Loại phiếu", "Số lượng", "Ngày lập phiếu", ""}, 0);
+        modelXuatNhapKho = new javax.swing.table.DefaultTableModel(
+                new Object [][] {
+                },
+                new String [] {
+                        "STT", "Mã phiếu", "Mã thủ kho", "Tên kho nhập", "Tên kho xuất", "Loại phiếu", "Số lượng", "Ngày lập phiếu", ""
+                }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                    false, false, false, false, false, false, false, false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        };
+
         DocDuLieuDatabaseVaoTable();
         tbl_QLXuatNhapKho.setModel(modelXuatNhapKho);
 
@@ -82,7 +102,22 @@ public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
         ui.setNorthPane(null);
 
          // doc du lieu tu database SQL vao Jtable
-        modelXuatNhapKho = new DefaultTableModel(new Object[]{"STT", "Mã phiếu", "Mã thủ kho", "Tên kho nhập", "Tên kho xuất", "Loại phiếu", "Số lượng", "Ngày lập phiếu", ""}, 0);
+        modelXuatNhapKho = new javax.swing.table.DefaultTableModel(
+                new Object [][] {
+                },
+                new String [] {
+                        "STT", "Mã phiếu", "Mã thủ kho", "Tên kho nhập", "Tên kho xuất", "Loại phiếu", "Số lượng", "Ngày lập phiếu", ""
+                }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                    false, false, false, false, false, false, false, false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        };
+
         DocDuLieuDatabaseVaoTable();
         tbl_QLXuatNhapKho.setModel(modelXuatNhapKho);
 
@@ -212,7 +247,7 @@ public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
 
                 if (loaiPhieu.equalsIgnoreCase("Xuất kho")) {
                     // Lấy mã phiếu xuất kho từ bảng
-                    String maPXK = tbl_QLXuatNhapKho.getValueAt(n, 0).toString(); // Cột 0 chứa mã phiếu xuất
+                    String maPXK = tbl_QLXuatNhapKho.getValueAt(n, 1).toString(); // Cột 0 chứa mã phiếu xuất
 
                     ArrayList<ChiTietPhieuXuatKho> dsCTPXKtemp = new ArrayList<>();
 
@@ -449,20 +484,12 @@ public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
         tbl_QLXuatNhapKho.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         tbl_QLXuatNhapKho.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null}
+
             },
             new String [] {
-                "STT", "Mã phiếu", "Mã thủ kho", "Mã kho hàng nhập", "Mã kho hàng xuất", "Loại phiếu", "Số lượng", "Ngày lập phiếu", ""
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, true
-            };
 
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
             }
-        });
+        ));
         tbl_QLXuatNhapKho.setAutoscrolls(false);
         tbl_QLXuatNhapKho.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         tbl_QLXuatNhapKho.setName(""); // NOI18N
@@ -542,7 +569,10 @@ public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
 
     private void btn_XuatKhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_XuatKhoActionPerformed
         try {
-            thuKho.getDesktopPanel(new ThuKho_XuatKho());
+            if(thuKho != null)
+                thuKho.getDesktopPanel(new ThuKho_XuatKho());
+            else if(nguoiQuanLy != null)
+                nguoiQuanLy.getDesktopPanel(new ThuKho_XuatKho());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

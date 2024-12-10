@@ -8,7 +8,10 @@ import dao.ExportExcel_DAO;
 import dao.ThongKeTonKho_DAO;
 import entity.ThongKeTonKho_model;
 import java.awt.Font;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
@@ -51,17 +54,39 @@ public class NguoiQuanLy_ThongKeTonKho extends javax.swing.JInternalFrame {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
         List<ThongKeTonKho_model> listSachTonKho = thongKeTonKho_Dao.getThongKeTonKho(tenKho);
-        for (ThongKeTonKho_model thongKe : listSachTonKho) {
-            model.addRow(new Object[]{
-                thongKe.getISBN(),
-                thongKe.getTenSach(),
-                thongKe.getTacGia(),
-                thongKe.getSoLuongTonKho(),
-                thongKe.getTrangThai()
-            });
 
+        // Sử dụng Map để gộp sách theo ISBN
+        Map<String, ThongKeTonKho_model> sachTonKho = new HashMap<>();
+
+        for (ThongKeTonKho_model thongKe : listSachTonKho) {
+            String isbn = thongKe.getISBN();
+            if (sachTonKho.containsKey(isbn)) {
+                // Nếu đã tồn tại ISBN, cộng số lượng tồn kho
+                ThongKeTonKho_model existingThongKe = sachTonKho.get(isbn);
+                existingThongKe.setSoLuongTonKho(existingThongKe.getSoLuongTonKho() + thongKe.getSoLuongTonKho());
+            } else {
+                // Nếu chưa tồn tại ISBN, thêm vào map
+                sachTonKho.put(isbn, thongKe);
+            }
         }
 
+        // Chuyển các giá trị từ Map thành List để sắp xếp
+        List<ThongKeTonKho_model> dsSach_giamDan = new ArrayList<>(sachTonKho.values());
+
+        // Sắp xếp số lượng tồn kho giảm dần
+        dsSach_giamDan.sort((o1, o2) -> Integer.compare(o2.getSoLuongTonKho(), o1.getSoLuongTonKho()));
+
+        for (ThongKeTonKho_model thongKe :  dsSach_giamDan) {
+            if (thongKe.getSoLuongTonKho() > 0) {
+                model.addRow(new Object[]{
+                        thongKe.getISBN(),
+                        thongKe.getTenSach(),
+                        thongKe.getTacGia(),
+                        thongKe.getSoLuongTonKho(),
+                        thongKe.getTrangThai()
+                });
+            }
+        }
     }
 
     private void loadDataTable() {
@@ -74,7 +99,6 @@ public class NguoiQuanLy_ThongKeTonKho extends javax.swing.JInternalFrame {
         for (String tenKho : tenKhoList) {
             combobox.addItem(tenKho);
         }
-
     }
 
     /**
