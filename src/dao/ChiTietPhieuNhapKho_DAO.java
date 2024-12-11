@@ -85,6 +85,7 @@ public class ChiTietPhieuNhapKho_DAO {
             }
         }
     }
+
       
     // Hàm lấy mã chi tiết phiếu nhập kho mới nhất từ cơ sở dữ liệu
     public String getLastMaChiTietPhieuNhapKho() {

@@ -271,6 +271,22 @@ public class Sach_ThemSach extends javax.swing.JDialog {
 
         jSpinner_SoLuong.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jSpinner_SoLuong.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
+        jSpinner_SoLuong.setModel(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
+        JFormattedTextField spinnerTextField = ((JSpinner.NumberEditor) jSpinner_SoLuong.getEditor()).getTextField();
+        spinnerTextField.setInputVerifier(new InputVerifier() {
+            @Override
+            public boolean verify(JComponent input) {
+                String text = spinnerTextField.getText().trim().replace(",", "");
+                // Kiểm tra nếu chuỗi không phải là số nguyên dương
+                if (!text.matches("^[1-9][0-9]*$")) {
+                    JOptionPane.showMessageDialog(null, "Vui lòng chỉ nhập số nguyên dương!", "Lỗi nhập liệu", JOptionPane.WARNING_MESSAGE);
+                    spinnerTextField.setText("0"); // Đặt lại về 1 nếu không hợp lệ
+                    return false;
+                }
+
+                return true; // Đầu vào hợp lệ
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -412,37 +428,21 @@ public class Sach_ThemSach extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private boolean kiemTraISBN(String iSBN) {
-//        1. ^ và $: Đảm bảo rằng toàn bộ chuỗi chỉ chứa ký tự được mô tả trong regex.
-//        2. \\d{13}: Đảm bảo chuỗi chỉ chứa 13 ký tự số liên tiếp (từ 0-9).
         String regex = "^\\d{13}$";
         return iSBN != null && iSBN.matches(regex);
     }
 
     private boolean kiemTraTenSach(String tenSach) {
-//        \\p{L}: Một chữ cái Unicode (bao gồm cả tiếng Việt có dấu như á, à, â, v.v.).
-//        0-9: Một chữ số.
-
-//        \\p{L}: Chữ cái Unicode (như a, Ă, â, é).
-//        \\p{M}: Các dấu kết hợp (như dấu sắc ́, dấu huyền ̀, dấu hỏi ̉), kết hợp với chữ cái để tạo ra các ký tự như á, ề.
-//0-9: Các chữ số   \\s: Khoảng trắng   .: Dấu chấm   ,: Dấu phẩy.   ': Dấu nháy đơn   \": Dấu nháy kép    -: Dấu gạch ngang   :: Dấu hai chấm  (): Dấu ngoặc đơn
-        String regex = "^[\\p{L}0-9][\\p{L}\\p{M}0-9\\s.,'\"-:()]*$";
+        String regex = "^[\\p{L}0-9][\\p{L}\\p{M}0-9\\s.,'\"-:()+]*$";
         return tenSach != null && !tenSach.trim().isEmpty() && tenSach.matches(regex);
     }
 
     private boolean kiemTraDonGia(String donGiaStr) {
-        // Sử dụng regex để đảm bảo donGiaStr là một số hợp lệ
-
-//        ^[0-9]+:Đảm bảo chuỗi bắt đầu với ít nhất một chữ số (số nguyên).
-//        (\\.[0-9]+)?:
-//        (\\.: Cho phép một dấu chấm (thập phân).
-//        [0-9]+: Yêu cầu ít nhất một chữ số sau dấu chấm.
-//        ?: Toàn bộ nhóm này là tùy chọn, nghĩa là phần thập phân có thể không xuất hiện.
         String regex = "^[0-9]{4,}$";
         if (donGiaStr == null || !donGiaStr.matches(regex)) {
             JOptionPane.showMessageDialog(this, "Đơn giá không hợp lệ!!!", "Thông báo", JOptionPane.WARNING_MESSAGE);
             return false;
         }
-
         try {
             double donGia = Double.parseDouble(donGiaStr);
             if (donGia < 1000) {
@@ -458,55 +458,35 @@ public class Sach_ThemSach extends javax.swing.JDialog {
 
     private boolean kiemTraSoLuong() throws SQLException {
         spinnerTextField = ((JSpinner.NumberEditor) jSpinner_SoLuong.getEditor()).getTextField();
-//      1212121212122
         String text = spinnerTextField.getText().trim().replace(",", "");
         // Kiểm tra nếu chuỗi không phải là số nguyên dương
         if (Integer.parseInt(text) == 0) {
-            JOptionPane.showMessageDialog(null, "Số lượng phải > 0!!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Số lượng phải > 0!!", "Thông báo", JOptionPane.WARNING_MESSAGE);
             return false;
         }
-        if (!text.matches("^[1-9][0-9]*$")) {
-            JOptionPane.showMessageDialog(null, "Vui lòng chỉ nhập số nguyên dương!", "Lỗi nhập liệu", JOptionPane.ERROR_MESSAGE);
-            spinnerTextField.setText("0"); // Đặt lại về 0 nếu không hợp lệ
-            return false;
+        if (Integer.parseInt(text) != 0) {
+            String tenKho = jComboBox_Kho.getSelectedItem().toString();
+            String maKho = khoHang_dao.getMaKhoTheoTenKho(tenKho);
+            int sucChua = khoHang_dao.getKhoHangTheoMaKho(maKho).getSucChua();
+            int soLuongSach = chiTietKhoHang_dao.getSoLuongSachTheoKho(maKho);
+            int soLuongSachConLai = sucChua - soLuongSach;
+            if (Integer.parseInt(text) > soLuongSachConLai) {
+                JOptionPane.showMessageDialog(this, "Số lượng sách lớn hơn sức chứa trong kho!!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+                jSpinner_SoLuong.requestFocus(); // Đặt focus vào JSpinner
+                spinnerTextField.requestFocus(); // Đặt focus vào trường văn bản bên trong JSpinner
+                spinnerTextField.selectAll(); // Chọn tất cả văn bản trong trường
+                return false;
+            }
         }
-        String tenKho = jComboBox_Kho.getSelectedItem().toString();
-        String maKho = khoHang_dao.getMaKhoTheoTenKho(tenKho);
-        int sucChua = khoHang_dao.getKhoHangTheoMaKho(maKho).getSucChua();
-        int soLuongSach = chiTietKhoHang_dao.getSoLuongSachTheoKho(maKho);
-        int soLuongSachConLai = sucChua - soLuongSach;
-        if (Integer.parseInt(text) > soLuongSachConLai) {
-            JOptionPane.showMessageDialog(this, "Số lượng sách lớn hơn sức chứa trong kho!!", "Thông báo", JOptionPane.WARNING_MESSAGE);
-            jSpinner_SoLuong.requestFocus(); // Đặt focus vào JSpinner
-            spinnerTextField.requestFocus(); // Đặt focus vào trường văn bản bên trong JSpinner
-            spinnerTextField.selectAll(); // Chọn tất cả văn bản trong trường
-            return false;
-        }
-
         return true;
     }
 
     private boolean kiemTratacGia(String tacGia) {
-//        \\p{L}:Khớp với bất kỳ chữ cái Unicode nào (bao gồm cả tiếng Việt như Đ, á, é, v.v.).
-//        \\p{M}:Hỗ trợ các ký tự dấu kết hợp, như dấu sắc ́, dấu huyền ̀, dấu nặng ̣, v.v. Điều này giúp nhận diện đúng các ký tự tiếng Việt.
-//        \\s:Khớp với khoảng trắng (dấu cách giữa các từ trong tên tác giả).
-//        .:Cho phép dấu chấm trong tên (như trong "J.R.R. Tolkien").
-//        ':Hỗ trợ dấu nháy đơn trong tên (như "D'Artagnan").
-//        +:Cho phép lặp lại bất kỳ số lần nào (1 hoặc nhiều ký tự).
-        String regex = "^[\\p{L}\\s.']+$";
+        String regex = "^[\\p{L}\\s.'-]+$";
         return tacGia != null && !tacGia.trim().isEmpty() && tacGia.matches(regex);
     }
 
     private boolean kiemTraNhaXB(String nhaXB) {
-//    \\p{L}:Khớp với các chữ cái Unicode (bao gồm chữ cái có dấu tiếng Việt).
-//    \\p{M}:Khớp với các dấu kết hợp (như dấu sắc, dấu huyền) để hỗ trợ tiếng Việt đầy đủ.
-//    0-9:Khớp với các chữ số.
-//    \\s:Khớp với khoảng trắng giữa các từ.
-//    Dấu chấm (.): Ví dụ: "NXB Văn Học."
-//    Dấu phẩy (,): Không phổ biến nhưng có thể xuất hiện.
-//    Dấu nháy đơn ('): Ví dụ: "Hội Nhà Văn's Collection."
-//    Dấu gạch ngang (-): Ví dụ: "Mint-Books."
-
         String regex = "^[\\p{L}\\p{M}0-9\\s.,'-]+$";
         return nhaXB != null && !nhaXB.trim().isEmpty() && nhaXB.matches(regex);
     }
@@ -620,7 +600,7 @@ public class Sach_ThemSach extends javax.swing.JDialog {
                         KhoHang kh = khoHang_dao.getKhoTheoTenKho(tenKho);
                         chiTietKhoHang_dao.themChiTietKhoHang(new ChiTietKhoHang(createMaCTKH(), soLuong, new Sach(sach.getISBN()), new KhoHang(kh.getMaKhoHang())));
                         String maPhieuNhapKho = taoTuDong_MaPhieuNhapKho();
-//                        phieuNhapDao.insertPhieuNhapKho(maPhieuNhapKho, Date.valueOf(LocalDate.now()), DangNhap.ma, kh.getMaKhoHang(), soLuong);
+                        phieuNhapDao.insertPhieuNhapKho(maPhieuNhapKho, Date.valueOf(LocalDate.now()), DangNhap.ma, kh.getMaKhoHang(), soLuong);
                         chiTietPhieuNhap_dao.insertChiTietPhieuNhapKho(taoTuDong_MaChiTietPhieuNhapKho(), maPhieuNhapKho, soLuong, sach.getISBN());
                         int width = 300; // Chiều rộng của mã vạch
                         int height = 100; // Chiều cao của mã vạch
@@ -639,7 +619,6 @@ public class Sach_ThemSach extends javax.swing.JDialog {
                         jTextField_ISBN.selectAll();
                         jTextField_ISBN.requestFocus();
                     }
-
 
                 } else {
                     jTextField_ISBN.selectAll();
