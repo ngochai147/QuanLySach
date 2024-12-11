@@ -626,13 +626,13 @@ public class Sach_ThemSach extends javax.swing.JDialog {
                         int height = 100; // Chiều cao của mã vạch
                         String userHome = System.getProperty("user.home");
                         String myData = "";
-//                    for (Sach s : sach_dao.getDSSach()) {
-//                        myData = s.getISBN();
-//                        MultiFormatWriter barcodeWriter = new MultiFormatWriter();
-//                        BitMatrix bitMatrix = barcodeWriter.encode(myData, BarcodeFormat.CODE_128, width, height);
-//                        Path desktopPath = FileSystems.getDefault().getPath(userHome, "../isbn/", myData + ".png");
-//                        MatrixToImageWriter.writeToPath(bitMatrix, "PNG", desktopPath);
-//                    }
+                    for (Sach s : sach_dao.getDSSach()) {
+                        myData = s.getISBN();
+                        MultiFormatWriter barcodeWriter = new MultiFormatWriter();
+                        BitMatrix bitMatrix = barcodeWriter.encode(myData, BarcodeFormat.CODE_128, width, height);
+                        Path desktopPath = FileSystems.getDefault().getPath(userHome, "Desktop/isbn/", myData + ".png");
+                        MatrixToImageWriter.writeToPath(bitMatrix, "PNG", desktopPath);
+                    }
                         this.dispose();
                         JOptionPane.showMessageDialog(this, "Thêm sách thành công", "Thông báo", JOptionPane.WARNING_MESSAGE);
                     } else {
@@ -649,6 +649,10 @@ public class Sach_ThemSach extends javax.swing.JDialog {
 
             } catch (SQLException ex) {
                 Logger.getLogger(Sach_ThemSach.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (WriterException e) {
+                throw new RuntimeException(e);
             }
         }
 
