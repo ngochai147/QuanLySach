@@ -265,7 +265,7 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
 
                 g2.dispose();
             }
-        });
+    });
 
         jPanel1.add(jScrollPane1);
         jScrollPane1.setBounds(18, 208, 1500, 470);
