@@ -4,7 +4,6 @@
  */
 package view;
 
-import com.toedter.calendar.JDateChooser;
 import dao.*;
 import entity.*;
 
@@ -15,7 +14,6 @@ import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
@@ -41,7 +39,7 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
     private static final String ma_CT_PXK = "CTPXK";
     private static final String ma_PXK = "PXK";
     private static final String ma_CTK = "CTKH";
-
+    private Color customGreen;
     private boolean isUpdatingDate = false; // Cờ kiểm soát việc xóa ngày để tránh vòng lặp vô hạn
     /**
      * Creates new form TrangNhapKho
@@ -140,6 +138,47 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         jcb_khoXuat.addItem("");
         jcb_khoNhap.addItem("");
 
+        jcb_khoXuat.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+
+                // Ẩn dòng đầu tiên trong danh sách khi mở
+                if (index == 0) {
+                    setVisible(false);
+                } else {
+                    setVisible(true);
+                }
+                return c;
+            }
+        });
+
+        jcb_khoNhap.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+
+                // Ẩn dòng đầu tiên trong danh sách khi mở
+                if (index == 0) {
+                    setVisible(false);
+                } else {
+                    setVisible(true);
+                }
+                return c;
+            }
+        });
+
+        jcb_khoXuat.addActionListener(e -> {
+            if (jcb_khoXuat.getSelectedIndex() == 0) {
+                jcb_khoXuat.setPopupVisible(false);
+            }
+        });
+
+        jcb_khoNhap.addActionListener(e -> {
+            if (jcb_khoNhap.getSelectedIndex() == 0) {
+                jcb_khoNhap.setPopupVisible(false);
+            }
+        });
 
         try {
             KhoHang_DAO dao = new KhoHang_DAO();
@@ -152,6 +191,85 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        chinhSua_kichThuoc_MauSac();
+    }
+
+    private void chinhSua_kichThuoc_MauSac() {
+        jcb_khoXuat.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+
+                // Loại bỏ khoảng cách thừa
+                label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+                return label;
+            }
+        });
+
+        jcb_khoNhap.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+
+                // Loại bỏ khoảng cách thừa
+                label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+                return label;
+            }
+        });
+
+        customGreen = new Color(102,102,0);
+        // Chỉnh màu xanh cho combobox
+        jcb_khoNhap.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+
+                if (isSelected) {
+                    c.setBackground(customGreen);   // Màu nền khi mục được chọn
+                    c.setForeground(Color.WHITE);   // Màu chữ khi mục được chọn
+                } else {
+                    c.setBackground(Color.white); // Màu nền cho các mục không được chọn
+                    c.setForeground(customGreen);      // Màu chữ cho các mục không được chọn
+                }
+
+                return c;
+            }
+        });
+
+        jcb_khoXuat.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+
+                if (isSelected) {
+                    c.setBackground(customGreen);   // Màu nền khi mục được chọn
+                    c.setForeground(Color.WHITE);   // Màu chữ khi mục được chọn
+                } else {
+                    c.setBackground(Color.white); // Màu nền cho các mục không được chọn
+                    c.setForeground(customGreen);      // Màu chữ cho các mục không được chọn
+                }
+
+                return c;
+            }
+        });
+
+        jcb_chonSach.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+
+                if (isSelected) {
+                    c.setBackground(customGreen);   // Màu nền khi mục được chọn
+                    c.setForeground(Color.WHITE);   // Màu chữ khi mục được chọn
+                } else {
+                    c.setBackground(Color.white); // Màu nền cho các mục không được chọn
+                    c.setForeground(customGreen);      // Màu chữ cho các mục không được chọn
+                }
+
+                return c;
+            }
+        });
     }
 
     private boolean kiemTraSoLuong(String soLuongStr) {
@@ -451,7 +569,7 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Thông tin");
         jPanel1.add(jLabel2);
-        jLabel2.setBounds(70, 90, 140, 36);
+        jLabel2.setBounds(40, 90, 140, 36);
 
         jLabel3.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -489,7 +607,7 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         jPanel1.add(jLabel8);
         jLabel8.setBounds(190, 270, 30, 40);
 
-        jdc_ngayLapPX.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
+        jdc_ngayLapPX.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
         jdc_ngayLapPX.addAncestorListener(new javax.swing.event.AncestorListener() {
             public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
                 jdc_ngayLapPXAncestorAdded(evt);
@@ -508,10 +626,9 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
 
         jLabel9.setFont(new java.awt.Font("Arial", 1, 30)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/book-stack.png"))); // NOI18N
         jLabel9.setText("Nhập sách");
         jPanel1.add(jLabel9);
-        jLabel9.setBounds(900, 90, 190, 36);
+        jLabel9.setBounds(900, 90, 160, 36);
 
         jLabel11.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
@@ -539,11 +656,10 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         jPanel1.add(jLabel13);
         jLabel13.setBounds(1070, 224, 24, 20);
 
-        tf_soLuong.setFont(new java.awt.Font("Arial", 0, 20)); // NOI18N
+        tf_soLuong.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
         tf_soLuong.setPreferredSize(new java.awt.Dimension(64, 40));
         tf_soLuong.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-
             }
         });
         jPanel1.add(tf_soLuong);
@@ -565,7 +681,7 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         btn_xoa.setBackground(new java.awt.Color(153, 0, 51));
         btn_xoa.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         btn_xoa.setForeground(new java.awt.Color(255, 255, 255));
-        btn_xoa.setText("Xóa");
+        btn_xoa.setText("Xóa rỗng");
         btn_xoa.setPreferredSize(new java.awt.Dimension(120, 42));
         btn_xoa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -594,7 +710,8 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         jPanel1.add(btn_taoPX);
         btn_taoPX.setBounds(1050, 630, 170, 50);
 
-        jcb_khoNhap.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        jcb_khoNhap.setBackground(new java.awt.Color(102, 102, 0));
+        jcb_khoNhap.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jcb_khoNhap.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jcb_khoNhapActionPerformed(evt);
@@ -603,11 +720,13 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         jPanel1.add(jcb_khoNhap);
         jcb_khoNhap.setBounds(250, 270, 340, 40);
 
-        jcb_chonSach.setFont(new java.awt.Font("Arial", 0, 20)); // NOI18N
+        jcb_chonSach.setBackground(new java.awt.Color(102, 102, 0));
+        jcb_chonSach.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         jPanel1.add(jcb_chonSach);
         jcb_chonSach.setBounds(1110, 150, 340, 40);
 
-        jcb_khoXuat.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        jcb_khoXuat.setBackground(new java.awt.Color(102, 102, 0));
+        jcb_khoXuat.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jcb_khoXuat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jcb_khoXuatActionPerformed(evt);
@@ -642,7 +761,7 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         jPanel1.add(btn_xoaSach);
         btn_xoaSach.setBounds(1350, 630, 120, 50);
 
-        tbl_phieuXuatKho.setFont(new java.awt.Font("Arial", 0, 20)); // NOI18N
+        tbl_phieuXuatKho.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
         tbl_phieuXuatKho.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -691,9 +810,17 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         // Đặt ngày hiện tại cho JDateChooser
         jdc_ngayLapPX.setDate(date);
         tf_soLuong.setText("");
-        jcb_khoNhap.setSelectedIndex(0);
-        jcb_khoXuat.setSelectedIndex(0);
-        jcb_chonSach.setSelectedIndex(0);
+        if (jcb_khoNhap.getItemCount() > 0) {
+            jcb_khoNhap.setSelectedIndex(0);
+        }
+
+        if (jcb_khoXuat.getItemCount() > 0) {
+            jcb_khoXuat.setSelectedIndex(0);
+        }
+
+        if (jcb_chonSach.getItemCount() > 0) {
+            jcb_chonSach.setSelectedIndex(0);
+        }
     }//GEN-LAST:event_btn_xoaActionPerformed
 
     private void btn_huyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_huyActionPerformed
@@ -712,14 +839,22 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         // Đặt ngày hiện tại cho JDateChooser
         jdc_ngayLapPX.setDate(date);
         tf_soLuong.setText("");
-        jcb_khoNhap.setSelectedIndex(0);
-        jcb_khoXuat.setSelectedIndex(0);
-        jcb_chonSach.setSelectedIndex(0);
+        if (jcb_khoNhap.getItemCount() > 0) {
+            jcb_khoNhap.setSelectedIndex(0);
+        }
+
+        if (jcb_khoXuat.getItemCount() > 0) {
+            jcb_khoXuat.setSelectedIndex(0);
+        }
+
+        if (jcb_chonSach.getItemCount() > 0) {
+            jcb_chonSach.setSelectedIndex(0);
+        }
 
         isUpdatingDate = false; // Đặt lại cờ sau khi xóa
     }//GEN-LAST:event_btn_huyActionPerformed
 
-    private void btn_taoPXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_taoPXActionPerformed
+    private void btn_taoPXActionPerformed(java.awt.event.ActionEvent evt) {                                          
         DefaultTableModel model = (DefaultTableModel) tbl_phieuXuatKho.getModel();
 
         String tenKhoXuat = jcb_khoNhap.getSelectedItem().toString();
@@ -756,9 +891,17 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
 
                 // Xóa giá trị trong các TextField
                 tf_soLuong.setText("");
-                jcb_khoNhap.setSelectedIndex(0);
-                jcb_khoXuat.setSelectedIndex(0);
-                jcb_chonSach.setSelectedIndex(0);
+                if (jcb_khoNhap.getItemCount() > 0) {
+                    jcb_khoNhap.setSelectedIndex(0);
+                }
+
+                if (jcb_khoXuat.getItemCount() > 0) {
+                    jcb_khoXuat.setSelectedIndex(0);
+                }
+
+                if (jcb_chonSach.getItemCount() > 0) {
+                    jcb_chonSach.setSelectedIndex(0);
+                }
 
                 // In ra PDF, truyền dsCTPXK vào
                 if (dsCTPXK != null) {
