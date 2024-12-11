@@ -6,8 +6,6 @@ package view;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -383,7 +381,7 @@ public class NguoiQuanLy extends javax.swing.JFrame {
         jPanel1.setBackground(defaultColor);
         jLabel2.setForeground(Color.BLACK);
         jDesktopPane1.removeAll();
-        QuanLyHoaDon_GUI quanLyHoaDon_GUI = new QuanLyHoaDon_GUI();
+        NhanVien_QuanLyHoaDon_GUI quanLyHoaDon_GUI = new NhanVien_QuanLyHoaDon_GUI();
         quanLyHoaDon_GUI.setSize(jDesktopPane1.getSize());
         quanLyHoaDon_GUI.setVisible(true);
         jDesktopPane1.add(quanLyHoaDon_GUI);

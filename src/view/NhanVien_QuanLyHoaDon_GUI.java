@@ -46,7 +46,7 @@ import javax.swing.table.JTableHeader;
  *
  * @author Ngọc Hải
  */
-public class QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
+public class NhanVien_QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
 
     private Color customGreen;
 
@@ -55,7 +55,7 @@ public class QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
      */
 //    private JDesktopPane desktopPane;
 
-    public QuanLyHoaDon_GUI() {
+    public NhanVien_QuanLyHoaDon_GUI() {
         initComponents();
         this.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         BasicInternalFrameUI ui = (BasicInternalFrameUI) this.getUI();
@@ -71,8 +71,7 @@ public class QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
 
             @Override
             public void onDelete(int row) {
-                DefaultTableModel model = (DefaultTableModel) jTable_HoaDon.getModel();
-                model.removeRow(row);
+
             }
 
             @Override
@@ -592,7 +591,7 @@ public class QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
     private void jButton_TaoHoaDonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_TaoHoaDonMouseClicked
         // TODO add your handling code here:
         jPanel1.removeAll();
-        TrangTaoHoaDon_GUI taoHoaDonGui = new TrangTaoHoaDon_GUI();
+        NhanVien_TrangTaoHoaDon_GUI taoHoaDonGui = new NhanVien_TrangTaoHoaDon_GUI();
         taoHoaDonGui.setSize(jPanel1.getSize());
         taoHoaDonGui.setVisible(true);
         jPanel1.add(taoHoaDonGui);
