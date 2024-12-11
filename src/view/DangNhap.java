@@ -89,7 +89,7 @@ public class DangNhap extends javax.swing.JFrame {
         jRadioButton_ThuKho.setBorder(null);
 
         jTextField_Email.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
-        jTextField_Email.setToolTipText("Hãy nhập Email của bạn");
+        jTextField_Email.setToolTipText("Hãy nhập tài khoản của bạn");
         jTextField_Email.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 jTextField_EmailFocusGained(evt);
@@ -221,22 +221,14 @@ public class DangNhap extends javax.swing.JFrame {
             try {
                 for (TaiKhoan tk : taiKhoan_DAO.getDSTk()) {
                     if (tk.getNhanVien().getChucVu().getChucVu().equalsIgnoreCase("Nhân viên")) {
-                        if (jTextField_Email.getText().equalsIgnoreCase(tk.getNhanVien().getMaNV())) {
-                            if (jPasswordField_MatKhau.getText().equalsIgnoreCase(tk.getMatKhau())) {
+                        if (jTextField_Email.getText().equalsIgnoreCase(tk.getNhanVien().getMaNV())&&jPasswordField_MatKhau.getText().equalsIgnoreCase(tk.getMatKhau())) {
                                 ma = jTextField_Email.getText();
                                 this.setVisible(false);
                                 NhanVien nhanVien = new NhanVien();
                                 nhanVien.setVisible(true);
                                 break;
-                            } else {
-                                JOptionPane.showMessageDialog(this, "Tài khoản không chính xác", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
-                                jTextField_Email.requestFocus();
-                                jTextField_Email.selectAll();
-                                break;
-                            }
-
                         } else {
-                            JOptionPane.showMessageDialog(this, "Tài khoản không tồn tại", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                            JOptionPane.showMessageDialog(this, "Tài khoản không chính xác", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
                             jTextField_Email.requestFocus();
                             jTextField_Email.selectAll();
                             break;
@@ -252,22 +244,14 @@ public class DangNhap extends javax.swing.JFrame {
             try {
                 for (TaiKhoan tk : taiKhoan_DAO.getDSTk()) {
                     if (tk.getNhanVien().getChucVu().getChucVu().equalsIgnoreCase("Quản lý")) {
-                        if (jTextField_Email.getText().equalsIgnoreCase(tk.getNhanVien().getMaNV())) {
-                            if (jPasswordField_MatKhau.getText().equalsIgnoreCase(tk.getMatKhau())) {
+                        if (jTextField_Email.getText().equalsIgnoreCase(tk.getNhanVien().getMaNV())&&jPasswordField_MatKhau.getText().equalsIgnoreCase(tk.getMatKhau())) {
                                 ma = jTextField_Email.getText();
                                 this.setVisible(false);
                                 NguoiQuanLy nguoiQuanLy = new NguoiQuanLy();
                                 nguoiQuanLy.setVisible(true);
                                 break;
-                            } else {
-                                JOptionPane.showMessageDialog(this, "Tài khoản không chính xác", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
-                                jTextField_Email.requestFocus();
-                                jTextField_Email.selectAll();
-                                break;
-                            }
-
                         } else {
-                            JOptionPane.showMessageDialog(this, "Tài khoản không tồn tại", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                            JOptionPane.showMessageDialog(this, "Tài khoản không chính xác", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
                             jTextField_Email.requestFocus();
                             jTextField_Email.selectAll();
                             break;
@@ -284,22 +268,14 @@ public class DangNhap extends javax.swing.JFrame {
             try {
                 for (TaiKhoan tk : taiKhoan_DAO.getDSTk()) {
                     if (tk.getNhanVien().getChucVu().getChucVu().equalsIgnoreCase("Thủ kho")) {
-                        if (jTextField_Email.getText().equalsIgnoreCase(tk.getNhanVien().getMaNV())) {
-                            if (jPasswordField_MatKhau.getText().equalsIgnoreCase(tk.getMatKhau())) {
+                        if (jTextField_Email.getText().equalsIgnoreCase(tk.getNhanVien().getMaNV())&&jPasswordField_MatKhau.getText().equalsIgnoreCase(tk.getMatKhau())) {
                                 ma = jTextField_Email.getText();
                                 this.setVisible(false);
                                 ThuKho thuKho = new ThuKho();
                                 thuKho.setVisible(true);
                                 break;
-                            } else {
-                                JOptionPane.showMessageDialog(this, "Tài khoản không chính xác", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
-                                jTextField_Email.requestFocus();
-                                jTextField_Email.selectAll();
-                                break;
-                            }
-
                         } else {
-                            JOptionPane.showMessageDialog(this, "Tài khoản không tồn tại", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                            JOptionPane.showMessageDialog(this, "Tài khoản không chính xác", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
                             jTextField_Email.requestFocus();
                             jTextField_Email.selectAll();
                             break;

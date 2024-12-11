@@ -31,6 +31,14 @@ public class ThongKeTonKho_model {
         this.sucChua = sucChua;
     }
 
+    public ThongKeTonKho_model(String ISBN, String tenKho, int tongTonKho) {
+        this.ISBN = ISBN;
+        this.tenKho = tenKho;
+        this.tongTonKho = tongTonKho;
+    }
+    
+    
+
     public int getSucChua() {
         return sucChua;
     }

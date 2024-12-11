@@ -389,7 +389,7 @@ public class NguoiQuanLy_ChinhSuaNhanVien extends javax.swing.JDialog {
 
     private void jButton_HuyBoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_HuyBoActionPerformed
         // TODO add your handling code here:
-                int result = JOptionPane.showConfirmDialog(null, "Bạn chắc chắn muốn hủy, các thông tin sẽ không đươc lưu?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+        int result = JOptionPane.showConfirmDialog(null, "Bạn chắc chắn muốn hủy, các thông tin sẽ không đươc lưu?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
         if (result == JOptionPane.YES_OPTION) {
             this.dispose();
         } else {
@@ -452,21 +452,16 @@ public class NguoiQuanLy_ChinhSuaNhanVien extends javax.swing.JDialog {
     }
 
     private boolean kiemTraTenNV(String ten) {
-        String regex = "^[A-ZÁÀÃẢẠĂẮẰẴẲẶÂẤẦẪẨẬÊẾỀỄỂỆÍÌĨỈỊÓÒÕỎỌÔỐỒỖỔỘƠỚỜỠỞỢÚÙŨỦỤƯỨỪỮỬỰÝỲỸỶỴ][a-záàãảạăắằẵẳặâấầẫẩậêếềễểệíìĩỉịóòõỏọôốồỗổộơớờỡởợúùũủụưứừữửựýỳỹỷỵ]{0,6}(\\s[A-ZÁÀÃẢẠĂẮẰẴẲẶÂẤẦẪẨẬÊẾỀỄỂỆÍÌĨỈỊÓÒÕỎỌÔỐỒỖỔỘƠỚỜỠỞỢÚÙŨỦỤƯỨỪỮỬỰÝỲỸỶỴ][a-záàãảạăắằẵẳặâấầẫẩậêếềễểệíìĩỉịóòõỏọôốồỗổộơớờỡởợúùũủụưứừữửựýỳỹỷỵ]{0,6})*$";
+        String regex = "^[A-ZÁÀÃẢẠĂẮẰẴẲẶÂẤẦẪẨẬÊẾỀỄỂỆÍÌĨỈỊÓÒÕỎỌÔỐỒỖỔỘƠỚỜỠỞỢÚÙŨỦỤƯỨỪỮỬỰÝỲỸỶỴĐ][a-záàãảạăắằẵẳặâấầẫẩậêếềễểệíìĩỉịóòõỏọôốồỗổộơớờỡởợúùũủụưứừữửựýỳỹỷỵ]*(\\s[A-ZÁÀÃẢẠĂẮẰẴẲẶÂẤẦẪẨẬÊẾỀỄỂỆÍÌĨỈỊÓÒÕỎỌÔỐỒỖỔỘƠỚỜỠỞỢÚÙŨỦỤƯỨỪỮỬỰÝỲỸỶỴĐ][a-záàãảạăắằẵẳặâấầẫẩậêếềễểệíìĩỉịóòõỏọôốồỗổộơớờỡởợúùũủụưứừữửựýỳỹỷỵ]*)*$";
         return ten.matches(regex);
     }
 
     private boolean kiemTraNgaySinh(LocalDate ngaySinh) {
         if (ngaySinh != null) {
             LocalDate today = LocalDate.now();
-
-            // Tính số năm tuổi
             int age = Period.between(ngaySinh, today).getYears();
-
-            // Kiểm tra tuổi có đủ 18 hay không
             return age >= 18;
         } else {
-            // Trường hợp ngày sinh chưa được cung cấp
             return false;
         }
     }
@@ -477,39 +472,27 @@ public class NguoiQuanLy_ChinhSuaNhanVien extends javax.swing.JDialog {
     }
 
     private boolean kiemTraEmail(String email) {
-//    (?!\\.):Nó đảm bảo rằng chuỗi không bắt đầu bằng dấu chấm (.)
-//    [a-zA-Z0-9._%+-]+: Phần này kiểm tra phần tên người dùng (trước ký tự @). Nó cho phép các ký tự sau:
-        //    Chữ cái viết hoa và viết thường (a-zA-Z),
-        //    Các chữ số (0-9),
-        //    Dấu chấm (.), dấu gạch dưới (_), dấu phần trăm (%), dấu cộng (+), và dấu gạch nối (-).
-        //    Dấu + có nghĩa là ít nhất một ký tự trong số này phải có mặt.
-//    (?<!\\.):Nó đảm bảo rằng chuỗi không kết thúc bằng dấu chấm (.). Nói cách khác, không được có dấu chấm ở cuối phần tên người dùng.
-//    @gmail\\.com: Kiểm tra phần tên miền, yêu cầu nó phải là @gmail.com. Lưu ý rằng dấu chấm (.) phải được escape (\\.) vì trong regex, dấu chấm có ý nghĩa đặc biệt.
         String regex = "^(?!\\.)[a-zA-Z0-9._%+-]+(?<!\\.)@gmail\\.com$";
         return email.matches(regex);
     }
 
     private boolean kiemTraDiaChi(String diaChi) {
-        String regex = "^[a-zA-Z0-9.\\s\\u00C0-\\u1EF9-]+$";
+        String regex = "^[a-zA-Z0-9.,\\s\\u00C0-\\u1EF9-]+$";
         return diaChi.matches(regex);
     }
 
     private boolean kiemTraTatCa() {
         String tenNhanVien = jTextField_TenNhanVien.getText();
         Date date = jDateChooser_NgaySinh.getDate();
-
         String soDienThoai = jTextField_SoDienThoai.getText();
         String email = jTextField_Email.getText();
-        String diaChi = jTextField_DiaChi.getText();    
-        // Kiểm tra từng điều kiện và hiển thị thông báo nếu có lỗi
+        String diaChi = jTextField_DiaChi.getText();
         if (tenNhanVien.trim().isEmpty() || !kiemTraTenNV(tenNhanVien)) {
             JOptionPane.showMessageDialog(this, "Tên nhân viên không hợp lệ!!!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             jTextField_TenNhanVien.requestFocus();
             jTextField_TenNhanVien.selectAll();
             return false;
         }
-
-        // Kiểm tra ngày sinh
         if (date == null) {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn ngày sinh!!!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             return false;
@@ -535,7 +518,7 @@ public class NguoiQuanLy_ChinhSuaNhanVien extends javax.swing.JDialog {
             return false;
         }
 
-        if (diaChi.trim().isEmpty()||!kiemTraDiaChi(diaChi)) {
+        if (diaChi.trim().isEmpty() || !kiemTraDiaChi(diaChi)) {
             JOptionPane.showMessageDialog(this, "Địa chỉ không hợp lệ!!!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             jTextField_DiaChi.requestFocus();
             jTextField_DiaChi.selectAll();
@@ -545,7 +528,6 @@ public class NguoiQuanLy_ChinhSuaNhanVien extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn ảnh đại diện!!!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
-        // Nếu tất cả kiểm tra đều hợp lệ
         return true;
     }
 

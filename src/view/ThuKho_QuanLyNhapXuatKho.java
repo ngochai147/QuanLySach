@@ -31,6 +31,7 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
+import javax.swing.plaf.basic.BasicScrollBarUI;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -52,6 +53,7 @@ public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
     private DefaultTableModel modelXuatNhapKho;
     private ThuKho thuKho;
     private NguoiQuanLy nguoiQuanLy;
+    private Color customGreen;
     /**
      * Creates new form TrangNhapKho_GUI
      */
@@ -163,19 +165,19 @@ public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
     }
 
     private void ChinhMauCombobox() {
+        customGreen = new Color(102,102,0);
         // Chỉnh màu xanh cho combobox
-        Color customGreen = new Color(255, 255, 255);
         cb_chonTieuChi.setRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
                 if (isSelected) {
-                    c.setBackground(new Color(102,102,0));   // Màu nền khi mục được chọn
-                    c.setForeground(customGreen);   // Màu chữ khi mục được chọn
+                    c.setBackground(customGreen);   // Màu nền khi mục được chọn
+                    c.setForeground(Color.WHITE);   // Màu chữ khi mục được chọn
                 } else {
-                    c.setBackground(customGreen); // Màu nền cho các mục không được chọn
-                    c.setForeground(new Color(102,102,0));      // Màu chữ cho các mục không được chọn
+                    c.setBackground(Color.white); // Màu nền cho các mục không được chọn
+                    c.setForeground(customGreen);      // Màu chữ cho các mục không được chọn
                 }
 
                 return c;
@@ -188,11 +190,11 @@ public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
                 Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
                 if (isSelected) {
-                    c.setBackground(new Color(102,102,0));   // Màu nền khi mục được chọn
-                    c.setForeground(customGreen);   // Màu chữ khi mục được chọn
+                    c.setBackground(customGreen);   // Màu nền khi mục được chọn
+                    c.setForeground(Color.WHITE);   // Màu chữ khi mục được chọn
                 } else {
-                    c.setBackground(customGreen); // Màu nền cho các mục không được chọn
-                    c.setForeground(new Color(102,102,0));      // Màu chữ cho các mục không được chọn
+                    c.setBackground(Color.white); // Màu nền cho các mục không được chọn
+                    c.setForeground(customGreen);      // Màu chữ cho các mục không được chọn
                 }
 
                 return c;
@@ -203,11 +205,11 @@ public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
     public void chinhSua_table() {
         //Căn giữa các giá trị cột STT trong table
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment( JLabel.CENTER );
-        centerRenderer.setVerticalAlignment(JLabel.CENTER );
-        tbl_QLXuatNhapKho.getColumnModel().getColumn(0).setCellRenderer( centerRenderer);
-        tbl_QLXuatNhapKho.getColumnModel().getColumn(6).setCellRenderer( centerRenderer);
-        tbl_QLXuatNhapKho.getColumnModel().getColumn(7).setCellRenderer( centerRenderer);
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        centerRenderer.setVerticalAlignment(JLabel.CENTER);
+        tbl_QLXuatNhapKho.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+        tbl_QLXuatNhapKho.getColumnModel().getColumn(6).setCellRenderer(centerRenderer);
+        tbl_QLXuatNhapKho.getColumnModel().getColumn(7).setCellRenderer(centerRenderer);
 
         // Thiết lập kích thước font cho các phần tử trong table
         Font font = new Font("Arial", Font.PLAIN, 18);
@@ -343,65 +345,6 @@ public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
         tbl_QLXuatNhapKho.setPreferredSize(new Dimension(600, modelXuatNhapKho.getRowCount()*40));
     }
 
-    public void exportToExcel(JTable tbl_QLXuatNhapKho) {
-        try {
-            JFileChooser jFileChooser = new JFileChooser();
-            jFileChooser.showSaveDialog(this);
-            File saveFile = jFileChooser.getSelectedFile();
-
-            if (saveFile != null) {
-                // Check if the file name ends with ".xlsx", otherwise add it
-                if (!saveFile.getName().toLowerCase().endsWith(".xlsx")) {
-                    saveFile = new File(saveFile + ".xlsx");
-                }
-
-                Workbook wb;  // Create a new Excel workbook
-                wb = new XSSFWorkbook();
-                Sheet sheet = wb.createSheet("ds_XuatKho");
-
-                // Create the header row, but exclude the last column
-                Row headerRow = sheet.createRow(0);
-                for (int i = 0; i < tbl_QLXuatNhapKho.getColumnCount() - 1; i++) {  // Exclude last column
-                    Cell cell = headerRow.createCell(i);
-                    cell.setCellValue(tbl_QLXuatNhapKho.getColumnName(i));  // Set column names in the first row
-                }
-
-                // Loop through the JTable rows and columns, filling the Excel sheet, excluding the last column
-                for (int i = 0; i < tbl_QLXuatNhapKho.getRowCount(); i++) {
-                    Row row = sheet.createRow(i + 1);  // Create a new row for each JTable row
-                    for (int j = 0; j < tbl_QLXuatNhapKho.getColumnCount() - 1; j++) {  // Exclude last column
-                        Cell cell = row.createCell(j);
-                        Object value = tbl_QLXuatNhapKho.getValueAt(i, j);  // Get value from JTable cell
-                        if (value != null) {
-                            cell.setCellValue(value.toString());  // Set the cell value in Excel
-                        }
-                    }
-                }
-
-                // Write the data to the file
-                try (FileOutputStream out = new FileOutputStream(saveFile)) {
-                    wb.write(out);  // Write the workbook content to the file
-                }
-                wb.close();  // Close the workbook
-
-                if (Desktop.isDesktopSupported()) {
-                    Desktop.getDesktop().open(saveFile);
-                } else {
-                    System.out.println("Desktop not supported, cannot open the file automatically.");
-                }
-
-            } else {
-                System.out.println("Save file selection was canceled.");
-            }
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found: " + e.getMessage());
-        } catch (IOException ioe) {
-            System.out.println("IO error: " + ioe.getMessage());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -413,7 +356,7 @@ public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
 
         jPanel1 = new javax.swing.JPanel();
         panel_QLXuatNhapKho = new javax.swing.JPanel();
-        btn_xuatExcel = new javax.swing.JButton();
+//        btn_xuatExcel = new javax.swing.JButton();
         btn_XuatKho = new javax.swing.JButton();
         cb_chonTieuChi = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -441,19 +384,6 @@ public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
         panel_QLXuatNhapKho.setPreferredSize(new java.awt.Dimension(1612, 733));
         panel_QLXuatNhapKho.setLayout(null);
 
-        btn_xuatExcel.setBackground(new java.awt.Color(102, 102, 0));
-        btn_xuatExcel.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
-        btn_xuatExcel.setForeground(new java.awt.Color(255, 255, 255));
-        btn_xuatExcel.setText("Xuất excel");
-        btn_xuatExcel.setPreferredSize(new java.awt.Dimension(120, 42));
-        btn_xuatExcel.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_xuatExcelActionPerformed(evt);
-            }
-        });
-        panel_QLXuatNhapKho.add(btn_xuatExcel);
-        btn_xuatExcel.setBounds(50, 640, 140, 40);
-
         btn_XuatKho.setBackground(new java.awt.Color(102, 102, 0));
         btn_XuatKho.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         btn_XuatKho.setForeground(new java.awt.Color(255, 255, 255));
@@ -468,7 +398,7 @@ public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
         btn_XuatKho.setBounds(40, 170, 120, 42);
 
         cb_chonTieuChi.setBackground(new java.awt.Color(102, 102, 0));
-        cb_chonTieuChi.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
+        cb_chonTieuChi.setFont(new java.awt.Font("Arial", Font.BOLD, 20)); // NOI18N
         cb_chonTieuChi.setForeground(new java.awt.Color(255, 255, 255));
         cb_chonTieuChi.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã phiếu", "Loại phiếu", "Tên kho nhập", "Tên kho xuất", "Mã thủ kho", "Ngày lập phiếu" }));
         cb_chonTieuChi.setMinimumSize(new java.awt.Dimension(72, 30));
@@ -495,11 +425,58 @@ public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
         tbl_QLXuatNhapKho.setName(""); // NOI18N
         tbl_QLXuatNhapKho.setPreferredSize(new java.awt.Dimension(600, 1000));
         tbl_QLXuatNhapKho.setRowHeight(40);
+        tbl_QLXuatNhapKho.setSelectionBackground(new java.awt.Color(153, 204, 0));
         tbl_QLXuatNhapKho.setShowGrid(true);
         jScrollPane1.setViewportView(tbl_QLXuatNhapKho);
-
         panel_QLXuatNhapKho.add(jScrollPane1);
         jScrollPane1.setBounds(40, 230, 1470, 390);
+
+        // Code of sub-components and layout - not shown here
+        jScrollPane1.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
+            @Override
+            protected void configureScrollBarColors() {
+                thumbColor = new Color(100, 100, 100); // Màu của thumb
+                trackColor = new Color(220, 220, 220); // Màu của track
+            }
+
+            @Override
+            protected JButton createDecreaseButton(int orientation) {
+                return createZeroButton();
+            }
+
+            @Override
+            protected JButton createIncreaseButton(int orientation) {
+                return createZeroButton();
+            }
+
+            private JButton createZeroButton() {
+                JButton button = new JButton();
+                button.setPreferredSize(new Dimension(0, 0));
+                button.setMinimumSize(new Dimension(0, 0));
+                button.setMaximumSize(new Dimension(0, 0));
+                return button;
+            }
+
+            // Ghi đè phương thức paintThumb để bo tròn và làm ngắn chiều dài của thumb
+            @Override
+            protected void paintThumb(Graphics g, JComponent c, Rectangle thumbBounds) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+                // Điều chỉnh kích thước chiều dài (height) của thumb để ngắn hơn
+                int adjustedHeight = Math.max(30, thumbBounds.height - 20);  // Làm cho thumb ngắn hơn nhưng không thấp hơn 30 pixels
+                int adjustedWidth = thumbBounds.width;
+
+                // Thiết lập màu và hình dạng bo tròn
+                g2.setColor(thumbColor);
+                g2.fillRoundRect(thumbBounds.x, thumbBounds.y, adjustedWidth, adjustedHeight, 10, 10); // Bo tròn 10 pixel
+
+                g2.dispose();
+            }
+        });
+        panel_QLXuatNhapKho.add(jScrollPane1);
+        jScrollPane1.setBounds(25, 236, 1490, 375);
+
 
         btn_lamMoi.setBackground(new java.awt.Color(102, 102, 0));
         btn_lamMoi.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
@@ -521,7 +498,7 @@ public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
         jLabel1.setBounds(10, 20, 1560, 75);
 
         jcb_danhSach.setBackground(new java.awt.Color(102, 102, 0));
-        jcb_danhSach.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jcb_danhSach.setFont(new java.awt.Font("Arial", Font.BOLD, 18)); // NOI18N
         jcb_danhSach.setForeground(new java.awt.Color(255, 255, 255));
         jcb_danhSach.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -550,10 +527,6 @@ public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btn_xuatExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_xuatExcelActionPerformed
-        exportToExcel(tbl_QLXuatNhapKho);
-    }//GEN-LAST:event_btn_xuatExcelActionPerformed
 
     private void btn_lamMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_lamMoiActionPerformed
         modelXuatNhapKho = new DefaultTableModel(new Object[]{"STT", "Mã phiếu", "Mã thủ kho", "Tên kho nhập", "Tên kho xuất", "Loại phiếu", "Số lượng", "Ngày lập phiếu", ""}, 0);
@@ -993,7 +966,6 @@ public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_XuatKho;
     private javax.swing.JButton btn_lamMoi;
-    private javax.swing.JButton btn_xuatExcel;
     private javax.swing.JComboBox<String> cb_chonTieuChi;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
