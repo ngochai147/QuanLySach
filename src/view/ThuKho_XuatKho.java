@@ -53,9 +53,10 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
             BasicInternalFrameUI ui = (BasicInternalFrameUI) this.getUI();
             ui.setNorthPane(null);
         });
-        canGiua_tableHeader();
-        chinhSua_table();
+        canGiua_tieuDeBang();
+        chinhSuaBang();
         nhapThongTin();
+        theoDoiThayDoiBangCTXuatKho();
     }
 
     // Hàm kiểm tra nếu ngày lập phiếu lớn hơn hoặc bằng ngày hiện tại
@@ -248,7 +249,23 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         return true; // Dữ liệu hợp lệ
     }
 
-    public void chinhSua_table() {
+    public void theoDoiThayDoiBangCTXuatKho() {
+        tbl_phieuXuatKho.getModel().addTableModelListener(e -> {
+            // Kiểm tra số lượng hàng trong table
+            int rowCount = tbl_phieuXuatKho.getRowCount();
+            if (rowCount == 0) {
+                // Không khóa combobox khi có dữ liệu
+                jcb_khoXuat.setEnabled(true);
+                jcb_khoNhap.setEnabled(true);
+            } else {
+                // Khóa combobox khi không có dữ liệu
+                jcb_khoXuat.setEnabled(false);
+                jcb_khoNhap.setEnabled(false);
+            }
+        });
+    }
+
+    public void chinhSuaBang() {
         //Căn giữa các giá trị cột STT trong table
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment( JLabel.CENTER );
@@ -256,7 +273,7 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         tbl_phieuXuatKho.getColumnModel().getColumn(0).setCellRenderer( centerRenderer);
 
         // Thiết lập kích thước font cho các phần tử trong table
-        Font font = new Font("Arial", Font.PLAIN, 18);
+        Font font = new Font("Arial", Font.PLAIN, 20);
         tbl_phieuXuatKho.setFont(font);
 
         // Chỉnh kích thước cột
@@ -269,7 +286,7 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         tbl_phieuXuatKho.getColumnModel().getColumn(6).setPreferredWidth(100);
     }
     
-    public void canGiua_tableHeader() {
+    public void canGiua_tieuDeBang() {
     // Căn giữa và chỉnh kích thước table header
         Font fn = new Font("Arial", Font.BOLD, 18);
         tbl_phieuXuatKho.getTableHeader().setFont(fn);
@@ -565,7 +582,7 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         jPanel1.add(jLabel8);
         jLabel8.setBounds(190, 270, 30, 40);
 
-        jdc_ngayLapPX.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
+        jdc_ngayLapPX.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jdc_ngayLapPX.addAncestorListener(new javax.swing.event.AncestorListener() {
             public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
                 jdc_ngayLapPXAncestorAdded(evt);
@@ -614,7 +631,7 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         jPanel1.add(jLabel13);
         jLabel13.setBounds(1070, 224, 24, 20);
 
-        tf_soLuong.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
+        tf_soLuong.setFont(new java.awt.Font("Arial", 0, 20)); // NOI18N
         tf_soLuong.setPreferredSize(new java.awt.Dimension(64, 40));
         tf_soLuong.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -759,6 +776,10 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_xoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_xoaActionPerformed
+        if (jcb_chonSach.getItemCount() == 0 && tf_soLuong.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Không có thông tin nhập liệu!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+        }
+
         // Lấy ngày hiện tại
         LocalDate ngayHienTai = LocalDate.now();
 
@@ -783,6 +804,9 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
 
     private void btn_huyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_huyActionPerformed
         DefaultTableModel model = (DefaultTableModel) tbl_phieuXuatKho.getModel();
+        if (model.getRowCount() > 0) {
+            return;
+        }
         model.setRowCount(0);
 
         // Bắt đầu cập nhật ngày lập
@@ -812,37 +836,31 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         isUpdatingDate = false; // Đặt lại cờ sau khi xóa
     }//GEN-LAST:event_btn_huyActionPerformed
 
-    private void btn_taoPXActionPerformed(java.awt.event.ActionEvent evt) {                                          
+    private void btn_taoPXActionPerformed(java.awt.event.ActionEvent evt) {
         DefaultTableModel model = (DefaultTableModel) tbl_phieuXuatKho.getModel();
+        if (model.getRowCount() == 0 && jcb_khoNhap.getSelectedIndex() == 0 && jcb_khoXuat.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(this, "Không có thông tin nhập liệu!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+        } else {
+            String tenKhoXuat = jcb_khoNhap.getSelectedItem().toString();
+            String tenKhoNhap = jcb_khoXuat.getSelectedItem().toString();
 
-        String tenKhoXuat = jcb_khoNhap.getSelectedItem().toString();
-        String tenKhoNhap = jcb_khoXuat.getSelectedItem().toString();
+            Date ngayLapPX = jdc_ngayLapPX.getDate();
 
-        System.out.println(tenKhoXuat);
-        System.out.println(tenKhoNhap);
-
-        Date ngayLapPX = jdc_ngayLapPX.getDate();
-
-    //         Kiểm tra và chuyển đổi ngày
+            // Kiểm tra và chuyển đổi ngày
             java.sql.Date sqlDate = null;
             if (ngayLapPX != null) {
                 sqlDate = new java.sql.Date(ngayLapPX.getTime()); // Chuyển sang java.sql.Date
 //                System.out.println("Ngày dạng SQL: " + sqlDate);
             } else {
-                JOptionPane.showMessageDialog(null, "Vui lòng chọn ngày lập phiếu nhập kho.");
+                JOptionPane.showMessageDialog(this, "Vui lòng chọn ngày lập phiếu nhập kho!", "Thông báo", JOptionPane.WARNING_MESSAGE);
                 return; // Thoát khỏi phương thức nếu ngày chưa được chọn
             }
             try {
                 String ma_PXK = taoTuDong_MaPhieuXuatKho();
-                System.out.println("Mã phiếu xuất kho: " + ma_PXK);
                 String maKX = khoHang_dao.getMaKhoTheoTenKho(tenKhoXuat);
                 String maKN = khoHang_dao.getMaKhoTheoTenKho(tenKhoNhap);
 
-                System.out.println(maKX);
-                System.out.println(maKN);
-
                 int tong_SL = layTongSoLuong();
-//                System.out.println("Tổng số lượng: " + ma_PXK);
                 px_dao.insertPhieuXuatKho(ma_PXK, sqlDate, DangNhap.ma, maKN, maKX, tong_SL);
                 themChiTietPhieuXuatKho(model, ma_PXK);
                 themChiTietKhoHang(model, maKN, maKX);
@@ -880,6 +898,7 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
                 throw new RuntimeException(e);
             }
         }
+        }
 
     private void jcb_khoXuatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcb_khoXuatActionPerformed
         handleKhoXuatChange();
@@ -910,7 +929,7 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         if (jcb_khoXuat.getSelectedIndex() > 0 && jcb_khoNhap.getSelectedIndex() > 0) {
             // Kiểm tra nếu kho xuất trùng với kho nhập
             if (tenKhoNhap.equalsIgnoreCase(tenKhoXuat)) {
-                JOptionPane.showMessageDialog(this, "Kho xuất không được trùng với kho nhập!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Kho xuất không được trùng với kho nhập!", "Thông báo", JOptionPane.WARNING_MESSAGE);
                 // Đặt lại giá trị jcb_khoNhap nếu cần
                 jcb_khoNhap.setSelectedIndex(-1);
                 kiemTraTrangThai();
@@ -919,126 +938,130 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
     }
 
     private void btn_themActionPerformed(java.awt.event.ActionEvent evt) {
-        List<ChiTietKhoHang> danhSachChiTietKhoTam = new ArrayList<>(ctkh_dao.getAllChiTietKhoHang());
-        String isbn = jcb_chonSach.getSelectedItem().toString();
-        String tf_khoXuat = jcb_khoXuat.getSelectedItem().toString();
-        String sl = tf_soLuong.getText();
+        if (jcb_chonSach.getSelectedIndex() == 0 || jcb_khoXuat.getSelectedIndex() == 0 || jcb_khoNhap.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(this, "Không có hoặc thiếu thông tin nhập liệu!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+        } else {
+            List<ChiTietKhoHang> danhSachChiTietKhoTam = new ArrayList<>(ctkh_dao.getAllChiTietKhoHang());
+            String isbn = jcb_chonSach.getSelectedItem().toString();
+            String tf_khoXuat = jcb_khoXuat.getSelectedItem().toString();
+            String sl = tf_soLuong.getText();
 
-        if (!kiemTraSoLuong(sl)) {
-            tf_soLuong.setText("");
-            return;
-        }
+            if (!kiemTraSoLuong(sl)) {
+                tf_soLuong.setText("");
+                return;
+            }
 
-        int soLuong = Integer.parseInt(sl);
-        boolean isProcessed = false;
+            int soLuong = Integer.parseInt(sl);
+            boolean isProcessed = false;
 
-        // Kiểm tra model
-        DefaultTableModel model = (DefaultTableModel) tbl_phieuXuatKho.getModel();
+            // Kiểm tra model
+            DefaultTableModel model = (DefaultTableModel) tbl_phieuXuatKho.getModel();
 
-        try {
-            for (KhoHang kh : khoHang_dao.getDSKhoHang()) {
-                if (kh.getTenKho().equalsIgnoreCase(tf_khoXuat)) {
-                    for (ChiTietKhoHang ctkh : danhSachChiTietKhoTam) {
-                        if (ctkh.getSach().getISBN().equalsIgnoreCase(isbn) && ctkh.getKhoHang().getMaKhoHang().equalsIgnoreCase(kh.getMaKhoHang())) {
+            try {
+                for (KhoHang kh : khoHang_dao.getDSKhoHang()) {
+                    if (kh.getTenKho().equalsIgnoreCase(tf_khoXuat)) {
+                        for (ChiTietKhoHang ctkh : danhSachChiTietKhoTam) {
+                            if (ctkh.getSach().getISBN().equalsIgnoreCase(isbn) && ctkh.getKhoHang().getMaKhoHang().equalsIgnoreCase(kh.getMaKhoHang())) {
 
-                            if (isProcessed) break;
+                                if (isProcessed) break;
 
-                            int soLuongHienTai = ctkh.getSoLuong();
+                                int soLuongHienTai = ctkh.getSoLuong();
 
-                            // Tính tổng số lượng hiện tại của ISBN trong bảng
-                            int tongSoLuongTrongBang = 0;
-                            for (int i = 0; i < model.getRowCount(); i++) {
-                                String isbnTrongBang = model.getValueAt(i, 1).toString();
-                                if (isbnTrongBang.equalsIgnoreCase(isbn)) {
-                                    tongSoLuongTrongBang += Integer.parseInt(model.getValueAt(i, 5).toString()); // Cột "Số lượng"
+                                // Tính tổng số lượng hiện tại của ISBN trong bảng
+                                int tongSoLuongTrongBang = 0;
+                                for (int i = 0; i < model.getRowCount(); i++) {
+                                    String isbnTrongBang = model.getValueAt(i, 1).toString();
+                                    if (isbnTrongBang.equalsIgnoreCase(isbn)) {
+                                        tongSoLuongTrongBang += Integer.parseInt(model.getValueAt(i, 5).toString()); // Cột "Số lượng"
+                                    }
                                 }
+
+                                // Tính tổng số lượng đã nhập + số lượng mới
+                                int tongSoLuong = tongSoLuongTrongBang + soLuong;
+
+                                // Kiểm tra nếu tổng số lượng vượt quá số lượng trong kho
+                                if (tongSoLuong > soLuongHienTai) {
+                                    JOptionPane.showMessageDialog(this, "Tổng số lượng vượt quá số lượng trong kho!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+                                    tf_soLuong.setText("");
+                                    return; // Ngừng xử lý nếu không hợp lệ
+                                }
+
+                                // Đánh dấu quá trình xử lý đã hoàn thành
+                                isProcessed = true;
+                                break;
                             }
+                        }
+                        if (isProcessed) break;
+                    }
+                }
 
-                            // Tính tổng số lượng đã nhập + số lượng mới
-                            int tongSoLuong = tongSoLuongTrongBang + soLuong;
+                // Lấy thông tin sách từ mã ISBN
+                Sach sach = sach_dao.getSachTheoMaSach(isbn);
 
-                            // Kiểm tra nếu tổng số lượng vượt quá số lượng trong kho
-                            if (tongSoLuong > soLuongHienTai) {
-                                JOptionPane.showMessageDialog(null, "Tổng số lượng vượt quá số lượng trong kho!");
-                                tf_soLuong.setText("");
-                                return; // Ngừng xử lý nếu không hợp lệ
-                            }
+                if (sach != null) {
+                    String tenSach = sach.getTenSach();
+                    String loaiSach = sach.getLoaiSach().getTenLoai();
+                    double giaGoc = sach.getGiaGoc();
 
-                            // Đánh dấu quá trình xử lý đã hoàn thành
-                            isProcessed = true;
-                            break;
+                    // Kiểm tra xem ISBN đã có trong bảng chưa
+                    boolean isbnTonTai = false;
+                    for (int i = 0; i < model.getRowCount(); i++) {
+                        String isbnTrongBang = model.getValueAt(i, 1).toString(); // Lấy giá trị ISBN từ cột 1
+                        if (isbnTrongBang.equalsIgnoreCase(isbn)) {
+                            // ISBN đã tồn tại, cập nhật số lượng
+                            int soLuongCu = Integer.parseInt(model.getValueAt(i, 5).toString());
+                            int soLuongMoiCapNhat = soLuongCu + soLuong;
+
+                            // Cập nhật số lượng và thành tiền
+                            model.setValueAt(soLuongMoiCapNhat, i, 5); // Cập nhật số lượng
+
+                            // Định dạng số tiền
+                            double tongTien = soLuongMoiCapNhat * giaGoc;
+                            DecimalFormat decimalFormatter = new DecimalFormat("#,###");
+                            String formattedAmount = decimalFormatter.format(tongTien);
+
+                            model.setValueAt(formattedAmount, i, 6); // Cập nhật thành tiền
+                            isbnTonTai = true;
+                            break; // Ngừng tìm kiếm sau khi đã cập nhật
                         }
                     }
-                    if (isProcessed) break;
-                }
-            }
 
-            // Lấy thông tin sách từ mã ISBN
-            Sach sach = sach_dao.getSachTheoMaSach(isbn);
-
-            if (sach != null) {
-                String tenSach = sach.getTenSach();
-                String loaiSach = sach.getLoaiSach().getTenLoai();
-                double giaGoc = sach.getGiaGoc();
-
-                // Kiểm tra xem ISBN đã có trong bảng chưa
-                boolean isbnTonTai = false;
-                for (int i = 0; i < model.getRowCount(); i++) {
-                    String isbnTrongBang = model.getValueAt(i, 1).toString(); // Lấy giá trị ISBN từ cột 1
-                    if (isbnTrongBang.equalsIgnoreCase(isbn)) {
-                        // ISBN đã tồn tại, cập nhật số lượng
-                        int soLuongCu = Integer.parseInt(model.getValueAt(i, 5).toString());
-                        int soLuongMoiCapNhat = soLuongCu + soLuong;
-
-                        // Cập nhật số lượng và thành tiền
-                        model.setValueAt(soLuongMoiCapNhat, i, 5); // Cập nhật số lượng
+                    // Nếu ISBN chưa tồn tại, thêm dòng mới
+                    if (!isbnTonTai) {
+                        // Cập nhật STT
+                        int stt = model.getRowCount() + 1;
 
                         // Định dạng số tiền
-                        double tongTien = soLuongMoiCapNhat * giaGoc;
+                        double tongTien = giaGoc * soLuong;
                         DecimalFormat decimalFormatter = new DecimalFormat("#,###");
                         String formattedAmount = decimalFormatter.format(tongTien);
+                        String formatted_giaGoc = decimalFormatter.format(giaGoc);
 
-                        model.setValueAt(formattedAmount, i, 6); // Cập nhật thành tiền
-                        isbnTonTai = true;
-                        break; // Ngừng tìm kiếm sau khi đã cập nhật
+                        // Thêm hàng mới vào bảng
+                        model.addRow(new Object[]{stt, isbn, tenSach, loaiSach, formatted_giaGoc, soLuong, formattedAmount});
                     }
+
+                    // Xóa các text fields sau khi thêm thành công
+                    // Bắt đầu cập nhật ngày lập
+                    isUpdatingDate = true; // Đặt cờ để tránh thông báo lỗi
+
+                    // Lấy ngày hiện tại
+                    LocalDate ngayHienTai = LocalDate.now();
+
+                    // Chuyển đổi LocalDate sang java.util.Date
+                    Date date = Date.from(ngayHienTai.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+                    // Đặt ngày hiện tại cho JDateChooser
+                    jdc_ngayLapPX.setDate(date);
+                    tf_soLuong.setText("");
+                    jcb_chonSach.setSelectedIndex(0);
+
+                } else {
+                    JOptionPane.showMessageDialog(null, "Không tìm thấy sách với ISBN: " + isbn);
                 }
-
-                // Nếu ISBN chưa tồn tại, thêm dòng mới
-                if (!isbnTonTai) {
-                    // Cập nhật STT
-                    int stt = model.getRowCount() + 1;
-
-                    // Định dạng số tiền
-                    double tongTien = giaGoc * soLuong;
-                    DecimalFormat decimalFormatter = new DecimalFormat("#,###");
-                    String formattedAmount = decimalFormatter.format(tongTien);
-                    String formatted_giaGoc = decimalFormatter.format(giaGoc);
-
-                    // Thêm hàng mới vào bảng
-                    model.addRow(new Object[]{stt, isbn, tenSach, loaiSach, formatted_giaGoc, soLuong, formattedAmount});
-                }
-
-                // Xóa các text fields sau khi thêm thành công
-                // Bắt đầu cập nhật ngày lập
-                isUpdatingDate = true; // Đặt cờ để tránh thông báo lỗi
-
-                // Lấy ngày hiện tại
-                LocalDate ngayHienTai = LocalDate.now();
-
-                // Chuyển đổi LocalDate sang java.util.Date
-                Date date = Date.from(ngayHienTai.atStartOfDay(ZoneId.systemDefault()).toInstant());
-
-                // Đặt ngày hiện tại cho JDateChooser
-                jdc_ngayLapPX.setDate(date);
-                tf_soLuong.setText("");
-                jcb_chonSach.setSelectedIndex(0);
-
-            } else {
-                JOptionPane.showMessageDialog(null, "Không tìm thấy sách với ISBN: " + isbn);
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Lỗi khi thêm sách: " + e.getMessage());
             }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Lỗi khi thêm sách: " + e.getMessage());
         }
     }
 
