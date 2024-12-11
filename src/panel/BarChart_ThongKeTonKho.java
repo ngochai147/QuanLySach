@@ -23,6 +23,8 @@ public class BarChart_ThongKeTonKho extends javax.swing.JFrame {
     final ThongKeTonKho_DAO thongKeTonKho_Dao = new ThongKeTonKho_DAO();
     public BarChart_ThongKeTonKho() {
         initComponents();
+        setSize(1400, 700);
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE); 
         getContentPane().setBackground(new Color(250,250,250));
         barChart.addLegend("Tổng số lượng tồn kho", Color.red);

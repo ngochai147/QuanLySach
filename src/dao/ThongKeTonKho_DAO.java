@@ -74,9 +74,7 @@ public class ThongKeTonKho_DAO {
         return dataList;
     }
 
-    
-
-    public List<ThongKeTonKho_model> getBarChartData(){
+    public List<ThongKeTonKho_model> getBarChartData() {
         List<ThongKeTonKho_model> listData = new ArrayList<>();
         String sql = """
             select kh.tenKho, kh.sucChua, sum(ctkh.soLuong) as tongTonKho
@@ -85,21 +83,45 @@ public class ThongKeTonKho_DAO {
             on kh.maKhoHang = ctkh.maKhoHang
             GROUP BY kh.tenKho, kh.sucChua
             """;
-        try{
+        try {
             Connection conn = ConnectDB.getInstance().getConnection();
             PreparedStatement p = conn.prepareStatement(sql);
             ResultSet rs = p.executeQuery();
-            
-            while(rs.next()){
+
+            while (rs.next()) {
                 String tenKho = rs.getString("tenKho");
                 int sucChua = rs.getInt("sucChua");
                 int tongTonKho = rs.getInt("tongTonKho");
-                
+
                 listData.add(new ThongKeTonKho_model(tenKho, sucChua, tongTonKho));
             }
-        }catch(SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return listData;
     }
+
+    public List<ThongKeTonKho_model> getThongKeTheoKho(String tenKho) {
+        List<ThongKeTonKho_model> listData = new ArrayList<>();
+        String sql = """
+            SELECT ctkh.ISBN, SUM(ctkh.soLuong) AS tongSoLuong
+            FROM ChiTietKhoHang ctkh
+            JOIN KhoHang kh ON ctkh.maKhoHang = kh.maKhoHang
+            WHERE kh.tenKho = ?
+            GROUP BY ctkh.ISBN
+        """;
+        try (Connection conn = ConnectDB.getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, tenKho);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String isbn = rs.getString("ISBN");
+                int tongSoLuong = rs.getInt("tongSoLuong");
+                listData.add(new ThongKeTonKho_model(tenKho, isbn, tongSoLuong));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listData;
+    }
+
 }

@@ -463,12 +463,12 @@ public class NguoiQuanLy extends javax.swing.JFrame {
         jLabel_QLSach.setForeground(Color.WHITE);
         jPanel_QLNhanVien.setBackground(defaultColor);
         jLabel_QLNhanVien.setForeground(Color.WHITE);
+        jPanel_KhoHang.setBackground(defaultColor);
+        jLabel_KhoHang.setForeground(Color.WHITE);
         jPanel_ThongKe.setBackground(defaultColor);
-        jLabel_ThongKe.setForeground(Color.BLACK);
+        jLabel_ThongKe.setForeground(Color.WHITE);
         jPanel1.setBackground(clickColor);
         jLabel2.setForeground(Color.BLACK);
-        UIManager.put("OptionPane.messageFont", new Font("Arial", Font.BOLD, 12));
-        UIManager.put("OptionPane.messageForeground", Color.BLACK);
         if (JOptionPane.showConfirmDialog(this, "Bạn muốn đăng xuất?", "Thông báo", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
             setVisible(false);
             DangNhap dangNhap = null;
@@ -478,8 +478,12 @@ public class NguoiQuanLy extends javax.swing.JFrame {
                 Logger.getLogger(NguoiQuanLy.class.getName()).log(Level.SEVERE, null, ex);
             }
             dangNhap.setVisible(true);
+        } else {
+            jPanel1.setBackground(defaultColor);
+            jLabel2.setForeground(Color.WHITE);
         }
     }
+
     public void getDesktopPanel(JInternalFrame jframe) {
         jDesktopPane1.removeAll();
         jframe.setSize(jDesktopPane1.getSize());

@@ -276,9 +276,9 @@ public final class NguoiQuanLy_ThongKeTongQuan extends javax.swing.JInternalFram
                 .addContainerGap(18, Short.MAX_VALUE))
         );
 
-        panelShadow1.setBackground(new java.awt.Color(22, 22, 94));
+        panelShadow1.setBackground(new java.awt.Color(26, 26, 56));
         panelShadow1.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 1, 1, 1));
-        panelShadow1.setColorGradient(new java.awt.Color(2, 2, 71));
+        panelShadow1.setColorGradient(new java.awt.Color(0, 7, 60));
         panelShadow1.setOpaque(true);
         panelShadow1.setPreferredSize(new java.awt.Dimension(900, 558));
 
@@ -300,7 +300,7 @@ public final class NguoiQuanLy_ThongKeTongQuan extends javax.swing.JInternalFram
                 .addContainerGap())
         );
 
-        pn_ChiTietThongKe.setBackground(new java.awt.Color(198, 198, 53));
+        pn_ChiTietThongKe.setBackground(new java.awt.Color(0, 153, 51));
         pn_ChiTietThongKe.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 pn_ChiTietThongKeMouseClicked(evt);
