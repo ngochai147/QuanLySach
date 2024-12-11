@@ -454,8 +454,8 @@ public class NguoiQuanLy_ThemNV extends javax.swing.JDialog {
 
                         if (taiKhoan_dao.themTaiKhoan(taiKhoan)) {
                             quanLy.addDataToTable(nhanVien);
-                            JOptionPane.showMessageDialog(this, "Thêm nhân viên thành công", "Thông báo", JOptionPane.WARNING_MESSAGE);
                             setVisible(false);
+                            JOptionPane.showMessageDialog(this, "Thêm nhân viên thành công", "Thông báo", JOptionPane.WARNING_MESSAGE);
                         }
                     }
                 } catch (SQLException e) {
@@ -474,7 +474,7 @@ public class NguoiQuanLy_ThemNV extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField_DiaChiActionPerformed
     private boolean kiemTraTenNV(String ten) {
-        String regex = "^[A-ZÁÀÃẢẠĂẮẰẴẲẶÂẤẦẪẨẬÊẾỀỄỂỆÍÌĨỈỊÓÒÕỎỌÔỐỒỖỔỘƠỚỜỠỞỢÚÙŨỦỤƯỨỪỮỬỰÝỲỸỶỴ][a-záàãảạăắằẵẳặâấầẫẩậêếềễểệíìĩỉịóòõỏọôốồỗổộơớờỡởợúùũủụưứừữửựýỳỹỷỵ]{0,6}(\\s[A-ZÁÀÃẢẠĂẮẰẴẲẶÂẤẦẪẨẬÊẾỀỄỂỆÍÌĨỈỊÓÒÕỎỌÔỐỒỖỔỘƠỚỜỠỞỢÚÙŨỦỤƯỨỪỮỬỰÝỲỸỶỴ][a-záàãảạăắằẵẳặâấầẫẩậêếềễểệíìĩỉịóòõỏọôốồỗổộơớờỡởợúùũủụưứừữửựýỳỹỷỵ]{0,6})*$";
+        String regex = "^[A-ZÁÀÃẢẠĂẮẰẴẲẶÂẤẦẪẨẬÊẾỀỄỂỆÍÌĨỈỊÓÒÕỎỌÔỐỒỖỔỘƠỚỜỠỞỢÚÙŨỦỤƯỨỪỮỬỰÝỲỸỶỴĐ][a-záàãảạăắằẵẳặâấầẫẩậêếềễểệíìĩỉịóòõỏọôốồỗổộơớờỡởợúùũủụưứừữửựýỳỹỷỵ]*(\\s[A-ZÁÀÃẢẠĂẮẰẴẲẶÂẤẦẪẨẬÊẾỀỄỂỆÍÌĨỈỊÓÒÕỎỌÔỐỒỖỔỘƠỚỜỠỞỢÚÙŨỦỤƯỨỪỮỬỰÝỲỸỶỴĐ][a-záàãảạăắằẵẳặâấầẫẩậêếềễểệíìĩỉịóòõỏọôốồỗổộơớờỡởợúùũủụưứừữửựýỳỹỷỵ]*)*$";
         return ten.matches(regex);
     }
 
@@ -513,7 +513,7 @@ public class NguoiQuanLy_ThemNV extends javax.swing.JDialog {
     }
 
     private boolean kiemTraDiaChi(String diaChi) {
-        String regex = "^[a-zA-Z0-9.\\s\\u00C0-\\u1EF9-]+$";
+        String regex = "^[a-zA-Z0-9.,\\s\\u00C0-\\u1EF9-]+$";
         return diaChi.matches(regex);
     }
 
@@ -524,7 +524,8 @@ public class NguoiQuanLy_ThemNV extends javax.swing.JDialog {
         String soDienThoai = jTextField_SoDienThoai.getText();
         String email = jTextField_Email.getText();
         String diaChi = jTextField_DiaChi.getText();
-        // Kiểm tra từng điều kiện và hiển thị thông báo nếu có lỗi
+        
+//        Kiểm tra tên nhân viên
         if (tenNhanVien.trim().isEmpty() || !kiemTraTenNV(tenNhanVien)) {
             JOptionPane.showMessageDialog(this, "Tên nhân viên không hợp lệ!!!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             jTextField_TenNhanVien.requestFocus();
@@ -532,18 +533,20 @@ public class NguoiQuanLy_ThemNV extends javax.swing.JDialog {
             return false;
         }
 
-        // Kiểm tra ngày sinh
+        // Kiểm tra ngày sinh nếu để rỗng
         if (date == null) {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn ngày sinh!!!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
 
+//        Kiểm tra nhân viên phải trên 18 tuổi
         LocalDate ngaySinh = date.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
         if (!kiemTraNgaySinh(ngaySinh)) {
             JOptionPane.showMessageDialog(this, "Nhân viên phải trên 18 tuổi!!!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
 
+//        Kiểm tra số điện thoại
         if (soDienThoai.trim().isEmpty() || !kiemTraSDT(soDienThoai)) {
             JOptionPane.showMessageDialog(this, "Số điện thoại không hợp lệ!!!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             jTextField_SoDienThoai.requestFocus();
@@ -551,6 +554,7 @@ public class NguoiQuanLy_ThemNV extends javax.swing.JDialog {
             return false;
         }
 
+//        Kiểm tra email
         if (email.trim().isEmpty() || !kiemTraEmail(email)) {
             JOptionPane.showMessageDialog(this, "Email không hợp lệ!!!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             jTextField_Email.requestFocus();
@@ -558,16 +562,20 @@ public class NguoiQuanLy_ThemNV extends javax.swing.JDialog {
             return false;
         }
 
+//        Kiểm tra địa chỉ
         if (diaChi.trim().isEmpty() || !kiemTraDiaChi(diaChi)) {
             JOptionPane.showMessageDialog(this, "Địa chỉ không hợp lệ!!!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             jTextField_DiaChi.requestFocus();
             jTextField_DiaChi.selectAll();
             return false;
         }
+        
+//        Kiểm tra ảnh không rỗng
         if (anh == null) {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn ảnh đại diện!!!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
+        
         // Nếu tất cả kiểm tra đều hợp lệ
         return true;
     }
