@@ -915,7 +915,7 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
             }
             JOptionPane.showMessageDialog(null, "Đã xóa các sách được chọn.");
         } else {
-            JOptionPane.showMessageDialog(null, "Vui lòng chọn sách cần xóa.");
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn sách cần xóa!", "Thông báo", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btn_xoaSachActionPerformed
 
@@ -940,6 +940,7 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
     private void btn_themActionPerformed(java.awt.event.ActionEvent evt) {
         if (jcb_chonSach.getSelectedIndex() == 0 || jcb_khoXuat.getSelectedIndex() == 0 || jcb_khoNhap.getSelectedIndex() == 0) {
             JOptionPane.showMessageDialog(this, "Không có hoặc thiếu thông tin nhập liệu!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            return;
         } else {
             List<ChiTietKhoHang> danhSachChiTietKhoTam = new ArrayList<>(ctkh_dao.getAllChiTietKhoHang());
             String isbn = jcb_chonSach.getSelectedItem().toString();

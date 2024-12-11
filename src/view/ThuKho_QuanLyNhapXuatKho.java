@@ -538,6 +538,7 @@ public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
         };
         DocDuLieuDatabaseVaoTable();
         tbl_QLXuatNhapKho.setModel(modelXuatNhapKho);
+        tbl_QLXuatNhapKho.setDefaultEditor(Object.class, null);
 
         cb_chonTieuChi.setSelectedItem("Mã phiếu");
 
