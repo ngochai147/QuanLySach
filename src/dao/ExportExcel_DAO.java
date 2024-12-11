@@ -165,7 +165,7 @@ public class ExportExcel_DAO {
 
     public void exportThongKeTonKhoToExcel(String filePath) {
         String sql = """
-                SELECT 
+                    SELECT 
                     k.maKhoHang AS 'Mã Kho',
                     k.TenKho AS 'Tên Kho',
                     k.SucChua AS 'Sức Chứa',

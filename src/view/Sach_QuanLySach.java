@@ -7,6 +7,10 @@ package view;
 import button.TableActionCellEditor;
 import button.TableActionEvent;
 import button.TableActionRender;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
 import dao.ChiTietKhoHang_DAO;
 import dao.KhoHang_DAO;
 import dao.Sach_DAO;
@@ -25,6 +29,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -84,6 +91,28 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
         header.setFont(new Font("Arial", Font.BOLD, 18));
 
         jTable_Sach.setPreferredSize(new Dimension(1500, jTable_Sach.getRowCount()*40));
+        String userHome = System.getProperty("user.home");
+        for (Sach s : sach_dao.getDSSach()) {
+            // Kiểm tra và tạo ISBN nếu không tồn tại
+            String myData = s.getISBN();
+
+            // Đường dẫn đến thư mục lưu barcode
+            Path folderPath = FileSystems.getDefault().getPath(userHome, "Desktop/isbn");
+            try {
+                // Kiểm tra và tạo thư mục nếu chưa tồn tại
+                if (!Files.exists(folderPath)) {
+                    Files.createDirectories(folderPath);
+                }
+
+                // Tạo barcode cho ISBN
+                MultiFormatWriter barcodeWriter = new MultiFormatWriter();
+                BitMatrix bitMatrix = barcodeWriter.encode(myData, BarcodeFormat.CODE_128, 300, 100);
+                Path filePath = folderPath.resolve(myData + ".png");
+                MatrixToImageWriter.writeToPath(bitMatrix, "PNG", filePath);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**

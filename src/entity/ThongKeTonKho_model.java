@@ -9,6 +9,7 @@ package entity;
  * @author phamd
  */
 public class ThongKeTonKho_model {
+
     private String ISBN;
     private String tenSach;
     private String tenKho;
@@ -31,6 +32,12 @@ public class ThongKeTonKho_model {
         this.sucChua = sucChua;
     }
 
+    public ThongKeTonKho_model(String maLoai, String tenKho, int tongTonKho) {
+        this.ISBN = maLoai;
+        this.tenKho = tenKho;
+        this.tongTonKho = tongTonKho;
+    }
+
     public int getSucChua() {
         return sucChua;
     }
@@ -50,7 +57,7 @@ public class ThongKeTonKho_model {
     private String diaChi;
 
     // Constructor
-    public ThongKeTonKho_model(String ISBN, String tenSach, String tacGia, String tenKho,String diaChi, int soLuongTonKho,int sucChua, String trangThai) {
+    public ThongKeTonKho_model(String ISBN, String tenSach, String tacGia, String tenKho, String diaChi, int soLuongTonKho, int sucChua, String trangThai) {
         this.ISBN = ISBN;
         this.tenSach = tenSach;
         this.tenKho = tenKho;
@@ -62,25 +69,53 @@ public class ThongKeTonKho_model {
     }
 
     // Getter và Setter
-    public String getISBN() { return ISBN; }
-    public void setISBN(String ISBN) { this.ISBN = ISBN; }
+    public String getISBN() {
+        return ISBN;
+    }
 
-    public String getTenSach() { return tenSach; }
-    public void setTenSach(String tenSach) { this.tenSach = tenSach; }
+    public void setISBN(String ISBN) {
+        this.ISBN = ISBN;
+    }
 
-    public String getTenKho() { return tenKho; }
-    public void setTenKho(String tenKho) { this.tenKho = tenKho; }
+    public String getTenSach() {
+        return tenSach;
+    }
 
-    public int getSoLuongTonKho() { return soLuongTonKho; }
-    public void setSoLuongTonKho(int soLuongTonKho) { this.soLuongTonKho = soLuongTonKho; }
+    public void setTenSach(String tenSach) {
+        this.tenSach = tenSach;
+    }
 
-    public String getTrangThai() { return trangThai; }
-    public void setTrangThai(String trangThai) { this.trangThai = trangThai; }
-    
-    public String getTacGia(){
+    public String getTenKho() {
+        return tenKho;
+    }
+
+    public void setTenKho(String tenKho) {
+        this.tenKho = tenKho;
+    }
+
+    public int getSoLuongTonKho() {
+        return soLuongTonKho;
+    }
+
+    public void setSoLuongTonKho(int soLuongTonKho) {
+        this.soLuongTonKho = soLuongTonKho;
+    }
+
+    public String getTrangThai() {
+        return trangThai;
+    }
+
+    public void setTrangThai(String trangThai) {
+        this.trangThai = trangThai;
+    }
+
+    public String getTacGia() {
         return tacGia;
     }
-    public void setTacGia(String tacGia){
+
+    public void setTacGia(String tacGia) {
         this.tacGia = tacGia;
     }
+    
+    
 }

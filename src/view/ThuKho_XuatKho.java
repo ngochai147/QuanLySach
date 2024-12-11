@@ -46,7 +46,7 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
      */
     public ThuKho_XuatKho() throws SQLException {
         initComponents();
-    
+
     // Sử dụng SwingUtilities.invokeLater để đảm bảo các thay đổi giao diện được thực hiện trên EDT
         SwingUtilities.invokeLater(() -> {
             this.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
@@ -103,7 +103,7 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
 
         // Hiển thị thông báo và xử lý giao diện nếu cần
         if (!isValid && showMessage) {
-            JOptionPane.showMessageDialog(null, "Vui lòng nhập ngày lập bằng hoặc sau ngày hiện tại.");
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập ngày lập bằng hoặc sau ngày hiện tại.","Thông báo", JOptionPane.WARNING_MESSAGE);
             SwingUtilities.invokeLater(() -> {
                 isUpdatingDate = true; // Đặt cờ để tránh vòng lặp khi xóa ngày
                 // Lấy ngày hiện tại
@@ -137,48 +137,6 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
 
         jcb_khoXuat.addItem("");
         jcb_khoNhap.addItem("");
-
-        jcb_khoXuat.setRenderer(new DefaultListCellRenderer() {
-            @Override
-            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-
-                // Ẩn dòng đầu tiên trong danh sách khi mở
-                if (index == 0) {
-                    setVisible(false);
-                } else {
-                    setVisible(true);
-                }
-                return c;
-            }
-        });
-
-        jcb_khoNhap.setRenderer(new DefaultListCellRenderer() {
-            @Override
-            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-
-                // Ẩn dòng đầu tiên trong danh sách khi mở
-                if (index == 0) {
-                    setVisible(false);
-                } else {
-                    setVisible(true);
-                }
-                return c;
-            }
-        });
-
-        jcb_khoXuat.addActionListener(e -> {
-            if (jcb_khoXuat.getSelectedIndex() == 0) {
-                jcb_khoXuat.setPopupVisible(false);
-            }
-        });
-
-        jcb_khoNhap.addActionListener(e -> {
-            if (jcb_khoNhap.getSelectedIndex() == 0) {
-                jcb_khoNhap.setPopupVisible(false);
-            }
-        });
 
         try {
             KhoHang_DAO dao = new KhoHang_DAO();
@@ -278,13 +236,13 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         try {
             soLuong = Integer.parseInt(soLuongStr);
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Số lượng không hợp lệ. Vui lòng nhập một số nguyên.");
+            JOptionPane.showMessageDialog(this, "Số lượng không hợp lệ. Vui lòng nhập một số nguyên.","Thông báo", JOptionPane.WARNING_MESSAGE);
             return false; // Không phải là số nguyên
         }
 
         // Kiểm tra số lượng âm hoặc bằng 0
         if (soLuong <= 0) {
-            JOptionPane.showMessageDialog(null, "Số lượng phải lớn hơn 0.");
+            JOptionPane.showMessageDialog(this, "Số lượng phải lớn hơn 0.","Thông báo", JOptionPane.WARNING_MESSAGE);
             return false; // Số lượng âm hoặc bằng 0
         }
         return true; // Dữ liệu hợp lệ
@@ -394,8 +352,8 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
             // Gọi hàm insert chi tiết phiếu nhập kho vào cơ sở dữ liệu
 
             ctpx_dao.insertChiTietPhieuXuatKho(maChiTietPhieuXuatKho, maPhieuXuatKho, soLuong, isbn);
-            System.out.println(maChiTietPhieuXuatKho);
-            System.out.println(maPhieuXuatKho);
+//            System.out.println(maChiTietPhieuXuatKho);
+//            System.out.println(maPhieuXuatKho);
             // Lấy thông tin sách từ ISBN
             Sach sach = sach_dao.getSachTheoMaSach(isbn); // Giả sử bạn có hàm lấy thông tin sách từ ISBN
             if (sach == null) {
@@ -514,7 +472,7 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         if (jcb_khoXuat.getSelectedIndex() > 0 && jcb_khoNhap.getSelectedIndex() > 0) {
             String tenKhoNhap = jcb_khoNhap.getSelectedItem() != null ? jcb_khoNhap.getSelectedItem().toString() : "";
             if (tenKhoNhap.equalsIgnoreCase(jcb_khoXuat.getSelectedItem().toString())) {
-                JOptionPane.showMessageDialog(this, "Kho xuất không được trùng với kho nhập!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Kho xuất không được trùng với kho nhập!", "Thông báo", JOptionPane.WARNING_MESSAGE);
                 jcb_khoXuat.setSelectedIndex(-1); // Đặt lại giá trị jcb_khoXuat nếu cần
                 jcb_chonSach.removeAllItems();
                 jcb_chonSach.repaint();
@@ -711,7 +669,7 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         btn_taoPX.setBounds(1050, 630, 170, 50);
 
         jcb_khoNhap.setBackground(new java.awt.Color(102, 102, 0));
-        jcb_khoNhap.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jcb_khoNhap.setFont(new java.awt.Font("Arial", Font.BOLD, 20)); // NOI18N
         jcb_khoNhap.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jcb_khoNhapActionPerformed(evt);
@@ -721,12 +679,12 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         jcb_khoNhap.setBounds(250, 270, 340, 40);
 
         jcb_chonSach.setBackground(new java.awt.Color(102, 102, 0));
-        jcb_chonSach.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        jcb_chonSach.setFont(new java.awt.Font("Arial", Font.BOLD, 20)); // NOI18N
         jPanel1.add(jcb_chonSach);
         jcb_chonSach.setBounds(1110, 150, 340, 40);
 
         jcb_khoXuat.setBackground(new java.awt.Color(102, 102, 0));
-        jcb_khoXuat.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jcb_khoXuat.setFont(new java.awt.Font("Arial", Font.BOLD, 20)); // NOI18N
         jcb_khoXuat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jcb_khoXuatActionPerformed(evt);
@@ -859,6 +817,10 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
 
         String tenKhoXuat = jcb_khoNhap.getSelectedItem().toString();
         String tenKhoNhap = jcb_khoXuat.getSelectedItem().toString();
+
+        System.out.println(tenKhoXuat);
+        System.out.println(tenKhoNhap);
+
         Date ngayLapPX = jdc_ngayLapPX.getDate();
 
     //         Kiểm tra và chuyển đổi ngày
@@ -875,9 +837,13 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
                 System.out.println("Mã phiếu xuất kho: " + ma_PXK);
                 String maKX = khoHang_dao.getMaKhoTheoTenKho(tenKhoXuat);
                 String maKN = khoHang_dao.getMaKhoTheoTenKho(tenKhoNhap);
+
+                System.out.println(maKX);
+                System.out.println(maKN);
+
                 int tong_SL = layTongSoLuong();
 //                System.out.println("Tổng số lượng: " + ma_PXK);
-                px_dao.insertPhieuXuatKho(ma_PXK, sqlDate, DangNhap.ma, maKN, maKX, tong_SL);
+                px_dao.insertPhieuXuatKho(ma_PXK, sqlDate, "22690761", maKN, maKX, tong_SL);
                 themChiTietPhieuXuatKho(model, ma_PXK);
                 themChiTietKhoHang(model, maKN, maKX);
 
@@ -1066,8 +1032,6 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
                 // Đặt ngày hiện tại cho JDateChooser
                 jdc_ngayLapPX.setDate(date);
                 tf_soLuong.setText("");
-                jcb_khoNhap.setSelectedIndex(0);
-                jcb_khoXuat.setSelectedIndex(0);
                 jcb_chonSach.setSelectedIndex(0);
 
             } else {

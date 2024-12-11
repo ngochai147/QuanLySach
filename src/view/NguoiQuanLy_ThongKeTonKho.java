@@ -19,6 +19,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
+import panel.BarChart_ThongKeSachTrongKho;
 import panel.BarChart_ThongKeTonKho;
 
 /**
@@ -142,7 +143,7 @@ public class NguoiQuanLy_ThongKeTonKho extends javax.swing.JInternalFrame {
         table_ThongKeTonKho = new javax.swing.JTable();
         jComboBox_TenKho = new javax.swing.JComboBox<>();
         jButton_XuatExcelTonKho = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        jButton_BieuDo = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(167, 129, 17));
@@ -204,23 +205,23 @@ public class NguoiQuanLy_ThongKeTonKho extends javax.swing.JInternalFrame {
             }
         });
         getContentPane().add(jButton_XuatExcelTonKho);
-        jButton_XuatExcelTonKho.setBounds(1280, 580, 150, 31);
+        jButton_XuatExcelTonKho.setBounds(1280, 580, 150, 33);
 
-        jButton1.setBackground(new java.awt.Color(102, 102, 0));
-        jButton1.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Xem biểu đồ");
-        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+        jButton_BieuDo.setBackground(new java.awt.Color(102, 102, 0));
+        jButton_BieuDo.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
+        jButton_BieuDo.setForeground(new java.awt.Color(255, 255, 255));
+        jButton_BieuDo.setText("Xem biểu đồ");
+        jButton_BieuDo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                jButton1MousePressed(evt);
+                jButton_BieuDoMousePressed(evt);
             }
         });
-        getContentPane().add(jButton1);
-        jButton1.setBounds(1040, 580, 210, 31);
+        getContentPane().add(jButton_BieuDo);
+        jButton_BieuDo.setBounds(1040, 580, 210, 33);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/anhnen.jpg"))); // NOI18N
         getContentPane().add(jLabel1);
-        jLabel1.setBounds(0, 0, 1590, 680);
+        jLabel1.setBounds(0, 0, 1610, 720);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -254,14 +255,22 @@ public class NguoiQuanLy_ThongKeTonKho extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jButton_XuatExcelTonKhoActionPerformed
 
-    private void jButton1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MousePressed
+    private void jButton_BieuDoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_BieuDoMousePressed
+        String selectedTenKho = (String) jComboBox_TenKho.getSelectedItem();
         BarChart_ThongKeTonKho barChart_ThongKeTonKho = new BarChart_ThongKeTonKho();
-        barChart_ThongKeTonKho.setVisible(true);
-    }//GEN-LAST:event_jButton1MousePressed
+        BarChart_ThongKeSachTrongKho barChart_ThongKeSachTrongKho = new BarChart_ThongKeSachTrongKho();
+        if("Tất cả".equals(selectedTenKho)){
+            barChart_ThongKeTonKho.setVisible(true);
+        } else {
+            barChart_ThongKeSachTrongKho.setDataIntoBarChart(selectedTenKho);
+            barChart_ThongKeSachTrongKho.setVisible(true);
+        }
+        
+    }//GEN-LAST:event_jButton_BieuDoMousePressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton_BieuDo;
     private javax.swing.JButton jButton_XuatExcelTonKho;
     private javax.swing.JComboBox<String> jComboBox_TenKho;
     private javax.swing.JLabel jLabel1;

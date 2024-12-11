@@ -14,31 +14,29 @@ import java.util.List;
  *
  * @author phamd
  */
-public class BarChart_ThongKeTonKho extends javax.swing.JFrame {
+public class BarChart_ThongKeSachTrongKho extends javax.swing.JFrame {
 
     /**
-     * Creates new form BarChart_ThongKeTonKho
+     * Creates new form BarChart_ThongKeSachTrongKho
      */
-    
     final ThongKeTonKho_DAO thongKeTonKho_Dao = new ThongKeTonKho_DAO();
-    public BarChart_ThongKeTonKho() {
+    public BarChart_ThongKeSachTrongKho() {
         initComponents();
         setSize(1400, 700);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE); 
-        getContentPane().setBackground(new Color(250,250,250));
-        barChart.addLegend("Tổng số lượng tồn kho", Color.red);
-        barChart.addLegend("Sức chứa của kho", Color.blue);
-        setDataIntoBarChart();
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        getContentPane().setBackground(new Color(250, 250, 250));
+        barChart.addLegend("Tổng số lượng sách trong kho", Color.blue);
     }
 
-    public void setDataIntoBarChart(){
-        List<ThongKeTonKho_model> data = thongKeTonKho_Dao.getBarChartData();
-        for(int i = data.size()-1; i>=0; i--){
+    public void setDataIntoBarChart(String tenKho) {
+        List<ThongKeTonKho_model> data = thongKeTonKho_Dao.getThongKeTheoKho(tenKho);
+        for (int i = data.size() - 1; i >= 0; i--) {
             ThongKeTonKho_model tk = data.get(i);
-            barChart.addData(new ModelChart_BarChart(tk.getTenKho(), new double[]{ tk.getSucChua(),tk.getTongTonKho()}));
+            barChart.addData(new ModelChart_BarChart(tk.getISBN(), new double[]{tk.getTongTonKho()}));
         }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -51,28 +49,27 @@ public class BarChart_ThongKeTonKho extends javax.swing.JFrame {
         barChart = new chart.BarChart();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("BIỂU ĐỒ THỐNG KÊ TỔNG SỐ LƯỢNG TỒN SO VỚI SỨC CHỨA CỦA TỪNG KHO HÀNG");
+        setPreferredSize(new java.awt.Dimension(940, 506));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
             }
         });
 
-        barChart.setBackground(new Color(255, 255, 255));
+        barChart.setBackground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(barChart, javax.swing.GroupLayout.DEFAULT_SIZE, 940, Short.MAX_VALUE)
+            .addComponent(barChart, javax.swing.GroupLayout.DEFAULT_SIZE, 1160, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(barChart, javax.swing.GroupLayout.DEFAULT_SIZE, 506, Short.MAX_VALUE)
+            .addComponent(barChart, javax.swing.GroupLayout.DEFAULT_SIZE, 523, Short.MAX_VALUE)
         );
 
         pack();
-        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -96,13 +93,13 @@ public class BarChart_ThongKeTonKho extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(BarChart_ThongKeTonKho.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BarChart_ThongKeSachTrongKho.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(BarChart_ThongKeTonKho.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BarChart_ThongKeSachTrongKho.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(BarChart_ThongKeTonKho.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BarChart_ThongKeSachTrongKho.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(BarChart_ThongKeTonKho.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BarChart_ThongKeSachTrongKho.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         try {
@@ -124,7 +121,7 @@ public class BarChart_ThongKeTonKho extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new BarChart_ThongKeTonKho().setVisible(true); 
+                new BarChart_ThongKeSachTrongKho().setVisible(true);
             }
         });
     }

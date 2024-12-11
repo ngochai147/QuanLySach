@@ -74,9 +74,7 @@ public class ThongKeTonKho_DAO {
         return dataList;
     }
 
-    
-
-    public List<ThongKeTonKho_model> getBarChartData(){
+    public List<ThongKeTonKho_model> getBarChartData() {
         List<ThongKeTonKho_model> listData = new ArrayList<>();
         String sql = """
             select kh.tenKho, kh.sucChua, sum(ctkh.soLuong) as tongTonKho
@@ -85,21 +83,48 @@ public class ThongKeTonKho_DAO {
             on kh.maKhoHang = ctkh.maKhoHang
             GROUP BY kh.tenKho, kh.sucChua
             """;
-        try{
+        try {
             Connection conn = ConnectDB.getInstance().getConnection();
             PreparedStatement p = conn.prepareStatement(sql);
             ResultSet rs = p.executeQuery();
-            
-            while(rs.next()){
+
+            while (rs.next()) {
                 String tenKho = rs.getString("tenKho");
                 int sucChua = rs.getInt("sucChua");
                 int tongTonKho = rs.getInt("tongTonKho");
-                
+
                 listData.add(new ThongKeTonKho_model(tenKho, sucChua, tongTonKho));
             }
-        }catch(SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return listData;
     }
+
+    public List<ThongKeTonKho_model> getThongKeTheoKho(String tenKho) {
+        List<ThongKeTonKho_model> listData = new ArrayList<>();
+        String sql = """
+            select ls.tenLoai, SUM(ctkh.soLuong) as tongSoLuong
+            from KhoHang as kh
+            join ChiTietKhoHang as ctkh
+            on kh.maKhoHang = ctkh.maKhoHang
+            join Sach as s on ctkh.ISBN = s.ISBN
+            join LoaiSach as ls on ls.maLoai = s.maLoaiSach
+            Where kh.tenKho = ?
+            group by ls.tenLoai
+        """;
+        try (Connection conn = ConnectDB.getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, tenKho);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String loaiSach = rs.getString("tenLoai");
+                int tongSoLuong = rs.getInt("tongSoLuong");
+                listData.add(new ThongKeTonKho_model(loaiSach, tenKho, tongSoLuong));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listData;
+    }
+
 }
