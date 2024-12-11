@@ -546,6 +546,9 @@
                   <Connection code="new javax.swing.SpinnerNumberModel(0, 0, null, 1)" type="code"/>
                 </Property>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="jSpinner_SoLuong.setModel(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));&#xa;JFormattedTextField spinnerTextField = ((JSpinner.NumberEditor) jSpinner_SoLuong.getEditor()).getTextField();&#xa;spinnerTextField.setInputVerifier(new InputVerifier() {&#xa;    @Override&#xa;    public boolean verify(JComponent input) {&#xa;        String text = spinnerTextField.getText().trim().replace(&quot;,&quot;, &quot;&quot;);&#xa;        // Ki&#x1ec3;m tra n&#x1ebf;u chu&#x1ed7;i kh&#xf4;ng ph&#x1ea3;i l&#xe0; s&#x1ed1; nguy&#xea;n d&#x1b0;&#x1a1;ng&#xa;        if (!text.matches(&quot;^[1-9][0-9]*$&quot;)) {&#xa;            JOptionPane.showMessageDialog(null, &quot;Vui l&#xf2;ng ch&#x1ec9; nh&#x1ead;p s&#x1ed1; nguy&#xea;n d&#x1b0;&#x1a1;ng!&quot;, &quot;L&#x1ed7;i nh&#x1ead;p li&#x1ec7;u&quot;, JOptionPane.WARNING_MESSAGE);&#xa;            spinnerTextField.setText(&quot;0&quot;); // &#x110;&#x1eb7;t l&#x1ea1;i v&#x1ec1; 1 n&#x1ebf;u kh&#xf4;ng h&#x1ee3;p l&#x1ec7;&#xa;            return false;&#xa;        }&#xa;        &#xa;        return true; // &#x110;&#x1ea7;u v&#xe0;o h&#x1ee3;p l&#x1ec7;&#xa;    }&#xa;});"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>

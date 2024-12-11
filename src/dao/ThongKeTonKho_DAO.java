@@ -104,19 +104,22 @@ public class ThongKeTonKho_DAO {
     public List<ThongKeTonKho_model> getThongKeTheoKho(String tenKho) {
         List<ThongKeTonKho_model> listData = new ArrayList<>();
         String sql = """
-            SELECT ctkh.ISBN, SUM(ctkh.soLuong) AS tongSoLuong
-            FROM ChiTietKhoHang ctkh
-            JOIN KhoHang kh ON ctkh.maKhoHang = kh.maKhoHang
-            WHERE kh.tenKho = ?
-            GROUP BY ctkh.ISBN
+            select ls.tenLoai, SUM(ctkh.soLuong) as tongSoLuong
+            from KhoHang as kh
+            join ChiTietKhoHang as ctkh
+            on kh.maKhoHang = ctkh.maKhoHang
+            join Sach as s on ctkh.ISBN = s.ISBN
+            join LoaiSach as ls on ls.maLoai = s.maLoaiSach
+            Where kh.tenKho = ?
+            group by ls.tenLoai
         """;
         try (Connection conn = ConnectDB.getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, tenKho);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                String isbn = rs.getString("ISBN");
+                String loaiSach = rs.getString("tenLoai");
                 int tongSoLuong = rs.getInt("tongSoLuong");
-                listData.add(new ThongKeTonKho_model(tenKho, isbn, tongSoLuong));
+                listData.add(new ThongKeTonKho_model(loaiSach, tenKho, tongSoLuong));
             }
         } catch (SQLException e) {
             e.printStackTrace();

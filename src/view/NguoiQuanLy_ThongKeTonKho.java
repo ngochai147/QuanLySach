@@ -221,7 +221,7 @@ public class NguoiQuanLy_ThongKeTonKho extends javax.swing.JInternalFrame {
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/anhnen.jpg"))); // NOI18N
         getContentPane().add(jLabel1);
-        jLabel1.setBounds(0, 0, 1590, 680);
+        jLabel1.setBounds(0, 0, 1610, 720);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

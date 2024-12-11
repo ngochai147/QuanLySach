@@ -28,6 +28,8 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -67,7 +69,6 @@ public class NhanVien_TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
         jTextField_LoaiSach.setEnabled(false);
         jTextField_TenSach.setEnabled(false);
         df = new DecimalFormat("#,###");
-
         jTable_DonHang.setPreferredSize(new java.awt.Dimension(1612, 270));
     }
 
@@ -232,8 +233,23 @@ public class NhanVien_TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
         });
         jPanel1.add(jButton_ThemSach);
         jButton_ThemSach.setBounds(1220, 180, 140, 40);
-
         jTextField_ISBN.setFont(new java.awt.Font("Arial", 0, 20)); // NOI18N
+        jTextField_ISBN.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                laySachtuMa();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                laySachtuMa();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                laySachtuMa();
+            }
+        });
         jTextField_ISBN.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 jTextField_ISBNFocusGained(evt);
@@ -338,7 +354,8 @@ public class NhanVien_TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
     private void jButton_ThemHoaDonActionPerformed(java.awt.event.ActionEvent evt) throws SQLException {//GEN-FIRST:event_jButton_ThemHoaDonActionPerformed
 
         // BasicConfigurator.configure();
-        String maHoaDon=taoMaHoaDonTuDongTang(dsHD.getAllHoaDon().get(dsHD.getAllHoaDon().size()-1).getMaHoaDon());
+        int index_hoaDon=hoaDon_dao.getAllHoaDon().size()-1;
+        String maHoaDon=taoMaHoaDonTuDongTang(hoaDon_dao.getAllHoaDon().get(index_hoaDon).getMaHoaDon());
         if(dsCTHDTemp.size()==0){
             jTextField_ISBN.requestFocus();
             JOptionPane.showMessageDialog(this, "Vui lòng thêm sản phẩm vào đơn hàng");
@@ -363,7 +380,7 @@ public class NhanVien_TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
                     PhieuHoaDon phieuHoaDon=new PhieuHoaDon();
                     phieuHoaDon.viewReport(dsCTHDTemp,maHoaDon,tongTienHoaDon);
                 }
-                dsHD.create(new HoaDon(maHoaDon, LocalDate.now(),new NhanVien(DangNhap.ma)));
+                hoaDon_dao.create(new HoaDon(maHoaDon, LocalDate.now(),new NhanVien(DangNhap.ma)));
                 for (ChiTietHoaDon cthd: dsCTHDTemp){
 
                     for (ChiTietKhoHang ctkh: ctkh_dao.getAllChiTietKhoHang()){
@@ -392,7 +409,7 @@ public class NhanVien_TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
     private void jButton_HuyDonHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_HuyDonHangActionPerformed
         // TODO add your handling code here:
 
-        int thongBao=JOptionPane.showConfirmDialog(this,"Bạn chắc chắn hủy đơn hàng","Lỗi",JOptionPane.YES_NO_OPTION);
+        int thongBao=JOptionPane.showConfirmDialog(this,"Bạn chắc chắn hủy đơn hàng","Cảnh báo",JOptionPane.WARNING_MESSAGE,JOptionPane.YES_NO_OPTION);
         if(thongBao==0){
             model= (DefaultTableModel) jTable_DonHang.getModel();
             model.setRowCount(0);
@@ -409,7 +426,7 @@ public class NhanVien_TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
         if(n<0) {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn dòng xóa!!");
         }else {
-            int thongBao=JOptionPane.showConfirmDialog(this,"Bạn chắc chắn muốn xóa","Lỗi",JOptionPane.YES_NO_OPTION);
+            int thongBao=JOptionPane.showConfirmDialog(this,"Bạn chắc chắn muốn xóa","Cảnh báo",JOptionPane.WARNING_MESSAGE,JOptionPane.YES_NO_OPTION);
             if(thongBao==0){
                 String tenSach=(String)jTable_DonHang.getValueAt(n, 1);
                 String maSach="";
@@ -457,7 +474,7 @@ public class NhanVien_TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
         if(kiemTra){
             if(jTextField_SoLuong.getText().trim().isEmpty()){
                 JOptionPane.showMessageDialog(this,
-                        "Số lượng không được rỗng", "Lỗi", JOptionPane.WARNING_MESSAGE);
+                        "Số lượng không được rỗng", "Lỗi", JOptionPane.ERROR_MESSAGE);
                 jTextField_SoLuong.requestFocus();
                 return;
             }else{
@@ -472,12 +489,12 @@ public class NhanVien_TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
                     int soLuongMua = Integer.parseInt(jTextField_SoLuong.getText());
                     if (soLuongMua <= 0) {
                         JOptionPane.showMessageDialog(this,
-                                "Số lượng phải > 0", "Lỗi", JOptionPane.WARNING_MESSAGE);
+                                "Số lượng phải > 0", "Lỗi", JOptionPane.ERROR_MESSAGE);
                         jTextField_SoLuong.requestFocus();
                         return;
                     } else if (soLuongTon < soLuongMua) {
                         JOptionPane.showMessageDialog(this,
-                                "Không đủ số lượng!", "Lỗi", JOptionPane.WARNING_MESSAGE);
+                                "Không đủ số lượng!", "Lỗi", JOptionPane.ERROR_MESSAGE);
                         jTextField_SoLuong.requestFocus();
                         return;
                     }else {
@@ -489,7 +506,7 @@ public class NhanVien_TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
                                     int soLuongMoi = dsCTHDTemp.get(i).getSoLuong() + soLuongMua;
                                     if (soLuongTon < soLuongMoi) {
                                         JOptionPane.showMessageDialog(this,
-                                                "Không đủ số lượng!", "Lỗi", JOptionPane.WARNING_MESSAGE);
+                                                "Không đủ số lượng!", "Lỗi", JOptionPane.ERROR_MESSAGE);
                                         jTextField_SoLuong.requestFocus();
                                         return;
                                     }
@@ -504,7 +521,7 @@ public class NhanVien_TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
                                     model.setValueAt(soLuongMoi, i, 3);
                                     model.setValueAt(df.format(thanhTien), i, 5);
 
-                                    jLabel_TongTienHoaDon.setText(df.format(tongTienHoaDon));
+                                    jLabel_TongTienHoaDon.setText(df.format(tongTienHoaDon)+" VND");
                                     return;
                                 }
                             }
@@ -512,7 +529,7 @@ public class NhanVien_TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
                             soThuTu=model.getRowCount()+1;
                             int soLuong=Integer.parseInt(jTextField_SoLuong.getText()) ;
                             double thanhTien=sach.getGiaGoc()*soLuong*LOI_NHUAN;
-                            String maHoaDon=taoMaHoaDonTuDongTang(dsHD.getAllHoaDon().get(dsHD.getAllHoaDon().size()-1).getMaHoaDon());
+                            String maHoaDon=taoMaHoaDonTuDongTang(hoaDon_dao.getAllHoaDon().get(hoaDon_dao.getAllHoaDon().size()-1).getMaHoaDon());
                             int indexCTHD=chiTietHoaDonDao.getAllChiTietHoaDon().size()-1;
                             String maCTHD=taoMaChiTietHoaDonTuDong(indexCTHD);
                             model.addRow(new Object[]{
@@ -520,12 +537,12 @@ public class NhanVien_TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
                             });
                             dsCTHDTemp.add(new ChiTietHoaDon(maCTHD,new HoaDon(maHoaDon),new Sach(ISBN),soLuong,sach.getGiaGoc()*LOI_NHUAN));
                             tongTienHoaDon+=thanhTien;
-                            jLabel_TongTienHoaDon.setText(df.format(tongTienHoaDon));
+                            jLabel_TongTienHoaDon.setText(df.format(tongTienHoaDon)+" VND");
                         }
                     }
                 } catch (NumberFormatException e) {
                     JOptionPane.showMessageDialog(this,
-                            "Số lượng phải là số!", "Lỗi", JOptionPane.WARNING_MESSAGE);
+                            "Số lượng phải là số!", "Lỗi", JOptionPane.ERROR_MESSAGE);
                     jTextField_SoLuong.requestFocus();
                     return;
                 }
@@ -533,7 +550,7 @@ public class NhanVien_TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
             }
         }else{
             JOptionPane.showMessageDialog(this,
-                    "ISBN không đúng", "Lỗi", JOptionPane.WARNING_MESSAGE);
+                    "ISBN không đúng", "Lỗi", JOptionPane.ERROR_MESSAGE);
             jTextField_ISBN.requestFocus();
             jTextField_ISBN.selectAll();
             return;
@@ -579,18 +596,10 @@ public class NhanVien_TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
 
     private void jTextField_SoLuongFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField_SoLuongFocusGained
         // TODO add your handling code here:
-        String ISBN=jTextField_ISBN.getText();
-        if(jTextField_ISBN.getText()!=null && jTextField_SoLuong.isRequestFocusEnabled()){
-            Sach_DAO sachDao=new Sach_DAO();
-            List<Sach> dss= sachDao.getAllSP();
-            for (Sach s: dss){
-                if(ISBN.equals(s.getISBN())){
-                    jTextField_TenSach.setText(s.getTenSach());
-                    jTextField_LoaiSach.setText(s.getLoaiSach().getTenLoai());
-                }
-            }
-        }
+            laySachtuMa();
     }
+
+
     private void jButton_QuetMaActionPerformed(java.awt.event.ActionEvent evt) {
 // TODO add your handling code here:
         Thread scannerThread = new Thread(() -> {
@@ -607,7 +616,6 @@ public class NhanVien_TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
                 try {
                     BufferedImage image = webcam.getImage();  // Lấy hình ảnh từ webcam
                     String barcodeText = decodeBarcode(image);
-                    boolean kiemTra=false;
                     if (barcodeText != null) {
                         for(Sach s: dsS.getAllSP()){
                             if(barcodeText.equalsIgnoreCase(s.getISBN())){
@@ -617,25 +625,29 @@ public class NhanVien_TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
                                 jTextField_SoLuong.setText("1");
                                 webcam.close();
                                 window.setVisible(false);
-                                kiemTra=true;
                             }
                         }
-                    }else if(kiemTra==false){
-                        JOptionPane.showMessageDialog(this,
-                                "Mã ISBN không tồn tại", "Lỗi", JOptionPane.WARNING_MESSAGE);
                     }
                     //      jLabel_TongTienHoaDon.setText(df.format(tongTienHoaDon));
                 }catch (NullPointerException  e){
                     break;
                 }
-                try {
-                    Thread.sleep(100);  // Tạm dừng 100ms để giảm tải
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
             }
         });
         scannerThread.start();
+    }
+    private void laySachtuMa(){
+        String ISBN=jTextField_ISBN.getText();
+        if(jTextField_ISBN.getText()!=null && jTextField_SoLuong.isRequestFocusEnabled()){
+            Sach_DAO sachDao=new Sach_DAO();
+            List<Sach> dss= sachDao.getAllSP();
+            for (Sach s: dss){
+                if(ISBN.equals(s.getISBN())){
+                    jTextField_TenSach.setText(s.getTenSach());
+                    jTextField_LoaiSach.setText(s.getLoaiSach().getTenLoai());
+                }
+            }
+        }
     }
     private String taoMaChiTietHoaDonTuDong(int index){
         String part1 = chiTietHoaDonDao.getAllChiTietHoaDon().get(index).getMaChiTietHoaDon().substring(0, 4);  // Lấy 4 ký tự đầu tiên
@@ -644,11 +656,14 @@ public class NhanVien_TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
         return maCTHD;
     }
     public String taoMaHoaDonTuDongTang(String maHDCuoiCung) {
-        String part1 = maHDCuoiCung.substring(0, 2);  // Lấy 2 ký tự đầu tiên
-        int part2 = Integer.parseInt(maHDCuoiCung.substring(4))+1;
-        String maHD = part1 + String.format("%04d", part2);
+        String part1 = maHDCuoiCung.substring(0, 2);
+        String part2 = maHDCuoiCung.substring(2);
+        int number = Integer.parseInt(part2) + 1;
+        String maHD = part1 + String.format("%04d", number);
+
         return maHD;
     }
+
     private static String decodeBarcode(BufferedImage image) {
         try {
             LuminanceSource source = new BufferedImageLuminanceSource(image);
@@ -706,7 +721,7 @@ public class NhanVien_TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
     private  double tongTienHoaDon=0;
     private JLabel jLabel_TongTien;
     private JLabel jLabel_TongTienHoaDon;
-    private HoaDon_DAO dsHD = new HoaDon_DAO();
+    private HoaDon_DAO hoaDon_dao=new HoaDon_DAO();
 
     private ChiTietHoaDon_DAO chiTietHoaDonDao=new ChiTietHoaDon_DAO();
 
