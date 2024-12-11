@@ -843,7 +843,7 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
 
                 int tong_SL = layTongSoLuong();
 //                System.out.println("Tổng số lượng: " + ma_PXK);
-                px_dao.insertPhieuXuatKho(ma_PXK, sqlDate, "22690761", maKN, maKX, tong_SL);
+                px_dao.insertPhieuXuatKho(ma_PXK, sqlDate, DangNhap.ma, maKN, maKX, tong_SL);
                 themChiTietPhieuXuatKho(model, ma_PXK);
                 themChiTietKhoHang(model, maKN, maKX);
 
