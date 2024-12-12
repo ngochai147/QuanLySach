@@ -272,7 +272,7 @@ public class ThuKho_NhapKho extends JInternalFrame {
             int soLuong = Integer.parseInt(model.getValueAt(i, 5).toString());
 
             // Gọi hàm insert chi tiết phiếu nhập kho vào cơ sở dữ liệu
-            boolean isInserted = ctpn_dao.insertChiTietPhieuNhapKho(maChiTietPhieuNhapKho, maPhieuNhapKho, soLuong, isbn);
+            boolean isInserted = ctpn_dao.themChiTietPhieuNhapKho(maChiTietPhieuNhapKho, maPhieuNhapKho, soLuong, isbn);
 
             // Lấy thông tin sách từ ISBN
             Sach sach = sach_dao.getSachTheoMaSach(isbn); // Giả sử bạn có hàm lấy thông tin sách từ ISBN
@@ -357,7 +357,7 @@ public class ThuKho_NhapKho extends JInternalFrame {
         String ma_PNK = taoTuDong_MaPhieuNhapKho();
         String maKH = khoHang_dao.getMaKhoTheoTenKho(tenKho);
         int tong_SL = layTongSoLuong();
-        boolean isInserted = pn_dao.insertPhieuNhapKho(ma_PNK, java.sql.Date.valueOf(ngayLap), DangNhap.ma, maKH, tong_SL);
+        boolean isInserted = pn_dao.themPhieuNhapKho(ma_PNK, java.sql.Date.valueOf(ngayLap), DangNhap.ma, maKH, tong_SL);
 
         if (isInserted) {
             System.out.println("Thêm phiếu nhập kho thành công!");
@@ -497,7 +497,7 @@ public class ThuKho_NhapKho extends JInternalFrame {
         jPanel_NhapKho.add(jLabel10);
         jLabel10.setBounds(1010, 190, 60, 40);
 
-        tbl_phieuNhapKho.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
+        tbl_phieuNhapKho.setFont(new java.awt.Font("Arial", 0, 20)); // NOI18N
         tbl_phieuNhapKho.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -508,6 +508,7 @@ public class ThuKho_NhapKho extends JInternalFrame {
         ));
         tbl_phieuNhapKho.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         tbl_phieuNhapKho.setRowHeight(40);
+        tbl_phieuNhapKho.setSelectionBackground(new java.awt.Color(153, 204, 0));
         tbl_phieuNhapKho.setShowGrid(true);
         jScrollPane1.setViewportView(tbl_phieuNhapKho);
 
@@ -523,8 +524,6 @@ public class ThuKho_NhapKho extends JInternalFrame {
         jdc_ngayLapPN.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
         jPanel_NhapKho.add(jdc_ngayLapPN);
         jdc_ngayLapPN.setBounds(260, 190, 340, 40);
-        Locale locale = new Locale("vi", "VN");
-        jdc_ngayLapPN.setLocale(locale);
 
         jLabel12.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
@@ -650,7 +649,7 @@ public class ThuKho_NhapKho extends JInternalFrame {
 
 //            System.out.println("Mã phiếu nhập kho: " + ma_PNK);
 
-            boolean isInserted = pn_dao.insertPhieuNhapKho(ma_PNK, sqlDate, DangNhap.ma, maKH, tong_SL);
+            boolean isInserted = pn_dao.themPhieuNhapKho(ma_PNK, sqlDate, DangNhap.ma, maKH, tong_SL);
 
             if (isInserted) {
                 System.out.println("Thêm phiếu nhập kho thành công!");

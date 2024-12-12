@@ -50,7 +50,7 @@ public class ChiTietPhieuNhapKho_DAO {
         return listCTPN;
     }
 
-    public boolean insertChiTietPhieuNhapKho(String maChiTietPhieuNhapKho, String maPhieuNhapKho, int soLuong, String isbn) {
+    public boolean themChiTietPhieuNhapKho(String maChiTietPhieuNhapKho, String maPhieuNhapKho, int soLuong, String isbn) {
         Connection con = ConnectDB.getInstance().getConnection();
         PreparedStatement stmt = null;
 

@@ -326,6 +326,7 @@ public class NguoiQuanLy_ThongKeDoanhThu extends javax.swing.JInternalFrame {
                 return types [columnIndex];
             }
         });
+        jTable_DoanhThu.setSelectionBackground(new java.awt.Color(153, 204, 0));
         jTable_DoanhThu.getTableHeader().setReorderingAllowed(false);
         jScrollPane_DoanhThu.setViewportView(jTable_DoanhThu);
 
@@ -350,7 +351,7 @@ public class NguoiQuanLy_ThongKeDoanhThu extends javax.swing.JInternalFrame {
                 .addGap(1, 1, 1)
                 .addComponent(jLabel_DoanhThu)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel_DT, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
+                .addComponent(jLabel_DT, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel_TongDoanhThuLayout.setVerticalGroup(
@@ -448,12 +449,12 @@ public class NguoiQuanLy_ThongKeDoanhThu extends javax.swing.JInternalFrame {
             .addGroup(jPanel_PieChartTacGiaLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(jLabel_TacGia)
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
         jPanel_PieChartTacGiaLayout.setVerticalGroup(
             jPanel_PieChartTacGiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_PieChartTacGiaLayout.createSequentialGroup()
-                .addComponent(pieChart_TacGia, javax.swing.GroupLayout.DEFAULT_SIZE, 328, Short.MAX_VALUE)
+                .addComponent(pieChart_TacGia, javax.swing.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel_TacGia)
                 .addContainerGap())
@@ -698,7 +699,7 @@ public class NguoiQuanLy_ThongKeDoanhThu extends javax.swing.JInternalFrame {
             }
         });
         jPanel_DoanhThu.add(jButton_LamMoi);
-        jButton_LamMoi.setBounds(1220, 130, 115, 40);
+        jButton_LamMoi.setBounds(1220, 130, 112, 40);
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/anhnen.jpg"))); // NOI18N
         jLabel3.setPreferredSize(new java.awt.Dimension(1520, 716));

@@ -582,7 +582,7 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         jPanel1.add(jLabel8);
         jLabel8.setBounds(190, 270, 30, 40);
 
-        jdc_ngayLapPX.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
+        jdc_ngayLapPX.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
         jdc_ngayLapPX.addAncestorListener(new javax.swing.event.AncestorListener() {
             public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
                 jdc_ngayLapPXAncestorAdded(evt);
@@ -631,7 +631,7 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         jPanel1.add(jLabel13);
         jLabel13.setBounds(1070, 224, 24, 20);
 
-        tf_soLuong.setFont(new java.awt.Font("Arial", 0, 20)); // NOI18N
+        tf_soLuong.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
         tf_soLuong.setPreferredSize(new java.awt.Dimension(64, 40));
         tf_soLuong.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -686,7 +686,7 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         btn_taoPX.setBounds(1050, 630, 170, 50);
 
         jcb_khoNhap.setBackground(new java.awt.Color(102, 102, 0));
-        jcb_khoNhap.setFont(new java.awt.Font("Arial", Font.BOLD, 20)); // NOI18N
+        jcb_khoNhap.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jcb_khoNhap.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jcb_khoNhapActionPerformed(evt);
@@ -696,12 +696,12 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         jcb_khoNhap.setBounds(250, 270, 340, 40);
 
         jcb_chonSach.setBackground(new java.awt.Color(102, 102, 0));
-        jcb_chonSach.setFont(new java.awt.Font("Arial", Font.BOLD, 20)); // NOI18N
+        jcb_chonSach.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         jPanel1.add(jcb_chonSach);
         jcb_chonSach.setBounds(1110, 150, 340, 40);
 
         jcb_khoXuat.setBackground(new java.awt.Color(102, 102, 0));
-        jcb_khoXuat.setFont(new java.awt.Font("Arial", Font.BOLD, 20)); // NOI18N
+        jcb_khoXuat.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jcb_khoXuat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jcb_khoXuatActionPerformed(evt);
@@ -747,6 +747,7 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         ));
         tbl_phieuXuatKho.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         tbl_phieuXuatKho.setRowHeight(40);
+        tbl_phieuXuatKho.setSelectionBackground(new java.awt.Color(153, 204, 0));
         tbl_phieuXuatKho.setShowGrid(true);
         jScrollPane1.setViewportView(tbl_phieuXuatKho);
 

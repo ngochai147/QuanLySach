@@ -380,7 +380,7 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
         }
         int[] n = jTable_Sach.getSelectedRows();
         if (n.length < 1) {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn hàng được xóa", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn sách cần xóa", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
         } else {
             if (JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa", "Cảnh báo", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                 for (int i = n.length - 1; i >= 0; i--) {

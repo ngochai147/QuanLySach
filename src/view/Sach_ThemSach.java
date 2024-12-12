@@ -428,16 +428,56 @@ public class Sach_ThemSach extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private boolean kiemTraISBN(String iSBN) {
+        //        chỉ chứa 13 chữ số
         String regex = "^\\d{13}$";
         return iSBN != null && iSBN.matches(regex);
     }
 
     private boolean kiemTraTenSach(String tenSach) {
+        //[\\p{L}0-9]
+            //\\p{L}: Đại diện cho bất kỳ ký tự nào thuộc loại chữ cái (cả chữ cái in hoa và in thường của mọi ngôn ngữ, ví dụ như A-Z, á, ü, v.v.).
+            //0-9: Cho phép các ký tự là chữ số từ 0 đến 9.
+            //Tóm lại, phần này yêu cầu ký tự đầu tiên trong chuỗi phải là một chữ cái (bất kỳ ngôn ngữ nào) hoặc một chữ số.
+
+        //[\\p{L}\\p{M}0-9\\s.,'\"-:()+]*
+            //\\p{L}: Chữ cái (giống như phần trước).
+            //\\p{M}: Các ký tự dấu (diacritics), ví dụ như dấu mũ, dấu sắc, dấu huyền, v.v.
+            //0-9: Chữ số.
+            //\\s: Khoảng trắng, bao gồm khoảng trắng, tab, và dòng mới.
+            //., ,, ', ", -, :, (), +: Các ký tự dấu câu và ký tự đặc biệt như dấu chấm, dấu phẩy, dấu nháy đơn, dấu nháy kép, dấu gạch ngang, dấu hai chấm, dấu ngoặc đơn, và dấu cộng.
+            //*: Biểu thị rằng nhóm ký tự này có thể xuất hiện 0 lần hoặc nhiều lần. 
+            //Điều này có nghĩa là sau ký tự đầu tiên (theo quy định ở phần 2), chuỗi có thể chứa bất kỳ số lượng ký tự hợp lệ nào từ nhóm này.
+        
+//      Ví dụ hợp lệ:
+//            John Doe
+//            abc123
+//            Hello, world!
+//            123456
+//      Ví dụ không hợp lệ:
+//            !@#$ (vì không bắt đầu bằng chữ cái hoặc chữ số)
+//            ?&* (vì không có ký tự hợp lệ theo quy tắc)
+
         String regex = "^[\\p{L}0-9][\\p{L}\\p{M}0-9\\s.,'\"-:()+]*$";
         return tenSach != null && !tenSach.trim().isEmpty() && tenSach.matches(regex);
     }
 
     private boolean kiemTraDonGia(String donGiaStr) {
+        //[0-9]Đây là một nhóm ký tự (character class) cho phép các ký tự là chữ số từ 0 đến 9.
+        //Nó tương đương với ký tự số học, nghĩa là chỉ chứa các số trong dãy từ 0 đến 9.
+        
+        //{4,}: Đây là một cú pháp lặp lại (quantifier), nghĩa là "ít nhất 4 lần". 
+        //Phần này yêu cầu chuỗi chứa ít nhất 4 ký tự số và có thể nhiều hơn. Số lượng chữ số là không giới hạn, miễn là nó có ít nhất 4 chữ số.
+        
+        
+        
+//        Ví dụ hợp lệ:
+    //        1234
+    //        56789
+    //        100000
+//        Ví dụ không hợp lệ:
+    //        12 (chỉ có 2 chữ số, ít hơn 4)
+    //        abc123 (chứa chữ cái, không phải số)
+    //        1.234 (có dấu chấm, không phải là một chuỗi chỉ có chữ số)
         String regex = "^[0-9]{4,}$";
         if (donGiaStr == null || !donGiaStr.matches(regex)) {
             JOptionPane.showMessageDialog(this, "Đơn giá không hợp lệ!!!", "Thông báo", JOptionPane.WARNING_MESSAGE);
@@ -464,6 +504,7 @@ public class Sach_ThemSach extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, "Số lượng phải > 0!!", "Thông báo", JOptionPane.WARNING_MESSAGE);
             return false;
         }
+        //Số lượng sách thêm vào phải nhỏ hơn sức chứa trong kho
         if (Integer.parseInt(text) != 0) {
             String tenKho = jComboBox_Kho.getSelectedItem().toString();
             String maKho = khoHang_dao.getMaKhoTheoTenKho(tenKho);
@@ -482,11 +523,43 @@ public class Sach_ThemSach extends javax.swing.JDialog {
     }
 
     private boolean kiemTratacGia(String tacGia) {
+        //[\\p{L}\\s.'-]:
+            //\\p{L}: Đại diện cho bất kỳ ký tự nào thuộc loại chữ cái (cả chữ cái in hoa và in thường của mọi ngôn ngữ, ví dụ như A-Z, á, ü, v.v.).
+            //\\s: Khoảng trắng (spaces), bao gồm khoảng trắng, tab, và dòng mới.
+            //.'-: Các dấu câu cho phép bao gồm dấu chấm (.), dấu nháy đơn ('), dấu gạch ngang (-).
+            
+//      Ví dụ hợp lệ:
+//            John Doe
+//            Jane O'Connor
+//            Dr. Smith
+//            Alice-Marie
+//      Ví dụ không hợp lệ:
+//            1234 (chứa chữ số, không hợp lệ theo quy định)
+//            !@#$% (chứa ký tự đặc biệt không hợp lệ)
+//            John_Doe (chứa dấu gạch dưới, không hợp lệ)
         String regex = "^[\\p{L}\\s.'-]+$";
         return tacGia != null && !tacGia.trim().isEmpty() && tacGia.matches(regex);
     }
 
     private boolean kiemTraNhaXB(String nhaXB) {
+//            [\\p{L}\\p{M}0-9\\s.,'-]
+    //            \\p{L}: Đại diện cho bất kỳ ký tự nào thuộc loại chữ cái (cả chữ cái in hoa và in thường của mọi ngôn ngữ, ví dụ như A-Z, á, ü, v.v.).
+    //            \\p{M}: Đại diện cho các dấu (diacritic marks) gắn liền với chữ cái, ví dụ như dấu mũ, dấu sắc, dấu huyền, v.v.
+    //            0-9: Cho phép các ký tự là chữ số từ 0 đến 9.
+    //            \\s: Khoảng trắng (spaces), bao gồm khoảng trắng, tab, và dòng mới.
+    //            .,'-: Cho phép các dấu câu như dấu chấm (.), dấu phẩy (,), dấu nháy đơn ('), và dấu gạch ngang (-).        
+        
+//       Ví dụ hợp lệ:
+//            John Doe
+//            Jane O'Connor
+//            Dr. Smith
+//            1234
+//            Alice-Marie
+//            José
+//       Ví dụ không hợp lệ:
+//            !@#$% (chứa ký tự đặc biệt không hợp lệ)
+//            John@Doe (chứa dấu @, không hợp lệ theo quy tắc)
+//            123_456 (chứa dấu gạch dưới, không hợp lệ)
         String regex = "^[\\p{L}\\p{M}0-9\\s.,'-]+$";
         return nhaXB != null && !nhaXB.trim().isEmpty() && nhaXB.matches(regex);
     }
@@ -600,8 +673,8 @@ public class Sach_ThemSach extends javax.swing.JDialog {
                         KhoHang kh = khoHang_dao.getKhoTheoTenKho(tenKho);
                         chiTietKhoHang_dao.themChiTietKhoHang(new ChiTietKhoHang(createMaCTKH(), soLuong, new Sach(sach.getISBN()), new KhoHang(kh.getMaKhoHang())));
                         String maPhieuNhapKho = taoTuDong_MaPhieuNhapKho();
-                        phieuNhapDao.insertPhieuNhapKho(maPhieuNhapKho, Date.valueOf(LocalDate.now()), DangNhap.ma, kh.getMaKhoHang(), soLuong);
-                        chiTietPhieuNhap_dao.insertChiTietPhieuNhapKho(taoTuDong_MaChiTietPhieuNhapKho(), maPhieuNhapKho, soLuong, sach.getISBN());
+                        phieuNhapDao.themPhieuNhapKho(maPhieuNhapKho, Date.valueOf(LocalDate.now()), DangNhap.ma, kh.getMaKhoHang(), soLuong);
+                        chiTietPhieuNhap_dao.themChiTietPhieuNhapKho(taoTuDong_MaChiTietPhieuNhapKho(), maPhieuNhapKho, soLuong, sach.getISBN());
                         int width = 300; // Chiều rộng của mã vạch
                         int height = 100; // Chiều cao của mã vạch
                         String userHome = System.getProperty("user.home");

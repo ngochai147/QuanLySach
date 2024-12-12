@@ -474,6 +474,23 @@ public class NguoiQuanLy_ThemNV extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField_DiaChiActionPerformed
     private boolean kiemTraTenNV(String ten) {
+//        1. [A-ZÁÀÃẢẠĂẮẰẴẲẶÂẤẦẪẨẬÊẾỀỄỂỆÍÌĨỈỊÓÒÕỎỌÔỐỒỖỔỘƠỚỜỠỞỢÚÙŨỦỤƯỨỪỮỬỰÝÝỸỶỴĐ]Nhóm này cho phép ký tự đầu tiên trong chuỗi phải là một chữ cái in hoa hoặc các ký tự đặc biệt có dấu trong tiếng Việt (chữ cái có dấu, dấu thanh, v.v.).
+//        2. [a-záàãảạăắằẵẳặâấầẫẩậêếềễểệíìĩỉịóòõỏọôốồỗổộơớờỡởợúùũủụưứừữửựýỳỹỷỵ]* Sau ký tự đầu tiên, chuỗi có thể chứa bất kỳ ký tự nào là chữ cái in thường hoặc các chữ cái có dấu trong tiếng Việt. Dấu * có nghĩa là nhóm này có thể lặp lại 0 lần hoặc nhiều lần, tức là không giới hạn số lượng chữ cái trong chuỗi.
+//        3. \\s Cho phép một khoảng trắng (space). Đây là phần dành cho việc có thể có tên đầy đủ với hai từ, ví dụ như họ và tên.
+//        4. [A-ZÁÀÃẢẠĂẮẰẴẲẶÂẤẦẪẨẬÊẾỀỄỂỆÍÌĨỈỊÓÒÕỎỌÔỐỒỖỔỘƠỚỜỠỞỢÚÙŨỦỤƯỨỪỮỬỰÝÝỸỶỴĐ] Yêu cầu ký tự đầu tiên của từ thứ hai (sau khoảng trắng) phải là một chữ cái in hoa hoặc ký tự đặc biệt có dấu trong tiếng Việt.
+//        5. [a-záàãảạăắằẵẳặâấầẫẩậêếềễểệíìĩỉịóòõỏọôốồỗổộơớờỡởợúùũủụưứừữửựýỳỹỷỵ]* Tương tự như phần trước, sau chữ cái đầu tiên, phần còn lại của từ có thể là các chữ cái in thường hoặc chữ cái có dấu trong tiếng Việt.
+//        6. * Lặp lại toàn bộ nhóm sau dấu khoảng trắng bao nhiêu lần cũng được, nghĩa là có thể có nhiều hơn một từ trong chuỗi.
+        
+
+//        Ví dụ hợp lệ:
+//            Nguyễn Văn A
+//            Trần Thị B
+//            Lê Anh Đức
+//            Hà Nội
+//        Ví dụ không hợp lệ:
+//            nguyễn Văn A (chữ đầu tiên không in hoa)
+//            Trần123 (chứa chữ số, không hợp lệ)
+//            @Nguyễn (chứa ký tự đặc biệt không hợp lệ)
         String regex = "^[A-ZÁÀÃẢẠĂẮẰẴẲẶÂẤẦẪẨẬÊẾỀỄỂỆÍÌĨỈỊÓÒÕỎỌÔỐỒỖỔỘƠỚỜỠỞỢÚÙŨỦỤƯỨỪỮỬỰÝỲỸỶỴĐ][a-záàãảạăắằẵẳặâấầẫẩậêếềễểệíìĩỉịóòõỏọôốồỗổộơớờỡởợúùũủụưứừữửựýỳỹỷỵ]*(\\s[A-ZÁÀÃẢẠĂẮẰẴẲẶÂẤẦẪẨẬÊẾỀỄỂỆÍÌĨỈỊÓÒÕỎỌÔỐỒỖỔỘƠỚỜỠỞỢÚÙŨỦỤƯỨỪỮỬỰÝỲỸỶỴĐ][a-záàãảạăắằẵẳặâấầẫẩậêếềễểệíìĩỉịóòõỏọôốồỗổộơớờỡởợúùũủụưứừữửựýỳỹỷỵ]*)*$";
         return ten.matches(regex);
     }
@@ -508,11 +525,32 @@ public class NguoiQuanLy_ThemNV extends javax.swing.JDialog {
 //    (?<!\\.):Nó đảm bảo rằng chuỗi không kết thúc bằng dấu chấm (.). Nói cách khác, không được có dấu chấm ở cuối phần tên người dùng.
 //    @gmail\\.com: Kiểm tra phần tên miền, yêu cầu nó phải là @gmail.com. Lưu ý rằng dấu chấm (.) phải được escape (\\.) vì trong regex, dấu chấm có ý nghĩa đặc biệt.
 
+
+
+//     Ví dụ hợp lệ:
+//            test.email@gmail.com
+//            john.doe123@gmail.com
+//            user_name+test@gmail.com
+//     Ví dụ không hợp lệ:
+//            .username@gmail.com (bắt đầu bằng dấu chấm)
+//            username.@gmail.com (kết thúc bằng dấu chấm)
+//            username@gmail..com (có hai dấu chấm liên tiếp)
+//            username@gmailcom (không có dấu chấm giữa gmail và com)
+
         String regex = "^(?!\\.)[a-zA-Z0-9._%+-]+(?<!\\.)@gmail\\.com$";
         return email.matches(regex);
     }
 
     private boolean kiemTraDiaChi(String diaChi) {
+        //[a-zA-Z0-9.,\\s\\u00C0-\\u1EF9-]: Đây là một nhóm ký tự (character class) cho phép các ký tự sau:
+            //a-z: Chữ cái in thường từ a đến z.
+            //A-Z: Chữ cái in hoa từ A đến Z.
+            //0-9: Các chữ số từ 0 đến 9.
+            //.: Dấu chấm.
+            //,: Dấu phẩy.
+            //\\s: Khoảng trắng (bao gồm khoảng trắng, tab, và dòng mới).
+            //\\u00C0-\\u1EF9: Phạm vi Unicode từ \u00C0 đến \u1EF9 đại diện cho các ký tự đặc biệt tiếng Việt có dấu (ví dụ: à, á, ả, ạ, ả, ă, ắ, ằ, ẵ, ẳ, ẵ, v.v.). Đây là một phạm vi Unicode để bao phủ các ký tự có dấu trong tiếng Việt.
+            //-: Dấu gạch ngang (cho phép dấu này trong chuỗi).
         String regex = "^[a-zA-Z0-9.,\\s\\u00C0-\\u1EF9-]+$";
         return diaChi.matches(regex);
     }
@@ -527,7 +565,7 @@ public class NguoiQuanLy_ThemNV extends javax.swing.JDialog {
         
 //        Kiểm tra tên nhân viên
         if (tenNhanVien.trim().isEmpty() || !kiemTraTenNV(tenNhanVien)) {
-            JOptionPane.showMessageDialog(this, "Tên nhân viên không hợp lệ!!!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Tên nhân viên không hợp lệ!!!", "Thông báo", JOptionPane.WARNING_MESSAGE);
             jTextField_TenNhanVien.requestFocus();
             jTextField_TenNhanVien.selectAll();
             return false;
@@ -535,20 +573,20 @@ public class NguoiQuanLy_ThemNV extends javax.swing.JDialog {
 
         // Kiểm tra ngày sinh nếu để rỗng
         if (date == null) {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn ngày sinh!!!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn ngày sinh!!!", "Thông báo", JOptionPane.WARNING_MESSAGE);
             return false;
         }
 
 //        Kiểm tra nhân viên phải trên 18 tuổi
         LocalDate ngaySinh = date.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
         if (!kiemTraNgaySinh(ngaySinh)) {
-            JOptionPane.showMessageDialog(this, "Nhân viên phải trên 18 tuổi!!!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Nhân viên phải trên 18 tuổi!!!", "Thông báo", JOptionPane.WARNING_MESSAGE);
             return false;
         }
 
 //        Kiểm tra số điện thoại
         if (soDienThoai.trim().isEmpty() || !kiemTraSDT(soDienThoai)) {
-            JOptionPane.showMessageDialog(this, "Số điện thoại không hợp lệ!!!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Số điện thoại không hợp lệ!!!", "Thông báo", JOptionPane.WARNING_MESSAGE);
             jTextField_SoDienThoai.requestFocus();
             jTextField_SoDienThoai.selectAll();
             return false;
@@ -556,7 +594,7 @@ public class NguoiQuanLy_ThemNV extends javax.swing.JDialog {
 
 //        Kiểm tra email
         if (email.trim().isEmpty() || !kiemTraEmail(email)) {
-            JOptionPane.showMessageDialog(this, "Email không hợp lệ!!!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Email không hợp lệ!!!", "Thông báo", JOptionPane.WARNING_MESSAGE);
             jTextField_Email.requestFocus();
             jTextField_Email.selectAll();
             return false;
@@ -564,7 +602,7 @@ public class NguoiQuanLy_ThemNV extends javax.swing.JDialog {
 
 //        Kiểm tra địa chỉ
         if (diaChi.trim().isEmpty() || !kiemTraDiaChi(diaChi)) {
-            JOptionPane.showMessageDialog(this, "Địa chỉ không hợp lệ!!!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Địa chỉ không hợp lệ!!!", "Thông báo", JOptionPane.WARNING_MESSAGE);
             jTextField_DiaChi.requestFocus();
             jTextField_DiaChi.selectAll();
             return false;
@@ -572,7 +610,7 @@ public class NguoiQuanLy_ThemNV extends javax.swing.JDialog {
         
 //        Kiểm tra ảnh không rỗng
         if (anh == null) {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn ảnh đại diện!!!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn ảnh đại diện!!!", "Thông báo", JOptionPane.WARNING_MESSAGE);
             return false;
         }
         

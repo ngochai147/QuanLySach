@@ -335,7 +335,7 @@ public class NguoiQuanLy_QuanLyNhanVien extends javax.swing.JInternalFrame {
 
         int[] n = jTable_QuanLyNhanVien.getSelectedRows();
         if (n.length < 1) {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn hàng được xóa", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn nhân viên cần xóa", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
         } else {
             if (JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa", "Cảnh báo", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                 for (int i = n.length - 1; i >= 0; i--) {
