@@ -145,7 +145,13 @@ public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
                     1, pnk.getMaPhieuNhapKho(), pnk.getNhanVien().getMaNV(), tenKhoNhap.getTenKho(), "", loaiPhieu, pnk.getSoLuong(), dfDay.format(pnk.getNgayLap()), ""
             });
         }
-        listChung.sort((o1, o2) -> Integer.compare((int) o2[6], (int) o1[6]));
+
+        listChung.sort((o1, o2) -> {
+            DateTimeFormatter df_dinhDangNgay = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            LocalDate date1 = LocalDate.parse((String) o1[7], df_dinhDangNgay);
+            LocalDate date2 = LocalDate.parse((String) o2[7], df_dinhDangNgay);
+            return date2.compareTo(date1); // Ngày mới nhất lên đầu
+        });
 
         for (Object[] row : listChung) {
             row[0] = stt++; // Cập nhật giá trị stt
@@ -520,13 +526,7 @@ public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_lamMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_lamMoiActionPerformed
-        modelXuatNhapKho = new DefaultTableModel(new Object[]{"STT", "Mã phiếu", "Mã thủ kho", "Tên kho nhập", "Tên kho xuất", "Loại phiếu", "Số lượng", "Ngày lập phiếu", ""}, 0) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                // Chỉ cho phép chỉnh sửa cột cuối cùng
-                return column == getColumnCount() - 1;
-            }
-        };
+        modelXuatNhapKho.setRowCount(0);
         DocDuLieuDatabaseVaoTable();
         tbl_QLXuatNhapKho.setModel(modelXuatNhapKho);
         tbl_QLXuatNhapKho.setDefaultEditor(Object.class, null);
@@ -653,14 +653,8 @@ public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
 
     public void danhSachTimKiem(int stt, String textTim) {
         String tieuChi = cb_chonTieuChi.getSelectedItem().toString();
+        modelXuatNhapKho.setRowCount(0);
 
-        modelXuatNhapKho = new DefaultTableModel(new Object[]{"STT", "Mã phiếu", "Mã thủ kho", "Tên kho nhập", "Tên kho xuất", "Loại phiếu", "Số lượng", "Ngày lập phiếu", ""}, 0) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                // Chỉ cho phép chỉnh sửa cột cuối cùng
-                return column == getColumnCount() - 1;
-            }
-        };
         if (tieuChi.equalsIgnoreCase("Mã phiếu")) {
             for (PhieuXuatKho pxk : listPXK) {
                 if (pxk.getMaPhieuXuatKho().contains(textTim)) {
