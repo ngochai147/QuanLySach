@@ -597,8 +597,8 @@ public class Sach_SuaSach extends javax.swing.JDialog {
                 if (sach_dao.capNhatSach(sach)) {
                     chiTietKhoHang_dao.capNhatChiTietKhoHang(sach.getISBN(), maKho, soLuong);
                     String maPhieuNhapKho = taoTuDong_MaPhieuNhapKho();
-                    phieuNhapDao.insertPhieuNhapKho(maPhieuNhapKho, Date.valueOf(LocalDate.now()), DangNhap.ma, maKho, soLuong);
-                    chiTietPhieuNhap_dao.insertChiTietPhieuNhapKho(taoTuDong_MaChiTietPhieuNhapKho(), maPhieuNhapKho, soLuong, sach.getISBN());
+                    phieuNhapDao.insertPhieuNhapKho(maPhieuNhapKho, Date.valueOf(LocalDate.now()), DangNhap.ma, maKho, sach.getSoLuong());
+                    chiTietPhieuNhap_dao.insertChiTietPhieuNhapKho(taoTuDong_MaChiTietPhieuNhapKho(), maPhieuNhapKho, sach.getSoLuong(), sach.getISBN());
                     dsSach.editDataToTable(sach);
                 }
                 this.dispose();
