@@ -529,16 +529,23 @@ public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_lamMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_lamMoiActionPerformed
-        modelXuatNhapKho = new DefaultTableModel(new Object[]{"STT", "Mã phiếu", "Mã thủ kho", "Tên kho nhập", "Tên kho xuất", "Loại phiếu", "Số lượng", "Ngày lập phiếu", ""}, 0);
+        modelXuatNhapKho = new DefaultTableModel(new Object[]{"STT", "Mã phiếu", "Mã thủ kho", "Tên kho nhập", "Tên kho xuất", "Loại phiếu", "Số lượng", "Ngày lập phiếu", ""}, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                // Chỉ cho phép chỉnh sửa cột cuối cùng
+                return column == getColumnCount() - 1;
+            }
+        };
         DocDuLieuDatabaseVaoTable();
         tbl_QLXuatNhapKho.setModel(modelXuatNhapKho);
+        tbl_QLXuatNhapKho.setDefaultEditor(Object.class, null);
 
         cb_chonTieuChi.setSelectedItem("Mã phiếu");
 
         canGiua_tableHeader();
         chinhSua_table();
         chinhSua_btnView();
-    }//GEN-LAST:event_btn_lamMoiActionPerformed
+    }
 
     private void btn_XuatKhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_XuatKhoActionPerformed
         try {
@@ -656,7 +663,13 @@ public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
     public void danhSachTimKiem(int stt, String textTim) {
         String tieuChi = cb_chonTieuChi.getSelectedItem().toString();
 
-        modelXuatNhapKho = new DefaultTableModel(new Object[]{"STT", "Mã phiếu", "Mã thủ kho", "Tên kho nhập", "Tên kho xuất", "Loại phiếu", "Số lượng", "Ngày lập phiếu", ""}, 0);
+        modelXuatNhapKho = new DefaultTableModel(new Object[]{"STT", "Mã phiếu", "Mã thủ kho", "Tên kho nhập", "Tên kho xuất", "Loại phiếu", "Số lượng", "Ngày lập phiếu", ""}, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                // Chỉ cho phép chỉnh sửa cột cuối cùng
+                return column == getColumnCount() - 1;
+            }
+        };
         if (tieuChi.equalsIgnoreCase("Mã phiếu")) {
             for (PhieuXuatKho pxk : listPXK) {
                 if (pxk.getMaPhieuXuatKho().contains(textTim)) {
