@@ -11,6 +11,7 @@ import java.util.List;
 
 public class
 ChiTietHoaDon_DAO {
+    //
     public List<ChiTietHoaDon> getAllChiTietHoaDon() {
         ArrayList<ChiTietHoaDon> listCTHD = new ArrayList<>();
         Connection con = null;

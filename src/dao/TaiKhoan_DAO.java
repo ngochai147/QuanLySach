@@ -22,7 +22,7 @@ import java.util.List;
  * @author Tan Nghi
  */
 public class TaiKhoan_DAO {
-
+//
     private ArrayList<TaiKhoan> dsTK;
 
     public TaiKhoan_DAO() {

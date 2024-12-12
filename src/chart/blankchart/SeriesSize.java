@@ -1,7 +1,7 @@
 package chart.blankchart;
 
 public class SeriesSize {
-
+//
     public double getX() {
         return x;
     }

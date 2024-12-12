@@ -19,6 +19,7 @@ import java.util.List;
  * @author Dell
  */
 public class PhieuNhap_DAO {
+    //
     private final List<PhieuNhapKho> ds_pnk;
 
     public PhieuNhap_DAO() {

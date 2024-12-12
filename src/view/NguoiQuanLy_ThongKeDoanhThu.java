@@ -30,6 +30,7 @@ import javax.swing.table.DefaultTableModel;
  * @author phamd
  */
 public class NguoiQuanLy_ThongKeDoanhThu extends javax.swing.JInternalFrame {
+    //
 
     /**
      * Creates new form NguoiQuanLy_ThongKeDoanhThu

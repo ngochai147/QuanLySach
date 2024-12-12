@@ -15,7 +15,7 @@ import javax.swing.JTable;
  * @author Huu Thai
  */
 public class TableActionCellEditor extends DefaultCellEditor{
-    
+    //
    private final TableActionEvent event;
    private final JPanel action;
 

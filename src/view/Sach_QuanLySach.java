@@ -52,6 +52,7 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
  * @author Huu Thai
  */
 public class Sach_QuanLySach extends javax.swing.JInternalFrame {
+    //
 
     private final Sach_DAO sach_dao;
     private DefaultTableModel model = null;

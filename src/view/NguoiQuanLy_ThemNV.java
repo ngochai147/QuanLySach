@@ -35,6 +35,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author Tan Nghi
  */
 public class NguoiQuanLy_ThemNV extends javax.swing.JDialog {
+    //
 
     /**
      * Creates new form NewJDialog

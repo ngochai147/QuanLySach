@@ -21,6 +21,7 @@ import java.util.List;
  * @author The Bao
  */
 public class ChiTietKhoHang_DAO {
+    //
     private final List<ChiTietKhoHang> ct_khoHang;
 
     public ChiTietKhoHang_DAO() {

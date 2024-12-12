@@ -18,6 +18,7 @@ import javax.swing.UIManager;
  * @author Huu Thai
  */
 public class NhanVien extends javax.swing.JFrame {
+    //
 
     private final Color clickColor;
     private final Color defaultColor;

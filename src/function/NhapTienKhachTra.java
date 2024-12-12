@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
 public class NhapTienKhachTra extends JDialog {
+    //
     private JTextField amountField;
     private JButton confirmButton;
     private JButton cancelButton;

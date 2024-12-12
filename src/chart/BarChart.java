@@ -24,6 +24,7 @@ public class BarChart extends javax.swing.JPanel {
     /**
      * Creates new form BarChart
      */
+    //
     private List<ModelLegend_BarChart> legends = new ArrayList<>();
     private List<ModelChart_BarChart> model = new ArrayList<>();
     private final int seriesSize = 12;

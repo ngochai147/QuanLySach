@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import javax.swing.*;
 
 public class NguoiQuanLy extends javax.swing.JFrame {
+    //
 
     private final Color clickColor;
     private final Color defaultColor;

@@ -47,6 +47,7 @@ import javax.swing.table.JTableHeader;
  * @author Ngọc Hải
  */
 public class NhanVien_QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
+    //
 
     private Color customGreen;
 

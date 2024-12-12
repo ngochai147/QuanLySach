@@ -32,6 +32,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author Tan Nghi
  */
 public class Sach_SuaSach extends javax.swing.JDialog {
+    //
 
     /**
      * Creates new form NewJDialog
@@ -667,8 +668,9 @@ public class Sach_SuaSach extends javax.swing.JDialog {
                     phieuNhapDao.themPhieuNhapKho(maPhieuNhapKho, Date.valueOf(LocalDate.now()), DangNhap.ma, maKho, sach.getSoLuong());
                     chiTietPhieuNhap_dao.themChiTietPhieuNhapKho(taoTuDong_MaChiTietPhieuNhapKho(), maPhieuNhapKho, sach.getSoLuong(), sach.getISBN());
                     dsSach.editDataToTable(sach);
+                    this.dispose();
+                    JOptionPane.showMessageDialog(this, "Cập nhật sách thành công", "Thông báo", JOptionPane.WARNING_MESSAGE);
                 }
-                this.dispose();
             } catch (SQLException ex) {
                 Logger.getLogger(Sach_SuaSach.class.getName()).log(Level.SEVERE, null, ex);
             }

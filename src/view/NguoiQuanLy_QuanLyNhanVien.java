@@ -39,6 +39,7 @@ import javax.swing.table.TableColumn;
  * @author Tan Nghi
  */
 public class NguoiQuanLy_QuanLyNhanVien extends javax.swing.JInternalFrame {
+    //
 
     private final NhanVien_DAO nhanVien_dao;
     private final DefaultTableModel model;
@@ -498,7 +499,6 @@ public class NguoiQuanLy_QuanLyNhanVien extends javax.swing.JInternalFrame {
                 }
             }
         }
-
     }//GEN-LAST:event_jComboBox_TimKiemActionPerformed
     private void addButtonToTable(DefaultTableModel model) {
         TableActionEvent event;

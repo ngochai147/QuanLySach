@@ -10,42 +10,7 @@ import java.sql.SQLException;
  *
  * @author Huu Thai
  */
-//public class ConnectDB {
-//	public static Connection con=null;
-//	private static ConnectDB instance=new ConnectDB();
-//	
 //
-//	private ConnectDB() {
-//		String url = "jdbc:sqlserver://localhost:1433;databaseName=QL_NhaSachFahasa;encrypt=true;trustServerCertificate=true;";
-//		String user="sa";
-//		String password="sapassword";
-//		try {
-//			con=DriverManager.getConnection(url, user, password);
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
-//	
-//	public void disconnect() {
-//		if(con!=null) {
-//			try {
-//				con.close();
-//			} catch (Exception e) {
-//				// TODO: handle exception
-//				e.printStackTrace();
-//			}
-//		}
-//	}
-//	public static ConnectDB getInstance() {
-//		return instance;
-//	}
-//	public static Connection getConnection() {
-//		return 	con;
-//	}
-//}
-
-
 public class ConnectDB {
     private static Connection con = null;
     private static ConnectDB instance = new ConnectDB();

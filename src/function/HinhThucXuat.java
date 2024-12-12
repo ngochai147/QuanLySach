@@ -18,6 +18,7 @@ import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 
 public class HinhThucXuat extends JDialog {
+    //
     private JTable jTable_HoaDon;
     private JButton jButton_XuatExcel;
     private JButton jButton_InPDF;

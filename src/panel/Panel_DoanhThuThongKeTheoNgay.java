@@ -16,7 +16,7 @@ import java.util.List;
  * @author phamd
  */
 public class Panel_DoanhThuThongKeTheoNgay extends javax.swing.JPanel{
-
+//
     final ThongKe_Dao thongKe_Dao = new ThongKe_Dao();
     public Panel_DoanhThuThongKeTheoNgay() {
         initComponents();

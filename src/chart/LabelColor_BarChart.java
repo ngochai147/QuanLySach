@@ -6,7 +6,7 @@ import java.awt.RenderingHints;
 import javax.swing.JLabel;
 
 public class LabelColor_BarChart extends JLabel {
-
+//
     @Override
     protected void paintComponent(Graphics grphcs) {
         Graphics2D g2 = (Graphics2D) grphcs;

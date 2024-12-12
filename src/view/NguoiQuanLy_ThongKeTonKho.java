@@ -27,6 +27,7 @@ import panel.BarChart_ThongKeTonKho;
  * @author phamd
  */
 public class NguoiQuanLy_ThongKeTonKho extends javax.swing.JInternalFrame {
+    //
 
     /**
      * Creates new form NguoiQuanLy_ThongKeTonKho
@@ -41,7 +42,6 @@ public class NguoiQuanLy_ThongKeTonKho extends javax.swing.JInternalFrame {
         this.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         BasicInternalFrameUI ui = (BasicInternalFrameUI) this.getUI();
         ui.setNorthPane(null);
-
         loadDataTable();
         loadComboboxTenKho(jComboBox_TenKho);
         chinhSua_kichThuoc_MauSac();

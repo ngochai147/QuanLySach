@@ -29,6 +29,7 @@ import javax.swing.*;
  * @author Ngoc Hai
  * */
 public class InPDF {
+    //
 
     DecimalFormat formatter = new DecimalFormat("###,###,###");
     SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/YYYY HH:mm");

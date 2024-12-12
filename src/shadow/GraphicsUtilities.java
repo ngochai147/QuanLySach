@@ -15,6 +15,7 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 
 public class GraphicsUtilities {
+    //
 
     private GraphicsUtilities() {
     }

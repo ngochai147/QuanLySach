@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Spline {
+    //
 
     public SplinePoint[] copyPoints() {
         SplinePoint[] ps = new SplinePoint[points.length];

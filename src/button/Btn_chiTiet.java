@@ -18,6 +18,7 @@ public class Btn_chiTiet extends javax.swing.JPanel {
     /**
      * Creates new form btn_chiTiet
      */
+    //
    public Btn_chiTiet() {
         initComponents();
         

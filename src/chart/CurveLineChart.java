@@ -30,7 +30,7 @@ import spline.Spline;
 import spline.SplinePoint;
 
 public class CurveLineChart extends JComponent {
-
+//
     public boolean isFillColor() {
         return fillColor;
     }

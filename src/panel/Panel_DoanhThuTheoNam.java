@@ -12,7 +12,7 @@ import java.awt.Color;
  * @author phamd
  */
 public class Panel_DoanhThuTheoNam extends javax.swing.JPanel {
-
+//
     final ThongKe_Dao thongKe_Dao = new ThongKe_Dao();
     public Panel_DoanhThuTheoNam() {
         initComponents();

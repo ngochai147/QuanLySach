@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 public class DangNhap extends javax.swing.JFrame {
+    //
 
     public static String ma;
     private boolean ktNV = false;

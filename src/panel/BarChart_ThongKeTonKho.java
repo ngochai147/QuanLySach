@@ -15,7 +15,7 @@ import java.util.List;
  * @author phamd
  */
 public class BarChart_ThongKeTonKho extends javax.swing.JFrame {
-
+//
     /**
      * Creates new form BarChart_ThongKeTonKho
      */

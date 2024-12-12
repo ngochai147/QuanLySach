@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 public class HoaDon_DAO {
+    //
     public ArrayList<HoaDon> getAllHoaDon(){
         ArrayList<HoaDon> dsHD = new ArrayList<HoaDon>();
         Connection con = null;

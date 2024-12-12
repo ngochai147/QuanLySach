@@ -19,6 +19,7 @@ import javax.swing.*;
  * @author Tan Nghi
  */
 public class NguoiQuanLy_ThongTinChiTietNhanVien extends javax.swing.JDialog {
+    //
 
     /**
      * Creates new form NewJDialog

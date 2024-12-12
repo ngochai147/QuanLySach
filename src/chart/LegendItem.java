@@ -10,7 +10,7 @@ import javax.swing.JButton;
 import javax.swing.border.EmptyBorder;
 
 public class LegendItem extends JButton {
-
+//
     public int getIndex() {
         return index;
     }

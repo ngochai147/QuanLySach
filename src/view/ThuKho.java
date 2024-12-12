@@ -16,6 +16,7 @@ import javax.swing.*;
  * @author Huu Thai
  */
 public class ThuKho extends javax.swing.JFrame {
+    //
 
     private final Color clickColor;
     private final Color defaultColor;

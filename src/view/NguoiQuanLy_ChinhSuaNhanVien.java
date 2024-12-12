@@ -28,6 +28,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author Tan Nghi
  */
 public class NguoiQuanLy_ChinhSuaNhanVien extends javax.swing.JDialog {
+    //
 
     /**
      * Creates new form NewJDialog
@@ -422,6 +423,8 @@ public class NguoiQuanLy_ChinhSuaNhanVien extends javax.swing.JDialog {
             if (checkTrue) {
                 quanLy.editDataToTable(nv);
                 this.dispose();
+                JOptionPane.showMessageDialog(this, "Cập nhật nhân viên thành công", "Thông báo", JOptionPane.WARNING_MESSAGE);
+
             }
 
         } catch (SQLException e) {

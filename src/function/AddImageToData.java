@@ -15,7 +15,7 @@ import java.nio.file.StandardCopyOption;
  * @author Huu Thai
  */
 public class AddImageToData {
-
+//
     public String chuanHoaTenFile(String fileName) {
         String[] chuoi_cat = fileName.split("\\s");
         String fileName_1 = "";

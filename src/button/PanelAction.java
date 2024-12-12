@@ -16,6 +16,7 @@ public class PanelAction extends javax.swing.JPanel {
     /**
      * Creates new form PanelAction
      */
+    //
     public PanelAction() {
         initComponents();
     }

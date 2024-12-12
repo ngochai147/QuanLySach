@@ -14,6 +14,7 @@ import javax.swing.table.DefaultTableCellRenderer;
  *
  * @author Huu Thai
  */
+//
 public class TableActionRender extends DefaultTableCellRenderer{
 
    private final int numberOfButton;

@@ -1,6 +1,7 @@
 package chart;
 
 public class ModelChart {
+    //
 
     public String getLabel() {
         return label;

@@ -31,6 +31,7 @@ import javax.swing.table.JTableHeader;
  * @author Thế Bảo
  */
 public class ThuKho_QuanLyNhapXuatKho extends javax.swing.JInternalFrame {
+    //
     private PhieuXuat_DAO pxk_dao = new PhieuXuat_DAO();
     private PhieuNhap_DAO pnk_dao = new PhieuNhap_DAO();
     private NhanVien_DAO nv_dao = new NhanVien_DAO();

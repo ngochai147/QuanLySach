@@ -28,6 +28,7 @@ import javax.swing.table.JTableHeader;
  * @author Thế Bảo
  */
 public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
+    //
     private ArrayList<ChiTietPhieuXuatKho> dsCTPXK = new ArrayList<>();
     ChiTietPhieuXuatKho_DAO ctpx_dao = new ChiTietPhieuXuatKho_DAO();
 
@@ -775,20 +776,45 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_xoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_xoaActionPerformed
+        DefaultTableModel model = (DefaultTableModel) tbl_phieuXuatKho.getModel();
         if (jcb_chonSach.getItemCount() == 0 && tf_soLuong.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Không có thông tin nhập liệu!", "Thông báo", JOptionPane.WARNING_MESSAGE);
-        }
-        // Lấy ngày hiện tại
-        LocalDate ngayHienTai = LocalDate.now();
+        } else if (model.getRowCount() == 0) {
+            // Lấy ngày hiện tại
+            LocalDate ngayHienTai = LocalDate.now();
 
-        // Chuyển đổi LocalDate sang java.util.Date
-        Date date = Date.from(ngayHienTai.atStartOfDay(ZoneId.systemDefault()).toInstant());
+            // Chuyển đổi LocalDate sang java.util.Date
+            Date date = Date.from(ngayHienTai.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-        // Đặt ngày hiện tại cho JDateChooser
-        jdc_ngayLapPX.setDate(date);
-        tf_soLuong.setText("");
-        if (jcb_chonSach.getItemCount() > 0) {
-            jcb_chonSach.setSelectedIndex(0);
+            // Đặt ngày hiện tại cho JDateChooser
+            jdc_ngayLapPX.setDate(date);
+            jcb_khoXuat.setSelectedIndex(0);
+            jcb_khoNhap.setSelectedIndex(0);
+            tf_soLuong.setText("");
+            if (jcb_khoNhap.getItemCount() > 0) {
+                jcb_khoNhap.setSelectedIndex(0);
+            }
+
+            if (jcb_khoXuat.getItemCount() > 0) {
+                jcb_khoXuat.setSelectedIndex(0);
+            }
+
+            if (jcb_chonSach.getItemCount() > 0) {
+                jcb_chonSach.setSelectedIndex(0);
+            }
+        } else {
+            // Lấy ngày hiện tại
+            LocalDate ngayHienTai = LocalDate.now();
+
+            // Chuyển đổi LocalDate sang java.util.Date
+            Date date = Date.from(ngayHienTai.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+            // Đặt ngày hiện tại cho JDateChooser
+            jdc_ngayLapPX.setDate(date);
+            tf_soLuong.setText("");
+            if (jcb_chonSach.getItemCount() > 0) {
+                jcb_chonSach.setSelectedIndex(0);
+            }
         }
     }
 
@@ -864,7 +890,13 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
 
                 // Xóa rỗng các trường nhập liệu
                 isUpdatingDate = true; // Đặt cờ để tránh thông báo lỗi
-                jdc_ngayLapPX.setDate(null); // Xóa ngày lập
+                LocalDate ngayHienTai = LocalDate.now();
+
+                // Chuyển đổi LocalDate sang java.util.Date
+                Date date = Date.from(ngayHienTai.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+                // Đặt ngày hiện tại cho JDateChooser
+                jdc_ngayLapPX.setDate(date); // Xóa ngày lập
                 isUpdatingDate = false; // Đặt lại cờ sau khi xóa
 
                 // Xóa giá trị trong các TextField

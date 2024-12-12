@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChiTietPhieuXuatKho_DAO {
+    //
     private final List<ChiTietPhieuXuatKho> ds_ctpnk;
 
     public ChiTietPhieuXuatKho_DAO() {

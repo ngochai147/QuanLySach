@@ -11,6 +11,7 @@ import java.awt.geom.RoundRectangle2D;
 import javax.swing.JComponent;
 
 public class PanelGradient extends JComponent {
+    //
 
     private GradientType gradientType = GradientType.HORIZONTAL;
     private Color colorGradient = new Color(255, 255, 255);

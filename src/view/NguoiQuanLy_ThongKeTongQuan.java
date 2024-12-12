@@ -29,6 +29,7 @@ import java.util.Random;
  * @author phamd
  */
 public final class NguoiQuanLy_ThongKeTongQuan extends javax.swing.JInternalFrame {
+    //
 
     /**
      * Creates new form NguoiQuanLy_ThongKeTongQuan

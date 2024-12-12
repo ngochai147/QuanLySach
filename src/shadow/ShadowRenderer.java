@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 
 public class ShadowRenderer {
+    //
 
     private int size = 5;
     private float opacity = 0.5f;

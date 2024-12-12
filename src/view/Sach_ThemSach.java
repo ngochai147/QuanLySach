@@ -41,6 +41,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author Tan Nghi
  */
 public class Sach_ThemSach extends javax.swing.JDialog {
+    //
 
     /**
      * Creates new form NewJDialog

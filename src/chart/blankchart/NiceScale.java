@@ -1,7 +1,7 @@
 package chart.blankchart;
 
 public class NiceScale {
-
+//
     private double min;
     private double max;
     private int maxTicks = 10;

@@ -1,6 +1,7 @@
 package spline;
 
 public class SplinePoint {
+    //
 
     public double getX() {
         return x;

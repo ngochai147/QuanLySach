@@ -18,6 +18,7 @@ import java.util.List;
  * @author Dell
  */
 public class ChiTietPhieuNhapKho_DAO {
+    //
     private final List<ChiTietPhieuNhapKho> ds_ctpnk;
 
       public ChiTietPhieuNhapKho_DAO() {

@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class VietQRGen {
+    //
 
     private  byte[] decodeDataURI(String dataURI) {
         // Tách phần base64

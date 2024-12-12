@@ -12,7 +12,7 @@ import javax.swing.JComponent;
 import javax.swing.border.EmptyBorder;
 
 public class BlankPlotChart_BarChart extends JComponent {
-
+//
     public BlankPlotChatRender_BarChart blankPlotChartRender_BarChart() {
         return blankPlotChatRender_BarChart;
     }

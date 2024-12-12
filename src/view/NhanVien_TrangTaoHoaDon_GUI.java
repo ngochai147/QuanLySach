@@ -42,7 +42,7 @@ import javax.swing.SwingUtilities;
  * @author Ngọc Hải
  */
 public class NhanVien_TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
-
+//
 
 
 

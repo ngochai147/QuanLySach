@@ -8,6 +8,7 @@ package button;
  *
  * @author Huu Thai
  */
+//
 public interface TableActionEvent {
     public void onEdit(int row);
     public void onDelete(int row);

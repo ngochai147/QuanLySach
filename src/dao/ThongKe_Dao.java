@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class ThongKe_Dao {
+    //
 
     public Map<String, Integer> getStatisticIn7Days() {
         Map<String, Integer> ressult = new HashMap<>();

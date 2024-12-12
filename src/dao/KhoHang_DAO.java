@@ -22,6 +22,7 @@ import java.util.List;
  * @version: 1.0
  */
 public class KhoHang_DAO {
+    //
     private final List<KhoHang> dsKhoHang;
     public KhoHang_DAO() {
         dsKhoHang = new ArrayList<>();

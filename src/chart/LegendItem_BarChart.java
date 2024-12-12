@@ -1,7 +1,7 @@
 package chart;
 
 public class LegendItem_BarChart extends javax.swing.JPanel {
-
+//
     public LegendItem_BarChart(ModelLegend_BarChart data) {
         initComponents();
         setOpaque(false);

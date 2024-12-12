@@ -12,6 +12,7 @@ import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
 public class ThongKeTonKho_DAO {
+    //
 
     public List<String> getListTenKho() {
         List<String> listTenKho = new ArrayList<>();
@@ -118,6 +119,7 @@ public class ThongKeTonKho_DAO {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 String loaiSach = rs.getString("tenLoai");
+                //test
                 int tongSoLuong = rs.getInt("tongSoLuong");
                 listData.add(new ThongKeTonKho_model(loaiSach, tenKho, tongSoLuong));
             }

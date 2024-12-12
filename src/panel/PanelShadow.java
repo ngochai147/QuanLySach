@@ -13,7 +13,7 @@ import shadow.ShadowRenderer;
 import shadow.ShadowRenderer;
 
 public class PanelShadow extends JPanel {
-
+//
     public ShadowType getShadowType() {
         return shadowType;
     }

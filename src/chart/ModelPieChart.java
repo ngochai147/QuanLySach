@@ -3,7 +3,7 @@ package chart;
 import java.awt.Color;
 
 public class ModelPieChart {
-
+//
     public String getName() {
         return name;
     }

@@ -15,7 +15,7 @@ import javax.swing.JComponent;
 import javax.swing.border.EmptyBorder;
 
 public class BlankPlotChart extends JComponent {
-
+//
     public BlankPlotChatRender getBlankPlotChatRender() {
         return blankPlotChatRender;
     }

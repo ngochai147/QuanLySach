@@ -1,7 +1,7 @@
 package chart;
 
 public class ModelChart_BarChart {
-
+//
     public String getLabel() {
         return label;
     }

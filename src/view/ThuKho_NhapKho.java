@@ -30,6 +30,7 @@ import java.util.logging.Logger;
  * @author Thế Bảo
  */
 public class ThuKho_NhapKho extends JInternalFrame {
+    //
     private ArrayList<ChiTietPhieuNhapKho> dsCTPNK = new ArrayList<>();
     KhoHang_DAO khoHang_dao = new KhoHang_DAO();
     ChiTietKhoHang_DAO ctkh_dao = new ChiTietKhoHang_DAO();

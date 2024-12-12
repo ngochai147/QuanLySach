@@ -23,7 +23,7 @@ import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 
 public class PieChart extends JComponent {
-
+//
     private final List<ModelPieChart> models;
     private final DecimalFormat format = new DecimalFormat("#,##0.#");
     private PeiChartType chartType = PeiChartType.DEFAULT;

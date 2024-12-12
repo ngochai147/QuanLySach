@@ -15,10 +15,11 @@ import java.util.List;
  * @author phamd
  */
 public class BarChart_ThongKeSachTrongKho extends javax.swing.JFrame {
-
+//
     /**
      * Creates new form BarChart_ThongKeSachTrongKho
      */
+    //test
     final ThongKeTonKho_DAO thongKeTonKho_Dao = new ThongKeTonKho_DAO();
     public BarChart_ThongKeSachTrongKho() {
         initComponents();
