@@ -43,8 +43,8 @@ public class InPDF {
     public InPDF() {
         try {
             fontData = new Font(BaseFont.createFont("Dependency/Roboto-Regular.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED), 11, Font.NORMAL);
-            fontTitle = new Font(BaseFont.createFont("Dependency/Roboto-Regular.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED), 25, Font.NORMAL);
-            fontHeader = new Font(BaseFont.createFont("Dependency/Roboto-Regular.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED), 11, Font.NORMAL);
+            fontTitle = new Font(BaseFont.createFont("Dependency/Roboto-Regular.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED), 25, Font.BOLD);
+            fontHeader = new Font(BaseFont.createFont("Dependency/Roboto-Regular.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED), 11, Font.BOLD);
         } catch (DocumentException | FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException ex) {
@@ -116,7 +116,7 @@ public class InPDF {
             setTitle("DANH SÁCH HÓA ĐƠN");
             // Tạo bảng cho chi tiết phiếu nhập
             PdfPTable pdfTable = new PdfPTable(5);
-            pdfTable.setWidths(new float[]{25f, 35f, 20f, 20f, 18f});
+            pdfTable.setWidths(new float[]{25f, 20f, 20f, 20f, 25f});
             pdfTable.setWidthPercentage(100); // Đặt bảng chiếm 100% chiều rộng
             pdfTable.setSpacingBefore(10f);
             BaseColor headerColor = new BaseColor(192, 192, 192);
@@ -153,8 +153,11 @@ public class InPDF {
             headerCell.setPadding(5);
             pdfTable.addCell(headerCell);
 
+            int tongTien=0;
+            int tongSoLuong=0;
 
             for (int i=0;i<jTable.getRowCount();i++) {
+
                         // Mã hóa đơn
                         PdfPCell cell = new PdfPCell(new Phrase((String)jTable.getValueAt(i,1), fontData));
                         cell.setHorizontalAlignment(Element.ALIGN_CENTER); // Căn giữa
@@ -163,7 +166,7 @@ public class InPDF {
 
                         // Ngày tạo đơn
                         cell = new PdfPCell(new Phrase((String)jTable.getValueAt(i,2), fontData));
-                        cell.setHorizontalAlignment(Element.ALIGN_LEFT); // Căn trái
+                        cell.setHorizontalAlignment(Element.ALIGN_CENTER); // Căn trái
                         cell.setPadding(4);
                         pdfTable.addCell(cell);
 
@@ -185,7 +188,44 @@ public class InPDF {
                         cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
                         cell.setPadding(4);
                         pdfTable.addCell(cell);
+
+                        String tongTienHoaDon=(String)jTable.getValueAt(i,5);
+                        String numberStr = tongTienHoaDon.replaceAll("[^0-9,]", "");
+                        numberStr = numberStr.replace(",", "");
+                        int tongTienFormat = Integer.parseInt(numberStr);
+
+                        tongTien+=tongTienFormat;
+
+                         tongSoLuong+=(int)jTable.getValueAt(i,4);
             }
+
+            PdfPCell cell = new PdfPCell(new Phrase("Tổng kết", fontHeader));
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER); // Căn giữa
+            cell.setPadding(4);
+            pdfTable.addCell(cell);
+
+            cell = new PdfPCell(new Phrase("", fontData));
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER); // Căn giữa
+            cell.setPadding(4);
+            pdfTable.addCell(cell);
+
+            cell = new PdfPCell(new Phrase("", fontData));
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER); // Căn giữa
+            cell.setPadding(4);
+            pdfTable.addCell(cell);
+
+            cell = new PdfPCell(new Phrase(""+tongSoLuong, fontHeader));
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER); // Căn giữa
+            cell.setPadding(4);
+            pdfTable.addCell(cell);
+
+            DecimalFormat df=new DecimalFormat("#,###");
+
+            cell = new PdfPCell(new Phrase(df.format(tongTien)+" VND", fontHeader));
+            cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            cell.setPadding(4);
+            pdfTable.addCell(cell);
+
 
             document.add(pdfTable); // Thêm bảng vào tài liệu
             // Kết thúc tài liệu
