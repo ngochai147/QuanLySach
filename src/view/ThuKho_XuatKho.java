@@ -787,7 +787,9 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
         // Đặt ngày hiện tại cho JDateChooser
         jdc_ngayLapPX.setDate(date);
         tf_soLuong.setText("");
-        jcb_chonSach.setSelectedIndex(0);
+        if (jcb_chonSach.getItemCount() > 0) {
+            jcb_chonSach.setSelectedIndex(0);
+        }
     }
 
     private void btn_huyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_huyActionPerformed
