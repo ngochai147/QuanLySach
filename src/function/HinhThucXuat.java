@@ -15,6 +15,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 
 public class HinhThucXuat extends JDialog {
     private JTable jTable_HoaDon;
@@ -159,9 +160,21 @@ public class HinhThucXuat extends JDialog {
                 // Định dạng dữ liệu trong bảng
                 CellStyle dataCellStyle = taoKieuDuLieu(workbook);
 
+                int tongTien=0;
+                int tongSoLuong=0;
                 // Thêm dữ liệu vào các dòng
                 for (int i = 0; i < jTable_HoaDon.getRowCount(); i++) {
                     Row row = sheet.createRow(i + 1);
+                    String tongTienHoaDon=(String)jTable_HoaDon.getValueAt(i,5);
+
+
+                    String numberStr = tongTienHoaDon.replaceAll("[^0-9,]", "");
+                    numberStr = numberStr.replace(",", "");
+
+                    int tongTienFormat = Integer.parseInt(numberStr);
+                    tongSoLuong+= (int)jTable_HoaDon.getValueAt(i,4);
+                    tongTien+=tongTienFormat;
+
                     for (int j = 1; j < jTable_HoaDon.getColumnCount()-1; j++) {  // Bỏ qua cột đầu và cuối
                         Cell cell = row.createCell(j - 1);
                         Object value = jTable_HoaDon.getValueAt(i, j);
@@ -171,6 +184,17 @@ public class HinhThucXuat extends JDialog {
                         cell.setCellStyle(dataCellStyle);
                     }
                 }
+                Row row = sheet.createRow(jTable_HoaDon.getRowCount());
+
+                Cell cellSL = row.createCell(3);
+                cellSL.setCellStyle(dataCellStyle);
+                cellSL.setCellValue(tongSoLuong);
+
+                Cell cellTongTien = row.createCell(4);
+                cellTongTien.setCellStyle(dataCellStyle);
+                DecimalFormat df=new DecimalFormat("#,###");
+
+                cellTongTien.setCellValue(df.format(tongTien)+" VND");
                 // Tự động điều chỉnh kích thước cột cho phù hợp với nội dung
                 for (int i = 0; i < jTable_HoaDon.getColumnCount() - 2; i++) {
                     sheet.autoSizeColumn(i);

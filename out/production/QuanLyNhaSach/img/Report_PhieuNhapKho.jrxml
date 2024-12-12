@@ -230,7 +230,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="6"/>
+					<font fontName="Times New Roman" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{ISBN}]]></textFieldExpression>
 			</textField>
@@ -243,7 +243,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="6"/>
+					<font fontName="Times New Roman" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{tenSach}]]></textFieldExpression>
 			</textField>
@@ -256,7 +256,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="6"/>
+					<font fontName="Times New Roman" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{loaiSach}]]></textFieldExpression>
 			</textField>
@@ -269,7 +269,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="6"/>
+					<font fontName="Times New Roman" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{formattedGiaGoc}]]></textFieldExpression>
 			</textField>
@@ -282,7 +282,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="6"/>
+					<font fontName="Times New Roman" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{soLuong}]]></textFieldExpression>
 			</textField>
@@ -295,7 +295,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="6"/>
+					<font fontName="Times New Roman" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{formattedThanhTien}]]></textFieldExpression>
 			</textField>
@@ -355,7 +355,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="6"/>
+					<font fontName="Times New Roman" size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{tongTien}]]></textFieldExpression>
 			</textField>

@@ -442,7 +442,7 @@ public class NhanVien_TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
                     dsCTHDTemp.get(i).setMaChiTietHoaDon(maCTHD);
                 }
                 tongTienHoaDon=tongTienHoaDon-(dsCTHDTemp.get(n).getSoLuong()*dsCTHDTemp.get(n).getDonGia());
-                jLabel_TongTienHoaDon.setText(df.format(tongTienHoaDon));
+                jLabel_TongTienHoaDon.setText(df.format(tongTienHoaDon)+" VND");
                 dsCTHDTemp.removeIf(cthd-> (cthd.getSach().getISBN().equalsIgnoreCase(maSachCuoi)));
                 model.removeRow(n);
                 for(int i=n;i<model.getRowCount();i++){
