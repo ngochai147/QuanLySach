@@ -33,7 +33,7 @@ public class BarChart_ThongKeSachTrongKho extends javax.swing.JFrame {
         List<ThongKeTonKho_model> data = thongKeTonKho_Dao.getThongKeTheoKho(tenKho);
         for (int i = data.size() - 1; i >= 0; i--) {
             ThongKeTonKho_model tk = data.get(i);
-            barChart.addData(new ModelChart_BarChart(tk.getTenKho(), new double[]{tk.getTongTonKho()}));
+            barChart.addData(new ModelChart_BarChart(tk.getISBN(), new double[]{tk.getTongTonKho()}));
         }
     }
 

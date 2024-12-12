@@ -160,11 +160,13 @@ public class NguoiQuanLy_ThongKeTonKho extends javax.swing.JInternalFrame {
             }
         ));
         table_ThongKeTonKho.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        table_ThongKeTonKho.setFocusable(false);
         table_ThongKeTonKho.setMinimumSize(new java.awt.Dimension(20, 0));
         table_ThongKeTonKho.setRowHeight(40);
         table_ThongKeTonKho.setSelectionBackground(new java.awt.Color(153, 204, 0));
         table_ThongKeTonKho.setSelectionForeground(new java.awt.Color(51, 51, 51));
         table_ThongKeTonKho.setShowGrid(true);
+        table_ThongKeTonKho.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(table_ThongKeTonKho);
         JTableHeader tableHeader = table_ThongKeTonKho.getTableHeader();
         DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer) tableHeader.getDefaultRenderer();
@@ -221,7 +223,7 @@ public class NguoiQuanLy_ThongKeTonKho extends javax.swing.JInternalFrame {
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/anhnen.jpg"))); // NOI18N
         getContentPane().add(jLabel1);
-        jLabel1.setBounds(0, 0, 1590, 680);
+        jLabel1.setBounds(0, 0, 1610, 720);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

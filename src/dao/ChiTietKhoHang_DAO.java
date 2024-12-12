@@ -190,33 +190,63 @@ public class ChiTietKhoHang_DAO {
         return dsChiTietKhoHang;
     }
 
-    public String timTenKhoTheoMaSach(String maSach) throws SQLException {
-        Connection con = ConnectDB.getInstance().getConnection();
-        PreparedStatement stmt = null;
-        String tenKho = null;
-        try {
-            // Câu truy vấn JOIN để lấy tenKho từ bảng KhoHang
-            String sql = "SELECT k.tenKho " +
-                    "FROM ChiTietKhoHang c " +
-                    "JOIN KhoHang k ON c.maKhoHang = k.maKhoHang " +
-                    "WHERE c.ISBN = ?";
-            stmt = con.prepareStatement(sql);
-            stmt.setString(1, maSach);
+//    public String timTenKhoTheoMaSach(String maSach) throws SQLException {
+//        Connection con = ConnectDB.getInstance().getConnection();
+//        PreparedStatement stmt = null;
+//        String tenKho = null;
+//        try {
+//            // Câu truy vấn JOIN để lấy tenKho từ bảng KhoHang
+//            String sql = "SELECT k.tenKho " +
+//                    "FROM ChiTietKhoHang c " +
+//                    "JOIN KhoHang k ON c.maKhoHang = k.maKhoHang " +
+//                    "WHERE c.ISBN = ?";
+//            stmt = con.prepareStatement(sql);
+//            stmt.setString(1, maSach);
+//
+//            // Thực thi truy vấn
+//            ResultSet rs = stmt.executeQuery();
+//
+//            // Lấy tên kho từ kết quả
+//            if (rs.next()) {
+//                tenKho = rs.getString("tenKho"); // Lấy tên kho từ cột tenKho
+//            }
+//        } finally {
+//            if (stmt != null) {
+//                stmt.close(); // Đảm bảo đóng PreparedStatement
+//            }
+//        }
+//        return tenKho;
+//    }
+public List<String> timTenKhoTheoMaSach(String maSach) throws SQLException {
+    Connection con = ConnectDB.getInstance().getConnection();
+    PreparedStatement stmt = null;
+    List<String> tenKhoList = new ArrayList<>();
 
-            // Thực thi truy vấn
-            ResultSet rs = stmt.executeQuery();
+    try {
+        String sql = "SELECT k.tenKho " +
+                "FROM ChiTietKhoHang c " +
+                "JOIN KhoHang k ON c.maKhoHang = k.maKhoHang " +
+                "WHERE c.ISBN = ?";
+        stmt = con.prepareStatement(sql);
+        stmt.setString(1, maSach);
 
-            // Lấy tên kho từ kết quả
-            if (rs.next()) {
-                tenKho = rs.getString("tenKho"); // Lấy tên kho từ cột tenKho
-            }
-        } finally {
-            if (stmt != null) {
-                stmt.close(); // Đảm bảo đóng PreparedStatement
-            }
+        // Thực thi truy vấn
+        ResultSet rs = stmt.executeQuery();
+
+        // Lặp qua tất cả các kết quả và thêm tên kho vào danh sách
+        while (rs.next()) {
+            String tenKho = rs.getString("tenKho");
+            tenKhoList.add(tenKho);
         }
-        return tenKho;
+    } finally {
+        if (stmt != null) {
+            stmt.close(); // Đảm bảo đóng PreparedStatement
+        }
     }
+
+    return tenKhoList;
+}
+
 
     public boolean xoaChiTietKhoHang(String ISBN) throws SQLException {
         Connection con = ConnectDB.getConnection();
@@ -266,6 +296,26 @@ public class ChiTietKhoHang_DAO {
         try {
             stmt = con.prepareStatement(sql);
             stmt.setString(1, maKhoHang);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                soLuong = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return soLuong;
+    }
+    public int getSoLuongSachTheoMaKhoVaMaSach(String maKhoHang, String maSach) {
+        String sql = "select sum(soLuong) from ChiTietKhoHang where maKhoHang = ? and ISBN = ?";
+        Connection con = ConnectDB.getInstance().getConnection();
+        PreparedStatement stmt = null;
+        int soLuong = 0;
+
+        try {
+            stmt = con.prepareStatement(sql);
+            stmt.setString(1, maKhoHang);
+            stmt.setString(2, maSach);
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {

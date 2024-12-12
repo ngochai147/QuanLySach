@@ -21,6 +21,7 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -250,11 +251,10 @@ public class Sach_SuaSach extends javax.swing.JDialog {
         spinnerTextField.setInputVerifier(new InputVerifier() {
             @Override
             public boolean verify(JComponent input) {
-                String text = spinnerTextField.getText().trim();
-
+                String text = spinnerTextField.getText().trim().replace(",", "");
                 // Kiểm tra nếu chuỗi không phải là số nguyên dương
                 if (!text.matches("^[1-9][0-9]*$")) {
-                    JOptionPane.showMessageDialog(null, "Vui lòng chỉ nhập số nguyên dương!", "Lỗi nhập liệu", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Vui lòng chỉ nhập số nguyên dương!", "Lỗi nhập liệu", JOptionPane.WARNING_MESSAGE);
                     spinnerTextField.setText("0"); // Đặt lại về 1 nếu không hợp lệ
                     return false;
                 }
@@ -364,7 +364,7 @@ public class Sach_SuaSach extends javax.swing.JDialog {
                 .addComponent(jLabel_ThemNhanVien)
                 .addContainerGap(877, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(33, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 1152, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29))
         );
@@ -426,37 +426,22 @@ public class Sach_SuaSach extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_jButton_HuyBoActionPerformed
     private boolean kiemTraISBN(String iSBN) {
-//        1. ^ và $: Đảm bảo rằng toàn bộ chuỗi chỉ chứa ký tự được mô tả trong regex.
-//        2. \\d{13}: Đảm bảo chuỗi chỉ chứa 13 ký tự số liên tiếp (từ 0-9).
+//        chỉ chứa 133 chữ số
         String regex = "^\\d{13}$";
         return iSBN != null && iSBN.matches(regex);
     }
 
     private boolean kiemTraTenSach(String tenSach) {
-//        \\p{L}: Một chữ cái Unicode (bao gồm cả tiếng Việt có dấu như á, à, â, v.v.).
-//        0-9: Một chữ số.
-
-//        \\p{L}: Chữ cái Unicode (như a, Ă, â, é).
-//        \\p{M}: Các dấu kết hợp (như dấu sắc ́, dấu huyền ̀, dấu hỏi ̉), kết hợp với chữ cái để tạo ra các ký tự như á, ề.
-//0-9: Các chữ số   \\s: Khoảng trắng   .: Dấu chấm   ,: Dấu phẩy.   ': Dấu nháy đơn   \": Dấu nháy kép    -: Dấu gạch ngang   :: Dấu hai chấm  (): Dấu ngoặc đơn
-        String regex = "^[\\p{L}0-9][\\p{L}\\p{M}0-9\\s.,'\"-:()]*$";
+        String regex = "^[\\p{L}0-9][\\p{L}\\p{M}0-9\\s.,'\"-:()+]*$";
         return tenSach != null && !tenSach.trim().isEmpty() && tenSach.matches(regex);
     }
 
     private boolean kiemTraDonGia(String donGiaStr) {
-        // Sử dụng regex để đảm bảo donGiaStr là một số hợp lệ
-
-//        ^[0-9]+:Đảm bảo chuỗi bắt đầu với ít nhất một chữ số (số nguyên).
-//        (\\.[0-9]{3})?:
-//        (\\.: Cho phép một dấu chấm (thập phân).
-//        [0-9]{3}: Yêu cầu 3 chữ số sau dấu chấm.
-//        ?: Toàn bộ nhóm này là tùy chọn, nghĩa là phần thập phân có thể không xuất hiện.
         String regex = "^[0-9]{4,}$";
         if (donGiaStr == null || !donGiaStr.matches(regex)) {
             JOptionPane.showMessageDialog(this, "Đơn giá không hợp lệ!!!", "Thông báo", JOptionPane.WARNING_MESSAGE);
             return false;
         }
-
         try {
             double donGia = Double.parseDouble(donGiaStr);
             if (donGia < 1000) {
@@ -472,19 +457,14 @@ public class Sach_SuaSach extends javax.swing.JDialog {
 
     private boolean kiemTraSoLuong() throws SQLException {
         spinnerTextField = ((JSpinner.NumberEditor) jSpinner_SoLuong.getEditor()).getTextField();
-//      1212121212122
         String text = spinnerTextField.getText().trim().replace(",", "");
         // Kiểm tra nếu chuỗi không phải là số nguyên dương
         if (Integer.parseInt(text) == 0) {
-            JOptionPane.showMessageDialog(null, "Số lượng phải > 0!!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Số lượng phải > 0!!", "Thông báo", JOptionPane.WARNING_MESSAGE);
             return false;
         }
-        if (!text.matches("^[1-9][0-9]*$")) {
-            JOptionPane.showMessageDialog(null, "Vui lòng chỉ nhập số nguyên dương!", "Lỗi nhập liệu", JOptionPane.ERROR_MESSAGE);
-            spinnerTextField.setText("0"); // Đặt lại về 0 nếu không hợp lệ
-            return false;
-        }
-        String tenKho = chiTietKhoHang_dao.timTenKhoTheoMaSach(jTextField_ISBN.getText());
+        String tenKho = chiTietKhoHang_dao.timTenKhoTheoMaSach(jTextField_ISBN.getText()).get(0);
+        System.out.println(tenKho);
         String maKho = khoHang_dao.getMaKhoTheoTenKho(tenKho);
         int sucChua = khoHang_dao.getKhoHangTheoMaKho(maKho).getSucChua();
         int soLuongSach = chiTietKhoHang_dao.getSoLuongSachTheoKho(maKho);
@@ -599,10 +579,23 @@ public class Sach_SuaSach extends javax.swing.JDialog {
 
                 // TODO add your handling code here:
                 Sach sach = newData();
-                String tenKho = chiTietKhoHang_dao.timTenKhoTheoMaSach(sach.getISBN());
+                List<String> listTenKho=chiTietKhoHang_dao.timTenKhoTheoMaSach(sach.getISBN());
+                String tenKho = listTenKho.get(0);
+                int soLuongCacKhoConLai=0;
+                for (int i=1;i<listTenKho.size();i++){
+                    String maKho=khoHang_dao.getMaKhoTheoTenKho(listTenKho.get(i));
+                    System.out.println(chiTietKhoHang_dao.getSoLuongSachTheoKho(maKho));
+                    soLuongCacKhoConLai+=chiTietKhoHang_dao.getSoLuongSachTheoMaKhoVaMaSach(maKho, sach.getISBN());
+                }
+                int soLuong=sach.getSoLuong()-soLuongCacKhoConLai;
+                System.out.println(soLuong);
+                System.out.println(listTenKho);
+                System.out.println(tenKho);
+                System.out.println(soLuongCacKhoConLai);
                 String maKho = khoHang_dao.getMaKhoTheoTenKho(tenKho);
+
                 if (sach_dao.capNhatSach(sach)) {
-                    chiTietKhoHang_dao.capNhatChiTietKhoHang(sach.getISBN(), maKho, sach.getSoLuong());
+                    chiTietKhoHang_dao.capNhatChiTietKhoHang(sach.getISBN(), maKho, soLuong);
                     String maPhieuNhapKho = taoTuDong_MaPhieuNhapKho();
                     phieuNhapDao.insertPhieuNhapKho(maPhieuNhapKho, Date.valueOf(LocalDate.now()), DangNhap.ma, maKho, sach.getSoLuong());
                     chiTietPhieuNhap_dao.insertChiTietPhieuNhapKho(taoTuDong_MaChiTietPhieuNhapKho(), maPhieuNhapKho, sach.getSoLuong(), sach.getISBN());
