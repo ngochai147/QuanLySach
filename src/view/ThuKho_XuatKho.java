@@ -804,36 +804,39 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
 
     private void btn_huyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_huyActionPerformed
         DefaultTableModel model = (DefaultTableModel) tbl_phieuXuatKho.getModel();
-        if (model.getRowCount() > 0) {
+        if (model.getRowCount() == 0) {
             return;
+        } else {
+            model.setRowCount(0);
+            // Bắt đầu cập nhật ngày lập
+            isUpdatingDate = true; // Đặt cờ để tránh thông báo lỗi
+
+            // Lấy ngày hiện tại
+            LocalDate ngayHienTai = LocalDate.now();
+
+            // Chuyển đổi LocalDate sang java.util.Date
+            Date date = Date.from(ngayHienTai.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+            // Đặt ngày hiện tại cho JDateChooser
+            jdc_ngayLapPX.setDate(date);
+            tf_soLuong.setText("");
+            if (jcb_khoNhap.getItemCount() > 0) {
+                jcb_khoNhap.setSelectedIndex(0);
+            }
+
+            if (jcb_khoXuat.getItemCount() > 0) {
+                jcb_khoXuat.setSelectedIndex(0);
+            }
+
+            if (jcb_chonSach.getItemCount() > 0) {
+                jcb_chonSach.setSelectedIndex(0);
+            }
+
+            isUpdatingDate = false; // Đặt lại cờ sau khi xóa
         }
-        model.setRowCount(0);
 
-        // Bắt đầu cập nhật ngày lập
-        isUpdatingDate = true; // Đặt cờ để tránh thông báo lỗi
 
-        // Lấy ngày hiện tại
-        LocalDate ngayHienTai = LocalDate.now();
 
-        // Chuyển đổi LocalDate sang java.util.Date
-        Date date = Date.from(ngayHienTai.atStartOfDay(ZoneId.systemDefault()).toInstant());
-
-        // Đặt ngày hiện tại cho JDateChooser
-        jdc_ngayLapPX.setDate(date);
-        tf_soLuong.setText("");
-        if (jcb_khoNhap.getItemCount() > 0) {
-            jcb_khoNhap.setSelectedIndex(0);
-        }
-
-        if (jcb_khoXuat.getItemCount() > 0) {
-            jcb_khoXuat.setSelectedIndex(0);
-        }
-
-        if (jcb_chonSach.getItemCount() > 0) {
-            jcb_chonSach.setSelectedIndex(0);
-        }
-
-        isUpdatingDate = false; // Đặt lại cờ sau khi xóa
     }//GEN-LAST:event_btn_huyActionPerformed
 
     private void btn_taoPXActionPerformed(java.awt.event.ActionEvent evt) {
@@ -938,7 +941,7 @@ public class ThuKho_XuatKho extends javax.swing.JInternalFrame {
     }
 
     private void btn_themActionPerformed(java.awt.event.ActionEvent evt) {
-        if (jcb_chonSach.getSelectedIndex() == 0 || jcb_khoXuat.getSelectedIndex() == 0 || jcb_khoNhap.getSelectedIndex() == 0) {
+        if (jcb_khoXuat.getSelectedIndex() == 0 || jcb_khoNhap.getSelectedIndex() == 0) {
             JOptionPane.showMessageDialog(this, "Không có hoặc thiếu thông tin nhập liệu!", "Thông báo", JOptionPane.WARNING_MESSAGE);
             return;
         } else {
