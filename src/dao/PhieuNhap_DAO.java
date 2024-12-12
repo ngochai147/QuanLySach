@@ -61,7 +61,7 @@ public class PhieuNhap_DAO {
         return dsPNK;
     }
     
-    public boolean insertPhieuNhapKho(String maPhieuNhapKho, Date ngayLap, String maNV, String maKhoHangNhap, int soLuong) {
+    public boolean themPhieuNhapKho(String maPhieuNhapKho, Date ngayLap, String maNV, String maKhoHangNhap, int soLuong) {
         Connection con = ConnectDB.getInstance().getConnection();
         PreparedStatement stmt = null;
 

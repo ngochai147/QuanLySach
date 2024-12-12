@@ -251,6 +251,9 @@
                         </Column>
                       </TableColumnModel>
                     </Property>
+                    <Property name="selectionBackground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="0" green="cc" red="99" type="rgb"/>
+                    </Property>
                     <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                       <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
                     </Property>
@@ -283,7 +286,7 @@
                           <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
                           <Component id="jLabel_DoanhThu" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jLabel_DT" pref="155" max="32767" attributes="0"/>
+                          <Component id="jLabel_DT" pref="161" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -482,14 +485,14 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                           <Component id="jLabel_TacGia" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="27" max="32767" attributes="0"/>
+                          <EmptySpace pref="37" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="1" attributes="0">
-                          <Component id="pieChart_TacGia" pref="328" max="32767" attributes="0"/>
+                          <Component id="pieChart_TacGia" pref="336" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jLabel_TacGia" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
