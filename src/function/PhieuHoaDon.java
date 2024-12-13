@@ -39,8 +39,6 @@ private ChiTietHoaDon_DAO dsCTHD = new ChiTietHoaDon_DAO();
 private List<ChiTietHoaDon> listCTHD = dsCTHD.getAllChiTietHoaDon();
 private    DateTimeFormatter dfDay= DateTimeFormatter.ofPattern("dd-MM-YYYY");
 
-
-
     public void viewReport(ArrayList<ChiTietHoaDon> dsCTHD, String maHoaDon,double tienKhachTra) {
     try {
         // Biên dịch file .jrxml thành file .jasper
@@ -49,15 +47,12 @@ private    DateTimeFormatter dfDay= DateTimeFormatter.ofPattern("dd-MM-YYYY");
         parameters.put("maHD",maHoaDon);
         parameters.put("maNV", DangNhap.ma);
         parameters.put("ngayTao", dfDay.format(LocalDate.now()));
-
         List<FieldCTHD> field = new ArrayList<>();
 //
         DecimalFormat df = new DecimalFormat("#,###");
-
         double tongTien = 0;
         int tongSL = 0;
         for (ChiTietHoaDon cthd : dsCTHD) {
-
             String tenSach = "";
             for (Sach s : dss.getAllSP()) {
                 if (s.getISBN().equalsIgnoreCase(cthd.getSach().getISBN())) {
@@ -97,15 +92,11 @@ private    DateTimeFormatter dfDay= DateTimeFormatter.ofPattern("dd-MM-YYYY");
                     parameters.put("ngayTao", dfDay.format(hd.getNgayTaoDon()));
                 }
             }
-
             List<FieldCTHD> field = new ArrayList<>();
-//
             DecimalFormat df = new DecimalFormat("#,###");
-
             double tongTien = 0;
             int tongSL = 0;
             for (ChiTietHoaDon cthd : dsCTHD) {
-
                 String tenSach = "";
                 for (Sach s : dss.getAllSP()) {
                     if (s.getISBN().equalsIgnoreCase(cthd.getSach().getISBN())) {
@@ -116,13 +107,10 @@ private    DateTimeFormatter dfDay= DateTimeFormatter.ofPattern("dd-MM-YYYY");
                 tongSL += cthd.getSoLuong();
                 tongTien += cthd.getSoLuong() * cthd.getDonGia();
             }
-
-
             // Giả sử đây là số bạn muốn định dạng
             String formattedTongTien = df.format(tongTien)+" đ";
             parameters.put("tongSL", tongSL);
             parameters.put("tongTien", formattedTongTien);
-
             JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(field);
             JasperPrint print = JasperFillManager.fillReport(reportPay, parameters, dataSource);
             // Hiển thị báo cáo bằng JasperViewer

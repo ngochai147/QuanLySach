@@ -64,13 +64,11 @@ public class Sach_SuaSach extends javax.swing.JDialog {
         setLocationRelativeTo(null);
         initialData(sach);
     }
-
     private Sach_SuaSach(java.awt.Frame parent, boolean modal) {
 
     }
 
     class jPanelGradient extends JPanel {
-
         protected void paintComponent(Graphics g) {
             Graphics2D g2d = (Graphics2D) g;
             int width = getWidth();
@@ -427,7 +425,7 @@ public class Sach_SuaSach extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_jButton_HuyBoActionPerformed
     private boolean kiemTraISBN(String iSBN) {
-//        chỉ chứa 13 chữ số
+    //        chỉ chứa 13 chữ số
         String regex = "^\\d{13}$";
         return iSBN != null && iSBN.matches(regex);
     }
@@ -447,14 +445,14 @@ public class Sach_SuaSach extends javax.swing.JDialog {
             //*: Biểu thị rằng nhóm ký tự này có thể xuất hiện 0 lần hoặc nhiều lần. 
             //Điều này có nghĩa là sau ký tự đầu tiên (theo quy định ở phần 2), chuỗi có thể chứa bất kỳ số lượng ký tự hợp lệ nào từ nhóm này.
         
-//      Ví dụ hợp lệ:
-//            John Doe
-//            abc123
-//            Hello, world!
-//            123456
-//      Ví dụ không hợp lệ:
-//            !@#$ (vì không bắt đầu bằng chữ cái hoặc chữ số)
-//            ?&* (vì không có ký tự hợp lệ theo quy tắc)
+    //      Ví dụ hợp lệ:
+    //            John Doe
+    //            abc123
+    //            Hello, world!
+    //            123456
+    //      Ví dụ không hợp lệ:
+    //            !@#$ (vì không bắt đầu bằng chữ cái hoặc chữ số)
+    //            ?&* (vì không có ký tự hợp lệ theo quy tắc)
             
             String regex = "^[\\p{L}0-9][\\p{L}\\p{M}0-9\\s.,'\"-:()+]*$";
         return tenSach != null && !tenSach.trim().isEmpty() && tenSach.matches(regex);
@@ -466,17 +464,15 @@ public class Sach_SuaSach extends javax.swing.JDialog {
         
         //{4,}: Đây là một cú pháp lặp lại (quantifier), nghĩa là "ít nhất 4 lần". 
         //Phần này yêu cầu chuỗi chứa ít nhất 4 ký tự số và có thể nhiều hơn. Số lượng chữ số là không giới hạn, miễn là nó có ít nhất 4 chữ số.
-        
-        
-        
-//        Ví dụ hợp lệ:
-    //        1234
-    //        56789
-    //        100000
-//        Ví dụ không hợp lệ:
-    //        12 (chỉ có 2 chữ số, ít hơn 4)
-    //        abc123 (chứa chữ cái, không phải số)
-    //        1.234 (có dấu chấm, không phải là một chuỗi chỉ có chữ số)
+
+    //        Ví dụ hợp lệ:
+        //        1234
+        //        56789
+        //        100000
+    //        Ví dụ không hợp lệ:
+        //        12 (chỉ có 2 chữ số, ít hơn 4)
+        //        abc123 (chứa chữ cái, không phải số)
+        //        1.234 (có dấu chấm, không phải là một chuỗi chỉ có chữ số)
         String regex = "^[0-9]{4,}$";
         if (donGiaStr == null || !donGiaStr.matches(regex)) {
             JOptionPane.showMessageDialog(this, "Đơn giá không hợp lệ!!!", "Thông báo", JOptionPane.WARNING_MESSAGE);
@@ -517,7 +513,6 @@ public class Sach_SuaSach extends javax.swing.JDialog {
             spinnerTextField.selectAll(); // Chọn tất cả văn bản trong trường
             return false;
         }
-
         return true;
     }
 
@@ -527,17 +522,17 @@ public class Sach_SuaSach extends javax.swing.JDialog {
             //\\s: Khoảng trắng (spaces), bao gồm khoảng trắng, tab, và dòng mới.
             //.'-: Các dấu câu cho phép bao gồm dấu chấm (.), dấu nháy đơn ('), dấu gạch ngang (-).
             
-//      Ví dụ hợp lệ:
-//            John Doe
-//            Jane O'Connor
-//            Dr. Smith
-//            Alice-Marie
-//      Ví dụ không hợp lệ:
-//            1234 (chứa chữ số, không hợp lệ theo quy định)
-//            !@#$% (chứa ký tự đặc biệt không hợp lệ)
-//            John_Doe (chứa dấu gạch dưới, không hợp lệ)
+    //      Ví dụ hợp lệ:
+    //            John Doe
+    //            Jane O'Connor
+    //            Dr. Smith
+    //            Alice-Marie
+    //      Ví dụ không hợp lệ:
+    //            1234 (chứa chữ số, không hợp lệ theo quy định)
+    //            !@#$% (chứa ký tự đặc biệt không hợp lệ)
+    //            John_Doe (chứa dấu gạch dưới, không hợp lệ)
        String regex = "^[\\p{L}\\s.'-]+$";
-        return tacGia != null && !tacGia.trim().isEmpty() && tacGia.matches(regex);
+       return tacGia != null && !tacGia.trim().isEmpty() && tacGia.matches(regex);
     }
 
     private boolean kiemTraNhaXB(String nhaXB) {
@@ -548,17 +543,17 @@ public class Sach_SuaSach extends javax.swing.JDialog {
     //            \\s: Khoảng trắng (spaces), bao gồm khoảng trắng, tab, và dòng mới.
     //            .,'-: Cho phép các dấu câu như dấu chấm (.), dấu phẩy (,), dấu nháy đơn ('), và dấu gạch ngang (-).        
         
-//       Ví dụ hợp lệ:
-//            John Doe
-//            Jane O'Connor
-//            Dr. Smith
-//            1234
-//            Alice-Marie
-//            José
-//       Ví dụ không hợp lệ:
-//            !@#$% (chứa ký tự đặc biệt không hợp lệ)
-//            John@Doe (chứa dấu @, không hợp lệ theo quy tắc)
-//            123_456 (chứa dấu gạch dưới, không hợp lệ)
+    //       Ví dụ hợp lệ:
+    //            John Doe
+    //            Jane O'Connor
+    //            Dr. Smith
+    //            1234
+    //            Alice-Marie
+    //            José
+    //       Ví dụ không hợp lệ:
+    //            !@#$% (chứa ký tự đặc biệt không hợp lệ)
+    //            John@Doe (chứa dấu @, không hợp lệ theo quy tắc)
+    //            123_456 (chứa dấu gạch dưới, không hợp lệ)
         String regex = "^[\\p{L}\\p{M}0-9\\s.,'-]+$";
         return nhaXB != null && !nhaXB.trim().isEmpty() && nhaXB.matches(regex);
     }
@@ -585,7 +580,6 @@ public class Sach_SuaSach extends javax.swing.JDialog {
         String tacGia = jTextField_TacGia.getText();
         String nhaXB = jTextField_NhaXuatBan.getText();
         String namXBStr = jTextField_NamXuatBan.getText();
-
         if (ISBN.trim().length() == 0 || !kiemTraISBN(ISBN)) {
             JOptionPane.showMessageDialog(this, "ISBN phải là 13 chữ số!!!", "Thông báo", JOptionPane.WARNING_MESSAGE);
             jTextField_ISBN.requestFocus();
@@ -636,7 +630,6 @@ public class Sach_SuaSach extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn ảnh!!", "Thông báo", JOptionPane.WARNING_MESSAGE);
             return false;
         }
-
         return true;
     }
     private void jButton_LuuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_LuuActionPerformed
@@ -649,8 +642,6 @@ public class Sach_SuaSach extends javax.swing.JDialog {
         if (kiemTra) {
             try {
                 // TODO add your handling code here:
-
-                // TODO add your handling code here:
                 Sach sach = newData();
                 List<String> listTenKho=chiTietKhoHang_dao.timTenKhoTheoMaSach(sach.getISBN());
                 String tenKho = listTenKho.get(0);
@@ -661,7 +652,6 @@ public class Sach_SuaSach extends javax.swing.JDialog {
                 }
                 int soLuong=sach.getSoLuong()-soLuongCacKhoConLai;
                 String maKho = khoHang_dao.getMaKhoTheoTenKho(tenKho);
-
                 if (sach_dao.capNhatSach(sach)) {
                     chiTietKhoHang_dao.capNhatChiTietKhoHang(sach.getISBN(), maKho, soLuong);
                     String maPhieuNhapKho = taoTuDong_MaPhieuNhapKho();
@@ -675,8 +665,6 @@ public class Sach_SuaSach extends javax.swing.JDialog {
                 Logger.getLogger(Sach_SuaSach.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-
-
     }//GEN-LAST:event_jButton_LuuActionPerformed
     private void initialData(Sach sach) {
         jTextField_ISBN.setText(sach.getISBN());
@@ -708,7 +696,6 @@ public class Sach_SuaSach extends javax.swing.JDialog {
     public String taoTuDong_MaChiTietPhieuNhapKho() {
         // Lấy mã chi tiết phiếu nhập kho mới nhất từ cơ sở dữ liệu
         String lastMaChiTietPhieuNhapKho = chiTietPhieuNhap_dao.getLastMaChiTietPhieuNhapKho();
-
         int newNumber;
         if (lastMaChiTietPhieuNhapKho != null && lastMaChiTietPhieuNhapKho.startsWith(ma_CT_PNK)) {
             // Tách phần số ra khỏi mã và tăng lên 1
@@ -718,7 +705,6 @@ public class Sach_SuaSach extends javax.swing.JDialog {
             // Nếu không có mã nào trong CSDL, bắt đầu từ 1
             newNumber = 1;
         }
-
         // Định dạng lại mã với tiền tố và phần số đủ 5 chữ số
         return ma_CT_PNK + String.format("%05d", newNumber);
     }
@@ -727,7 +713,6 @@ public class Sach_SuaSach extends javax.swing.JDialog {
     public String taoTuDong_MaPhieuNhapKho() {
         // Lấy mã phiếu nhập kho cuối cùng từ cơ sở dữ liệu
         String lastMaPhieuNhapKho = phieuNhapDao.getLastMaPhieuNhapKho();
-
         int newNumber;
         if (lastMaPhieuNhapKho != null && lastMaPhieuNhapKho.startsWith(ma_PNK)) {
             // Tách phần số ra khỏi mã và tăng lên 1
@@ -737,7 +722,6 @@ public class Sach_SuaSach extends javax.swing.JDialog {
             // Nếu không có mã nào trong CSDL, bắt đầu từ 1
             newNumber = 1;
         }
-
         // Định dạng lại mã với tiền tố và phần số đủ 5 chữ số
         return ma_PNK + String.format("%04d", newNumber);
     }

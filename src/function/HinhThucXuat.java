@@ -27,23 +27,18 @@ public class HinhThucXuat extends JDialog {
         initComponents();
     }
     private void initComponents() {
-
         kGradientPanel1 = new keeptoo.KGradientPanel();
         jLabel_TieuDe = new JLabel();
         jButton_XuatExcel = new JButton();
         jButton_InPDF = new JButton();
         jButton_Huy = new JButton();
-
         setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
-
         kGradientPanel1.setkEndColor(new Color(139, 119, 101));
         kGradientPanel1.setkStartColor(new Color(205, 175, 149));
-
         jLabel_TieuDe.setFont(new Font("Bahnschrift", 1, 30));
         jLabel_TieuDe.setForeground(new Color(102, 102, 0));
         jLabel_TieuDe.setHorizontalAlignment(SwingConstants.CENTER);
         jLabel_TieuDe.setText("Hình thức");
-
         jButton_XuatExcel.setBackground(new Color(102, 102, 0));
         jButton_XuatExcel.setFont(new Font("Arial", 1, 20));
         jButton_XuatExcel.setForeground(new Color(255, 255, 255));
@@ -128,29 +123,24 @@ public class HinhThucXuat extends JDialog {
     }
 
     private void inPdfActionPerformed(ActionEvent evt) {
-    new InPDF().ghiDachSachHoaDon(jTable_HoaDon);
+        new InPDF().ghiDachSachHoaDon(jTable_HoaDon);
     }
 
     private void xuatExcelActionPerformed(ActionEvent evt) {
         JFileChooser jFileChooser = new JFileChooser();
         jFileChooser.setDialogTitle("Chọn nơi lưu file Excel");
         int userSelection = jFileChooser.showSaveDialog(this);
-
         if (userSelection == JFileChooser.APPROVE_OPTION) {
             File saveFile = jFileChooser.getSelectedFile();
-
             // Đảm bảo file có đuôi .xlsx
             if (!saveFile.getName().toLowerCase().endsWith(".xlsx")) {
                 saveFile = new File(saveFile.getAbsolutePath() + ".xlsx");
             }
-
             // Tạo workbook và sheet
             try (Workbook workbook = new XSSFWorkbook()) {
                 Sheet sheet = workbook.createSheet("HoaDon");
-
                 // Định dạng header
                 CellStyle headerCellStyle = taoKieuTieuDe(workbook);
-
                 // Tạo dòng tiêu đề
                 Row tieuDe = sheet.createRow(0);
                 for (int i = 1; i < jTable_HoaDon.getColumnCount()-1; i++) {  // Bỏ qua cột đầu và cuối
@@ -160,22 +150,17 @@ public class HinhThucXuat extends JDialog {
                 }
                 // Định dạng dữ liệu trong bảng
                 CellStyle dataCellStyle = taoKieuDuLieu(workbook);
-
                 int tongTien=0;
                 int tongSoLuong=0;
                 // Thêm dữ liệu vào các dòng
                 for (int i = 0; i < jTable_HoaDon.getRowCount(); i++) {
                     Row row = sheet.createRow(i + 1);
                     String tongTienHoaDon=(String)jTable_HoaDon.getValueAt(i,5);
-
-
                     String numberStr = tongTienHoaDon.replaceAll("[^0-9,]", "");
                     numberStr = numberStr.replace(",", "");
-
                     int tongTienFormat = Integer.parseInt(numberStr);
                     tongSoLuong+= (int)jTable_HoaDon.getValueAt(i,4);
                     tongTien+=tongTienFormat;
-
                     for (int j = 1; j < jTable_HoaDon.getColumnCount()-1; j++) {  // Bỏ qua cột đầu và cuối
                         Cell cell = row.createCell(j - 1);
                         Object value = jTable_HoaDon.getValueAt(i, j);
@@ -186,21 +171,17 @@ public class HinhThucXuat extends JDialog {
                     }
                 }
                 Row row = sheet.createRow(jTable_HoaDon.getRowCount());
-
                 Cell cellSL = row.createCell(3);
                 cellSL.setCellStyle(dataCellStyle);
                 cellSL.setCellValue(tongSoLuong);
-
                 Cell cellTongTien = row.createCell(4);
                 cellTongTien.setCellStyle(dataCellStyle);
                 DecimalFormat df=new DecimalFormat("#,###");
-
                 cellTongTien.setCellValue(df.format(tongTien)+" VND");
                 // Tự động điều chỉnh kích thước cột cho phù hợp với nội dung
                 for (int i = 0; i < jTable_HoaDon.getColumnCount() - 2; i++) {
                     sheet.autoSizeColumn(i);
                 }
-
                 // Ghi dữ liệu vào file
                 try (FileOutputStream out = new FileOutputStream(saveFile)) {
                     workbook.write(out);
@@ -236,7 +217,6 @@ public class HinhThucXuat extends JDialog {
 
     private CellStyle taoKieuTieuDe(Workbook workbook) {
         CellStyle style = workbook.createCellStyle();
-
         style.setAlignment(HorizontalAlignment.CENTER);
         style.setVerticalAlignment(VerticalAlignment.CENTER);
         style.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());

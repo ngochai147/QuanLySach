@@ -90,13 +90,11 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
         }
         JTableHeader header = jTable_Sach.getTableHeader();
         header.setFont(new Font("Arial", Font.BOLD, 18));
-
         jTable_Sach.setPreferredSize(new Dimension(1500, jTable_Sach.getRowCount()*40));
         String userHome = System.getProperty("user.home");
         for (Sach s : sach_dao.getDSSach()) {
             // Kiểm tra và tạo ISBN nếu không tồn tại
             String myData = s.getISBN();
-
             // Đường dẫn đến thư mục lưu barcode
             Path folderPath = FileSystems.getDefault().getPath(userHome, "Desktop/isbn");
             try {
@@ -104,7 +102,6 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
                 if (!Files.exists(folderPath)) {
                     Files.createDirectories(folderPath);
                 }
-
                 // Tạo barcode cho ISBN
                 MultiFormatWriter barcodeWriter = new MultiFormatWriter();
                 BitMatrix bitMatrix = barcodeWriter.encode(myData, BarcodeFormat.CODE_128, 300, 100);
@@ -369,7 +366,6 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
         if (jTable_Sach.isEditing()) {
             jTable_Sach.getCellEditor().stopCellEditing();
         }
-
         jComboBox_TieuChi.setSelectedIndex(0);
         getTableDataDefault();
     }//GEN-LAST:event_jButton_LamMoiActionPerformed
@@ -553,11 +549,9 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
                     Logger.getLogger(Sach_QuanLySach.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-
             @Override
             public void onDelete(int row) {
             }
-
             @Override
             public void onView(int row) {
                 try {
@@ -595,7 +589,6 @@ public class Sach_QuanLySach extends javax.swing.JInternalFrame {
     }
 
     public void addDataToTable(Sach x) throws SQLException {
-        
         model.insertRow(0, new Object[]{x.getISBN(), x.getTenSach(), x.getLoaiSach().getTenLoai(), x.getSoLuong(), df.format(x.getGiaGoc()) + " VND"});
         jComboBox_TimKiem.addItem(x.getISBN());
         //

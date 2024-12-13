@@ -42,10 +42,7 @@ import javax.swing.SwingUtilities;
  * @author Ngọc Hải
  */
 public class NhanVien_TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
-//
-
-
-
+    //
     /**
      * Creates new form TrangTaoHoaDon_GUI
      */
@@ -55,11 +52,8 @@ public class NhanVien_TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
             this.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
             BasicInternalFrameUI ui = (BasicInternalFrameUI) this.getUI();
             ui.setNorthPane(null);
-
-
         });
         if (jTable_DonHang.getColumnModel().getColumnCount() >= 0) {
-
             jTable_DonHang.getColumnModel().getColumn(0).setPreferredWidth(20);
             jTable_DonHang.getColumnModel().getColumn(1).setPreferredWidth(300);
             jTable_DonHang.getColumnModel().getColumn(2).setPreferredWidth(100);
@@ -352,20 +346,16 @@ public class NhanVien_TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
         jTextField_SoLuong.setText(""+soLuong);
     }
     private void jButton_ThemHoaDonActionPerformed(java.awt.event.ActionEvent evt) throws SQLException {//GEN-FIRST:event_jButton_ThemHoaDonActionPerformed
-
         // BasicConfigurator.configure();
         int index_hoaDon=hoaDon_dao.getAllHoaDon().size()-1;
         String maHoaDon=taoMaHoaDonTuDongTang(hoaDon_dao.getAllHoaDon().get(index_hoaDon).getMaHoaDon());
         if(dsCTHDTemp.size()==0){
             jTextField_ISBN.requestFocus();
             JOptionPane.showMessageDialog(this, "Vui lòng thêm sản phẩm vào đơn hàng");
-            return;
         }else{
             ChiTietKhoHang_DAO ctkh_dao=new ChiTietKhoHang_DAO();
-
             NhapTienKhachTra tkt = new NhapTienKhachTra((Frame) SwingUtilities.getWindowAncestor(this),tongTienHoaDon,maHoaDon);
             tkt.setVisible(true);
-
             double tienKhachTra = tkt.getTienKhachTra();
             boolean kiemTra=tkt.getKiemtra();
             boolean hinhThucThanhToan=tkt.getHinhThucThanhToan();
@@ -375,18 +365,17 @@ public class NhanVien_TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
                 if(hinhThucThanhToan){
                     PhieuHoaDon phieuHoaDon=new PhieuHoaDon();
                     phieuHoaDon.viewReport(dsCTHDTemp,maHoaDon,tienKhachTra);
-
                 }else if(!hinhThucThanhToan){
                     PhieuHoaDon phieuHoaDon=new PhieuHoaDon();
                     phieuHoaDon.viewReport(dsCTHDTemp,maHoaDon,tongTienHoaDon);
                 }
                 hoaDon_dao.create(new HoaDon(maHoaDon, LocalDate.now(),new NhanVien(DangNhap.ma)));
                 for (ChiTietHoaDon cthd: dsCTHDTemp){
-
                     for (ChiTietKhoHang ctkh: ctkh_dao.getAllChiTietKhoHang()){
                         if (cthd.getSach().getISBN().equalsIgnoreCase(ctkh.getSach().getISBN())){
                             soLuong=ctkh.getSoLuong()-cthd.getSoLuong();
                             ctkh_dao.capNhatChiTietKhoHang(cthd.getSach().getISBN(),ctkh.getKhoHang().getMaKhoHang(),soLuong);
+                            break;
                         }
                     }
                     for(Sach s:dsSach){
@@ -399,17 +388,14 @@ public class NhanVien_TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
                 model= (DefaultTableModel) jTable_DonHang.getModel();
                 model.setRowCount(0);
                 xoaRong();
-            }else{
-                return;
             }
-
         }
     }//GEN-LAST:event_jButton_ThemHoaDonActionPerformed
 
     private void jButton_HuyDonHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_HuyDonHangActionPerformed
         // TODO add your handling code here:
-
-        int thongBao=JOptionPane.showConfirmDialog(this,"Bạn chắc chắn hủy đơn hàng","Cảnh báo",JOptionPane.WARNING_MESSAGE,JOptionPane.YES_NO_OPTION);
+        int thongBao=JOptionPane.showConfirmDialog(this,
+                "Bạn chắc chắn hủy đơn hàng","Cảnh báo",JOptionPane.WARNING_MESSAGE,JOptionPane.YES_NO_OPTION);
         if(thongBao==0){
             model= (DefaultTableModel) jTable_DonHang.getModel();
             model.setRowCount(0);
@@ -426,7 +412,8 @@ public class NhanVien_TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
         if(n<0) {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn dòng xóa!!");
         }else {
-            int thongBao=JOptionPane.showConfirmDialog(this,"Bạn chắc chắn muốn xóa","Cảnh báo",JOptionPane.WARNING_MESSAGE,JOptionPane.YES_NO_OPTION);
+            int thongBao=JOptionPane.showConfirmDialog(this,
+                    "Bạn chắc chắn muốn xóa","Cảnh báo",JOptionPane.WARNING_MESSAGE,JOptionPane.YES_NO_OPTION);
             if(thongBao==0){
                 String tenSach=(String)jTable_DonHang.getValueAt(n, 1);
                 String maSach="";
@@ -511,7 +498,6 @@ public class NhanVien_TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
                                         return;
                                     }
                                     tongTienHoaDon=tongTienHoaDon-(dsCTHDTemp.get(i).getSoLuong()*dsCTHDTemp.get(i).getDonGia());
-
                                     // Cập nhật lại dsCTHDTemp
                                     dsCTHDTemp.get(i).setSoLuong(soLuongMoi);
                                     // Nếu sản phẩm đã tồn tại, tăng số lượng và cập nhật thành tiền
@@ -520,7 +506,6 @@ public class NhanVien_TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
                                     // Cập nhật vào bảng
                                     model.setValueAt(soLuongMoi, i, 3);
                                     model.setValueAt(df.format(thanhTien), i, 5);
-
                                     jLabel_TongTienHoaDon.setText(df.format(tongTienHoaDon)+" VND");
                                     return;
                                 }
@@ -529,13 +514,19 @@ public class NhanVien_TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
                             soThuTu=model.getRowCount()+1;
                             int soLuong=Integer.parseInt(jTextField_SoLuong.getText()) ;
                             double thanhTien=sach.getGiaGoc()*soLuong*LOI_NHUAN;
-                            String maHoaDon=taoMaHoaDonTuDongTang(hoaDon_dao.getAllHoaDon().get(hoaDon_dao.getAllHoaDon().size()-1).getMaHoaDon());
+                            String maHoaDon=taoMaHoaDonTuDongTang(hoaDon_dao.getAllHoaDon().
+                                    get(hoaDon_dao.getAllHoaDon().size()-1).getMaHoaDon());
                             int indexCTHD=chiTietHoaDonDao.getAllChiTietHoaDon().size()-1;
                             String maCTHD=taoMaChiTietHoaDonTuDong(indexCTHD);
                             model.addRow(new Object[]{
-                                    soThuTu,tenSach,loaiSach,soLuong,df.format(sach.getGiaGoc()*LOI_NHUAN),df.format(thanhTien)
+                                    soThuTu,
+                                    tenSach,
+                                    loaiSach,
+                                    soLuong,
+                                    df.format(sach.getGiaGoc()*LOI_NHUAN),df.format(thanhTien)
                             });
-                            dsCTHDTemp.add(new ChiTietHoaDon(maCTHD,new HoaDon(maHoaDon),new Sach(ISBN),soLuong,sach.getGiaGoc()*LOI_NHUAN));
+                            dsCTHDTemp.add(new ChiTietHoaDon(maCTHD,
+                                    new HoaDon(maHoaDon),new Sach(ISBN),soLuong,sach.getGiaGoc()*LOI_NHUAN));
                             tongTienHoaDon+=thanhTien;
                             jLabel_TongTienHoaDon.setText(df.format(tongTienHoaDon)+" VND");
                         }
@@ -546,7 +537,6 @@ public class NhanVien_TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
                     jTextField_SoLuong.requestFocus();
                     return;
                 }
-
             }
         }else{
             JOptionPane.showMessageDialog(this,
@@ -559,8 +549,6 @@ public class NhanVien_TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
         if(n>6){
             jTable_DonHang.setPreferredSize(new java.awt.Dimension(1612, 270+(n-6)*40));
         }
-
-
     }//GEN-LAST:event_jButton_ThemSachActionPerformed
 
     private void xoaRong(){
@@ -569,7 +557,7 @@ public class NhanVien_TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
         jTextField_TenSach.setText("");
         jTextField_LoaiSach.setText("");
         jTextField_SoLuong.setText("");
-        jLabel_TongTienHoaDon.setText(df.format(tongTienHoaDon=0));
+        jLabel_TongTienHoaDon.setText(df.format(tongTienHoaDon=0)+" VND");
     }
 
     private void jButton_XoaRongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_XoaRongActionPerformed
@@ -579,7 +567,6 @@ public class NhanVien_TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
         jTextField_LoaiSach.setText("");
         jTextField_SoLuong.setText("");
         jTextField_ISBN.requestFocus();
-
     }//GEN-LAST:event_jButton_XoaRongActionPerformed
 
     private void jTextField_ISBNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField_ISBNMouseClicked
@@ -651,7 +638,8 @@ public class NhanVien_TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
     }
     private String taoMaChiTietHoaDonTuDong(int index){
         String part1 = chiTietHoaDonDao.getAllChiTietHoaDon().get(index).getMaChiTietHoaDon().substring(0, 4);  // Lấy 4 ký tự đầu tiên
-        int part2 = Integer.parseInt(chiTietHoaDonDao.getAllChiTietHoaDon().get(index).getMaChiTietHoaDon().substring(5))+soThuTu;
+        int part2 = Integer.parseInt(chiTietHoaDonDao.getAllChiTietHoaDon().get(index).
+                getMaChiTietHoaDon().substring(5))+soThuTu;
         String maCTHD = part1 + String.format("%05d", part2);
         return maCTHD;
     }
@@ -660,21 +648,21 @@ public class NhanVien_TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
         String part2 = maHDCuoiCung.substring(2);
         int number = Integer.parseInt(part2) + 1;
         String maHD = part1 + String.format("%04d", number);
-
         return maHD;
     }
 
     private static String decodeBarcode(BufferedImage image) {
         try {
-            LuminanceSource source = new BufferedImageLuminanceSource(image);
-            BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
+            LuminanceSource source = new BufferedImageLuminanceSource(image);//chuyển ảnh thành độ sáng
+            BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));//Giải mã nhị phân đen trắng
             Map<DecodeHintType, Object> hints = new EnumMap<>(DecodeHintType.class);
             List<BarcodeFormat> formats = new ArrayList<>();
+            //Thêm các loại mã khác nhau
             formats.add(BarcodeFormat.CODE_128);
             formats.add(BarcodeFormat.EAN_13);
             formats.add(BarcodeFormat.UPC_A);
             hints.put(DecodeHintType.POSSIBLE_FORMATS, formats);
-            Result result = new MultiFormatReader().decode(bitmap, hints);
+            Result result = new MultiFormatReader().decode(bitmap, hints);//Giải mã
             return result.getText();  // Trả về kết quả đã giải mã
         } catch (NotFoundException e) {
             return null;
@@ -700,19 +688,18 @@ public class NhanVien_TrangTaoHoaDon_GUI extends javax.swing.JInternalFrame {
         window.setLocation(600,95);
         window.add(panel);
         window.setResizable(true);
-        window.pack();
+        window.pack();// tự động căn chỉnh kích thước
         window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         window.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 if (webcam.isOpen()) {
-                    webcam.close();  // Đóng webcam để giải phóng tài nguyên
+                    webcam.close();  // Đóng webcam khi cửa sổ tắt
                 }
             }
         });
         return window;
     }//GEN-LAST:event_jTextField_SoLuongFocusGained
-
 
     private DefaultTableModel model;
     private int soThuTu;

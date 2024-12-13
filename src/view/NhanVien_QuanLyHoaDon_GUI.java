@@ -48,14 +48,11 @@ import javax.swing.table.JTableHeader;
  */
 public class NhanVien_QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
     //
-
     private Color customGreen;
-
     /**
      * Creates new form QuanLyHoaDon_GUI
      */
 //    private JDesktopPane desktopPane;
-
     public NhanVien_QuanLyHoaDon_GUI() {
         initComponents();
         this.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
@@ -102,7 +99,6 @@ public class NhanVien_QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
         header = jTable_HoaDon.getTableHeader();
         header.setFont(new Font("Arial", Font.BOLD, 18));
         jTable_HoaDon.setPreferredSize(new java.awt.Dimension(525, jTable_HoaDon.getRowCount()*40));
-
     }
 
     /**
@@ -378,23 +374,19 @@ public class NhanVien_QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
     private void jDateChooser_NgayTaoDonMouseListener(PropertyChangeEvent evt) {
         int soThuTu = 0;
         DateTimeFormatter formatterNgay  = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-
         // Lấy ngày từ jDateChooser và chuyển đổi sang LocalDate
         Date selectedDate = jDateChooser_NgayTaoDon.getDate();
         if (selectedDate != null) {
             LocalDate date = selectedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-
             // Xóa các hàng cũ trong bảng trước khi thêm dữ liệu mới
             DefaultTableModel model = (DefaultTableModel) jTable_HoaDon.getModel();
             model.setRowCount(0);
-
             // Duyệt qua danh sách hóa đơn và kiểm tra ngày
             for (HoaDon hd : dsHD.getAllHoaDon()) {
                 if (date.isEqual(hd.getNgayTaoDon())) {
                     soThuTu++;
                     double tongTien = 0;
                     int tongSoLuong = 0;
-
                     // Tính tổng số lượng và tổng tiền của các chi tiết hóa đơn
                     for (ChiTietHoaDon cthd : listCTHD) {
                         if (hd.getMaHoaDon().equalsIgnoreCase(cthd.getHoaDon().getMaHoaDon())) {
@@ -402,11 +394,9 @@ public class NhanVien_QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
                             tongTien += cthd.getSoLuong() * cthd.getDonGia();
                         }
                     }
-
                     // Định dạng tổng tiền
                     DecimalFormat df = new DecimalFormat("#,### VND");
                     String formattedTongTien = df.format(tongTien);
-
                     // Thêm dòng mới vào bảng
                     model.addRow(new Object[]{
                             soThuTu,
@@ -422,7 +412,6 @@ public class NhanVien_QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
             System.out.println("Ngày không hợp lệ hoặc không được chọn.");
         }
         jTable_HoaDon.setPreferredSize(new java.awt.Dimension(525, jTable_HoaDon.getRowCount()*40));
-
     }
 
 
@@ -464,10 +453,8 @@ public class NhanVien_QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
 
     private void jButton_LamMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_LamMoiActionPerformed
         // TODO add your handling code here:
-
         DefaultTableModel model = (DefaultTableModel) jTable_HoaDon.getModel();
         model.setRowCount(0);
-
         themDuLieuVaoBang();
 
     }//GEN-LAST:event_jButton_LamMoiActionPerformed
@@ -480,7 +467,6 @@ public class NhanVien_QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
     private void jComboBox_TimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_TimKiemActionPerformed
         // TODO add your handling code here:
         int n=jComboBox_TieuChi.getSelectedIndex();
-
         try {
             int soThuTu = 0;
             String textTim=(String)jComboBox_TimKiem.getSelectedItem();
@@ -493,14 +479,10 @@ public class NhanVien_QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
             }catch (Exception ex){
                 ex.printStackTrace();
             }
-
         }catch (Exception e){
             e.printStackTrace();
         }
-
     }
-
-//GEN-LAST:event_jButton_TimKiemActionPerformed
     public void danhSachTimKiem(int soThuTu, String textTim,int n){
         DefaultTableModel model = (DefaultTableModel) jTable_HoaDon.getModel();
         model.setRowCount(0);
@@ -516,7 +498,6 @@ public class NhanVien_QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
                     int tongSoLuong = 0;
                     for (ChiTietHoaDon cthd : listCTHD) {
                         if (hd.getMaHoaDon().equalsIgnoreCase(cthd.getHoaDon().getMaHoaDon())) {
-
                             tongSoLuong += cthd.getSoLuong();
                             tongTien += cthd.getSoLuong() * cthd.getDonGia();
                         }
@@ -532,7 +513,6 @@ public class NhanVien_QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
                     int tongSoLuong = 0;
                     for (ChiTietHoaDon cthd : listCTHD) {
                         if (hd.getMaHoaDon().equalsIgnoreCase(cthd.getHoaDon().getMaHoaDon())) {
-
                             tongSoLuong += cthd.getSoLuong();
                             tongTien += cthd.getSoLuong() * cthd.getDonGia();
                         }
@@ -544,7 +524,6 @@ public class NhanVien_QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
                             formatterNgay .format(hd.getNgayTaoDon()), hd.getNhanVien().getMaNV(), tongSoLuong, formattedTongTien});
                 }
                 jTable_HoaDon.setPreferredSize(new java.awt.Dimension(525, jTable_HoaDon.getRowCount()*40));
-
             }
         }catch (Exception ex){
             ex.printStackTrace();
@@ -556,39 +535,6 @@ public class NhanVien_QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
         hinhThucXuat.setLocationRelativeTo(null);
         hinhThucXuat.setVisible(true);
     }
-
-
-    private CellStyle taoKieuTieuDe(Workbook workbook) {
-        CellStyle style = workbook.createCellStyle();
-
-        style.setAlignment(HorizontalAlignment.CENTER);
-        style.setVerticalAlignment(VerticalAlignment.CENTER);
-        style.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
-        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        style.setBorderBottom(BorderStyle.THIN);
-        style.setBorderTop(BorderStyle.THIN);
-        style.setBorderLeft(BorderStyle.THIN);
-        style.setBorderRight(BorderStyle.THIN);
-        return style;
-    }
-
-
-    private CellStyle taoKieuDuLieu(Workbook workbook) {
-        CellStyle style = workbook.createCellStyle();
-        style.setAlignment(HorizontalAlignment.LEFT);
-        style.setVerticalAlignment(VerticalAlignment.CENTER);
-        style.setWrapText(true);
-        style.setBorderBottom(BorderStyle.THIN);
-        style.setBorderTop(BorderStyle.THIN);
-        style.setBorderLeft(BorderStyle.THIN);
-        style.setBorderRight(BorderStyle.THIN);
-        return style;
-    }
-                                                 
-                                                 
-
-
-
     private void jButton_TaoHoaDonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_TaoHoaDonMouseClicked
         // TODO add your handling code here:
         jPanel1.removeAll();
@@ -596,8 +542,8 @@ public class NhanVien_QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
         taoHoaDonGui.setSize(jPanel1.getSize());
         taoHoaDonGui.setVisible(true);
         jPanel1.add(taoHoaDonGui);
-
     }//GEN-LAST:event_jButton_TaoHoaDonMouseClicked
+
     public  void themDuLieuVaoBang(){
         int soThuTu = 0;
         for (HoaDon x : dsHD.getAllHoaDon()) {
@@ -612,19 +558,21 @@ public class NhanVien_QuanLyHoaDon_GUI extends javax.swing.JInternalFrame {
             }
             DecimalFormat df = new DecimalFormat("#,### VND");
             DateTimeFormatter formatterNgay = DateTimeFormatter.ofPattern("dd-MM-YYYY");
-            // Giả sử đây là số bạn muốn định dạng
             String formattedTongTien = df.format(tongTien);
-            ((DefaultTableModel) jTable_HoaDon.getModel()).addRow(new Object[]{soThuTu, x.getMaHoaDon(),formatterNgay.format(x.getNgayTaoDon()) , x.getNhanVien().getMaNV(), tongSoLuong, formattedTongTien});
+            ((DefaultTableModel) jTable_HoaDon.getModel()).addRow(new Object[]{soThuTu,
+                    x.getMaHoaDon(),
+                    formatterNgay.format(x.getNgayTaoDon()),
+                    x.getNhanVien().getMaNV(),
+                    tongSoLuong,
+                    formattedTongTien});
         }
         jTable_HoaDon.setPreferredSize(new java.awt.Dimension(525, jTable_HoaDon.getRowCount()*40));
-
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private HoaDon_DAO dsHD = new HoaDon_DAO();
     private List<HoaDon> listHD = dsHD.getAllHoaDon();
     private Sach_DAO dss = new Sach_DAO();
     private List<Sach> sachList = dss.getAllSP();
-
     private ChiTietHoaDon_DAO dsCTHD = new ChiTietHoaDon_DAO();
     private List<ChiTietHoaDon> listCTHD = dsCTHD.getAllChiTietHoaDon();
     private com.toedter.calendar.JDateChooser jDateChooser_NgayTaoDon;

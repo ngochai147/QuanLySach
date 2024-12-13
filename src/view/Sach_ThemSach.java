@@ -525,42 +525,42 @@ public class Sach_ThemSach extends javax.swing.JDialog {
 
     private boolean kiemTratacGia(String tacGia) {
         //[\\p{L}\\s.'-]:
-            //\\p{L}: Đại diện cho bất kỳ ký tự nào thuộc loại chữ cái (cả chữ cái in hoa và in thường của mọi ngôn ngữ, ví dụ như A-Z, á, ü, v.v.).
-            //\\s: Khoảng trắng (spaces), bao gồm khoảng trắng, tab, và dòng mới.
-            //.'-: Các dấu câu cho phép bao gồm dấu chấm (.), dấu nháy đơn ('), dấu gạch ngang (-).
+        //\\p{L}: Đại diện cho bất kỳ ký tự nào thuộc loại chữ cái (cả chữ cái in hoa và in thường của mọi ngôn ngữ, ví dụ như A-Z, á, ü, v.v.).
+        //\\s: Khoảng trắng (spaces), bao gồm khoảng trắng, tab, và dòng mới.
+        //.'-: Các dấu câu cho phép bao gồm dấu chấm (.), dấu nháy đơn ('), dấu gạch ngang (-).
             
-//      Ví dụ hợp lệ:
-//            John Doe
-//            Jane O'Connor
-//            Dr. Smith
-//            Alice-Marie
-//      Ví dụ không hợp lệ:
-//            1234 (chứa chữ số, không hợp lệ theo quy định)
-//            !@#$% (chứa ký tự đặc biệt không hợp lệ)
-//            John_Doe (chứa dấu gạch dưới, không hợp lệ)
-        String regex = "^[\\p{L}\\s.'-]+$";
+    //      Ví dụ hợp lệ:
+    //            John Doe
+    //            Jane O'Connor
+    //            Dr. Smith
+    //            Alice-Marie
+    //      Ví dụ không hợp lệ:
+    //            1234 (chứa chữ số, không hợp lệ theo quy định)
+    //            !@#$% (chứa ký tự đặc biệt không hợp lệ)
+    //            John_Doe (chứa dấu gạch dưới, không hợp lệ)
+            String regex = "^[\\p{L}\\s.'-]+$";
         return tacGia != null && !tacGia.trim().isEmpty() && tacGia.matches(regex);
     }
 
     private boolean kiemTraNhaXB(String nhaXB) {
-//            [\\p{L}\\p{M}0-9\\s.,'-]
+    //            [\\p{L}\\p{M}0-9\\s.,'-]
     //            \\p{L}: Đại diện cho bất kỳ ký tự nào thuộc loại chữ cái (cả chữ cái in hoa và in thường của mọi ngôn ngữ, ví dụ như A-Z, á, ü, v.v.).
     //            \\p{M}: Đại diện cho các dấu (diacritic marks) gắn liền với chữ cái, ví dụ như dấu mũ, dấu sắc, dấu huyền, v.v.
     //            0-9: Cho phép các ký tự là chữ số từ 0 đến 9.
     //            \\s: Khoảng trắng (spaces), bao gồm khoảng trắng, tab, và dòng mới.
     //            .,'-: Cho phép các dấu câu như dấu chấm (.), dấu phẩy (,), dấu nháy đơn ('), và dấu gạch ngang (-).        
         
-//       Ví dụ hợp lệ:
-//            John Doe
-//            Jane O'Connor
-//            Dr. Smith
-//            1234
-//            Alice-Marie
-//            José
-//       Ví dụ không hợp lệ:
-//            !@#$% (chứa ký tự đặc biệt không hợp lệ)
-//            John@Doe (chứa dấu @, không hợp lệ theo quy tắc)
-//            123_456 (chứa dấu gạch dưới, không hợp lệ)
+    //       Ví dụ hợp lệ:
+    //            John Doe
+    //            Jane O'Connor
+    //            Dr. Smith
+    //            1234
+    //            Alice-Marie
+    //            José
+    //       Ví dụ không hợp lệ:
+    //            !@#$% (chứa ký tự đặc biệt không hợp lệ)
+    //            John@Doe (chứa dấu @, không hợp lệ theo quy tắc)
+    //            123_456 (chứa dấu gạch dưới, không hợp lệ)
         String regex = "^[\\p{L}\\p{M}0-9\\s.,'-]+$";
         return nhaXB != null && !nhaXB.trim().isEmpty() && nhaXB.matches(regex);
     }
@@ -572,7 +572,6 @@ public class Sach_ThemSach extends javax.swing.JDialog {
                 JOptionPane.showMessageDialog(this, "Năm xuất bản phải lớn hơn 0!!!", "Thông báo", JOptionPane.WARNING_MESSAGE);
                 return false;
             }
-
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Năm xuất bản không hợp lệ", "Thông báo", JOptionPane.WARNING_MESSAGE);
             return false;
@@ -587,7 +586,6 @@ public class Sach_ThemSach extends javax.swing.JDialog {
         String tacGia = jTextField_TacGia.getText();
         String nhaXB = jTextField_NhaXuatBan.getText();
         String namXBStr = jTextField_NamXuatBan.getText();
-
         if (ISBN.trim().length() == 0 || !kiemTraISBN(ISBN)) {
             JOptionPane.showMessageDialog(this, "ISBN phải là 13 chữ số!!!", "Thông báo", JOptionPane.WARNING_MESSAGE);
             jTextField_ISBN.requestFocus();
@@ -638,12 +636,10 @@ public class Sach_ThemSach extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn ảnh!!", "Thông báo", JOptionPane.WARNING_MESSAGE);
             return false;
         }
-
         return true;
     }
     private void jButton_ThemSachActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ThemSachActionPerformed
         // TODO add your handling code here:
-
         boolean kiemTra = false;
         try {
             kiemTra = kiemTraTatCa();
@@ -665,9 +661,8 @@ public class Sach_ThemSach extends javax.swing.JDialog {
             try {
                 Sach sach = new Sach(ISBN, tenSach, tacGia, namXB, nhaXB, soLuong, donGia, new LoaiSach("", loaiSach), new HinhAnh(anh), "Đang bán");
                 if (!sach_dao.getDSSach().contains(sach)) {
-
-                    int result = JOptionPane.showConfirmDialog(null, "Bạn chắc chắn muốn thêm sách này?", "Thông báo", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-
+                    int result = JOptionPane.showConfirmDialog(null, "Bạn chắc chắn muốn thêm sách này?",
+                            "Thông báo", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
                     if (result == JOptionPane.YES_OPTION) {
                         sach_dao.themSach(sach);
                         dsSach.addDataToTable(sach);
@@ -693,13 +688,11 @@ public class Sach_ThemSach extends javax.swing.JDialog {
                         jTextField_ISBN.selectAll();
                         jTextField_ISBN.requestFocus();
                     }
-
                 } else {
                     jTextField_ISBN.selectAll();
                     jTextField_ISBN.requestFocus();
                     JOptionPane.showMessageDialog(this, "ISBN đã tồn tại!!!", "Thông báo", JOptionPane.WARNING_MESSAGE);
                 }
-
             } catch (SQLException ex) {
                 Logger.getLogger(Sach_ThemSach.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException e) {
@@ -708,26 +701,19 @@ public class Sach_ThemSach extends javax.swing.JDialog {
                 throw new RuntimeException(e);
             }
         }
-
-
-    }//GEN-LAST:event_jButton_ThemSachActionPerformed
-
-
+    }
+    //GEN-LAST:event_jButton_ThemSachActionPerformed
     private void jButton_ThemAnhActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ThemAnhActionPerformed
         // TODO add your handling code here:
-
         JFileChooser frame_chonAnh = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("File ảnh", "png", "jpq", "jpeg", "gif");
         frame_chonAnh.setFileFilter(filter);
         frame_chonAnh.setAcceptAllFileFilterUsed(false);
-
         int returnValue = frame_chonAnh.showOpenDialog(null);
         if (returnValue == JFileChooser.APPROVE_OPTION) {
             String filePath = frame_chonAnh.getSelectedFile().getPath();
-
             Icon icon = new ImageScale().load(filePath, jLabel_AnhDaiDien.getWidth(), jLabel_AnhDaiDien.getHeight());
             jLabel_AnhDaiDien.setIcon(icon);
-
             image_url = new AddImageToData();
             String fileName = image_url.duaFileVaoThuMuc(new File(filePath), "src\\ServiceImage\\Sach_IMG", "../ServiceImage/Sach_IMG/");
             System.out.println(fileName);
@@ -737,24 +723,18 @@ public class Sach_ThemSach extends javax.swing.JDialog {
 
     private void jButton_HuyBoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_HuyBoMouseClicked
         // TODO add your handling code here:
-
         // Hiển thị JOptionPane với kích thước chữ đã được chỉnh
         int result = JOptionPane.showConfirmDialog(null, "Bạn chắc chắn muốn hủy, các thông tin sẽ không đươc lưu?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-
         if (result == JOptionPane.YES_OPTION) {
             this.dispose();
         } else {
             jTextField_ISBN.requestFocus();
         }
-
     }//GEN-LAST:event_jButton_HuyBoMouseClicked
 
     private void jButton_HuyBoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_HuyBoActionPerformed
         // TODO add your handling code here:
-
-
     }//GEN-LAST:event_jButton_HuyBoActionPerformed
-
     public String createMaCTKH() {
         List<String> dsMaCT = chiTietKhoHang_dao.getMaChiTietKhoHang();
         String lastMaCT = dsMaCT.get(dsMaCT.size() - 1);
@@ -774,7 +754,6 @@ public class Sach_ThemSach extends javax.swing.JDialog {
     public String taoTuDong_MaChiTietPhieuNhapKho() {
         // Lấy mã chi tiết phiếu nhập kho mới nhất từ cơ sở dữ liệu
         String lastMaChiTietPhieuNhapKho = chiTietPhieuNhap_dao.getLastMaChiTietPhieuNhapKho();
-
         int newNumber;
         if (lastMaChiTietPhieuNhapKho != null && lastMaChiTietPhieuNhapKho.startsWith(ma_CT_PNK)) {
             // Tách phần số ra khỏi mã và tăng lên 1
@@ -784,7 +763,6 @@ public class Sach_ThemSach extends javax.swing.JDialog {
             // Nếu không có mã nào trong CSDL, bắt đầu từ 1
             newNumber = 1;
         }
-
         // Định dạng lại mã với tiền tố và phần số đủ 5 chữ số
         return ma_CT_PNK + String.format("%05d", newNumber);
     }
@@ -793,7 +771,6 @@ public class Sach_ThemSach extends javax.swing.JDialog {
     public String taoTuDong_MaPhieuNhapKho() {
         // Lấy mã phiếu nhập kho cuối cùng từ cơ sở dữ liệu
         String lastMaPhieuNhapKho = phieuNhapDao.getLastMaPhieuNhapKho();
-
         int newNumber;
         if (lastMaPhieuNhapKho != null && lastMaPhieuNhapKho.startsWith(ma_PNK)) {
             // Tách phần số ra khỏi mã và tăng lên 1
@@ -803,7 +780,6 @@ public class Sach_ThemSach extends javax.swing.JDialog {
             // Nếu không có mã nào trong CSDL, bắt đầu từ 1
             newNumber = 1;
         }
-
         // Định dạng lại mã với tiền tố và phần số đủ 5 chữ số
         return ma_PNK + String.format("%04d", newNumber);
     }

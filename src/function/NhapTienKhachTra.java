@@ -23,7 +23,6 @@ public class NhapTienKhachTra extends JDialog {
         this.maHoaDon=maHoaDon;
         pack();
         setLocationRelativeTo(parent);
-
     }
     private void initComponents() {
 
@@ -77,7 +76,6 @@ public class NhapTienKhachTra extends JDialog {
                 jButton_HuyActionPerformed(evt);
             }
         });
-
         jComboBox_TieuChi.setFont(new Font("Arial", 1, 20)); // NOI18N
         jComboBox_TieuChi.setModel(new DefaultComboBoxModel<>(new String[] {"Tiền mặt","Thanh toán qua mã QR"}));
         Color customGreen = new Color(102,102,0);
@@ -85,7 +83,6 @@ public class NhapTienKhachTra extends JDialog {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-
                 if (isSelected) {
                     c.setBackground(customGreen);   // Màu nền khi mục được chọn
                     c.setForeground(Color.WHITE);   // Màu chữ khi mục được chọn
@@ -93,7 +90,6 @@ public class NhapTienKhachTra extends JDialog {
                     c.setBackground(Color.white); // Màu nền cho các mục không được chọn
                     c.setForeground(customGreen);      // Màu chữ cho các mục không được chọn
                 }
-
                 return c;
             }
         });
@@ -102,8 +98,6 @@ public class NhapTienKhachTra extends JDialog {
             public void actionPerformed(ActionEvent evt) {
                 jComboBox_TieuChiMouseClicked(evt);
             }
-
-
         });
         GroupLayout kGradientPanel1Layout = new GroupLayout(kGradientPanel1);
         kGradientPanel1.setLayout(kGradientPanel1Layout);
@@ -182,7 +176,6 @@ public class NhapTienKhachTra extends JDialog {
             new VietQRGen(tongTienHoaDon,maHoaDon);
             hinhThucThanhToan=false;
         }
-
     }
     private void jButton_OkActionPerformed(ActionEvent evt) throws SQLException {
         kiemTra=true;
@@ -206,7 +199,6 @@ public class NhapTienKhachTra extends JDialog {
                     "Vui lòng nhập số hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
         // TODO add your handling code here:
-
 
     }// </editor-fold>
 
